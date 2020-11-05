@@ -8,5 +8,10 @@ export default {
     generalMargin: 20,
     occupationIconSize: 60,
     generalPadding: 10,
+
     menuIconSize: 35,
+    buttonIconSize: 20,
+    
+    contentSize: 20,
+    borderWidth: 0.7,
 }

@@ -5,7 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import SpecialitiesScreen from '../screens/Quiz/SpecialitiesScreen';
+import OccupationsScreen from '../screens/Quiz/OccupationsScreen';
+import WorkTypesScreen from '../screens/Quiz/WorkTypesScreen';
+import JobDescriptionScreen from '../screens/Quiz/JobDescriptionScreen';
+import CustomerTypesScreen from '../screens/Quiz/CustomerTypesScreen';
+import PropertyTypesScreen from '../screens/Quiz/PropertyTypesScreen';
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
 
@@ -20,8 +24,24 @@ const AppNavigator = () => {
                 screenOptions={{ animationEnabled: false }}
             >
                 <Stack.Screen
-                    name="Specialities"
-                    component={SpecialitiesScreen}
+                    name="Occupations"
+                    component={OccupationsScreen}
+                />
+                <Stack.Screen
+                    name="WorkTypes"
+                    component={WorkTypesScreen}
+                />
+                <Stack.Screen
+                    name="JobDescription"
+                    component={JobDescriptionScreen}
+                />
+                <Stack.Screen
+                    name="CustomerTypes"
+                    component={CustomerTypesScreen}
+                />
+                <Stack.Screen
+                    name="PropertyTypes"
+                    component={PropertyTypesScreen}
                 />
             </Stack.Navigator>
         );

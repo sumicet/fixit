@@ -1,0 +1,10 @@
+export const BUILDER = 'Builder';
+export const CARPENTER = 'Carpenter';
+export const ELECTRICIAN = 'Electrician';
+export const HANDYMAN = 'Handyman';
+export const HEATINGENG = 'Heating Eng.';
+export const PAINTER = 'Painter';
+export const PLASTERER = 'Plasterer';
+export const PLUMBER = 'Plumber';
+export const ROOFER = 'Roofer';
+export const OTHER = 'Other';

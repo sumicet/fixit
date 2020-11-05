@@ -7,9 +7,13 @@ import Header from '../text/Header';
 
 const OccupationCard = props => {
     return (
-        <View style={styles.container}>
-            <View>{props.children}</View>
-            <View style={styles.headerContainer}><Header>{props.name}</Header></View>
+        <View style={[styles.container, props.style]}>
+            {props.children ? (
+                <View style={styles.iconContainer}>{props.children}</View>
+            ) : null}
+            <View>
+                <Header>{props.name}</Header>
+            </View>
         </View>
     );
 };
@@ -22,12 +26,12 @@ const styles = StyleSheet.create({
         padding: Layout.generalPadding,
         borderRadius: Layout.borderRadius,
         borderColor: Color.secondaryColor,
-        borderWidth: 0.7,
+        borderWidth: Layout.borderWidth,
         margin: Layout.cardMargin,
     },
-    headerContainer: {
-        paddingTop: Layout.generalPadding
-    }
+    iconContainer: {
+        paddingBottom: Layout.generalPadding,
+    },
 });
 
 export default OccupationCard;

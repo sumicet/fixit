@@ -4,7 +4,7 @@ import Color from '../../constants/Color';
 
 const Title = (props) => {
     return (
-        <Text style={styles.title}>{props.children}</Text>
+        <Text {...props} style={[styles.title, props.style]}>{props.children}</Text>
     );
 };
 

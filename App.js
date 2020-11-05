@@ -2,9 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
+import quizReducer from './store/reducers/quiz';
+
+const rootReducer = combineReducers({
+    quiz: quizReducer,
+});
+
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(ReduxThunk))
+);
 
 const fetchFonts = () => {
     return Font.loadAsync({
@@ -29,10 +43,12 @@ export default function App() {
     }
 
     return (
-        <View style={styles.container}>
-            <AppNavigator />
-            <StatusBar style="dark" translucent={true} />
-        </View>
+        <Provider store={store}>
+            <View style={styles.container}>
+                <AppNavigator />
+                <StatusBar style="dark" translucent={true} />
+            </View>
+        </Provider>
     );
 }
 
