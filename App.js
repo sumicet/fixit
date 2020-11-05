@@ -1,21 +1,43 @@
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as Font from 'expo-font';
+
+import AppNavigator from './navigation/AppNavigator';
+import Loading from './components/loading/Loading';
+
+const fetchFonts = () => {
+    return Font.loadAsync({
+        'asap-bold': require('./assets/fonts/Asap-Bold.ttf'),
+        'asap-semibold': require('./assets/fonts/Asap-SemiBold.ttf'),
+        'asap-regular': require('./assets/fonts/Asap-Regular.ttf'),
+    });
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        fetchFonts().then(() => {
+            setIsLoading(false);
+        });
+    }, []);
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    return (
+        <View style={styles.container}>
+            <AppNavigator />
+            <StatusBar style="dark" translucent={true} />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+    },
 });
