@@ -1,7 +1,7 @@
 export const SET_OCCUPATION = 'SET_OCCUPATION';
 export const SET_WORK_TYPE = 'SET_WORK_TYPE';
 export const SET_JOB_DESCRIPTION = 'SET_JOB_DESCRIPTION';
-export const SET_SELECTED_START_TIME = 'SET_SELECTED_START_TIME';
+export const SET_START_TIME = 'SET_START_TIME';
 export const SET_JOB_ADDRESS = 'SET_JOB_ADDRESS';
 export const SET_CUSTOMER_TYPE = 'SET_PROPERTY_TYPE';
 export const SET_PROPERTY_TYPE = 'SET_PROPERTY_TYPE';
@@ -28,10 +28,10 @@ export const setJobDescription = jobDescription => {
     }
 }
 
-export const setSelectedStartTime = selectedStartTimeId => {
+export const setStartTime = startTimeId => {
     return {
-        type: SET_SELECTED_START_TIME,
-        selectedStartTimeId
+        type: SET_START_TIME,
+        startTimeId
     }
 }
 

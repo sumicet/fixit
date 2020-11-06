@@ -5,9 +5,9 @@ import QuizContainer from '../../components/quiz/QuizContainer';
 import { CUSTOMER_TYPES } from '../../data/Jobs/CustomerTypes';
 import { setCustomerType } from '../../store/actions/quiz';
 import CardData from '../../models/Quiz/CardData';
+import ContainerWithMenu from '../../components/containers/ContainerWithMenu';
 
 const CustomerTypesScreen = props => {
-
     var customerType = [];
 
     const dispatch = useDispatch();
@@ -28,11 +28,13 @@ const CustomerTypesScreen = props => {
     };
 
     return (
-        <QuizContainer
-            title="I represent..."
-            data={customerType}
-            handleCardPress={handleCardPress}
-        />
+        <ContainerWithMenu navigation={props.navigation}>
+            <QuizContainer
+                title="I represent..."
+                data={customerType}
+                handleCardPress={handleCardPress}
+            />
+        </ContainerWithMenu>
     );
 };
 

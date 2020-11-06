@@ -16,16 +16,19 @@ const TextField = props => {
                     : null;
             }}
             textAlignVertical="top"
-            placeholderTextColor="#c3c3c7"
+            placeholderTextColor={Color.placeholderTextColor}
             selectionColor={Color.primaryBrandColor}
-            style={{
-                fontSize: Layout.contentSize,
-                padding: Layout.generalPadding,
-                height: height,
-                borderRadius: Layout.borderRadius,
-                color: Color.textColor,
-                backgroundColor: '#f0f0f5',
-            }}
+            style={[
+                props.style,
+                {
+                    fontSize: Layout.contentSize,
+                    padding: Layout.generalPadding,
+                    borderRadius: Layout.borderRadius,
+                    color: Color.textColor,
+                    backgroundColor: Color.textField,
+                },
+                props.multiline ? { height: height } : null,
+            ]}
             underlineColorAndroid="transparent"
         />
     );

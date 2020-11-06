@@ -14,23 +14,24 @@ const PropertyTypesScreen = props => {
 
     var propertyType = [];
 
-    const icons = [<HouseIcon />, <UniversityIcon />, <FactoryIcon />];
-
     const dispatch = useDispatch();
 
     var i;
     for (i = 1; i <= PROPERTY_TYPES.length; i++) {
         const item = new CardData(
             i,
-            icons[i-1],
+            null,
             PROPERTY_TYPES.find(elem => elem.id === i).name
         );
         propertyType.push(item);
     }
+    propertyType.push(new CardData(null, null, null));
 
     const handleCardPress = id => {
-        dispatch(setPropertyType(id));
-        //props.navigation.navigate('PropertyTypes');
+        if(id) {
+            dispatch(setPropertyType(id));
+            props.navigation.navigate('JobAddress');
+        }
     };
 
     return (

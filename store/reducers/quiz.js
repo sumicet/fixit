@@ -4,7 +4,7 @@ import {
     SET_OCCUPATION,
     SET_WORK_TYPE,
     SET_JOB_DESCRIPTION,
-    SET_SELECTED_START_TIME,
+    SET_START_TIME,
     SET_JOB_ADDRESS,
     SET_CUSTOMER_TYPE,
     SET_PROPERTY_TYPE,
@@ -14,9 +14,12 @@ const initialState = {
     occupationId: null,
     workTypes: null,
     selectedWorkTypeId: null,
-    selectedStartTimeId: null,
+    startTimeId: null,
     jobDescription: null,
-    jobAddress: null,
+    jobAddress: {
+        line1: null,
+        line2: null,
+    },
     customerType: null,
     propertyType: null,
 };
@@ -31,7 +34,7 @@ const quizReducer = (state = initialState, action) => {
                 occupationId: action.occupationId,
                 workTypes: updatedWorkTypes,
                 selectedWorkTypeId: null,
-                selectedStartTimeId: state.selectedStartTimeId,
+                startTimeId: state.startTimeId,
                 jobDescription: state.jobDescription,
                 jobAddress: state.jobAddress,
                 customerType: state.customerType,
@@ -47,10 +50,10 @@ const quizReducer = (state = initialState, action) => {
                 ...state,
                 jobDescription: action.jobDescription,
             };
-        case SET_SELECTED_START_TIME:
+        case SET_START_TIME:
             return {
                 ...state,
-                selectedStartTimeId: action.selectedStartTimeId,
+                startTimeId: action.startTimeId,
             };
         case SET_JOB_ADDRESS:
             return {
@@ -68,7 +71,7 @@ const quizReducer = (state = initialState, action) => {
                 propertyType: action.propertyType,
             };
         default:
-            return state;  
+            return state;
     }
 };
 

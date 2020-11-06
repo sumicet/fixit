@@ -10,13 +10,20 @@ import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
 import Color from '../../constants/Color';
 import QuizScreen from '../containers/QuizScreen';
+import { useLinkProps } from '@react-navigation/native';
 
 const QuizContainer = props => {
-
     const renderData = itemData => {
         return (
             <Touchable onPress={() => props.handleCardPress(itemData.item.id)}>
-                <OccupationCard name={itemData.item.name} style={{height: 120}}>
+                <OccupationCard
+                    name={itemData.item.name}
+                    style={
+                        itemData.item.name
+                            ? { height: 120 }
+                            : { height: 120, borderWidth: 0 }
+                    }
+                >
                     {itemData.item.icon}
                 </OccupationCard>
             </Touchable>

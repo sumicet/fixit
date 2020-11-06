@@ -9,8 +9,9 @@ import Color from '../../constants/Color';
 import NextButton from '../common/NextButton';
 
 const QuizScreen = props => {
+
     return (
-        <Container style={{ paddingHorizontal: 0 }}>
+        <Container style={{ paddingHorizontal: 0 }} >
             <View
                 style={{
                     paddingHorizontal: Layout.screenHorizontalPadding,
