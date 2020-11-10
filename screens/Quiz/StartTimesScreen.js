@@ -6,9 +6,7 @@ import { START_TIMES } from '../../data/Jobs/StartTimes';
 import { setStartTime } from '../../store/actions/quiz';
 import CardData from '../../models/Quiz/CardData';
 
-
 const StartTimesScreen = props => {
-
     var startTimes = [];
 
     const dispatch = useDispatch();
@@ -24,9 +22,11 @@ const StartTimesScreen = props => {
     }
 
     const handleCardPress = id => {
-        if(id) {
+        if (id) {
             dispatch(setStartTime(id));
-            props.navigation.navigate('Home');
+            props.navigation.navigate('Home', {
+                isInAppNotificationVisible: true,
+            });
         }
     };
 

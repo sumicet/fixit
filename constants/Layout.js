@@ -19,6 +19,8 @@ export default {
     // **************** TEXT ****************
 
     contentSize: 18,
+    smallContentSize: 16,
+    headerSize: 20,
 
     // **************** BORDER ****************
     

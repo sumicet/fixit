@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import Color from '../../constants/Color';
 
 import Layout from '../../constants/Layout';
-import BottomMenu from '../Menu/BottomMenu';
 
 const Container = props => {
     return (

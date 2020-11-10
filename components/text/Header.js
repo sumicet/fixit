@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 import Color from '../../constants/Color';
+import Layout from '../../constants/Layout';
 
 const Header = (props) => {
     return (
@@ -11,7 +12,7 @@ const Header = (props) => {
 const styles = StyleSheet.create({
     header: {
         fontFamily: 'asap-semibold',
-        fontSize: 20,
+        fontSize: Layout.headerSize,
         color: Color.textColor,
         textAlign: 'center'
     }

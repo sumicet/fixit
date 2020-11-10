@@ -6,4 +6,6 @@ export default {
     secondaryBrandColor: '#1e79c9',
     textField: '#f0f0f5',
     placeholderTextColor: '#c3c3c7',
+    success: '#27c47d',
+    error: '#c42751',
 };

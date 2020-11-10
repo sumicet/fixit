@@ -1,7 +1,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import OccupationsScreen from '../screens/Quiz/OccupationsScreen';
 import WorkTypesScreen from '../screens/Quiz/WorkTypesScreen';
@@ -15,9 +18,13 @@ import HomeScreen from '../screens/Home/HomeScreen';
 import MessagesScreen from '../screens/Messages/MessagesScreen';
 import MyJobsScreen from '../screens/MyJobs/MyJobsScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
+import Color from '../constants/Color';
+import Layout from '../constants/Layout';
+import Touchable from '../components/common/Touchable';
 
 const Stack = createStackNavigator();
 const BottomStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
     const QuizStack = () => {
@@ -46,6 +53,100 @@ const AppNavigator = () => {
         );
     };
 
+    const BottomTab = () => {
+        return (
+            <Tab.Navigator
+                tabBarOptions={{
+                    showLabel: false,
+                    style: {
+                        elevation: 0,
+                        borderTopWidth: 0.7,
+                        borderTopColor: Color.secondaryColor,
+                    },
+                }}
+                screenOptions={({ navigation, route }) => ({
+                    tabBarIcon: ({ focused }) => {
+                        let iconName;
+                        if (route.name === 'Home') {
+                            iconName = 'home';
+                        } else {
+                            if (route.name === 'MyJobs') {
+                                iconName = 'solution1';
+                            } else {
+                                if (route.name === 'Messages') {
+                                    iconName = 'message1';
+                                } else {
+                                    if (route.name === 'Profile') {
+                                        iconName = 'user';
+                                    } else {
+                                        if (route.name === 'Quiz') {
+                                            iconName = 'plus';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        return (
+                            <Touchable
+                                onPress={() => {
+                                    navigation.navigate(route.name);
+                                }}
+                                style={styles.touchable}
+                            >
+                                <Icon
+                                    name={iconName}
+                                    color={
+                                        focused
+                                            ? Color.primaryBrandColor
+                                            : Color.textColor
+                                    }
+                                    size={Layout.menuIconSize}
+                                />
+                            </Touchable>
+                        );
+                    },
+                })}
+            >
+                <Tab.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    listeners={() => ({
+                        tabPress: () => {},
+                    })}
+                />
+                <Tab.Screen
+                    name="MyJobs"
+                    component={MyJobsScreen}
+                    listeners={() => ({
+                        tabPress: () => {},
+                    })}
+                />
+                <Tab.Screen
+                    name="Quiz"
+                    component={QuizStack}
+                    listeners={() => ({
+                        tabPress: () => {},
+                    })}
+                />
+                <Tab.Screen
+                    name="Messages"
+                    component={MessagesScreen}
+                    listeners={() => ({
+                        tabPress: () => {},
+                    })}
+                />
+                <Tab.Screen
+                    name="Profile"
+                    component={ProfileScreen}
+                    listeners={() => ({
+                        tabPress: () => {},
+                    })}
+                />
+            </Tab.Navigator>
+        );
+    };
+
     const BottomMenu = () => {
         return (
             <BottomStack.Navigator headerMode={false}>
@@ -60,9 +161,18 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <BottomMenu />
+            <BottomTab />
         </NavigationContainer>
     );
 };
+
+const styles = StyleSheet.create({
+    touchable: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        height: '100%',
+    },
+});
 
 export default AppNavigator;

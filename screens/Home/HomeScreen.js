@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import TradespersonCard from '../../components/cards/TradespersonCard';
+import Container from '../../components/containers/Container';
+import { showInAppNotification } from '../../components/notifications/InAppNotification';
+import Color from '../../constants/Color';
 
-import ContainerWithMenu from '../../components/containers/ContainerWithMenu';
+const HomeScreen = ({ route, navigation }) => {
 
-const HomeScreen = props => {
+    useEffect(() => {
+        console.log('hey')
+        if(route.params && route.params.isInAppNotificationVisible) {
+            showInAppNotification(
+                'Your job has been posted.',
+                'You can now search for a tradesperson. Click here to review your job.',
+                () => {
+                    navigation.navigate('MyJobs');
+                },
+                Color.success
+            );
+        }
+    });
+
     return (
-        <ContainerWithMenu navigation={props.navigation} screen={1}>
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <Text>Home</Text>
+        <Container>
+            <View style={{flex: 1}}>
+                <TradespersonCard />
             </View>
-        </ContainerWithMenu>
+        </Container>
     );
 };
 
