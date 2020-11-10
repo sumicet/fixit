@@ -1,47 +1,19 @@
-import * as React from "react"
-import Svg, { Path, G } from "react-native-svg"
-import Layout from '../../../constants/Layout'
+import * as React from 'react';
+import Svg, { Path, G } from 'react-native-svg';
+import Color from '../../../constants/Color';
+import Layout from '../../../constants/Layout';
 
 function BuilderIcon() {
-  return (
-    <Svg height={Layout.occupationIconSize} viewBox="0 0 512 512" width={Layout.occupationIconSize}>
-      <Path d="M146.286 0h73.143v75.627h-73.143z" fill="#fd676a" />
-      <Path
-        d="M475.43 277.57l-14.48 36.57 14.48 36.57v109.72H36.57V350.71l12.86-36.57-12.86-36.57v-73.14L256 75.63l219.43 128.8z"
-        fill="#ffe987"
-      />
-      <Path
-        d="M475.43 277.57l-14.48 36.57 14.48 36.57v109.72H256V75.63l219.43 128.8z"
-        fill="#fecb6e"
-      />
-      <Path
-        d="M512 167.86v36.57H365.71L256 94.71 146.29 204.43H0v-36.57L109.71 58.14h292.58z"
-        fill="#39648e"
-      />
-      <Path
-        d="M512 167.86v36.57H365.71L256 94.71V58.14h146.29z"
-        fill="#324d75"
-      />
-      <Path d="M182.86 277.57h146.28v182.86H182.86z" fill="#fd676a" />
-      <Path d="M256 277.57h73.14v182.86H256z" fill="#fc363b" />
-      <Path d="M219.43 189.43h73.14v30h-73.14z" fill="#00b3ff" />
-      <Path
-        d="M256 189.43h36.57v30H256zM475.429 277.571h-73.143v73.143h73.143"
-        fill="#3a80e8"
-      />
-      <Path d="M36.571 277.571h73.143v73.143H36.571" fill="#00b3ff" />
-      <Path d="M512 443.14V482l-15 15H256v-64.3h241z" fill="#3b6291" />
-      <Path
-        d="M497 432.7H15L0 443.14V482l15 15h482l15-15v-38.86z"
-        fill="#9dd867"
-      />
-      <Path d="M512 443.14V482l-15 15H256v-64.3h241z" fill="#77c080" />
-      <Path d="M0 413.14h512v30H0zM0 482h512v30H0z" fill="#bfe471" />
-      <G fill="#9dd867">
-        <Path d="M256 413.14h256v30H256zM256 482h256v30H256z" />
-      </G>
-    </Svg>
-  )
+    return (
+        <Svg
+            height={Layout.occupationIconSize}
+            viewBox="0 0 512 512"
+            width={Layout.occupationIconSize}
+        >
+            <Path d="M426 495.983H86c-25.364 0-46-20.635-46-46v-242.02c0-8.836 7.163-16 16-16s16 7.164 16 16v242.02c0 7.72 6.28 14 14 14h340c7.72 0 14-6.28 14-14v-242.02c0-8.836 7.163-16 16-16s16 7.164 16 16v242.02c0 25.364-20.635 46-46 46z" fill={Color.secondaryColor} />
+            <Path d="M496 263.958a15.945 15.945 0 01-11.313-4.687L285.698 60.284c-16.375-16.376-43.02-16.376-59.396 0L27.314 259.272c-6.248 6.249-16.379 6.249-22.627 0-6.249-6.248-6.249-16.379 0-22.627L203.675 37.656c28.852-28.852 75.799-28.852 104.65 0l198.988 198.988c6.249 6.249 6.249 16.379 0 22.627A15.943 15.943 0 01496 263.958zM320 495.983H192c-8.837 0-16-7.164-16-16v-142c0-27.57 22.43-50 50-50h60c27.57 0 50 22.43 50 50v142c0 8.836-7.163 16-16 16zm-112-32h96v-126c0-9.925-8.075-18-18-18h-60c-9.925 0-18 8.075-18 18z" fill={Color.secondaryColor} />
+        </Svg>
+    );
 }
 
-export default BuilderIcon
+export default BuilderIcon;

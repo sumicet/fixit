@@ -5,9 +5,6 @@ import QuizContainer from '../../components/quiz/QuizContainer';
 import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import { setPropertyType } from '../../store/actions/quiz';
 import CardData from '../../models/Quiz/CardData';
-import HouseIcon from '../../assets/icons/Properties/HouseIcon';
-import UniversityIcon from '../../assets/icons/Properties/UniversityIcon';
-import FactoryIcon from '../../assets/icons/Properties/FactoryIcon';
 
 
 const PropertyTypesScreen = props => {

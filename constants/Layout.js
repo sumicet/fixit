@@ -12,8 +12,9 @@ export default {
     menuHeight: 55,
 
     // **************** ICON SIZES ****************
-    occupationIconSize: 60,
+    occupationIconSize: 15,
     menuIconSize: 25,
+    starIconSize: 25,
     buttonIconSize: 20,
 
     // **************** TEXT ****************

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import TradespersonCard from '../../components/cards/TradespersonCard';
+import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
 import Container from '../../components/containers/Container';
 import { showInAppNotification } from '../../components/notifications/InAppNotification';
 import Color from '../../constants/Color';
@@ -8,7 +8,6 @@ import Color from '../../constants/Color';
 const HomeScreen = ({ route, navigation }) => {
 
     useEffect(() => {
-        console.log('hey')
         if(route.params && route.params.isInAppNotificationVisible) {
             showInAppNotification(
                 'Your job has been posted.',
