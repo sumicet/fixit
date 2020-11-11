@@ -32,7 +32,7 @@ const StartTimesScreen = props => {
 
     return (
         <QuizContainer
-            title="What should the work start?"
+            title="When should the work start?"
             data={startTimes}
             handleCardPress={handleCardPress}
         />

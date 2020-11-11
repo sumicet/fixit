@@ -25,7 +25,7 @@ const HomeScreen = ({ route, navigation }) => {
     });
 
     return (
-        <Container style={{ paddingTop: 0, paddingHorizontal: 0}}>
+        <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
             <ScrollView
                 style={{
                     paddingTop: Layout.screenVerticalPadding,
@@ -44,10 +44,15 @@ const HomeScreen = ({ route, navigation }) => {
 
                 <View style={{ flex: 0 }}>
                     <ScrollView horizontal>
-                        <Touchable onPress={() => {}} style={{ flex: 0 }}>
+                        <Touchable
+                            isCard={true}
+                            onPress={() => {}}
+                            style={{ flex: 0 }}
+                        >
                             <TradespersonCard isRateCard={true} />
                         </Touchable>
                         <Touchable
+                            isCard={true}
                             onPress={() => {}}
                             style={{
                                 flex: 0,
@@ -56,7 +61,11 @@ const HomeScreen = ({ route, navigation }) => {
                         >
                             <TradespersonCard isRateCard={true} />
                         </Touchable>
-                        <Touchable onPress={() => {}} style={{ flex: 0 }}>
+                        <Touchable
+                            isCard={true}
+                            onPress={() => {}}
+                            style={{ flex: 0 }}
+                        >
                             <TradespersonCard isRateCard={true} />
                         </Touchable>
                     </ScrollView>
@@ -70,17 +79,29 @@ const HomeScreen = ({ route, navigation }) => {
                     </Header>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <Touchable onPress={() => {}} style={{ flex: 0 }}>
+                    <Touchable
+                        isCard={true}
+                        onPress={() => {}}
+                        style={{ flex: 0 }}
+                    >
                         <TradespersonCard />
                     </Touchable>
-                    <Touchable onPress={() => {}} style={{ flex: 0 }}>
+                    <Touchable
+                        isCard={true}
+                        onPress={() => {}}
+                        style={{ flex: 0 }}
+                    >
                         <TradespersonCard />
                     </Touchable>
-                    <Touchable onPress={() => {}} style={{ flex: 0 }}>
+                    <Touchable
+                        isCard={true}
+                        onPress={() => {}}
+                        style={{ flex: 0 }}
+                    >
                         <TradespersonCard />
                     </Touchable>
                 </View>
-                <View style={{height: 100, width: '100%'}}></View>
+                <View style={{ height: 100, width: '100%' }}></View>
             </ScrollView>
         </Container>
     );

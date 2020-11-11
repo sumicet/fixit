@@ -19,7 +19,7 @@ const Content = props => {
 const styles = StyleSheet.create({
     content: {
         fontFamily: 'asap-regular',
-        fontSize: Layout.smallContentSize,
+        fontSize: Layout.contentSize,
         color: Color.textColor,
     },
 });

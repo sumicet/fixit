@@ -1,21 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import TouchableScale from 'react-native-touchable-scale';
 
 import OccupationCard from '../cards/OccupationCard';
-import Container from '../containers/Container';
-import Title from '../text/Title';
 import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
-import Color from '../../constants/Color';
 import QuizScreen from '../containers/QuizScreen';
-import { useLinkProps } from '@react-navigation/native';
 
 const QuizContainer = props => {
     const renderData = itemData => {
         return (
-            <Touchable onPress={() => props.handleCardPress(itemData.item.id)}>
+            <Touchable isCard={true} onPress={() => props.handleCardPress(itemData.item.id)}>
                 <OccupationCard
                     name={itemData.item.name}
                     style={

@@ -11,12 +11,13 @@ import NextButton from '../common/NextButton';
 const QuizScreen = props => {
 
     return (
-        <Container style={{ paddingHorizontal: 0 }} >
+        <Container style={[{ paddingHorizontal: 0 }, props.style]} >
             <View
                 style={{
                     paddingHorizontal: Layout.screenHorizontalPadding,
                     marginBottom: Layout.generalMargin,
                     flexDirection: 'row',
+                    justifyContent: props.centerTitle ? 'center' : 'flex-start'
                 }}
             >
                 <Title style={{ color: Color.primaryBrandColor }}>

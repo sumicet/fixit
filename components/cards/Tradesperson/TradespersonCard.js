@@ -13,6 +13,7 @@ import FactoryIcon from '../../../assets/icons/Properties/FactoryIcon';
 import Location from './Location';
 import Experience from './Experience';
 import Insurance from './Insurance';
+import Header from '../../text/Header';
 
 const TradespersonCard = props => {
     const occupations = [];
@@ -81,6 +82,8 @@ const TradespersonCard = props => {
             </View>
             {props.isRateCard ? null : (
                 <View style={styles.bottomContainer}>
+                    {props.hasQuote ? <Header>{props.quote}</Header>
+                    :
                     <SmallContentWithEllipsis
                         style={{
                             color: Color.secondaryColor,
@@ -88,7 +91,7 @@ const TradespersonCard = props => {
                         }}
                     >
                         Recommended by: Mister Beast, John Doe, Scott McCormack
-                    </SmallContentWithEllipsis>
+                    </SmallContentWithEllipsis>}
                 </View>
             )}
         </View>

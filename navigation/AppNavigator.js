@@ -13,6 +13,7 @@ import CustomerTypesScreen from '../screens/Quiz/CustomerTypesScreen';
 import PropertyTypesScreen from '../screens/Quiz/PropertyTypesScreen';
 import JobAddressScreen from '../screens/Quiz/JobAddressScreen';
 import StartTimesScreen from '../screens/Quiz/StartTimesScreen';
+import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
 
 import HomeScreen from '../screens/Home/HomeScreen';
 import MessagesScreen from '../screens/Messages/MessagesScreen';
@@ -117,7 +118,7 @@ const AppNavigator = () => {
                 />
                 <Tab.Screen
                     name="MyJobs"
-                    component={MyJobsScreen}
+                    component={MyJobsStack}
                     listeners={() => ({
                         tabPress: () => {},
                     })}
@@ -147,14 +148,11 @@ const AppNavigator = () => {
         );
     };
 
-    const BottomMenu = () => {
+    const MyJobsStack = () => {
         return (
             <BottomStack.Navigator headerMode={false}>
-                <Stack.Screen name="Quiz" component={QuizStack} />
-                <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="MyJobs" component={MyJobsScreen} />
-                <Stack.Screen name="Messages" component={MessagesScreen} />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
             </BottomStack.Navigator>
         );
     };

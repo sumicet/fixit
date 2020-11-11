@@ -28,7 +28,7 @@ const CustomerTypesScreen = props => {
 
     return (
         <QuizContainer
-            title="I represent..."
+            title="I am a..."
             data={customerType}
             handleCardPress={handleCardPress}
         />

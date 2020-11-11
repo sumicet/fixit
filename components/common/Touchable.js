@@ -6,7 +6,7 @@ const Touchable = props => {
     return (
         <TouchableScale
             {...props}
-            activeScale={0.8}
+            activeScale={props.isCard? 0.97 : 0.8}
             style={[{ flex: 1 }, props.style]}
             pressInTension={1000}
             pressOutTension={1000}
