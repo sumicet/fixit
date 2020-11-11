@@ -61,7 +61,7 @@ const AppNavigator = () => {
                     style: {
                         elevation: 0,
                         borderTopWidth: 0.7,
-                        borderTopColor: Color.secondaryColor,
+                        borderTopColor: Color.textField,
                     },
                 }}
                 screenOptions={({ navigation, route }) => ({
@@ -99,7 +99,7 @@ const AppNavigator = () => {
                                     color={
                                         focused
                                             ? Color.primaryBrandColor
-                                            : Color.textColor
+                                            : Color.secondaryColor
                                     }
                                     size={Layout.menuIconSize}
                                 />

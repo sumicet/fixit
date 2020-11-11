@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Color from '../../../constants/Color';
 import Layout from '../../../constants/Layout';
 import SmallContent from '../../text/SmallContent';
+import Header from '../../text/Header';
 
 const Rating = props => {
     const rating =
@@ -49,13 +50,21 @@ const Rating = props => {
     return (
         <View style={styles.container}>
             <View style={styles.ratingContainer}>
-                <SmallContent style={{ color: Color.secondaryColor, fontFamily: 'asap-semibold', fontSize: Layout.headerSize }}>
+                <Header
+                    style={{
+                        color: Color.secondaryColor,
+                        fontFamily: 'asap-semibold',
+                    }}
+                >
                     {rating === 0 ? 'None' : rating}
-                </SmallContent>
+                </Header>
             </View>
-            {stars.map(value => {
-                return <View style={styles.ratingContainer}>{value}</View>;
-            })}
+            <View style={styles.stars}>
+                {stars.map(value => {
+                    return <View style={styles.ratingContainer}>{value}</View>;
+                })}
+            </View>
+
             <View style={styles.ratingContainer}>
                 <SmallContent style={{ color: Color.secondaryColor }}>
                     (103)
@@ -73,6 +82,11 @@ const styles = StyleSheet.create({
     },
     ratingContainer: {
         justifyContent: 'center',
+        alignItems: 'center',
+    },
+    stars: {
+        paddingHorizontal: 3,
+        flexDirection: 'row',
         alignItems: 'center',
     },
 });

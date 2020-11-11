@@ -3,8 +3,8 @@ import { StatusBar } from 'react-native';
 export default {
 
     // **************** LAYOUT ****************
-
-    screenVerticalPadding: StatusBar.currentHeight + 20,
+    screenTopMargin: StatusBar.currentHeight,
+    screenVerticalPadding: 20,
     screenHorizontalPadding: 20,
     cardMargin: 10,
     generalMargin: 20,
@@ -12,7 +12,8 @@ export default {
     menuHeight: 55,
 
     // **************** ICON SIZES ****************
-    occupationIconSize: 15,
+    occupationIconSize: 55,
+    cardIconSize: 15,
     menuIconSize: 25,
     starIconSize: 25,
     buttonIconSize: 20,

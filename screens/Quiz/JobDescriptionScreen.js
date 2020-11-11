@@ -5,7 +5,7 @@ import Platform from 'react-native';
 
 import QuizScreen from '../../components/containers/QuizScreen';
 import Layout from '../../constants/Layout';
-import TextField from '../../components/Text/TextField';
+import TextField from '../../components/text/TextField';
 import { setJobDescription } from '../../store/actions/quiz';
 
 const JobDescriptionScreen = props => {

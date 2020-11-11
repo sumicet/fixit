@@ -6,7 +6,7 @@ import Layout from '../../constants/Layout';
 const Header = (props) => {
 
     return (
-        <Text {...props} style={[styles.header, props.style]}>{props.children}</Text>
+        <Text {...props} numberOfLines={1} ellipsizeMode='tail' style={[styles.header, props.style]}>{props.children}</Text>
     );
 };
 
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         fontFamily: 'asap-semibold',
         fontSize: Layout.headerSize,
         color: Color.textColor,
-        textAlign: 'center'
+        textAlign: 'left'
     }
 })
 

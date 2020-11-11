@@ -6,10 +6,10 @@ import Layout from '../../constants/Layout';
 
 const Container = props => {
     return (
-        <View
-            style={[styles.container, props.style]}
-        >
-            {props.children}
+        <View style={styles.container}>
+            <View style={[styles.insideContainer, props.style]}>
+                {props.children}
+            </View>
         </View>
     );
 };
@@ -17,10 +17,15 @@ const Container = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Color.primaryColor
+    },
+    insideContainer: {
+        flex: 1,
         backgroundColor: Color.primaryColor,
+        marginTop: Layout.screenTopMargin,
         paddingTop: Layout.screenVerticalPadding,
         paddingHorizontal: Layout.screenHorizontalPadding,
-    }
-})
+    },
+});
 
 export default Container;

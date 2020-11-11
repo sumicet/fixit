@@ -7,7 +7,7 @@ const Touchable = props => {
         <TouchableScale
             {...props}
             activeScale={0.8}
-            style={[props.style, { flex: 1 }]}
+            style={[{ flex: 1 }, props.style]}
             pressInTension={1000}
             pressOutTension={1000}
             pressInFriction={100}

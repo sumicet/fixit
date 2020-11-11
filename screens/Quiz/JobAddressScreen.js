@@ -6,7 +6,7 @@ import QuizScreen from '../../components/containers/QuizScreen';
 import Layout from '../../constants/Layout';
 import LocationSearchField from '../../components/APIs/LocationSearchField';
 import GoogleMaps from '../../components/APIs/GoogleMaps';
-import TextField from '../../components/Text/TextField';
+import TextField from '../../components/text/TextField';
 import { setJobAddress } from '../../store/actions/quiz';
 
 const latitudeDelta = 0.00522;
@@ -62,7 +62,7 @@ const JobAddressScreen = props => {
                     }}
                     placeholder="Apartment, building, floor"
                     multiline={false}
-                    style={{ marginVertical: Layout.generalMargin }}
+                    containerStyle={{ marginVertical: Layout.generalMargin }}
                 />
                 <View style={styles.googleMapsContainer}>
                     <GoogleMaps
