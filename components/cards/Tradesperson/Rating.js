@@ -1,75 +1,150 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Color from '../../../constants/Color';
 import Layout from '../../../constants/Layout';
 import SmallContent from '../../text/SmallContent';
 import Header from '../../text/Header';
+import Touchable from '../../common/Touchable';
 
 const Rating = props => {
-    const rating =
-        Math.round(3.2 * 10) / 10 > 5 ? 5 : Math.round(3.2 * 10) / 10; // get the rating with one decimal
+    const rating = props.isRateCard
+        ? 0
+        : Math.round(props.rating * 10) / 10 > 5
+        ? 5
+        : Math.round(props.rating * 10) / 10; // get the rating with one decimal
 
-    var stars = [];
+    var starsVar = [];
+    const [stars, setStars] = useState([]);
 
     var i;
-    for (i = 1; i <= Math.floor(rating); i++) {
-        stars.push(
-            <Icon
-                name="star"
-                color={Color.primaryBrandColor}
-                size={Layout.starIconSize}
-                key={i}
-            />
-        );
-    }
-    if (Math.floor(rating) != Math.ceil(rating)) {
-        stars.push(
-            <Icon
-                name="star-half"
-                color={Color.primaryBrandColor}
-                size={Layout.starIconSize}
-                key={Math.ceil(rating)}
-            />
-        );
-    }
-    if (5 - Math.ceil(rating)) {
-        for (i = Math.ceil(rating) + 1; i <= 5; i++) {
-            stars.push(
+
+    const addFullStars = count => {
+        var starsVar = [];
+        for (i = 1; i <= count; i++) {
+            starsVar.push(
                 <Icon
-                    name="star-border"
-                    color={Color.primaryBrandColor}
-                    size={Layout.starIconSize}
+                    name="star"
+                    color={
+                        props.isBeingRated
+                            ? Color.primaryColor
+                            : Color.starColor
+                    }
+                    size={
+                        props.isRateCard
+                            ? Layout.bigStarIconSize
+                            : Layout.starIconSize
+                    }
                     key={i}
                 />
             );
         }
+        return starsVar;
+    };
+
+    starsVar = addFullStars(Math.floor(rating));
+
+    if (Math.floor(rating) != Math.ceil(rating)) {
+        starsVar.push(
+            <Icon
+                name="star-half"
+                color={
+                    props.isBeingRated
+                        ? Color.primaryColor
+                        : Color.starColor
+                }
+                size={
+                    props.isRateCard
+                        ? Layout.bigStarIconSize
+                        : Layout.starIconSize
+                }
+                key={Math.ceil(rating)}
+            />
+        );
     }
 
+    const addEmptyStars = startIndex => {
+        var starsVar = [];
+        for (i = startIndex; i <= 5; i++) {
+            starsVar.push(
+                <Icon
+                    name="star-border"
+                    color={
+                        props.isBeingRated
+                            ? Color.smallTextOnStarColorBackground
+                            : Color.starColor
+                    }
+                    size={
+                        props.isRateCard
+                            ? Layout.bigStarIconSize
+                            : Layout.starIconSize
+                    }
+                    key={i}
+                />
+            );
+        }
+        return starsVar;
+    };
+
+    if (5 - Math.ceil(rating)) {
+        starsVar = starsVar.concat(addEmptyStars(Math.ceil(rating) + 1));
+    }
+
+    useEffect(() => {
+        setStars(starsVar);
+    }, []);
+
+    const onStarPress = index => {
+        console.log(index);
+        var starsVar = [];
+        starsVar = addFullStars(index + 1);
+        starsVar = starsVar.concat(addEmptyStars(index + 2));
+        setStars(starsVar);
+        props.onStarPress(index + 1);
+    };
+
     return (
-        <View style={styles.container}>
-            <View style={styles.ratingContainer}>
-                <Header
-                    style={{
-                        color: Color.secondaryColor,
-                        fontFamily: 'asap-semibold',
-                    }}
-                >
-                    {rating === 0 ? 'None' : rating}
-                </Header>
-            </View>
-            <View style={styles.stars}>
-                {stars.map(value => {
-                    return <View style={styles.ratingContainer}>{value}</View>;
+        <View style={[styles.container]}>
+            {props.isRateCard ? null : (
+                <View style={styles.ratingContainer}>
+                    <Header
+                        style={{
+                            color: Color.secondaryColor,
+                            fontFamily: 'asap-semibold',
+                        }}
+                    >
+                        {rating}
+                    </Header>
+                </View>
+            )}
+            <View style={styles.starsVar}>
+                {stars.map((value, index) => {
+                    if (props.isBeingRated) {
+                        return (
+                            <Touchable
+                                onPress={() => {
+                                    onStarPress(index);
+                                }}
+                                style={styles.ratingContainer}
+                            >
+                                {value}
+                            </Touchable>
+                        );
+                    } else {
+                        return (
+                            <View style={styles.ratingContainer}>{value}</View>
+                        );
+                    }
                 })}
             </View>
-
-            <View style={styles.ratingContainer}>
-                <SmallContent style={{ color: Color.secondaryColor }}>
-                    (103)
-                </SmallContent>
-            </View>
+            {props.isRateCard ? null : (
+                <View style={styles.ratingContainer}>
+                    <SmallContent style={{ color: Color.secondaryColor }}>
+                        (103)
+                    </SmallContent>
+                </View>
+            )}
         </View>
     );
 };
@@ -83,8 +158,9 @@ const styles = StyleSheet.create({
     ratingContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+        flex: 0,
     },
-    stars: {
+    starsVar: {
         paddingHorizontal: 3,
         flexDirection: 'row',
         alignItems: 'center',

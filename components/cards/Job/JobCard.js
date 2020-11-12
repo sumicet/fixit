@@ -3,21 +3,17 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import Layout from '../../../constants/Layout';
 import Color from '../../../constants/Color';
-import SuperSmallContent from '../../text/SuperSmallContent';
 import SmallContentWithEllipsis from '../../text/SmallContentWithEllipsis';
 import Occupations from '../Tradesperson/Occupations';
 import Location from '../Tradesperson/Location';
 import StartTime from './StartTime';
+import PostedBy from './PostedBy';
 
-const Screen = props => {
+const JobCard = props => {
     return (
         <View style={styles.container}>
             <View style={{ width: '100%' }}>
-                <View style={{ paddingBottom: 5 }}>
-                    <SuperSmallContent style={{ color: Color.secondaryColor }}>
-                        Posted by user 5m ago
-                    </SuperSmallContent>
-                </View>
+                <PostedBy />
                 <View style={{ paddingBottom: 5, flexDirection: 'row' }}>
                     <View style={{ flex: 1 }}>
                         <Occupations isTitle={true} />
@@ -45,7 +41,9 @@ const Screen = props => {
                     }}
                 >
                     <Location />
-                    <StartTime />
+                    <View style={{ paddingLeft: Layout.generalPadding }}>
+                        <StartTime />
+                    </View>
                 </View>
             </View>
         </View>
@@ -62,4 +60,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Screen;
+export default JobCard;

@@ -25,8 +25,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: Layout.generalPadding,
         borderRadius: Layout.borderRadius,
-        borderColor: Color.secondaryColor,
-        borderWidth: Layout.borderWidth,
+        backgroundColor: Color.textField,
         margin: Layout.cardMargin,
     },
     iconContainer: {

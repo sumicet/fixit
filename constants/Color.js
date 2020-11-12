@@ -8,5 +8,7 @@ export default {
     placeholderTextColor: '#c3c3c7',
     success: '#27c47d',
     error: '#c42751',
-    urgent: '#de4b53'
+    urgent: '#de4b53',
+    starColor: '#FF9529',
+    smallTextOnStarColorBackground: '#ffddba'
 };

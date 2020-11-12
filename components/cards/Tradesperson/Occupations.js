@@ -10,14 +10,15 @@ const Occupations = props => {
             style={[
                 styles.container,
                 { justifyContent: props.isRateCard ? 'center' : 'flex-start' },
+                props.styles
             ]}
         >
             {props.isTitle ? (
-                <HeaderWithEllipsis>
+                <HeaderWithEllipsis style={props.textColor ? {color: props.textColor} : null}>
                     Plumber
                 </HeaderWithEllipsis>
             ) : (
-                <SmallContentWithEllipsis>
+                <SmallContentWithEllipsis style={props.textColor ? {color: props.textColor} : null}>
                     Plumber • Builder • Heating Eng. • Painter • Electrician
                 </SmallContentWithEllipsis>
             )}

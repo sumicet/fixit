@@ -16,7 +16,9 @@ export default {
     cardIconSize: 15,
     menuIconSize: 25,
     starIconSize: 25,
+    bigStarIconSize: 35,
     buttonIconSize: 20,
+    mediumButtonIconSize: 30,
 
     // **************** TEXT ****************
 

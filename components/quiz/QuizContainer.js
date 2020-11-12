@@ -6,6 +6,7 @@ import OccupationCard from '../cards/OccupationCard';
 import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
 import QuizScreen from '../containers/QuizScreen';
+import Color from '../../constants/Color';
 
 const QuizContainer = props => {
     const renderData = itemData => {
@@ -16,7 +17,7 @@ const QuizContainer = props => {
                     style={
                         itemData.item.name
                             ? { height: 120 }
-                            : { height: 120, borderWidth: 0 }
+                            : { height: 120, backgroundColor: Color.primaryColor }
                     }
                 >
                     {itemData.item.icon}

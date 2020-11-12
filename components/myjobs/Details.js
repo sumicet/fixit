@@ -10,10 +10,14 @@ import StartTime from '../cards/Job/StartTime';
 import PropertyType from './PropertyType';
 import CustomerType from './CustomerType';
 import StreetAddress from './StreetAddress';
+import PostedBy from '../cards/Job/PostedBy';
 
 const Details = props => {
     return (
         <View style={styles.container}>
+
+            <PostedBy />
+
             <View style={{ paddingBottom: Layout.generalPadding }}>
                 <Header style={{ textAlign: 'left' }}>
                     Plumber • Bathroom & Kitchen
@@ -24,13 +28,13 @@ const Details = props => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     width: '100%',
-                    paddingBottom: Layout.generalMargin,
+                    paddingBottom: Layout.generalPadding,
                 }}
             >
                 <Location />
                 <StreetAddress />
             </View>
-            <View style={{ paddingBottom: Layout.generalMargin }}>
+            <View style={{ paddingBottom: Layout.generalPadding }}>
                 <SmallContent>
                     Lost a ring in the sink. I need help retrieving it as it is
                     my wedding ring. My husband will be so mad at me if I lose
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
         flex: 0,
         borderRadius: Layout.borderRadius,
         marginVertical: Layout.cardMargin,
-        //backgroundColor: Color.textField,
+        backgroundColor: Color.textField,
         padding: Layout.generalPadding,
     },
     image: {

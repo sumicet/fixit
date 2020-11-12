@@ -6,22 +6,19 @@ import Touchable from './Touchable';
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 
-const NextButton = props => {
+const OkButton = (props) => {
     return (
         <Touchable {...props}>
             <View
                 style={{
-                    backgroundColor: Color.primaryBrandColor,
-                    width: 70,
                     flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: Layout.borderRadius,
                 }}
             >
                 <Icon
-                    name="right"
-                    size={Layout.buttonIconSize}
+                    name="check"
+                    size={Layout.mediumButtonIconSize}
                     color={Color.primaryColor}
                 />
             </View>
@@ -29,6 +26,8 @@ const NextButton = props => {
     );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    
+})
 
-export default NextButton;
+export default OkButton;

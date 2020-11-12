@@ -9,6 +9,7 @@ import SearchBar from '../../components/search/SearchBar';
 import Touchable from '../../components/common/Touchable';
 import Header from '../../components/text/Header';
 import Layout from '../../constants/Layout';
+import PropertyTypesScreen from '../Quiz/PropertyTypesScreen';
 
 const HomeScreen = ({ route, navigation }) => {
     useEffect(() => {
@@ -44,30 +45,15 @@ const HomeScreen = ({ route, navigation }) => {
 
                 <View style={{ flex: 0 }}>
                     <ScrollView horizontal>
-                        <Touchable
-                            isCard={true}
-                            onPress={() => {}}
-                            style={{ flex: 0 }}
-                        >
-                            <TradespersonCard isRateCard={true} />
-                        </Touchable>
-                        <Touchable
-                            isCard={true}
-                            onPress={() => {}}
+                        <TradespersonCard isRateCard={true} navigation={navigation} />
+                        <View
                             style={{
-                                flex: 0,
                                 marginHorizontal: Layout.generalMargin,
                             }}
                         >
-                            <TradespersonCard isRateCard={true} />
-                        </Touchable>
-                        <Touchable
-                            isCard={true}
-                            onPress={() => {}}
-                            style={{ flex: 0 }}
-                        >
-                            <TradespersonCard isRateCard={true} />
-                        </Touchable>
+                            <TradespersonCard isRateCard={true} navigation={navigation} />
+                        </View>
+                        <TradespersonCard isRateCard={true} navigation={navigation} />
                     </ScrollView>
                 </View>
 
@@ -79,27 +65,11 @@ const HomeScreen = ({ route, navigation }) => {
                     </Header>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <Touchable
-                        isCard={true}
-                        onPress={() => {}}
-                        style={{ flex: 0 }}
-                    >
-                        <TradespersonCard />
-                    </Touchable>
-                    <Touchable
-                        isCard={true}
-                        onPress={() => {}}
-                        style={{ flex: 0 }}
-                    >
-                        <TradespersonCard />
-                    </Touchable>
-                    <Touchable
-                        isCard={true}
-                        onPress={() => {}}
-                        style={{ flex: 0 }}
-                    >
-                        <TradespersonCard />
-                    </Touchable>
+                    <TradespersonCard navigation={navigation} />
+
+                    <TradespersonCard navigation={navigation} />
+
+                    <TradespersonCard navigation={navigation} />
                 </View>
                 <View style={{ height: 100, width: '100%' }}></View>
             </ScrollView>

@@ -10,7 +10,7 @@ const ProfileScreen = props => {
                     alignItems: 'center',
                 }}
             >
-                <Text>Profile</Text>
+                
             </View>
     );
 };

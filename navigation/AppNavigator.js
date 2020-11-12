@@ -18,7 +18,7 @@ import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
 import HomeScreen from '../screens/Home/HomeScreen';
 import MessagesScreen from '../screens/Messages/MessagesScreen';
 import MyJobsScreen from '../screens/MyJobs/MyJobsScreen';
-import ProfileScreen from '../screens/Profile/ProfileScreen';
+import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
 import Touchable from '../components/common/Touchable';
@@ -77,7 +77,7 @@ const AppNavigator = () => {
                                 if (route.name === 'Messages') {
                                     iconName = 'message1';
                                 } else {
-                                    if (route.name === 'Profile') {
+                                    if (route.name === 'TradespersonProfile') {
                                         iconName = 'user';
                                     } else {
                                         if (route.name === 'Quiz') {
@@ -138,8 +138,8 @@ const AppNavigator = () => {
                     })}
                 />
                 <Tab.Screen
-                    name="Profile"
-                    component={ProfileScreen}
+                    name="TradespersonProfile"
+                    component={TradespersonProfileScreen}
                     listeners={() => ({
                         tabPress: () => {},
                     })}
