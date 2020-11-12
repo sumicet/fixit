@@ -2,12 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Call from 'react-native-vector-icons/Ionicons';
+import call from 'react-native-phone-call'
 
 import Color from '../../../constants/Color';
 import Layout from '../../../constants/Layout';
 import Touchable from '../../common/Touchable';
 
-const Screen = props => {
+const Contact = props => {
+
+    const handleCallPress = () => {
+        call({number: '0757570851', prompt: true}).catch(console.error);
+    }
+
     return (
         <View
             style={{
@@ -18,7 +24,7 @@ const Screen = props => {
                 paddingLeft: Layout.generalPadding,
             }}
         >
-            <Touchable onPress={() => {}} style={{ flex: 0 }}>
+            <Touchable onPress={handleCallPress} style={{ flex: 0 }}>
                 <View
                     style={{
                         paddingLeft:
@@ -54,4 +60,4 @@ const Screen = props => {
 
 const styles = StyleSheet.create({});
 
-export default Screen;
+export default Contact;

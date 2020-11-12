@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Dimensions,
+    KeyboardAvoidingView,
+    ScrollView,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import Platform from 'react-native';
 
@@ -28,8 +34,7 @@ const JobDescriptionScreen = props => {
             showNextButton={true}
             onPress={handleNextPress}
         >
-            <ScrollView
-            >
+            <ScrollView>
                 <View style={styles.container}>
                     <TextField
                         value={props.input}
@@ -40,7 +45,7 @@ const JobDescriptionScreen = props => {
                         multiline={true}
                         minHeight={200}
                         maxHeight={(80 / 100) * Dimensions.get('window').height}
-                        style={{marginBottom: Layout.generalPadding}}
+                        style={{ marginBottom: Layout.generalPadding }}
                     />
                 </View>
             </ScrollView>

@@ -7,13 +7,19 @@ const ProfilePicture = props => {
     return (
         <View
             style={{
-                height: 60,
-                width: 60,
+                height: props.isLarge ? 120 : 60,
+                width: props.isLarge ? 120 : 60,
                 marginRight: props.isRateCard ? 0 : Layout.generalPadding,
             }}
         >
             <Image
-                style={styles.profilePicture}
+                style={[
+                    styles.profilePicture,
+                    {
+                        height: props.isLarge ? 120 : 60,
+                        width: props.isLarge ? 120 : 60,
+                    },
+                ]}
                 source={{
                     uri:
                         'https://onegov.nsw.gov.au/New/persistent/launchpad_images/contractors_Tradespersons.jpg',
@@ -26,8 +32,6 @@ const ProfilePicture = props => {
 
 const styles = StyleSheet.create({
     profilePicture: {
-        height: 60,
-        width: 60,
         borderRadius: 100,
         marginRight: Layout.generalMargin,
     },
