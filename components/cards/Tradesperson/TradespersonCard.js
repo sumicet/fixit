@@ -21,6 +21,7 @@ import RateTradespersonModal from '../../modals/RateTradespersonModal';
 
 const TradespersonCard = props => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [updatedRating, setUpdatedRating] = useState(0);
 
     const occupations = [];
 
@@ -52,11 +53,18 @@ const TradespersonCard = props => {
         }
     };
 
+    const handleStarPress = (updatedRating) => {
+        setModalVisible(true);
+        setUpdatedRating(updatedRating)
+    }
+
     return (
         <View>
             <RateTradespersonModal
                 modalVisible={modalVisible}
                 closeModal={() => setModalVisible(false)}
+                updatedRating={updatedRating}
+                setUpdatedRating={setUpdatedRating}
             />
             <LocalContainer isBeingRated={props.isBeingRated}>
                 <View
@@ -138,8 +146,9 @@ const TradespersonCard = props => {
                                 )}
                                 {props.isBeingRated ? null : (
                                     <Rating
-                                        rating={4.5}
+                                        rating={props.isRateCard ? updatedRating : 4.5}
                                         isRateCard={props.isRateCard}
+                                        onStarPress={handleStarPress}
                                     />
                                 )}
                             </View>

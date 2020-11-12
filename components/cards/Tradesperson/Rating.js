@@ -9,9 +9,8 @@ import Header from '../../text/Header';
 import Touchable from '../../common/Touchable';
 
 const Rating = props => {
-    const rating = props.isRateCard
-        ? 0
-        : Math.round(props.rating * 10) / 10 > 5
+    const rating =
+        Math.round(props.rating * 10) / 10 > 5
         ? 5
         : Math.round(props.rating * 10) / 10; // get the rating with one decimal
 
@@ -50,9 +49,7 @@ const Rating = props => {
             <Icon
                 name="star-half"
                 color={
-                    props.isBeingRated
-                        ? Color.primaryColor
-                        : Color.starColor
+                    props.isBeingRated ? Color.primaryColor : Color.starColor
                 }
                 size={
                     props.isRateCard
@@ -95,8 +92,7 @@ const Rating = props => {
         setStars(starsVar);
     }, []);
 
-    const onStarPress = index => {
-        console.log(index);
+    const handleStarPress = async index => {
         var starsVar = [];
         starsVar = addFullStars(index + 1);
         starsVar = starsVar.concat(addEmptyStars(index + 2));
@@ -120,22 +116,16 @@ const Rating = props => {
             )}
             <View style={styles.starsVar}>
                 {stars.map((value, index) => {
-                    if (props.isBeingRated) {
-                        return (
-                            <Touchable
-                                onPress={() => {
-                                    onStarPress(index);
-                                }}
-                                style={styles.ratingContainer}
-                            >
-                                {value}
-                            </Touchable>
-                        );
-                    } else {
-                        return (
-                            <View style={styles.ratingContainer}>{value}</View>
-                        );
-                    }
+                    return (
+                        <Touchable
+                            onPress={() => {
+                                handleStarPress(index);
+                            }}
+                            style={styles.ratingContainer}
+                        >
+                            {value}
+                        </Touchable>
+                    );
                 })}
             </View>
             {props.isRateCard ? null : (

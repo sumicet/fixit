@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Alert, StyleSheet, Modal } from 'react-native';
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
@@ -10,19 +10,19 @@ import ProfilePicture from '../cards/Tradesperson/ProfilePicture';
 import Occupations from '../cards/Tradesperson/Occupations';
 
 const RateTradespersonModal = props => {
-    const [rating, setRating] = useState();
-
     const handleStarPress = value => {
-        setRating(value);
+        props.setUpdatedRating(value);
     };
 
     const handleCloseButtonPress = () => {
         props.closeModal();
-    }
+        props.setUpdatedRating(0);
+    };
 
     const handleOkButtonPress = () => {
         props.closeModal();
-    }
+        props.setUpdatedRating(0); // TODO delete the card instead of setting it to 0
+    };
 
     return (
         <Modal
@@ -54,7 +54,7 @@ const RateTradespersonModal = props => {
                         />
                     </View>
                     <Rating
-                        rating={0}
+                        rating={props.updatedRating}
                         isRateCard={true}
                         isBeingRated={true}
                         onStarPress={handleStarPress}
