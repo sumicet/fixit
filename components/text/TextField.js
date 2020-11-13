@@ -27,7 +27,6 @@ const TextField = props => {
                         ? setHeight(newHeight)
                         : null;
                 }}
-                textAlignVertical="center"
                 placeholderTextColor={Color.placeholderTextColor}
                 selectionColor={Color.primaryBrandColor}
                 style={[

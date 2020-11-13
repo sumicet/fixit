@@ -3,8 +3,10 @@ import { View, StyleSheet } from 'react-native';
 
 import SmallContentWithEllipsis from '../../text/SmallContentWithEllipsis';
 import HeaderWithEllipsis from '../../text/HeaderWithEllipsis';
+import { OCCUPATIONS } from '../../../data/Jobs/Occupations';
 
 const Occupations = props => {
+    console.log(props.occupationId);
     return (
         <View
             style={[
@@ -15,7 +17,7 @@ const Occupations = props => {
         >
             {props.isTitle ? (
                 <HeaderWithEllipsis style={props.textColor ? {color: props.textColor} : null}>
-                    Plumber
+                    {OCCUPATIONS.find(occ => occ.id === props.occupationId).name}
                 </HeaderWithEllipsis>
             ) : (
                 <SmallContentWithEllipsis style={props.textColor ? {color: props.textColor} : null}>

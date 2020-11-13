@@ -81,6 +81,10 @@ const OccupationsScreen = props => {
             title="What are you looking for?"
             data={occupations}
             handleCardPress={handleCardPress}
+            showNextButton={
+                props.route.params && props.route.params.action === 'edit' ? true : false
+            }
+            onPress={handleCardPress}
         />
     );
 };

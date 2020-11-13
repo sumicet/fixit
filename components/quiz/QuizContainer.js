@@ -11,13 +11,19 @@ import Color from '../../constants/Color';
 const QuizContainer = props => {
     const renderData = itemData => {
         return (
-            <Touchable isCard={true} onPress={() => props.handleCardPress(itemData.item.id)}>
+            <Touchable
+                isCard={true}
+                onPress={() => props.handleCardPress(itemData.item.id)}
+            >
                 <OccupationCard
                     name={itemData.item.name}
                     style={
                         itemData.item.name
                             ? { height: 120 }
-                            : { height: 120, backgroundColor: Color.primaryColor }
+                            : {
+                                  height: 120,
+                                  backgroundColor: Color.primaryColor,
+                              }
                     }
                 >
                     {itemData.item.icon}
@@ -27,7 +33,11 @@ const QuizContainer = props => {
     };
 
     return (
-        <QuizScreen title={props.title}>
+        <QuizScreen
+            title={props.title}
+            showNextButton={props.showNextButton}
+            onPress={props.onPress}
+        >
             <FlatList
                 data={props.data}
                 keyExtractor={(item, index) => item.id}

@@ -3,21 +3,20 @@ export const SET_WORK_TYPE = 'SET_WORK_TYPE';
 export const SET_JOB_DESCRIPTION = 'SET_JOB_DESCRIPTION';
 export const SET_START_TIME = 'SET_START_TIME';
 export const SET_JOB_ADDRESS = 'SET_JOB_ADDRESS';
-export const SET_CUSTOMER_TYPE = 'SET_PROPERTY_TYPE';
+export const SET_CUSTOMER_TYPE = 'SET_CUSTOMER_TYPE';
 export const SET_PROPERTY_TYPE = 'SET_PROPERTY_TYPE';
 
 export const setOccupation = occupationId => {
-    console.log(occupationId);
     return {
         type: SET_OCCUPATION,
         occupationId
     }
 };
 
-export const setWorkType = selectedWorkTypeId => {
+export const setWorkType = workTypeId => {
     return {
         type: SET_WORK_TYPE,
-        selectedWorkTypeId
+        workTypeId
     }
 }
 

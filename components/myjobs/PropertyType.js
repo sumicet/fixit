@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 import SmallContent from '../text/SmallContent';
+import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 
 const PropertyType = props => {
     return (
@@ -12,7 +13,10 @@ const PropertyType = props => {
             <Icon name="home-city" size={18} color={Color.secondaryColor} />
             <SmallContent style={{ color: Color.secondaryColor }}>
                 {' '}
-                residential
+                {
+                    PROPERTY_TYPES.find(elem => elem.id === props.propertyType)
+                        .name
+                }
             </SmallContent>
         </View>
     );

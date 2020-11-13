@@ -13,7 +13,7 @@ import {
 const initialState = {
     occupationId: null,
     workTypes: null,
-    selectedWorkTypeId: null,
+    workTypeId: null,
     startTimeId: null,
     jobDescription: null,
     jobAddress: {
@@ -33,7 +33,7 @@ const quizReducer = (state = initialState, action) => {
             return {
                 occupationId: action.occupationId,
                 workTypes: updatedWorkTypes,
-                selectedWorkTypeId: null,
+                workTypeId: null,
                 startTimeId: state.startTimeId,
                 jobDescription: state.jobDescription,
                 jobAddress: state.jobAddress,
@@ -43,7 +43,7 @@ const quizReducer = (state = initialState, action) => {
         case SET_WORK_TYPE:
             return {
                 ...state,
-                selectedWorkTypeId: action.selectedWorkTypeId,
+                workTypeId: action.workTypeId,
             };
         case SET_JOB_DESCRIPTION:
             return {

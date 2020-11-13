@@ -11,9 +11,11 @@ import FlashMessage from "react-native-flash-message";
 import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
 import quizReducer from './store/reducers/quiz';
+import jobReducer from './store/reducers/job';
 
 const rootReducer = combineReducers({
     quiz: quizReducer,
+    job: jobReducer,
 });
 
 const store = createStore(

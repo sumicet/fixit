@@ -32,6 +32,10 @@ const WorkTypesScreen = props => {
             title="What kind of work do you need?"
             data={workTypes}
             handleCardPress={handleCardPress}
+            showNextButton={
+                props.route.params && props.route.params.action === 'edit' ? true : false
+            }
+            onPress={handleCardPress}
         />
     );
 };

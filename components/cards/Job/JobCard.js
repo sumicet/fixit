@@ -8,29 +8,36 @@ import Occupations from '../Tradesperson/Occupations';
 import Location from '../Tradesperson/Location';
 import StartTime from './StartTime';
 import PostedBy from './PostedBy';
+import { WORK_TYPES } from '../../../data/Jobs/WorkTypes';
 
 const JobCard = props => {
     return (
         <View style={styles.container}>
             <View style={{ width: '100%' }}>
-                <PostedBy />
+                <PostedBy date={props.date} />
                 <View style={{ paddingBottom: 5, flexDirection: 'row' }}>
                     <View style={{ flex: 1 }}>
-                        <Occupations isTitle={true} />
+                        <Occupations
+                            occupationId={props.occupationId}
+                            isTitle={true}
+                        />
                     </View>
                 </View>
                 <View style={{ paddingBottom: 5 }}>
                     <SmallContentWithEllipsis
                         style={{ fontFamily: 'asap-semibold' }}
                     >
-                        Work type: Bathroom & Kitchen
+                        {
+                            WORK_TYPES.find(
+                                elem => elem.id === props.workTypeId
+                            ).name
+                        }
                     </SmallContentWithEllipsis>
                 </View>
 
                 <View style={{ paddingBottom: 5 }}>
                     <SmallContentWithEllipsis>
-                        Lost a ring in the sink. I need help retrieving it as it
-                        is my wedding ring.
+                        {props.jobDescription}
                     </SmallContentWithEllipsis>
                 </View>
                 <View
@@ -42,7 +49,7 @@ const JobCard = props => {
                 >
                     <Location />
                     <View style={{ paddingLeft: Layout.generalPadding }}>
-                        <StartTime />
+                        <StartTime startTimeId={props.startTimeId} />
                     </View>
                 </View>
             </View>

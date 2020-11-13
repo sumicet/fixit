@@ -1,47 +1,74 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Trash from 'react-native-vector-icons/Foundation';
 
 import Header from '../text/Header';
 import SmallContent from '../text/SmallContent';
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
-import Location from '../cards/Tradesperson/Location';
 import StartTime from '../cards/Job/StartTime';
 import PropertyType from './PropertyType';
 import CustomerType from './CustomerType';
-import StreetAddress from './StreetAddress';
 import PostedBy from '../cards/Job/PostedBy';
+import { OCCUPATIONS } from '../../data/Jobs/Occupations';
+import { WORK_TYPES } from '../../data/Jobs/WorkTypes';
+import BigLocationIcon from '../../assets/icons/Card/BigLocationIcon';
+import Touchable from '../common/Touchable';
 
 const Details = props => {
     return (
         <View style={styles.container}>
+            <View style={{ paddingBottom: Layout.generalPadding - 2 }}>
+                <PostedBy date={props.job.date} />
+            </View>
 
-            <PostedBy />
-
-            <View style={{ paddingBottom: Layout.generalPadding }}>
+            <View
+                style={{
+                    paddingBottom: Layout.generalPadding,
+                    flexDirection: 'row',
+                }}
+            >
                 <Header style={{ textAlign: 'left' }}>
-                    Plumber • Bathroom & Kitchen
+                    {
+                        OCCUPATIONS.find(
+                            occ => occ.id === props.job.occupationId
+                        ).name
+                    }
                 </Header>
+                <Header style={{ textAlign: 'left' }}> • </Header>
+                <Header style={{ textAlign: 'left' }}>
+                    {
+                        WORK_TYPES.find(occ => occ.id === props.job.workTypeId)
+                            .name
+                    }
+                </Header>
+            </View>
+            <View style={{ paddingBottom: Layout.generalPadding }}>
+                <SmallContent>{props.job.jobDescription}</SmallContent>
             </View>
             <View
                 style={{
                     flexDirection: 'row',
-                    alignItems: 'center',
-                    width: '100%',
+                    flex: 1,
                     paddingBottom: Layout.generalPadding,
+                    alignItems: 'center',
                 }}
             >
-                <Location />
-                <StreetAddress />
+                <BigLocationIcon />
+                <View>
+                    <SmallContent style={{ color: Color.secondaryColor }}>
+                        {' '}
+                    </SmallContent>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <SmallContent style={{ color: Color.secondaryColor }}>
+                        25km • {props.job.jobAddress.line1} •{' '}
+                        {props.job.jobAddress.line2}
+                    </SmallContent>
+                </View>
             </View>
-            <View style={{ paddingBottom: Layout.generalPadding }}>
-                <SmallContent>
-                    Lost a ring in the sink. I need help retrieving it as it is
-                    my wedding ring. My husband will be so mad at me if I lose
-                    it. Please help me. I'm desperate. Stop reading this now.
-                    Feet pics attached.
-                </SmallContent>
-            </View>
+
             <View
                 style={{
                     flexDirection: 'row',
@@ -50,11 +77,11 @@ const Details = props => {
                     paddingBottom: Layout.generalMargin,
                 }}
             >
-                <StartTime />
-                <PropertyType />
-                <CustomerType />
+                <StartTime startTimeId={props.job.startTimeId} />
+                <PropertyType propertyType={props.job.propertyType} />
+                <CustomerType customerType={props.job.customerType} />
             </View>
-            <ScrollView horizontal>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View
                     style={{
                         marginRight: 5,
@@ -120,6 +147,38 @@ const Details = props => {
                     />
                 </View>
             </ScrollView>
+            <View
+                style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    marginTop: Layout.generalMargin,
+                }}
+            >
+                <Touchable
+                    style={{ flex: 0 }}
+                    onPress={() => {
+                        //props.navigation.navigate('Occupations', { action: 'edit' });
+                    }}
+                >
+                    <View style={styles.iconContainer}>
+                        <Icon
+                            name="edit"
+                            color={Color.secondaryColor}
+                            size={Layout.menuIconSize}
+                        />
+                    </View>
+                </Touchable>
+
+                <View style={styles.iconContainer}>
+                    <Trash
+                        name="trash"
+                        color={Color.secondaryColor}
+                        size={Layout.menuIconSize}
+                    />
+                </View>
+            </View>
         </View>
     );
 };
@@ -129,12 +188,17 @@ const styles = StyleSheet.create({
         flex: 0,
         borderRadius: Layout.borderRadius,
         marginVertical: Layout.cardMargin,
-        backgroundColor: Color.textField,
-        padding: Layout.generalPadding,
+        paddingHorizontal: Layout.generalPadding,
     },
     image: {
         height: 100,
         width: 100,
+    },
+    iconContainer: {
+        height: 40,
+        width: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 

@@ -28,6 +28,7 @@ const SearchBar = props => {
                 placeholder="Plumber, John Doe etc."
                 multiline={false}
                 containerStyle={{ marginVertical: Layout.generalMargin }}
+                textAlignVertical="center"
             />
         </View>
     );

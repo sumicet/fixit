@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useDispatch } from 'react-redux';
 
 import OccupationsScreen from '../screens/Quiz/OccupationsScreen';
 import WorkTypesScreen from '../screens/Quiz/WorkTypesScreen';
@@ -28,6 +29,7 @@ const BottomStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
+
     const QuizStack = () => {
         return (
             <Stack.Navigator headerMode={false}>
@@ -91,7 +93,11 @@ const AppNavigator = () => {
                         return (
                             <Touchable
                                 onPress={() => {
-                                    navigation.navigate(route.name);
+                                    if(route.name === 'Quiz') {
+                                        navigation.navigate(route.name, {screen: 'Occupations'});
+                                    } else {
+                                        navigation.navigate(route.name);
+                                    }
                                 }}
                                 style={styles.touchable}
                             >

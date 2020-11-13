@@ -39,6 +39,10 @@ const JobAddressScreen = props => {
             title="Where are you?"
             showNextButton={true}
             onPress={handleNextPress}
+            showNextButton={
+                props.route.params && props.route.params.action === 'edit' ? true : false
+            }
+            onPress={handleNextPress}
         >
             <View style={styles.container}>
                 <View style={styles.locationSearchFieldContainer}>
@@ -63,6 +67,7 @@ const JobAddressScreen = props => {
                     placeholder="Apartment, building, floor"
                     multiline={false}
                     containerStyle={{ marginVertical: Layout.generalMargin }}
+                    textAlignVertical="center"
                 />
                 <View style={styles.googleMapsContainer}>
                     <GoogleMaps

@@ -36,6 +36,10 @@ const PropertyTypesScreen = props => {
             title="What type of property is the job for?"
             data={propertyType}
             handleCardPress={handleCardPress}
+            showNextButton={
+                props.route.params && props.route.params.action === 'edit' ? true : false
+            }
+            onPress={handleCardPress}
         />
     );
 };

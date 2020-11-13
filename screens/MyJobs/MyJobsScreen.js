@@ -1,27 +1,57 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import QuizScreen from '../../components/containers/QuizScreen';
 import JobCard from '../../components/cards/Job/JobCard';
 import Layout from '../../constants/Layout';
 import Touchable from '../../components/common/Touchable';
+import * as Job from '../../store/actions/job';
 
 const MyJobsScreen = props => {
+    const userPendingJobs = useSelector(state => state.job.userPendingJobs);
+    const userInProgressJobs = useSelector(
+        state => state.job.userInProgressJobs
+    );
+    const userFinishedJobs = useSelector(state => state.job.userFinishedJobs);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(Job.fetchMyJobs());
+    }, []);
+
+    const renderItem = ({ item }) => {
+        return (
+            <Touchable
+                isCard={true}
+                style={{ flex: 0 }}
+                onPress={() => {
+                    props.navigation.navigate('JobDetails', { id: item.id });
+                }}
+            >
+                <JobCard
+                    date={item.date}
+                    occupationId={item.occupationId}
+                    workTypeId={item.workTypeId}
+                    jobDescription={item.jobDescription}
+                    startTimeId={item.startTimeId}
+                />
+            </Touchable>
+        );
+    };
+
     return (
         <QuizScreen
             title="My jobs"
             centerTitle={true}
             style={{ paddingHorizontal: Layout.screenHorizontalPadding }}
         >
-            <Touchable isCard={true} style={{ flex: 0 }} onPress={() => {props.navigation.navigate('JobDetails')}}>
-                <JobCard />
-            </Touchable>
-            <Touchable isCard={true} style={{ flex: 0 }} onPress={() => {}}>
-                <JobCard />
-            </Touchable>
-            <Touchable isCard={true} style={{ flex: 0 }} onPress={() => {}}>
-                <JobCard />
-            </Touchable>
+            <FlatList
+                keyExtractor={item => item.id}
+                data={userPendingJobs}
+                renderItem={renderItem}
+            />
         </QuizScreen>
     );
 };

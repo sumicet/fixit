@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LocationIcon from '../../../assets/icons/Card/LocationIcon';
 
 import Color from '../../../constants/Color';
 import SmallContent from '../../text/SmallContent';
@@ -8,9 +9,9 @@ import SmallContent from '../../text/SmallContent';
 const Location = props => {
     return (
         <View style={styles.container}>
-            <Icon name="location-on" size={18} color={Color.secondaryColor} />
+            <LocationIcon />
             <SmallContent style={{ color: Color.secondaryColor }}>
-                25km
+                {' '}25km
             </SmallContent>
         </View>
     );

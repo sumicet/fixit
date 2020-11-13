@@ -46,6 +46,7 @@ const JobDescriptionScreen = props => {
                         minHeight={200}
                         maxHeight={(80 / 100) * Dimensions.get('window').height}
                         style={{ marginBottom: Layout.generalPadding }}
+                        textAlignVertical="top"
                     />
                 </View>
             </ScrollView>
