@@ -13,6 +13,8 @@ import Loading from './components/loading/Loading';
 import quizReducer from './store/reducers/quiz';
 import jobReducer from './store/reducers/job';
 
+import Color from './constants/Color';
+
 const rootReducer = combineReducers({
     quiz: quizReducer,
     job: jobReducer,
@@ -50,7 +52,7 @@ export default function App() {
         <View style={styles.container}>
             <Provider store={store}>
                 <AppNavigator dropDownAlertRef={dropDownAlertRef} />
-                <StatusBar style="dark" translucent={true} />
+                <StatusBar barStyle='dark-content' backgroundColor={Color.primaryColor} />
             </Provider>
             <FlashMessage position="top" />
         </View>

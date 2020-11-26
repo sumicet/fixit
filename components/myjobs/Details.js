@@ -159,7 +159,8 @@ const Details = props => {
                 <Touchable
                     style={{ flex: 0 }}
                     onPress={() => {
-                        //props.navigation.navigate('Occupations', { action: 'edit' });
+                        //
+                        props.navigation.navigate('Occupations', { action: 'edit' });
                     }}
                 >
                     <View style={styles.iconContainer}>
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
         flex: 0,
         borderRadius: Layout.borderRadius,
         marginVertical: Layout.cardMargin,
-        paddingHorizontal: Layout.generalPadding,
+        //paddingHorizontal: Layout.generalPadding,
     },
     image: {
         height: 100,

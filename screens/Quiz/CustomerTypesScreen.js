@@ -23,7 +23,7 @@ const CustomerTypesScreen = props => {
 
     const handleCardPress = id => {
         dispatch(setCustomerType(id));
-        navigation.navigate('PropertyTypes');
+        props.navigation.navigate('PropertyTypes');
     };
 
     return (

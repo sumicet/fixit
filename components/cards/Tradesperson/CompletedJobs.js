@@ -4,25 +4,23 @@ import Shield from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import SmallContent from '../../text/SmallContent';
 import Color from '../../../constants/Color';
-import Layout from '../../../constants/Layout';
+import CompletedJobsIcon from '../../../assets/icons/Card/CompletedJobsIcon';
 
-const Insurance = props => {
+const CompletedJobs = props => {
     return (
         <View
-            style={[{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingLeft: Layout.generalPadding,
-            }, props.style]}
+            style={[
+                {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                },
+                props.style,
+            ]}
         >
-            <Shield
-                name="shield-check"
-                color={Color.secondaryColor}
-                size={17}
-            />
+            <CompletedJobsIcon />
             <SmallContent style={{ color: Color.secondaryColor }}>
                 {' '}
-                liability insurance
+                140 completed jobs
             </SmallContent>
         </View>
     );
@@ -30,4 +28,4 @@ const Insurance = props => {
 
 const styles = StyleSheet.create({});
 
-export default Insurance;
+export default CompletedJobs;

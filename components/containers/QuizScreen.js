@@ -9,18 +9,23 @@ import Color from '../../constants/Color';
 import NextButton from '../common/NextButton';
 
 const QuizScreen = props => {
-
     return (
-        <Container style={[{ paddingHorizontal: 0 }, props.style]} >
+        <Container style={[{ paddingHorizontal: 0 }, props.style]}>
             <View
                 style={{
                     paddingHorizontal: Layout.screenHorizontalPadding,
                     marginBottom: Layout.generalMargin,
                     flexDirection: 'row',
-                    justifyContent: props.centerTitle ? 'center' : 'flex-start'
+                    justifyContent: props.centerTitle ? 'center' : 'flex-start',
                 }}
             >
-                <Title style={{ color: Color.primaryBrandColor }}>
+                <Title
+                    style={
+                        props.titleColor
+                            ? { color: props.titleColor }
+                            : { color: Color.primaryBrandColor }
+                    }
+                >
                     {props.title}
                 </Title>
 
@@ -32,9 +37,7 @@ const QuizScreen = props => {
                             justifyContent: 'center',
                         }}
                     >
-                        <NextButton
-                            onPress={() => props.onPress()}
-                        />
+                        <NextButton onPress={() => props.onPress()} />
                     </View>
                 ) : null}
             </View>

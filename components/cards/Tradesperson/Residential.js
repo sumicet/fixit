@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import ExperienceIcon from '../../../assets/icons/User/ExperienceIcon';
 import SmallContent from '../../text/SmallContent';
 import Layout from '../../../constants/Layout';
 import Color from '../../../constants/Color';
+import HouseIcon from '../../../assets/icons/Properties/HouseIcon';
 
-const Experience = props => {
+const Residential = props => {
     return (
         <View style={[styles.container, props.style]}>
-            <ExperienceIcon />
+            <HouseIcon />
             <SmallContent style={{ color: Color.secondaryColor }}>
                 {' '}
-                10y
+                residential work
             </SmallContent>
         </View>
     );
@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: Layout.generalPadding,
     },
 });
 
-export default Experience;
+export default Residential;

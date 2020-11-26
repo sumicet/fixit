@@ -7,8 +7,8 @@ const ProfilePicture = props => {
     return (
         <View
             style={{
-                height: props.isLarge ? 120 : 60,
-                width: props.isLarge ? 120 : 60,
+                height: props.isLarge ? 80 : 60,
+                width: props.isLarge ? 80 : 60,
                 marginRight: props.isRateCard ? 0 : Layout.generalPadding,
             }}
         >
@@ -16,13 +16,13 @@ const ProfilePicture = props => {
                 style={[
                     styles.profilePicture,
                     {
-                        height: props.isLarge ? 120 : 60,
-                        width: props.isLarge ? 120 : 60,
+                        height: props.isLarge ? 80 : 60,
+                        width: props.isLarge ? 80 : 60,
                     },
                 ]}
                 source={{
                     uri:
-                        'https://onegov.nsw.gov.au/New/persistent/launchpad_images/contractors_Tradespersons.jpg',
+                        'https://www.phamnews.co.uk/web-cont1001/uploads/image002-4.jpg',
                 }}
                 resizeMethod="scale"
             />

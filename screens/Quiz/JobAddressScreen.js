@@ -39,9 +39,6 @@ const JobAddressScreen = props => {
             title="Where are you?"
             showNextButton={true}
             onPress={handleNextPress}
-            showNextButton={
-                props.route.params && props.route.params.action === 'edit' ? true : false
-            }
             onPress={handleNextPress}
         >
             <View style={styles.container}>

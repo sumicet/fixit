@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import QuizScreen from '../../components/containers/QuizScreen';
@@ -7,6 +7,7 @@ import JobCard from '../../components/cards/Job/JobCard';
 import Layout from '../../constants/Layout';
 import Touchable from '../../components/common/Touchable';
 import * as Job from '../../store/actions/job';
+import Color from '../../constants/Color';
 
 const MyJobsScreen = props => {
     const userPendingJobs = useSelector(state => state.job.userPendingJobs);

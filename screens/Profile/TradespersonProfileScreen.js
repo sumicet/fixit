@@ -1,133 +1,190 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+    View,
+    StyleSheet,
+    StatusBar,
+    FlatList,
+    ScrollView,
+} from 'react-native';
 
-import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
-import ScrollableContainer from '../../components/containers/ScrollableContainer';
-import SubscriptionCard from '../../components/subscription/SubscriptionCard';
-import Color from '../../constants/Color';
+import TitledScrollableContainer from '../../components/containers/TitledScrollableContainer';
 import Layout from '../../constants/Layout';
+import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
+import Contact from '../../components/cards/Tradesperson/Contact';
+import Occupations from '../../components/cards/Tradesperson/Occupations';
+import Location from '../../components/cards/Tradesperson/Location';
+import Experience from '../../components/cards/Tradesperson/Experience';
+import Insurance from '../../components/cards/Tradesperson/Insurance';
+import Color from '../../constants/Color';
 import SmallContent from '../../components/text/SmallContent';
-import SmallBoldContent from '../../components/text/SmallBoldContent';
+import CompletedJobs from '../../components/cards/Tradesperson/CompletedJobs';
+import Residential from '../../components/cards/Tradesperson/Residential';
+import Commercial from '../../components/cards/Tradesperson/Commercial';
+import Industrial from '../../components/cards/Tradesperson/Industrial';
 import Header from '../../components/text/Header';
-import Touchable from '../../components/common/Touchable';
+import Rating from '../../components/cards/Tradesperson/Rating';
+import Comment from '../../components/cards/Comment/Comment';
 
 const ProfileScreen = props => {
-    class ProfileData {
-        constructor(id, value, description, onChange, onPress) {
-            this.id = id;
-            this.value = value;
-            this.description = description;
-        }
-    }
-
-    var profileDataArray = [];
-    profileDataArray.push(new ProfileData(0, 'John McCormack', 'Full name:'));
-    profileDataArray.push(
-        new ProfileData(1, 'johnmccormack@gmail.com', 'Email:')
-    );
-    profileDataArray.push(new ProfileData(2, '*******', 'Password:'));
-    profileDataArray.push(new ProfileData(3, '0757570851', 'Phone number:'));
-    profileDataArray.push(new ProfileData(4, 'Plumber', 'Occupation:'));
-    profileDataArray.push(new ProfileData(5, 'Residential', 'Work type:'));
-    profileDataArray.push(new ProfileData(6, '10y', 'Experience:'));
-    profileDataArray.push(
-        new ProfileData(7, 'Roady Road 666', 'Street address:')
-    );
-
-    const ProfileField = props => {
-        return (
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingBottom: Layout.generalMargin,
-                }}
-            >
-                <View style={{ width: 110, marginRight: Layout.generalMargin }}>
-                    <SmallBoldContent>{props.description}</SmallBoldContent>
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                    }}
-                >
-                    <SmallContent>{props.value}</SmallContent>
-                </View>
-            </View>
-        );
-    };
-
-    const ProfileFieldSeparatorTitle = props => {
-        return (
-            <View
-                style={{
-                    marginBottom: Layout.generalMargin,
-                    width: '100%',
-                    flexDirection: 'row',
-                }}
-            >
-                <Header style={{ textAlign: 'left' }}>{props.text}</Header>
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Touchable style={{ flex: 0 }}>
-                        <Icon
-                            name="pencil"
-                            color={Color.textColor}
-                            size={Layout.menuIconSize}
-                        />
-                    </Touchable>
-                </View>
-            </View>
-        );
-    };
-
     return (
-        <ScrollableContainer>
-            <View
-                style={{
-                    height: '100%',
-                    //backgroundColor: Color.textField,
-                    borderRadius: Layout.borderRadius,
-                }}
-            >
-                <SubscriptionCard />
-                <View
-                    style={{
-                        marginTop: Layout.generalMargin,
-                        paddingHorizontal: Layout.generalPadding,
-                    }}
-                >
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={{ marginBottom: Layout.generalMargin }}>
-                            <ProfilePicture isLarge={true} />
-                        </View>
-                        <ProfileFieldSeparatorTitle text="Account information" />
-                        {profileDataArray.map(elem =>
-                            elem.id <= 3 ? (
-                                <ProfileField
-                                    id={elem.id}
-                                    description={elem.description}
-                                    value={elem.value}
-                                />
-                            ) : null
-                        )}
-                        <ProfileFieldSeparatorTitle text="Work information" />
-                        {profileDataArray.map(elem =>
-                            elem.id > 3 ? (
-                                <ProfileField
-                                    id={elem.id}
-                                    description={elem.description}
-                                    value={elem.value}
-                                />
-                            ) : null
-                        )}
+        <TitledScrollableContainer
+            title="John McCormack"
+            titleColor={Color.primaryBrandColor}
+            backgroundColor={Color.specialTextField}
+        >
+            <StatusBar
+                barStyle="light-content"
+                backgroundColor={Color.specialTextField}
+            />
+            <View style={{ backgroundColor: Color.textField }}>
+                <View style={styles.topContainer}>
+                    <View style={styles.line}>
+                        <ProfilePicture isLarge={true} />
+                    </View>
+                    <View style={styles.line}>
+                        <Occupations isOnProfileScreen={true} />
+                    </View>
+                    <View style={styles.line}>
+                        <Contact
+                            showLabels={true}
+                            containerStyle={styles.contactContainer}
+                        />
                     </View>
                 </View>
             </View>
-        </ScrollableContainer>
+            <View style={styles.midContainer}>
+                <View style={{ paddingBottom: Layout.generalPadding }}>
+                    <Header style={{ textAlign: 'left' }}>Perks</Header>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.column}>
+                        <View style={styles.details}>
+                            <Location />
+                            <SmallContent
+                                style={{ color: Color.secondaryColor }}
+                            >
+                                {' '}
+                                away
+                            </SmallContent>
+                        </View>
+                        <View style={styles.details}>
+                            <Experience style={{ paddingLeft: 0 }} />
+                            <SmallContent
+                                style={{ color: Color.secondaryColor }}
+                            >
+                                {' '}
+                                experience
+                            </SmallContent>
+                        </View>
+                    </View>
+                    <View style={styles.column}>
+                        <View style={styles.details}>
+                            <CompletedJobs />
+                        </View>
+                        <View style={styles.details}>
+                            <Insurance style={{ paddingLeft: 0 }} />
+                        </View>
+                    </View>
+                </View>
+
+                <View
+                    style={{
+                        paddingTop:
+                            Layout.screenHorizontalPadding -
+                            Layout.generalPadding,
+                    }}
+                >
+                    <Header style={{ textAlign: 'left' }}>Work types</Header>
+                </View>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        paddingTop: Layout.generalPadding,
+                    }}
+                >
+                    <View style={styles.column}>
+                        <View style={styles.details}>
+                            <Residential />
+                        </View>
+                        <View style={styles.details}>
+                            <Industrial />
+                        </View>
+                    </View>
+                    <View style={styles.column}>
+                        <View style={styles.details}>
+                            <Commercial />
+                        </View>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.bottomContainer}>
+                <View>
+                    <View
+                        style={{
+                            paddingBottom:
+                                Layout.screenHorizontalPadding -
+                                Layout.generalPadding,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Header style={{ textAlign: 'left' }}>Rating: </Header>
+                        <Rating rating={4.5} />
+                    </View>
+
+                    <Comment />
+                    <Comment />
+                    <Comment />
+                    <Comment />
+                    <Comment />
+                    <Comment />
+                </View>
+            </View>
+        </TitledScrollableContainer>
     );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    topContainer: {
+        backgroundColor: Color.specialTextField,
+        paddingHorizontal: Layout.screenHorizontalPadding,
+        borderBottomLeftRadius: Layout.borderRadius,
+        borderBottomRightRadius: Layout.borderRadius,
+    },
+    midContainer: {
+        paddingTop: Layout.screenHorizontalPadding,
+        paddingHorizontal: Layout.screenHorizontalPadding,
+        width: '100%',
+        borderBottomLeftRadius: Layout.borderRadius,
+        borderBottomRightRadius: Layout.borderRadius,
+        backgroundColor: Color.textField,
+        paddingBottom: Layout.screenHorizontalPadding - Layout.generalPadding,
+    },
+    bottomContainer: {
+        paddingTop: Layout.screenHorizontalPadding,
+        paddingHorizontal: Layout.screenHorizontalPadding,
+        width: '100%',
+    },
+    line: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: Layout.screenHorizontalPadding,
+    },
+    column: {
+        flex: 1,
+    },
+    contactContainer: {
+        justifyContent: 'space-around',
+        flex: 1,
+        paddingLeft: 0,
+        width: '100%',
+    },
+    details: {
+        flexDirection: 'row',
+        paddingBottom: Layout.generalPadding,
+    },
+});
 
 export default ProfileScreen;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
 import Container from '../../components/containers/Container';
@@ -28,6 +28,7 @@ const HomeScreen = ({ route, navigation }) => {
 
     return (
         <ScrollableContainer>
+            <StatusBar barStyle='dark-content' backgroundColor={Color.primaryColor} />
             <SearchBar />
 
             <View style={{ width: '100%', marginBottom: Layout.cardMargin }}>
