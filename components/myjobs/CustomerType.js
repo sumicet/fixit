@@ -10,8 +10,20 @@ import { CUSTOMER_TYPES } from '../../data/Jobs/CustomerTypes';
 const CustomerType = props => {
     return (
         <View style={styles.container}>
-            <Icon name="user" size={18} color={Color.secondaryColor} />
-            <SmallContent style={{ color: Color.secondaryColor }}>
+            <Icon
+                name="user"
+                size={18}
+                color={props.color ? props.color : Color.secondaryColor}
+            />
+            <SmallContent
+                style={{
+                    color: props.textColor
+                        ? props.textColor
+                        : props.color
+                        ? props.color
+                        : Color.secondaryColor,
+                }}
+            >
                 {' '}
                 {
                     CUSTOMER_TYPES.find(elem => elem.id === props.customerType)

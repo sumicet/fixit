@@ -8,6 +8,8 @@ import OkButton from '../common/OkButton';
 import CloseButton from '../common/CloseButton';
 import ProfilePicture from '../cards/Tradesperson/ProfilePicture';
 import Occupations from '../cards/Tradesperson/Occupations';
+import Title from '../text/Title';
+import Line from '../common/Line';
 
 const RateTradespersonModal = props => {
     const handleStarPress = value => {
@@ -31,47 +33,46 @@ const RateTradespersonModal = props => {
             visible={props.modalVisible}
             presentationStyle="overFullScreen"
             onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+                props.closeModal();
             }}
         >
             <View style={styles.container}>
                 <View style={styles.card}>
-                    <View style={{ flex: 0 }}>
-                        <ProfilePicture isRateCard={true} />
-                    </View>
-                    <View style={{ flex: 0 }}>
-                        <View style={{ alignItems: 'center' }}>
-                            <HeaderWithEllipsis
-                                style={{ color: Color.primaryColor }}
-                            >
-                                John McCormack
-                            </HeaderWithEllipsis>
-                        </View>
+                    <Line
+                        style={{ paddingTop: Layout.screenHorizontalPadding }}
+                    >
+                        <Title style={{ color: Color.primaryBrandColor }}>
+                            John McCormack
+                        </Title>
+                    </Line>
+                    <Line>
+                        <ProfilePicture isRateCard={true} isLarge={true} />
+                    </Line>
+                    <Line>
                         <Occupations
                             isRateCard={true}
                             style={{ justifyContent: 'center' }}
-                            textColor={Color.smallTextOnStarColorBackground}
+                            textColor={Color.textOnTertiaryColorBackground}
                         />
-                    </View>
-                    <Rating
-                        rating={props.updatedRating}
-                        isRateCard={true}
-                        isBeingRated={true}
-                        onStarPress={handleStarPress}
-                    />
-                    <View
+                    </Line>
+                    <Line>
+                        <Rating
+                            rating={props.updatedRating}
+                            isRateCard={true}
+                            isBeingRated={true}
+                            onStarPress={handleStarPress}
+                        />
+                    </Line>
+
+                    <Line
                         style={{
-                            flex: 0,
-                            width: '100%',
-                            height: Layout.mediumButtonIconSize,
                             flexDirection: 'row',
-                            alignItems: 'center',
                             justifyContent: 'space-evenly',
                         }}
                     >
                         <CloseButton onPress={handleCloseButtonPress} />
                         <OkButton onPress={handleOkButtonPress} />
-                    </View>
+                    </Line>
                 </View>
             </View>
         </Modal>
@@ -86,10 +87,10 @@ const styles = StyleSheet.create({
     },
     card: {
         borderRadius: Layout.borderRadius,
-        height: 300,
-        width: 300,
+        height: 400,
+        width: 350,
         elevation: 5,
-        backgroundColor: Color.starColor,
+        backgroundColor: Color.tertiaryBrandColor,
         alignItems: 'center',
         justifyContent: 'space-evenly',
         paddingHorizontal: Layout.generalMargin,

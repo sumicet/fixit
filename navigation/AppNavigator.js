@@ -2,8 +2,11 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+    createStackNavigator,
+    CardStyleInterpolators,
+} from '@react-navigation/stack';
+import { createBottomTabNavigator, HeaderStyleInterpolators } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
 
@@ -32,7 +35,14 @@ const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
     const QuizStack = () => {
         return (
-            <Stack.Navigator headerMode={false}>
+            <Stack.Navigator
+                headerMode={false}
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
                 <Stack.Screen
                     name="Occupations"
                     component={OccupationsScreen}
@@ -56,12 +66,38 @@ const AppNavigator = () => {
         );
     };
 
-    const MainStack = () => {
+    const MyJobsStack = () => {
         return (
-            <Stack.Navigator headerMode={false}>
-                <Stack.Screen name="BottomTab" component={BottomTab} />
-                <Stack.Screen name="MyJobsStack" component={MyJobsStack} />
-            </Stack.Navigator>
+            <BottomStack.Navigator
+                headerMode={false}
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
+                <Stack.Screen name="MyJobs" component={MyJobsScreen} />
+                <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
+            </BottomStack.Navigator>
+        );
+    };
+
+    const HomeStack = () => {
+        return (
+            <BottomStack.Navigator
+                headerMode={false}
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen
+                    name="TradespersonProfile"
+                    component={TradespersonProfileScreen}
+                />
+            </BottomStack.Navigator>
         );
     };
 
@@ -165,30 +201,9 @@ const AppNavigator = () => {
         );
     };
 
-    const MyJobsStack = () => {
-        return (
-            <BottomStack.Navigator headerMode={false}>
-                <Stack.Screen name="MyJobs" component={MyJobsScreen} />
-                <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
-            </BottomStack.Navigator>
-        );
-    };
-
-    const HomeStack = () => {
-        return (
-            <BottomStack.Navigator headerMode={false}>
-                <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen
-                    name="TradespersonProfile"
-                    component={TradespersonProfileScreen}
-                />
-            </BottomStack.Navigator>
-        );
-    };
-
     return (
         <NavigationContainer>
-            <MainStack />
+            <BottomTab />
         </NavigationContainer>
     );
 };

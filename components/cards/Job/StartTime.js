@@ -12,12 +12,24 @@ const StartTime = props => {
 
     return (
         <View style={styles.container}>
-            <Icon name="clock" size={18} color={Color.secondaryColor} />
+            <Icon
+                name="clock"
+                size={18}
+                color={
+                    startTime === 'Today'
+                        ? Color.urgent
+                        : props.color
+                        ? props.color
+                        : Color.secondaryColor
+                }
+            />
             <SmallContent
                 style={{
                     color:
                         startTime === 'Today'
                             ? Color.urgent
+                            : props.color
+                            ? props.color
                             : Color.secondaryColor,
                     fontFamily:
                         startTime === 'Today'

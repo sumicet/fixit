@@ -5,6 +5,7 @@ import Trash from 'react-native-vector-icons/Foundation';
 
 import Header from '../text/Header';
 import SmallContent from '../text/SmallContent';
+import SmallBoldContent from '../text/SmallBoldContent';
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
 import StartTime from '../cards/Job/StartTime';
@@ -13,14 +14,17 @@ import CustomerType from './CustomerType';
 import PostedBy from '../cards/Job/PostedBy';
 import { OCCUPATIONS } from '../../data/Jobs/Occupations';
 import { WORK_TYPES } from '../../data/Jobs/WorkTypes';
-import BigLocationIcon from '../../assets/icons/Card/BigLocationIcon';
+import LocationIcon from '../../assets/icons/Card/LocationIcon';
 import Touchable from '../common/Touchable';
 
 const Details = props => {
     return (
         <View style={styles.container}>
             <View style={{ paddingBottom: Layout.generalPadding - 2 }}>
-                <PostedBy date={props.job.date} />
+                <PostedBy
+                    date={props.job.date}
+                    textColor={Color.textOnTertiaryColorBackground}
+                />
             </View>
 
             <View
@@ -29,15 +33,33 @@ const Details = props => {
                     flexDirection: 'row',
                 }}
             >
-                <Header style={{ textAlign: 'left' }}>
+                <Header
+                    style={{
+                        textAlign: 'left',
+                        color: Color.primaryBrandColor,
+                    }}
+                >
                     {
                         OCCUPATIONS.find(
                             occ => occ.id === props.job.occupationId
                         ).name
                     }
                 </Header>
-                <Header style={{ textAlign: 'left' }}> • </Header>
-                <Header style={{ textAlign: 'left' }}>
+                <Header
+                    style={{
+                        textAlign: 'left',
+                        color: Color.primaryBrandColor,
+                    }}
+                >
+                    {' '}
+                    •{' '}
+                </Header>
+                <Header
+                    style={{
+                        textAlign: 'left',
+                        color: Color.primaryBrandColor,
+                    }}
+                >
                     {
                         WORK_TYPES.find(occ => occ.id === props.job.workTypeId)
                             .name
@@ -45,7 +67,11 @@ const Details = props => {
                 </Header>
             </View>
             <View style={{ paddingBottom: Layout.generalPadding }}>
-                <SmallContent>{props.job.jobDescription}</SmallContent>
+                <SmallBoldContent
+                    style={{ color: Color.textOnTertiaryColorBackground }}
+                >
+                    {props.job.jobDescription}
+                </SmallBoldContent>
             </View>
             <View
                 style={{
@@ -55,14 +81,17 @@ const Details = props => {
                     alignItems: 'center',
                 }}
             >
-                <BigLocationIcon />
+                <LocationIcon
+                    color={Color.textOnTertiaryColorBackground}
+                    size={Layout.cardBigIconSize}
+                />
                 <View>
-                    <SmallContent style={{ color: Color.secondaryColor }}>
-                        {' '}
-                    </SmallContent>
+                    <SmallContent> </SmallContent>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <SmallContent style={{ color: Color.secondaryColor }}>
+                    <SmallContent
+                        style={{ color: Color.textOnTertiaryColorBackground }}
+                    >
                         25km • {props.job.jobAddress.line1} •{' '}
                         {props.job.jobAddress.line2}
                     </SmallContent>
@@ -77,9 +106,15 @@ const Details = props => {
                     paddingBottom: Layout.generalMargin,
                 }}
             >
-                <StartTime startTimeId={props.job.startTimeId} />
-                <PropertyType propertyType={props.job.propertyType} />
-                <CustomerType customerType={props.job.customerType} />
+                <StartTime startTimeId={props.job.startTimeId} color={Color.textOnTertiaryColorBackground} />
+                <PropertyType
+                    propertyType={props.job.propertyType}
+                    color={Color.textOnTertiaryColorBackground}
+                />
+                <CustomerType
+                    customerType={props.job.customerType}
+                    color={Color.textOnTertiaryColorBackground}
+                />
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View
@@ -160,13 +195,15 @@ const Details = props => {
                     style={{ flex: 0 }}
                     onPress={() => {
                         //
-                        props.navigation.navigate('Occupations', { action: 'edit' });
+                        props.navigation.navigate('Occupations', {
+                            action: 'edit',
+                        });
                     }}
                 >
                     <View style={styles.iconContainer}>
                         <Icon
                             name="edit"
-                            color={Color.secondaryColor}
+                            color={Color.textOnTertiaryColorBackground}
                             size={Layout.menuIconSize}
                         />
                     </View>
@@ -175,7 +212,7 @@ const Details = props => {
                 <View style={styles.iconContainer}>
                     <Trash
                         name="trash"
-                        color={Color.secondaryColor}
+                        color={Color.textOnTertiaryColorBackground}
                         size={Layout.menuIconSize}
                     />
                 </View>
@@ -189,7 +226,6 @@ const styles = StyleSheet.create({
         flex: 0,
         borderRadius: Layout.borderRadius,
         marginVertical: Layout.cardMargin,
-        //paddingHorizontal: Layout.generalPadding,
     },
     image: {
         height: 100,

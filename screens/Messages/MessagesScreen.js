@@ -8,6 +8,7 @@ const MessagesScreen = props => {
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    backgroundColor: 'red'
                 }}
             >
                 <Text>Messages</Text>

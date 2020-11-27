@@ -11,8 +11,8 @@ import Touchable from '../../common/Touchable';
 const Rating = props => {
     const rating =
         Math.round(props.rating * 10) / 10 > 5
-        ? 5
-        : Math.round(props.rating * 10) / 10; // get the rating with one decimal
+            ? 5
+            : Math.round(props.rating * 10) / 10; // get the rating with one decimal
 
     var starsVar = [];
     const [stars, setStars] = useState([]);
@@ -25,11 +25,7 @@ const Rating = props => {
             starsVar.push(
                 <Icon
                     name="star"
-                    color={
-                        props.isBeingRated
-                            ? Color.primaryColor
-                            : Color.starColor
-                    }
+                    color={Color.starColor}
                     size={
                         props.isRateCard
                             ? Layout.bigStarIconSize
@@ -48,9 +44,7 @@ const Rating = props => {
         starsVar.push(
             <Icon
                 name="star-half"
-                color={
-                    props.isBeingRated ? Color.primaryColor : Color.starColor
-                }
+                color={Color.starColor}
                 size={
                     props.isRateCard
                         ? Layout.bigStarIconSize
@@ -67,11 +61,7 @@ const Rating = props => {
             starsVar.push(
                 <Icon
                     name="star-border"
-                    color={
-                        props.isBeingRated
-                            ? Color.smallTextOnStarColorBackground
-                            : Color.starColor
-                    }
+                    color={Color.starColor}
                     size={
                         props.isRateCard
                             ? Layout.bigStarIconSize

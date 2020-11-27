@@ -8,10 +8,16 @@ import SuperSmallContent from '../../text/SuperSmallContent';
 const PostedBy = props => {
     return (
         <View style={{ paddingBottom: 2, flexDirection: 'row' }}>
-            <SuperSmallContent style={{ color: Color.secondaryColor }}>
+            <SuperSmallContent
+                style={{
+                    color: props.textColor
+                        ? props.textColor
+                        : Color.secondaryColor,
+                }}
+            >
                 Posted by user •{' '}
             </SuperSmallContent>
-            <RelativeTime date={props.date} />
+            <RelativeTime date={props.date} textColor={props.textColor} />
         </View>
     );
 };

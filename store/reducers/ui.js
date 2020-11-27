@@ -2,8 +2,7 @@ import { SET_STATUS_BAR_STYLE } from '../actions/ui';
 import Color from '../../constants/Color';
 
 const initialState = {
-    barStyle: 'dark-content',
-    backgroundColor: Color.primaryColor
+    barStyle: 'dark',
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -11,7 +10,6 @@ const uiReducer = (state = initialState, action) => {
         case SET_STATUS_BAR_STYLE:
             return {
                 barStyle: action.barStyle,
-                backgroundColor: action.backgroundColor
             };
         default:
             return state;

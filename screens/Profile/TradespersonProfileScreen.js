@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, BackHandler } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-
-import TitledScrollableContainer from '../../components/containers/TitledScrollableContainer';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import Layout from '../../constants/Layout';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 import Contact from '../../components/cards/Tradesperson/Contact';
@@ -19,53 +16,32 @@ import Industrial from '../../components/cards/Tradesperson/Industrial';
 import Header from '../../components/text/Header';
 import Rating from '../../components/cards/Tradesperson/Rating';
 import Comment from '../../components/cards/Comment/Comment';
-import { setStatusBarStyle } from '../../store/actions/ui';
+import SectionedContainer from '../../components/containers/SectionedContainer';
+import Line from '../../components/common/Line';
 
 const ProfileScreen = props => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', () => {
-            dispatch(
-                setStatusBarStyle('light-content', Color.specialTextField)
-            );
-            console.log('loaded');
-        });
-
-        return unsubscribe;
-    }, [props.navigation]);
-
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('blur', () => {
-            dispatch(setStatusBarStyle('dark-content', Color.primaryColor));
-        });
-
-        return unsubscribe;
-    }, [props.navigation]);
-
-    return (
-        <TitledScrollableContainer
-            title="John McCormack"
-            titleColor={Color.primaryBrandColor}
-            backgroundColor={Color.specialTextField}
-        >
-            <View style={{ backgroundColor: Color.textField }}>
-                <View style={styles.topContainer}>
-                    <View style={styles.line}>
-                        <ProfilePicture isLarge={true} />
-                    </View>
-                    <View style={styles.line}>
-                        <Occupations isOnProfileScreen={true} />
-                    </View>
-                    <View style={styles.line}>
-                        <Contact
-                            showLabels={true}
-                            containerStyle={styles.contactContainer}
-                        />
-                    </View>
-                </View>
+    const TopComponent = () => {
+        return (
+            <View>
+                <Line>
+                    <ProfilePicture isLarge={true} />
+                </Line>
+                <Line>
+                    <Occupations isOnProfileScreen={true} />
+                </Line>
+                <Line>
+                    <Contact
+                        showLabels={true}
+                        containerStyle={styles.contactContainer}
+                    />
+                </Line>
             </View>
-            <View style={styles.midContainer}>
+        );
+    };
+
+    const MidComponent = () => {
+        return (
+            <View>
                 <View style={{ paddingBottom: Layout.generalPadding }}>
                     <Header style={{ textAlign: 'left' }}>Perks</Header>
                 </View>
@@ -131,36 +107,49 @@ const ProfileScreen = props => {
                     </View>
                 </View>
             </View>
-            <View style={styles.bottomContainer}>
-                <View>
-                    <View
-                        style={{
-                            paddingBottom:
-                                Layout.screenHorizontalPadding -
-                                Layout.generalPadding,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Header style={{ textAlign: 'left' }}>Rating: </Header>
-                        <Rating rating={4.5} />
-                    </View>
+        );
+    };
 
-                    <Comment />
-                    <Comment />
-                    <Comment />
-                    <Comment />
-                    <Comment />
-                    <Comment />
+    const BottomComponent = () => {
+        return (
+            <View>
+                <View
+                    style={{
+                        paddingBottom:
+                            Layout.screenHorizontalPadding -
+                            Layout.generalPadding,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Header style={{ textAlign: 'left' }}>Rating: </Header>
+                    <Rating rating={4.5} />
                 </View>
+
+                <Comment />
+                <Comment />
+                <Comment />
+                <Comment />
+                <Comment />
+                <Comment />
             </View>
-        </TitledScrollableContainer>
+        );
+    };
+
+    return (
+        <SectionedContainer
+            title="John McCormack"
+            topComponent={<TopComponent />}
+            midComponent={<MidComponent />}
+            bottomComponent={<BottomComponent />}
+            navigation={props.navigation}
+        />
     );
 };
 
 const styles = StyleSheet.create({
     topContainer: {
-        backgroundColor: Color.specialTextField,
+        backgroundColor: Color.tertiaryBrandColor,
         paddingHorizontal: Layout.screenHorizontalPadding,
         borderBottomLeftRadius: Layout.borderRadius,
         borderBottomRightRadius: Layout.borderRadius,

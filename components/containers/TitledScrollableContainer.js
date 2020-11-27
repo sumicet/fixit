@@ -7,11 +7,12 @@ import Color from '../../constants/Color';
 
 const TitledScrollableContent = props => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: props.backgroundColor}]}>
             <ScrollView style={styles.scrollView}>
                 <QuizScreen
                     title={props.title}
                     centerTitle={true}
+                    rightOfTitleComponent={props.rightOfTitleComponent}
                     style={[
                         styles.quizScreen,
                         {
@@ -34,11 +35,10 @@ const TitledScrollableContent = props => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Color.primaryColor,
         flex: 1,
     },
     scrollView: {
-        //marginTop: Layout.screenTopMargin,
+        marginTop: Layout.screenTopMargin,
     },
     quizScreen: {
         paddingHorizontal: Layout.screenHorizontalPadding,
