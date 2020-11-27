@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollView: {
-        marginTop: Layout.screenTopMargin,
+        //marginTop: Layout.screenTopMargin,
     },
     quizScreen: {
         paddingHorizontal: Layout.screenHorizontalPadding,

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import * as Font from 'expo-font';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -12,12 +11,12 @@ import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
 import quizReducer from './store/reducers/quiz';
 import jobReducer from './store/reducers/job';
-
-import Color from './constants/Color';
+import uiReducer from './store/reducers/ui';
 
 const rootReducer = combineReducers({
     quiz: quizReducer,
     job: jobReducer,
+    ui: uiReducer
 });
 
 const store = createStore(
@@ -52,7 +51,6 @@ export default function App() {
         <View style={styles.container}>
             <Provider store={store}>
                 <AppNavigator dropDownAlertRef={dropDownAlertRef} />
-                <StatusBar barStyle='dark-content' backgroundColor={Color.primaryColor} />
             </Provider>
             <FlashMessage position="top" />
         </View>

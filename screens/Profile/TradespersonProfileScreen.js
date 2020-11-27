@@ -1,11 +1,6 @@
-import React from 'react';
-import {
-    View,
-    StyleSheet,
-    StatusBar,
-    FlatList,
-    ScrollView,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, BackHandler } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import TitledScrollableContainer from '../../components/containers/TitledScrollableContainer';
 import Layout from '../../constants/Layout';
@@ -24,18 +19,36 @@ import Industrial from '../../components/cards/Tradesperson/Industrial';
 import Header from '../../components/text/Header';
 import Rating from '../../components/cards/Tradesperson/Rating';
 import Comment from '../../components/cards/Comment/Comment';
+import { setStatusBarStyle } from '../../store/actions/ui';
 
 const ProfileScreen = props => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            dispatch(
+                setStatusBarStyle('light-content', Color.specialTextField)
+            );
+            console.log('loaded');
+        });
+
+        return unsubscribe;
+    }, [props.navigation]);
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('blur', () => {
+            dispatch(setStatusBarStyle('dark-content', Color.primaryColor));
+        });
+
+        return unsubscribe;
+    }, [props.navigation]);
+
     return (
         <TitledScrollableContainer
             title="John McCormack"
             titleColor={Color.primaryBrandColor}
             backgroundColor={Color.specialTextField}
         >
-            <StatusBar
-                barStyle="light-content"
-                backgroundColor={Color.specialTextField}
-            />
             <View style={{ backgroundColor: Color.textField }}>
                 <View style={styles.topContainer}>
                     <View style={styles.line}>

@@ -1,31 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Shield from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import SmallContent from '../../text/SmallContent';
-import Color from '../../../constants/Color';
 import CompletedJobsIcon from '../../../assets/icons/Card/CompletedJobsIcon';
+import CardIcon from './CardIcon';
 
 const CompletedJobs = props => {
     return (
-        <View
-            style={[
-                {
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                },
-                props.style,
-            ]}
-        >
+        <CardIcon style={props.style} text="140 completed jobs">
             <CompletedJobsIcon />
-            <SmallContent style={{ color: Color.secondaryColor }}>
-                {' '}
-                140 completed jobs
-            </SmallContent>
-        </View>
+        </CardIcon>
     );
 };
-
-const styles = StyleSheet.create({});
 
 export default CompletedJobs;

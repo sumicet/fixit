@@ -1,28 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
-import SmallContent from '../../text/SmallContent';
-import Layout from '../../../constants/Layout';
-import Color from '../../../constants/Color';
 import FactoryIcon from '../../../assets/icons/Properties/FactoryIcon';
+import CardIcon from './CardIcon';
 
 const Industrial = props => {
     return (
-        <View style={[styles.container, props.style]}>
+        <CardIcon style={props.style} text="industrial work">
             <FactoryIcon />
-            <SmallContent style={{ color: Color.secondaryColor }}>
-                {' '}
-                industrial work
-            </SmallContent>
-        </View>
+        </CardIcon>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-});
 
 export default Industrial;

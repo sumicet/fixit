@@ -19,6 +19,7 @@ import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
 import HomeScreen from '../screens/Home/HomeScreen';
 import MessagesScreen from '../screens/Messages/MessagesScreen';
 import MyJobsScreen from '../screens/MyJobs/MyJobsScreen';
+import UserProfileScreen from '../screens/Profile/UserProfileScreen';
 import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
@@ -29,7 +30,6 @@ const BottomStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
-
     const QuizStack = () => {
         return (
             <Stack.Navigator headerMode={false}>
@@ -52,6 +52,15 @@ const AppNavigator = () => {
                 />
                 <Stack.Screen name="JobAddress" component={JobAddressScreen} />
                 <Stack.Screen name="StartTimes" component={StartTimesScreen} />
+            </Stack.Navigator>
+        );
+    };
+
+    const MainStack = () => {
+        return (
+            <Stack.Navigator headerMode={false}>
+                <Stack.Screen name="BottomTab" component={BottomTab} />
+                <Stack.Screen name="MyJobsStack" component={MyJobsStack} />
             </Stack.Navigator>
         );
     };
@@ -79,7 +88,7 @@ const AppNavigator = () => {
                                 if (route.name === 'Messages') {
                                     iconName = 'message1';
                                 } else {
-                                    if (route.name === 'TradespersonProfile') {
+                                    if (route.name === 'UserProfile') {
                                         iconName = 'user';
                                     } else {
                                         if (route.name === 'Quiz') {
@@ -93,8 +102,10 @@ const AppNavigator = () => {
                         return (
                             <Touchable
                                 onPress={() => {
-                                    if(route.name === 'Quiz') {
-                                        navigation.navigate(route.name, {screen: 'Occupations'});
+                                    if (route.name === 'Quiz') {
+                                        navigation.navigate(route.name, {
+                                            screen: 'Occupations',
+                                        });
                                     } else {
                                         navigation.navigate(route.name);
                                     }
@@ -117,7 +128,7 @@ const AppNavigator = () => {
             >
                 <Tab.Screen
                     name="Home"
-                    component={HomeScreen}
+                    component={HomeStack}
                     listeners={() => ({
                         tabPress: () => {},
                     })}
@@ -144,8 +155,8 @@ const AppNavigator = () => {
                     })}
                 />
                 <Tab.Screen
-                    name="TradespersonProfile"
-                    component={TradespersonProfileScreen}
+                    name="UserProfile"
+                    component={UserProfileScreen}
                     listeners={() => ({
                         tabPress: () => {},
                     })}
@@ -163,9 +174,21 @@ const AppNavigator = () => {
         );
     };
 
+    const HomeStack = () => {
+        return (
+            <BottomStack.Navigator headerMode={false}>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen
+                    name="TradespersonProfile"
+                    component={TradespersonProfileScreen}
+                />
+            </BottomStack.Navigator>
+        );
+    };
+
     return (
         <NavigationContainer>
-            <BottomTab />
+            <MainStack />
         </NavigationContainer>
     );
 };

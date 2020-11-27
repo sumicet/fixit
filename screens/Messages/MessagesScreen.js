@@ -1,7 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, StatusBar } from 'react-native';
-
-import Color from '../../constants/Color';
+import { View, Text, StyleSheet } from 'react-native';
 
 const MessagesScreen = props => {
     return (

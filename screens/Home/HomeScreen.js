@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
-import Container from '../../components/containers/Container';
 import { showInAppNotification } from '../../components/notifications/InAppNotification';
 import Color from '../../constants/Color';
 import SearchBar from '../../components/search/SearchBar';
-import Touchable from '../../components/common/Touchable';
 import Header from '../../components/text/Header';
 import Layout from '../../constants/Layout';
-import PropertyTypesScreen from '../Quiz/PropertyTypesScreen';
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
 
 const HomeScreen = ({ route, navigation }) => {
@@ -28,7 +25,6 @@ const HomeScreen = ({ route, navigation }) => {
 
     return (
         <ScrollableContainer>
-            <StatusBar barStyle='dark-content' backgroundColor={Color.primaryColor} />
             <SearchBar />
 
             <View style={{ width: '100%', marginBottom: Layout.cardMargin }}>

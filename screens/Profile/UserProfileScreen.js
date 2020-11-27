@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet  } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
@@ -12,7 +12,7 @@ import SmallBoldContent from '../../components/text/SmallBoldContent';
 import Header from '../../components/text/Header';
 import Touchable from '../../components/common/Touchable';
 
-const UserProfile = props => {
+const UserProfileScreen = props => {
     class ProfileData {
         constructor(id, value, description, onChange, onPress) {
             this.id = id;
@@ -130,4 +130,4 @@ const UserProfile = props => {
 
 const styles = StyleSheet.create({});
 
-export default UserProfile;
+export default UserProfileScreen;

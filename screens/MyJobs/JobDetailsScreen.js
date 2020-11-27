@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
@@ -20,10 +20,6 @@ const JobDetailsScreen = props => {
             titleColor={Color.primaryBrandColor}
             backgroundColor={Color.textField}
         >
-            <StatusBar
-                barStyle="dark-content"
-                backgroundColor={Color.textField}
-            />
             <View style={styles.container}>
                 <View style={styles.detailsContainer}>
                     <Details job={job} navigation={props.navigation} />

@@ -1,28 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
-import SmallContent from '../../text/SmallContent';
-import Layout from '../../../constants/Layout';
-import Color from '../../../constants/Color';
 import HouseIcon from '../../../assets/icons/Properties/HouseIcon';
+import CardIcon from './CardIcon';
 
 const Residential = props => {
     return (
-        <View style={[styles.container, props.style]}>
+        <CardIcon style={props.style} text="residential work">
             <HouseIcon />
-            <SmallContent style={{ color: Color.secondaryColor }}>
-                {' '}
-                residential work
-            </SmallContent>
-        </View>
+        </CardIcon>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-});
 
 export default Residential;

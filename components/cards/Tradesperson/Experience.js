@@ -1,29 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
 import ExperienceIcon from '../../../assets/icons/User/ExperienceIcon';
-import SmallContent from '../../text/SmallContent';
 import Layout from '../../../constants/Layout';
-import Color from '../../../constants/Color';
+import CardIcon from './CardIcon';
 
 const Experience = props => {
     return (
-        <View style={[styles.container, props.style]}>
+        <CardIcon
+            style={[{ paddingLeft: Layout.generalPadding }, props.style]}
+            text="10y"
+        >
             <ExperienceIcon />
-            <SmallContent style={{ color: Color.secondaryColor }}>
-                {' '}
-                10y
-            </SmallContent>
-        </View>
+        </CardIcon>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: Layout.generalPadding,
-    },
-});
 
 export default Experience;
