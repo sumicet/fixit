@@ -8,6 +8,7 @@ import Layout from '../../constants/Layout';
 import Touchable from '../../components/common/Touchable';
 import * as Job from '../../store/actions/job';
 import Color from '../../constants/Color';
+import { useIsFocused } from '@react-navigation/native'
 
 const MyJobsScreen = props => {
     const userPendingJobs = useSelector(state => state.job.userPendingJobs);
@@ -18,9 +19,15 @@ const MyJobsScreen = props => {
 
     const dispatch = useDispatch();
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
-        dispatch(Job.fetchMyJobs());
-    }, []);
+        if(isFocused) {
+            console.log('fetched my jobs xoxoxo');
+            dispatch(Job.fetchMyJobs());
+        }
+        
+    }, [props, isFocused]);
 
     const renderItem = ({ item }) => {
         return (

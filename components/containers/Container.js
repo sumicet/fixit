@@ -14,7 +14,7 @@ const Container = props => {
             <View style={[styles.insideContainer, props.style]}>
                 {props.children}
             </View>
-            <StatusBar style={barStyle} StatusBarAnimation='fade' />
+            <StatusBar style={barStyle} StatusBarAnimation="fade" />
         </View>
     );
 };

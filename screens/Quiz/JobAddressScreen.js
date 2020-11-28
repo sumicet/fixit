@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import QuizScreen from '../../components/containers/QuizScreen';
 import Layout from '../../constants/Layout';
@@ -15,6 +15,15 @@ const longitudeDelta = 0.00221;
 const JobAddressScreen = props => {
     const [input, setInput] = useState();
     const [streetAddress, setStreetAddress] = useState();
+
+    const jobAddress = useSelector(state => state.quiz.jobAddress);
+
+    useEffect(() => {
+        if(jobAddress) {
+            setStreetAddress(jobAddress.line1);
+            setInput(jobAddress.line2);
+        }
+    }, [])
 
     const [region, setRegion] = useState({
         latitudeDelta,
@@ -31,7 +40,13 @@ const JobAddressScreen = props => {
 
     const handleNextPress = () => {
         dispatch(setJobAddress({ line1: streetAddress, line2: input })); //TODO reset input at the end of the quiz
-        props.navigation.navigate('StartTimes');
+        if(props.route.action === 'edit') {
+            props.navigation.navigate('StartTimes', {
+                action: 'edit'
+            });
+        } else {
+            props.navigation.navigate('StartTimes');
+        }
     };
 
     return (
@@ -39,11 +54,11 @@ const JobAddressScreen = props => {
             title="Where are you?"
             showNextButton={true}
             onPress={handleNextPress}
-            onPress={handleNextPress}
         >
             <View style={styles.container}>
                 <View style={styles.locationSearchFieldContainer}>
                     <LocationSearchField
+                        oldStreetAddress={jobAddress.line1}
                         placeholder="Street address"
                         onPress={(data, details = null) => {
                             setRegion({
@@ -57,7 +72,7 @@ const JobAddressScreen = props => {
                     />
                 </View>
                 <TextField
-                    value={props.input}
+                    value={input}
                     onChangeText={input => {
                         onChangeText(input);
                     }}

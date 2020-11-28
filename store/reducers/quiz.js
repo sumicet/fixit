@@ -1,6 +1,7 @@
 import { WORK_TYPES } from '../../data/Jobs/WorkTypes';
 
 import {
+    SET_ID,
     SET_OCCUPATION,
     SET_WORK_TYPE,
     SET_JOB_DESCRIPTION,
@@ -8,11 +9,13 @@ import {
     SET_JOB_ADDRESS,
     SET_CUSTOMER_TYPE,
     SET_PROPERTY_TYPE,
+    RESET_JOB_DATA
 } from '../actions/quiz';
 
 const initialState = {
+    id: null,
     occupationId: null,
-    workTypes: null,
+    workTypes: [],
     workTypeId: null,
     startTimeId: null,
     jobDescription: null,
@@ -26,19 +29,22 @@ const initialState = {
 
 const quizReducer = (state = initialState, action) => {
     switch (action.type) {
+        case RESET_JOB_DATA:
+            return initialState;
+        case SET_ID:
+            return{
+                ...state,
+                id: action.id
+            }
         case SET_OCCUPATION:
             const updatedWorkTypes = WORK_TYPES.filter(
                 elem => elem.occupationId === action.occupationId
             );
             return {
+                ...state,
                 occupationId: action.occupationId,
                 workTypes: updatedWorkTypes,
                 workTypeId: null,
-                startTimeId: state.startTimeId,
-                jobDescription: state.jobDescription,
-                jobAddress: state.jobAddress,
-                customerType: state.customerType,
-                propertyType: state.propertyType,
             };
         case SET_WORK_TYPE:
             return {

@@ -1,27 +1,23 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
-import { showInAppNotification } from '../../components/notifications/InAppNotification';
 import Color from '../../constants/Color';
 import SearchBar from '../../components/search/SearchBar';
 import Header from '../../components/text/Header';
 import Layout from '../../constants/Layout';
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
+import showInAppNotification from '../../components/notifications/InAppNotification';
 
-const HomeScreen = ({ route, navigation }) => {
+const HomeScreen = (props) => {
+    const isFocused = useIsFocused();
+
     useEffect(() => {
-        if (route.params && route.params.isInAppNotificationVisible) {
-            showInAppNotification(
-                'Your job has been posted.',
-                'You can now search for a tradesperson. Click here to review your job.',
-                () => {
-                    navigation.navigate('MyJobs');
-                },
-                Color.success
-            );
+        if(isFocused) {
+            console.log('created'); // TODO add notification
         }
-    });
+    }, [props, isFocused]);
 
     return (
         <ScrollableContainer>
@@ -37,7 +33,7 @@ const HomeScreen = ({ route, navigation }) => {
                 <ScrollView horizontal>
                     <TradespersonCard
                         isRateCard={true}
-                        navigation={navigation}
+                        navigation={props.navigation}
                     />
                     <View
                         style={{
@@ -46,12 +42,12 @@ const HomeScreen = ({ route, navigation }) => {
                     >
                         <TradespersonCard
                             isRateCard={true}
-                            navigation={navigation}
+                            navigation={props.navigation}
                         />
                     </View>
                     <TradespersonCard
                         isRateCard={true}
-                        navigation={navigation}
+                        navigation={props.navigation}
                     />
                 </ScrollView>
             </View>
@@ -62,11 +58,11 @@ const HomeScreen = ({ route, navigation }) => {
                 </Header>
             </View>
             <View style={{ flex: 1 }}>
-                <TradespersonCard navigation={navigation} />
+                <TradespersonCard navigation={props.navigation} />
 
-                <TradespersonCard navigation={navigation} />
+                <TradespersonCard navigation={props.navigation} />
 
-                <TradespersonCard navigation={navigation} />
+                <TradespersonCard navigation={props.navigation} />
             </View>
             <View style={{ height: 100, width: '100%' }}></View>
         </ScrollableContainer>

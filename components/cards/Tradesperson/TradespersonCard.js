@@ -161,8 +161,7 @@ const TradespersonCard = props => {
                             ) : (
                                 <SmallContentWithEllipsis
                                     style={{
-                                        color: Color.secondaryColor,
-                                        fontFamily: 'asap-semibold',
+                                        color: Color.textColor,
                                     }}
                                 >
                                     Recommended by: Mister Beast, John Doe,

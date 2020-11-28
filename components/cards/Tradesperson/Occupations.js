@@ -8,7 +8,6 @@ import { OCCUPATIONS } from '../../../data/Jobs/Occupations';
 import Color from '../../../constants/Color';
 
 const Occupations = props => {
-    console.log(props.occupationId);
     return (
         <View
             style={[

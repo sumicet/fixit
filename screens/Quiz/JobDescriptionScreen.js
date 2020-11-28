@@ -1,13 +1,6 @@
-import React, { useState } from 'react';
-import {
-    View,
-    StyleSheet,
-    Dimensions,
-    KeyboardAvoidingView,
-    ScrollView,
-} from 'react-native';
-import { useDispatch } from 'react-redux';
-import Platform from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import QuizScreen from '../../components/containers/QuizScreen';
 import Layout from '../../constants/Layout';
@@ -15,7 +8,8 @@ import TextField from '../../components/text/TextField';
 import { setJobDescription } from '../../store/actions/quiz';
 
 const JobDescriptionScreen = props => {
-    const [input, setInput] = useState();
+    const oldDescription = useSelector(state => state.quiz.jobDescription);
+    const [input, setInput] = useState(oldDescription);
 
     const dispatch = useDispatch();
 
@@ -25,7 +19,9 @@ const JobDescriptionScreen = props => {
 
     const handleNextPress = () => {
         dispatch(setJobDescription(input)); //TODO reset input at the end of the quiz
-        props.navigation.navigate('CustomerTypes');
+        props.navigation.navigate('CustomerTypes', {
+            action: 'edit',
+        });
     };
 
     return (
@@ -37,7 +33,7 @@ const JobDescriptionScreen = props => {
             <ScrollView>
                 <View style={styles.container}>
                     <TextField
-                        value={props.input}
+                        value={input}
                         onChangeText={input => {
                             onChangeText(input);
                         }}

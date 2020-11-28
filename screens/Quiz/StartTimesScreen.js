@@ -22,32 +22,52 @@ const StartTimesScreen = props => {
         startTimes.push(item);
     }
 
-    const occupationId = useSelector(
-        state => state.quiz.occupationId
-    );
-    const workTypeId = useSelector(
-        state => state.quiz.workTypeId
-    );
-    const jobDescription = useSelector(
-        state => state.quiz.jobDescription
-    );
-    const customerType = useSelector(
-        state => state.quiz.customerType
-    );
-    const propertyType = useSelector(
-        state => state.quiz.propertyType
-    );
-    const jobAddress = useSelector(
-        state => state.quiz.jobAddress
-    );
+    const id = useSelector(state => state.quiz.id);
+    const occupationId = useSelector(state => state.quiz.occupationId);
+    const workTypeId = useSelector(state => state.quiz.workTypeId);
+    const jobDescription = useSelector(state => state.quiz.jobDescription);
+    const customerType = useSelector(state => state.quiz.customerType);
+    const propertyType = useSelector(state => state.quiz.propertyType);
+    const jobAddress = useSelector(state => state.quiz.jobAddress);
+    const startTimeId = useSelector(state => state.quiz.startTimeId);
 
     const handleCardPress = async id => {
-        if (id) {
+        if (props.route.params && props.route.params.action === 'edit') {
             dispatch(setStartTime(id));
-            
-            const startTimeId = id;
+            handleNextPress();
+        } else {
+            if (id) {
+                dispatch(setStartTime(id));
+
+                const startTimeId = id;
+
+                dispatch(
+                    Job.addJob(
+                        occupationId,
+                        workTypeId,
+                        jobDescription,
+                        customerType,
+                        propertyType,
+                        jobAddress,
+                        startTimeId
+                    )
+                );
+                
+                props.navigation.navigate('Home', {
+                    screen: 'Home',
+                    params: {
+                        isInAppNotificationVisible: true,
+                    },
+                });
+            }
+        }
+    };
+
+    const handleNextPress = async () => {
+        if (id) {
             dispatch(
-                Job.addJob(
+                Job.editJob(
+                    id,
                     occupationId,
                     workTypeId,
                     jobDescription,
@@ -58,7 +78,8 @@ const StartTimesScreen = props => {
                 )
             );
 
-            props.navigation.navigate('Home', {
+            props.navigation.navigate('JobDetails', {
+                id: id,
                 isInAppNotificationVisible: true,
             });
         }
@@ -70,9 +91,12 @@ const StartTimesScreen = props => {
             data={startTimes}
             handleCardPress={handleCardPress}
             showNextButton={
-                props.route.params && props.route.params.action === 'edit' ? true : false
+                props.route.params && props.route.params.action === 'edit'
+                    ? true
+                    : false
             }
-            onPress={handleCardPress}
+            onPress={handleNextPress}
+            routeName={props.route.name}
         />
     );
 };

@@ -18,6 +18,8 @@ const StartTime = props => {
                 color={
                     startTime === 'Today'
                         ? Color.urgent
+                        : startTime === 'Tomorrow'
+                        ? Color.tomorrow
                         : props.color
                         ? props.color
                         : Color.secondaryColor
@@ -28,11 +30,13 @@ const StartTime = props => {
                     color:
                         startTime === 'Today'
                             ? Color.urgent
+                            : startTime === 'Tomorrow'
+                            ? Color.tomorrow
                             : props.color
                             ? props.color
                             : Color.secondaryColor,
                     fontFamily:
-                        startTime === 'Today'
+                        startTime === 'Today' || startTime === 'Tomorrow'
                             ? 'asap-semibold'
                             : 'asap-regular',
                 }}

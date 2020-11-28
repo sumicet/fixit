@@ -13,7 +13,6 @@ const SectionedContainer = props => {
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             dispatch(setStatusBarStyle('light'));
-            console.log('loaded');
         });
 
         return unsubscribe;

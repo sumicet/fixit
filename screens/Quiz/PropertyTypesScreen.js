@@ -27,9 +27,17 @@ const PropertyTypesScreen = props => {
     const handleCardPress = id => {
         if(id) {
             dispatch(setPropertyType(id));
-            props.navigation.navigate('JobAddress');
+            props.navigation.navigate('JobAddress', {
+                action: 'edit'
+            });
         }
     };
+
+    const handleNextPress = id => {
+        props.navigation.navigate('JobAddress', {
+            action: 'edit'
+        });
+    }
 
     return (
         <QuizContainer
@@ -39,7 +47,8 @@ const PropertyTypesScreen = props => {
             showNextButton={
                 props.route.params && props.route.params.action === 'edit' ? true : false
             }
-            onPress={handleCardPress}
+            onPress={handleNextPress}
+            routeName={props.route.name}
         />
     );
 };

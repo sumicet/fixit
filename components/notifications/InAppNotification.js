@@ -1,5 +1,5 @@
 
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 

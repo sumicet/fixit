@@ -24,8 +24,16 @@ const WorkTypesScreen = props => {
 
     const handleCardPress = id => {
         dispatch(setWorkType(id));
-        props.navigation.navigate('JobDescription');
+        props.navigation.navigate('JobDescription', {
+            action: 'edit'
+        });
     };
+
+    const handleNextPress = id => {
+        props.navigation.navigate('JobDescription', {
+            action: 'edit'
+        });
+    }
 
     return (
         <QuizContainer
@@ -35,7 +43,8 @@ const WorkTypesScreen = props => {
             showNextButton={
                 props.route.params && props.route.params.action === 'edit' ? true : false
             }
-            onPress={handleCardPress}
+            onPress={handleNextPress}
+            routeName={props.route.name}
         />
     );
 };

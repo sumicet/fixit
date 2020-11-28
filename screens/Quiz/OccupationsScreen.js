@@ -73,8 +73,16 @@ const OccupationsScreen = props => {
 
     const handleCardPress = id => {
         dispatch(setOccupation(id));
-        props.navigation.navigate('WorkTypes');
+        props.navigation.navigate('WorkTypes', {
+            action: 'edit'
+        });
     };
+
+    const handleNextPress = id => {
+        props.navigation.navigate('WorkTypes', {
+            action: 'edit'
+        });
+    }
 
     return (
         <QuizContainer
@@ -82,9 +90,12 @@ const OccupationsScreen = props => {
             data={occupations}
             handleCardPress={handleCardPress}
             showNextButton={
-                props.route.params && props.route.params.action === 'edit' ? true : false
+                props.route.params && props.route.params.action === 'edit'
+                    ? true
+                    : false
             }
-            onPress={handleCardPress}
+            onPress={handleNextPress}
+            routeName={props.route.name}
         />
     );
 };

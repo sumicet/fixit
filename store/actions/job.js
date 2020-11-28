@@ -1,7 +1,10 @@
 export const ADD_JOB = 'ADD_JOB';
 export const SET_MY_JOBS = 'SET_MY_JOBS';
+export const UPDATE_JOB = 'UPDATE_JOB';
+export const DELETE_JOB = 'DELETE_JOB';
 
 import Job from '../../models/Jobs/Job';
+import { resetJobData } from './quiz';
 
 export const addJob = (
     occupationId,
@@ -49,6 +52,84 @@ export const addJob = (
             jobAddress,
             startTimeId,
         });
+
+        dispatch(resetJobData());
+    };
+};
+
+export const editJob = (
+    id,
+    occupationId,
+    workTypeId,
+    jobDescription,
+    customerType,
+    propertyType,
+    jobAddress,
+    startTimeId
+) => {
+    return async dispatch => {
+        const responseGet = await fetch(
+            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
+        );
+
+        const responseGetData = await responseGet.json();
+
+        const responsePatch = await fetch(
+            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: responseGetData.userId,
+                    date: responseGetData.date,
+                    occupationId,
+                    workTypeId,
+                    jobDescription,
+                    customerType,
+                    propertyType,
+                    jobAddress,
+                    startTimeId,
+                }),
+            }
+        );
+
+        const responsePatchData = await responsePatch.json();
+
+        dispatch({
+            type: UPDATE_JOB,
+            id,
+            userId: responseGetData.userId,
+            date: responseGetData.date,
+            occupationId,
+            workTypeId,
+            jobDescription,
+            customerType,
+            propertyType,
+            jobAddress,
+            startTimeId,
+        });
+
+        dispatch(resetJobData());
+    };
+};
+
+export const deleteJob = id => {
+    return async dispatch => {
+        const response = await fetch(
+            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
+            {
+                method: 'DELETE',
+            }
+        );
+
+        const responseData = await response.json();
+
+        dispatch({
+            type: DELETE_JOB,
+            id,
+        });
     };
 };
 
@@ -64,7 +145,7 @@ export const fetchMyJobs = () => {
             const userPendingJobs = [];
 
             for (const key in responseData) {
-                if(responseData[key].userId === 'u1') {
+                if (responseData[key].userId === 'u1') {
                     userPendingJobs.push(
                         new Job(
                             key,
@@ -87,7 +168,7 @@ export const fetchMyJobs = () => {
                 userPendingJobs,
             });
         } catch (error) {
-            console.log('err')
+            console.log('err');
         }
     };
 };

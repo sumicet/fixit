@@ -23,8 +23,16 @@ const CustomerTypesScreen = props => {
 
     const handleCardPress = id => {
         dispatch(setCustomerType(id));
-        props.navigation.navigate('PropertyTypes');
+        props.navigation.navigate('PropertyTypes', {
+            action: 'edit'
+        });
     };
+
+    const handleNextPress = id => {
+        props.navigation.navigate('PropertyTypes', {
+            action: 'edit'
+        });
+    }
 
     return (
         <QuizContainer
@@ -34,7 +42,8 @@ const CustomerTypesScreen = props => {
             showNextButton={
                 props.route.params && props.route.params.action === 'edit' ? true : false
             }
-            onPress={handleCardPress}
+            onPress={handleNextPress}
+            routeName={props.route.name}
         />
     );
 };

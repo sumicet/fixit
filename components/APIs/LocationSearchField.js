@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRef } from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 
 const LocationSearchField = props => {
+    const ref = useRef();
+    
+    useEffect(() => {
+        if(props.oldStreetAddress) {
+            ref.current?.setAddressText(props.oldStreetAddress);
+        }
+    }, [])
+
     return (
         <GooglePlacesAutocomplete
             {...props}
+            ref={ref}
             fetchDetails
             styles={fieldStyle}
             query={{

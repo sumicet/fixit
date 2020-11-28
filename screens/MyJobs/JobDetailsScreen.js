@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Trash from 'react-native-vector-icons/Foundation';
@@ -9,7 +9,7 @@ import Header from '../../components/text/Header';
 import SmallContent from '../../components/text/SmallContent';
 import SmallBoldContent from '../../components/text/SmallBoldContent';
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SectionedContainer from '../../components/containers/SectionedContainer';
 import Line from '../../components/common/Line';
 import PostedBy from '../../components/cards/Job/PostedBy';
@@ -20,11 +20,34 @@ import StartTime from '../../components/cards/Job/StartTime';
 import PropertyType from '../../components/myjobs/PropertyType';
 import CustomerType from '../../components/myjobs/CustomerType';
 import Touchable from '../../components/common/Touchable';
+import * as quiz from '../../store/actions/quiz';
+import { deleteJob, fetchMyJobs } from '../../store/actions/job';
+import { showAlert } from '../../store/actions/ui';
+import Alert from '../../components/alert/Alert';
 
 const JobDetailsScreen = props => {
     const job = useSelector(state => state.job.userPendingJobs).find(
         elem => elem.id === props.route.params.id
     ); // TODO only works for customer
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const showAlert = () => {
+        setModalVisible(true);
+    };
+
+    const handleHideAlert = () => {
+        setModalVisible(false);
+    };
+
+    const onDeleteConfirm = () => {
+        dispatch(deleteJob(job.id));
+        props.navigation.navigate('MyJobs', {
+                action: 'delete',
+            });
+    };
+
+    const dispatch = useDispatch();
 
     const TopComponent = () => {
         return (
@@ -203,11 +226,15 @@ const JobDetailsScreen = props => {
     };
 
     const MidComponent = () => {
-        return <View>
-            <Line>
-                <SmallBoldContent>3 people have applied for this job.</SmallBoldContent>
-            </Line>
-        </View>;
+        return (
+            <View>
+                <Line>
+                    <SmallBoldContent>
+                        3 people have applied for this job.
+                    </SmallBoldContent>
+                </Line>
+            </View>
+        );
     };
 
     const BottomComponent = () => {
@@ -223,6 +250,14 @@ const JobDetailsScreen = props => {
                 <TradespersonCard hasQuote={true} quote="200£" />
                 <TradespersonCard hasQuote={true} quote="320£" />
                 <TradespersonCard hasQuote={true} quote="190£" />
+                <Alert
+                    modalVisible={modalVisible}
+                    onHideModal={handleHideAlert}
+                    onPress={onDeleteConfirm}
+                    onCancel={handleHideAlert}
+                    title="Delete"
+                    message="Are you sure you want to delete this job?"
+                />
             </View>
         );
     };
@@ -241,9 +276,20 @@ const JobDetailsScreen = props => {
                         padding: Layout.screenHorizontalPadding / 2,
                     }}
                     onPress={() => {
-                        //
-                        props.navigation.navigate('Occupations', {
-                            action: 'edit',
+                        dispatch(quiz.setId(job.id));
+                        dispatch(quiz.setOccupation(job.occupationId));
+                        dispatch(quiz.setWorkType(job.workTypeId));
+                        dispatch(quiz.setJobDescription(job.jobDescription));
+                        dispatch(quiz.setStartTime(job.startTimeId));
+                        dispatch(quiz.setJobAddress(job.jobAddress));
+                        dispatch(quiz.setCustomerType(job.customerType));
+                        dispatch(quiz.setPropertyType(job.propertyType));
+
+                        props.navigation.navigate('Quiz', {
+                            screen: 'Occupations',
+                            params: {
+                                action: 'edit',
+                            },
                         });
                     }}
                 >
@@ -261,7 +307,9 @@ const JobDetailsScreen = props => {
                         flex: 0,
                         padding: Layout.screenHorizontalPadding / 2,
                     }}
-                    onPress={() => {}}
+                    onPress={() => {
+                        showAlert();
+                    }}
                 >
                     <View style={styles.iconContainer}>
                         <Trash
