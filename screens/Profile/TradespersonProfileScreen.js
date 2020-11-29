@@ -106,6 +106,20 @@ const ProfileScreen = props => {
                         </View>
                     </View>
                 </View>
+                <View style={{ paddingBottom: Layout.generalPadding }}>
+                    <Header style={{ textAlign: 'left' }}>Schedule</Header>
+                </View>
+
+                <View
+                    style={{
+                        paddingBottom: Layout.generalPadding,
+                        flex: 1,
+                    }}
+                >
+                    <SmallContent style={{ color: Color.secondaryColor }}>
+                        Lu - Vi: 10 am - 8 pm, national holidays off
+                    </SmallContent>
+                </View>
             </View>
         );
     };
