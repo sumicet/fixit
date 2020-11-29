@@ -9,6 +9,7 @@ import Touchable from '../../components/common/Touchable';
 import * as Job from '../../store/actions/job';
 import { useIsFocused } from '@react-navigation/native';
 import InAppNotification from '../../components/alert/InAppNotification';
+import Empty from '../../components/empty/Empty';
 
 const MyJobsScreen = props => {
     const userPendingJobs = useSelector(state => state.job.userPendingJobs);
@@ -82,11 +83,15 @@ const MyJobsScreen = props => {
             centerTitle={true}
             style={{ paddingHorizontal: Layout.screenHorizontalPadding }}
         >
-            <FlatList
-                keyExtractor={item => item.id}
-                data={userPendingJobs}
-                renderItem={renderItem}
-            />
+            {userPendingJobs.length !== 0 ? (
+                <FlatList
+                    keyExtractor={item => item.id}
+                    data={userPendingJobs}
+                    renderItem={renderItem}
+                />
+            ) : (
+                <Empty />
+            )}
             <InAppNotification
                 title={inAppNotificationBody.title}
                 message={inAppNotificationBody.message}
