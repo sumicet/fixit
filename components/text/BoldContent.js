@@ -11,7 +11,7 @@ const BoldContent = (props) => {
 
 const styles = StyleSheet.create({
     content: {
-        fontFamily: 'asap-semibold',
+        fontFamily: 'Asap-SemiBold',
         fontSize: Layout.contentSize,
         color: Color.textColor,
     }

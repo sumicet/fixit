@@ -10,7 +10,7 @@ const Title = (props) => {
 
 const styles = StyleSheet.create({
     title: {
-        fontFamily: 'asap-bold',
+        fontFamily: 'Asap-Bold',
         fontSize: 30,
         color: Color.textColor,
     }

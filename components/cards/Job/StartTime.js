@@ -37,8 +37,8 @@ const StartTime = props => {
                             : Color.secondaryColor,
                     fontFamily:
                         startTime === 'Today' || startTime === 'Tomorrow'
-                            ? 'asap-semibold'
-                            : 'asap-regular',
+                            ? 'Asap-SemiBold'
+                            : 'Asap-Regular',
                 }}
             >
                 {' '}

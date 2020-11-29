@@ -26,7 +26,7 @@ const Occupations = props => {
                     }
                 </HeaderWithEllipsis>
             ) : props.isOnProfileScreen ? (
-                <Header style={{color: Color.textField, fontFamily: 'asap-regular'}}>
+                <Header style={{color: Color.textField, fontFamily: 'Asap-Regular'}}>
                     Plumber • Builder • Heating Eng. • Painter • Electrician
                 </Header>
             ) : (

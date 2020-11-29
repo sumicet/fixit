@@ -12,7 +12,7 @@ const Header = (props) => {
 
 const styles = StyleSheet.create({
     header: {
-        fontFamily: 'asap-semibold',
+        fontFamily: 'Asap-SemiBold',
         fontSize: Layout.headerSize,
         color: Color.textColor,
         textAlign: 'center'

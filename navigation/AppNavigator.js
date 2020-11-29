@@ -1,12 +1,15 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
     createStackNavigator,
     CardStyleInterpolators,
 } from '@react-navigation/stack';
-import { createBottomTabNavigator, HeaderStyleInterpolators } from '@react-navigation/bottom-tabs';
+import {
+    createBottomTabNavigator,
+    HeaderStyleInterpolators,
+} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
 
@@ -27,12 +30,32 @@ import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScr
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
 import Touchable from '../components/common/Touchable';
+import { fetchMyJobs } from '../store/actions/job';
+import Loading from '../components/loading/Loading';
 
 const Stack = createStackNavigator();
 const BottomStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        let mounted = true;
+        setIsLoading(true);
+        dispatch(fetchMyJobs()).then(() => {
+            if (mounted) {
+                setIsLoading(false);
+            }
+        });
+        return () => (mounted = false);
+    }, []);
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
     const QuizStack = () => {
         return (
             <Stack.Navigator

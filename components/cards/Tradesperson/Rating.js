@@ -97,7 +97,7 @@ const Rating = props => {
                     <Header
                         style={{
                             color: Color.secondaryColor,
-                            fontFamily: 'asap-semibold',
+                            fontFamily: 'Asap-SemiBold',
                         }}
                     >
                         {rating}

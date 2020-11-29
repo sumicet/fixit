@@ -25,7 +25,7 @@ const JobCard = props => {
                 </View>
                 <View style={{ paddingBottom: 5 }}>
                     <SmallContentWithEllipsis
-                        style={{ fontFamily: 'asap-semibold' }}
+                        style={{ fontFamily: 'Asap-SemiBold' }}
                     >
                         {
                             WORK_TYPES.find(

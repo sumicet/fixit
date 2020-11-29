@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import * as Font from 'expo-font';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-import FlashMessage from "react-native-flash-message";
+import FlashMessage from 'react-native-flash-message';
 
 import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
@@ -16,7 +16,7 @@ import uiReducer from './store/reducers/ui';
 const rootReducer = combineReducers({
     quiz: quizReducer,
     job: jobReducer,
-    ui: uiReducer
+    ui: uiReducer,
 });
 
 const store = createStore(
@@ -26,9 +26,9 @@ const store = createStore(
 
 const fetchFonts = () => {
     return Font.loadAsync({
-        'asap-bold': require('./assets/fonts/Asap-Bold.ttf'),
-        'asap-semibold': require('./assets/fonts/Asap-SemiBold.ttf'),
-        'asap-regular': require('./assets/fonts/Asap-Regular.ttf'),
+        'Asap-Bold': require('./assets/fonts/Asap-Bold.ttf'),
+        'Asap-SemiBold': require('./assets/fonts/Asap-SemiBold.ttf'),
+        'Asap-Regular': require('./assets/fonts/Asap-Regular.ttf'),
     });
 };
 

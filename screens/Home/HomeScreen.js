@@ -8,7 +8,6 @@ import SearchBar from '../../components/search/SearchBar';
 import Header from '../../components/text/Header';
 import Layout from '../../constants/Layout';
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
-import showInAppNotification from '../../components/notifications/InAppNotification';
 
 const HomeScreen = (props) => {
     const isFocused = useIsFocused();

@@ -24,6 +24,7 @@ import * as quiz from '../../store/actions/quiz';
 import { deleteJob, fetchMyJobs } from '../../store/actions/job';
 import { showAlert } from '../../store/actions/ui';
 import Alert from '../../components/alert/Alert';
+import Loading from '../../components/loading/Loading';
 
 const JobDetailsScreen = props => {
     const job = useSelector(state => state.job.userPendingJobs).find(
@@ -41,13 +42,18 @@ const JobDetailsScreen = props => {
     };
 
     const onDeleteConfirm = () => {
+        handleHideAlert();
         dispatch(deleteJob(job.id));
         props.navigation.navigate('MyJobs', {
-                action: 'delete',
-            });
+            action: 'delete',
+        });
     };
 
     const dispatch = useDispatch();
+
+    if (!job) {
+        return <Loading />;
+    }
 
     const TopComponent = () => {
         return (
@@ -250,14 +256,6 @@ const JobDetailsScreen = props => {
                 <TradespersonCard hasQuote={true} quote="200£" />
                 <TradespersonCard hasQuote={true} quote="320£" />
                 <TradespersonCard hasQuote={true} quote="190£" />
-                <Alert
-                    modalVisible={modalVisible}
-                    onHideModal={handleHideAlert}
-                    onPress={onDeleteConfirm}
-                    onCancel={handleHideAlert}
-                    title="Delete"
-                    message="Are you sure you want to delete this job?"
-                />
             </View>
         );
     };
@@ -324,14 +322,24 @@ const JobDetailsScreen = props => {
     };
 
     return (
-        <SectionedContainer
-            title="Details"
-            topComponent={<TopComponent />}
-            midComponent={<MidComponent />}
-            bottomComponent={<BottomComponent />}
-            navigation={props.navigation}
-            rightOfTitleComponent={<RightOfTitleComponent />}
-        />
+        <View style={{ flex: 1 }}>
+            <SectionedContainer
+                title="Details"
+                topComponent={<TopComponent />}
+                midComponent={<MidComponent />}
+                bottomComponent={<BottomComponent />}
+                navigation={props.navigation}
+                rightOfTitleComponent={<RightOfTitleComponent />}
+            />
+            <Alert
+                modalVisible={modalVisible}
+                onPress={onDeleteConfirm}
+                hide={handleHideAlert}
+                title="Delete"
+                titleColor={Color.urgent}
+                message="Are you sure you want to delete this job?"
+            />
+        </View>
     );
 };
 

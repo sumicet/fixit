@@ -58,7 +58,7 @@ const JobAddressScreen = props => {
             <View style={styles.container}>
                 <View style={styles.locationSearchFieldContainer}>
                     <LocationSearchField
-                        oldStreetAddress={jobAddress.line1}
+                        oldStreetAddress={jobAddress ? jobAddress.line1 : null}
                         placeholder="Street address"
                         onPress={(data, details = null) => {
                             setRegion({
