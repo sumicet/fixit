@@ -24,9 +24,10 @@ export default {
     // **************** TEXT ****************
 
     contentSize: 16,
-    smallContentSize: 15,
+    smallContentSize: 16,
     superSmallContentSize: 12,
     headerSize: 18,
+    titleSize: 22,
 
     // **************** BORDER ****************
     

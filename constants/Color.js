@@ -12,5 +12,6 @@ export default {
     urgent: '#b80000',
     tomorrow: '#edba00',
     starColor: '#FF9529',
-    textOnTertiaryColorBackground: 'white'
+    textOnTertiaryColorBackground: 'white',
+    disabled: '#b9b9bd'
 };

@@ -30,7 +30,6 @@ const TextField = props => {
                 placeholderTextColor={Color.placeholderTextColor}
                 selectionColor={Color.primaryBrandColor}
                 style={[
-                    props.style,
                     {
                         fontSize: Layout.contentSize,
                         paddingVertical: Layout.generalPadding,
@@ -51,6 +50,7 @@ const TextField = props => {
                         flex: 1,
                     },
                     props.multiline ? { height: height } : null,
+                    props.style,
                 ]}
                 underlineColorAndroid="transparent"
                 autoFocus={props.showSearchIcon ? false : true}

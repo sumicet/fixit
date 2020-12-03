@@ -8,7 +8,6 @@ import {
 } from '@react-navigation/stack';
 import {
     createBottomTabNavigator,
-    HeaderStyleInterpolators,
 } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
@@ -32,9 +31,12 @@ import Layout from '../constants/Layout';
 import Touchable from '../components/common/Touchable';
 import { fetchMyJobs } from '../store/actions/job';
 import Loading from '../components/loading/Loading';
+import VerifyEmailScreen from '../screens/ResetEmailOrPassword/VerifyEmailScreen';
+import VerifyCodeScreen from '../screens/ResetEmailOrPassword/VerifyCodeScreen';
+import ResetPasswordScreen from '../screens/ResetEmailOrPassword/ResetPasswordScreen';
+import SelectOptionScreen from '../screens/ResetEmailOrPassword/SelectOptionScreen';
 
 const Stack = createStackNavigator();
-const BottomStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
@@ -91,7 +93,7 @@ const AppNavigator = () => {
 
     const MyJobsStack = () => {
         return (
-            <BottomStack.Navigator
+            <Stack.Navigator
                 headerMode={false}
                 animation
                 screenOptions={{
@@ -101,13 +103,39 @@ const AppNavigator = () => {
             >
                 <Stack.Screen name="MyJobs" component={MyJobsScreen} />
                 <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
-            </BottomStack.Navigator>
+            </Stack.Navigator>
+        );
+    };
+
+    const ProfileStack = () => {
+        return (
+            <Stack.Navigator
+                headerMode={false}
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
+                <Stack.Screen
+                    name="UserProfile"
+                    component={UserProfileScreen}
+                />
+                <Stack.Screen
+                    name="TradespersonProfile"
+                    component={TradespersonProfileScreen}
+                />
+                <Stack.Screen
+                    name="ResetEmailOrPassword"
+                    component={ResetEmailOrPasswordStack}
+                />
+            </Stack.Navigator>
         );
     };
 
     const HomeStack = () => {
         return (
-            <BottomStack.Navigator
+            <Stack.Navigator
                 headerMode={false}
                 animation
                 screenOptions={{
@@ -120,7 +148,37 @@ const AppNavigator = () => {
                     name="TradespersonProfile"
                     component={TradespersonProfileScreen}
                 />
-            </BottomStack.Navigator>
+            </Stack.Navigator>
+        );
+    };
+
+    const ResetEmailOrPasswordStack = () => {
+        return (
+            <Stack.Navigator
+                headerMode={false}
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
+                <Stack.Screen
+                    name="SelectOption"
+                    component={SelectOptionScreen}
+                />
+                <Stack.Screen
+                    name="VerifyEmail"
+                    component={VerifyEmailScreen}
+                />
+                <Stack.Screen
+                    name="VerifyCode"
+                    component={VerifyCodeScreen}
+                />
+                <Stack.Screen
+                    name="ResetPassword"
+                    component={ResetPasswordScreen}
+                />
+            </Stack.Navigator>
         );
     };
 
@@ -129,6 +187,7 @@ const AppNavigator = () => {
             <Tab.Navigator
                 tabBarOptions={{
                     showLabel: false,
+                    keyboardHidesTabBar: true,
                     style: {
                         elevation: 0,
                         borderTopWidth: 0.7,
@@ -147,7 +206,7 @@ const AppNavigator = () => {
                                 if (route.name === 'Messages') {
                                     iconName = 'message1';
                                 } else {
-                                    if (route.name === 'UserProfile') {
+                                    if (route.name === 'Profile') {
                                         iconName = 'user';
                                     } else {
                                         if (route.name === 'Quiz') {
@@ -214,8 +273,8 @@ const AppNavigator = () => {
                     })}
                 />
                 <Tab.Screen
-                    name="UserProfile"
-                    component={UserProfileScreen}
+                    name="Profile"
+                    component={ProfileStack}
                     listeners={() => ({
                         tabPress: () => {},
                     })}

@@ -36,8 +36,13 @@ const QuizScreen = props => {
                         style={[
                             props.titleColor
                                 ? { color: props.titleColor }
-                                : { color: Color.primaryBrandColor }, {textAlign: props.centerTitle ? 'center' : 'left'}]
-                        }
+                                : { color: Color.primaryBrandColor },
+                            {
+                                textAlign: props.centerTitle
+                                    ? 'center'
+                                    : 'left',
+                            },
+                        ]}
                     >
                         {props.title}
                     </Title>
@@ -57,8 +62,7 @@ const QuizScreen = props => {
                     <View
                         style={{
                             alignItems: 'flex-end',
-                            flex: 1,
-                            justifyContent: 'center',
+                            justifyContent: 'flex-start',
                         }}
                     >
                         <NextButton onPress={() => props.onPress()} />

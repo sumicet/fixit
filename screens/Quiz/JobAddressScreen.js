@@ -40,7 +40,7 @@ const JobAddressScreen = props => {
 
     const handleNextPress = () => {
         dispatch(setJobAddress({ line1: streetAddress, line2: input })); //TODO reset input at the end of the quiz
-        if(props.route.action === 'edit') {
+        if(props.route.params && props.route.params.action === 'edit') {
             props.navigation.navigate('StartTimes', {
                 action: 'edit'
             });
@@ -95,7 +95,7 @@ const JobAddressScreen = props => {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal:
-            Layout.screenHorizontalPadding - Layout.generalPadding,
+            Layout.screenHorizontalPadding,
     },
     locationSearchFieldContainer: {
         borderRadius: Layout.borderRadius,

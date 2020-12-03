@@ -11,7 +11,6 @@ const NextButton = props => {
         <Touchable {...props}>
             <View
                 style={{
-                    backgroundColor: Color.primaryBrandColor,
                     width: 70,
                     flex: 1,
                     alignItems: 'center',
@@ -21,8 +20,8 @@ const NextButton = props => {
             >
                 <Icon
                     name="right"
-                    size={Layout.buttonIconSize}
-                    color={Color.primaryColor}
+                    size={Layout.menuIconSize}
+                    color={Color.primaryBrandColor}
                 />
             </View>
         </Touchable>

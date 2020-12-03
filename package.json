@@ -16,6 +16,7 @@
     "expo": "~39.0.2",
     "expo-font": "~8.3.0",
     "expo-linear-gradient": "~8.3.0",
+    "expo-random": "~9.0.0",
     "expo-status-bar": "~1.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -39,7 +40,8 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "sib-api-v3-sdk": "^8.0.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

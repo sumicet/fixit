@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 import Color from '../../constants/Color';
+import Layout from '../../constants/Layout';
 
 const Title = (props) => {
     return (
@@ -11,7 +12,7 @@ const Title = (props) => {
 const styles = StyleSheet.create({
     title: {
         fontFamily: 'Asap-Bold',
-        fontSize: 30,
+        fontSize: Layout.titleSize,
         color: Color.textColor,
     }
 })

@@ -34,7 +34,7 @@ const MyJobsScreen = props => {
     const closeInAppNotificationAfterTimerExpires = async () => {
         setTimeout(() => {
             handleHideInAppNotification();
-        }, 3000);
+        }, 5000);
     };
 
     useEffect(() => {

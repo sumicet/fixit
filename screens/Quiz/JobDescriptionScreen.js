@@ -53,7 +53,7 @@ const JobDescriptionScreen = props => {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal:
-            Layout.screenHorizontalPadding - Layout.generalPadding,
+            Layout.screenHorizontalPadding,
     },
 });
 

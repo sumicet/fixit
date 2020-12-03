@@ -85,6 +85,8 @@ const StartTimesScreen = props => {
         }
     };
 
+    console.log(props.route.params)
+
     return (
         <QuizContainer
             title="When should the work start?"
