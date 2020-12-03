@@ -13,5 +13,7 @@ export default {
     tomorrow: '#edba00',
     starColor: '#FF9529',
     textOnTertiaryColorBackground: 'white',
-    disabled: '#b9b9bd'
+    disabled: '#b9b9bd',
+    premiumFixit: "#ec42ff",
+    bump: '#42cdff'
 };

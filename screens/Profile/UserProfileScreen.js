@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -55,7 +55,7 @@ const UserProfileScreen = props => {
             // TODO fetch email and password
             setInAppNotificationBody({
                 title: 'Success',
-                message: 'Your password was updated.',
+                message: 'Your password was successfully updated.',
             });
             setInAppNotificationVisible(true);
             closeInAppNotificationAfterTimerExpires();
@@ -87,7 +87,11 @@ const UserProfileScreen = props => {
             <View style={{ flex: 1 }}>
                 <Waves />
                 <Touchable
-                    onPress={() => {}}
+                    onPress={() => {
+                        props.navigation.navigate('Service', {
+                            screen: 'ServicesScreen',
+                        });
+                    }}
                     style={{
                         flex: 0,
                         height: 150,

@@ -35,6 +35,7 @@ import VerifyEmailScreen from '../screens/ResetEmailOrPassword/VerifyEmailScreen
 import VerifyCodeScreen from '../screens/ResetEmailOrPassword/VerifyCodeScreen';
 import ResetPasswordScreen from '../screens/ResetEmailOrPassword/ResetPasswordScreen';
 import SelectOptionScreen from '../screens/ResetEmailOrPassword/SelectOptionScreen';
+import ServicesScreen from '../screens/Service/ServicesScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -129,6 +130,10 @@ const AppNavigator = () => {
                     name="ResetEmailOrPassword"
                     component={ResetEmailOrPasswordStack}
                 />
+                <Stack.Screen
+                    name="Service"
+                    component={ServiceStack}
+                />
             </Stack.Navigator>
         );
     };
@@ -177,6 +182,24 @@ const AppNavigator = () => {
                 <Stack.Screen
                     name="ResetPassword"
                     component={ResetPasswordScreen}
+                />
+            </Stack.Navigator>
+        );
+    };
+
+    const ServiceStack = () => {
+        return (
+            <Stack.Navigator
+                headerMode={false}
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
+                <Stack.Screen
+                    name="Services"
+                    component={ServicesScreen}
                 />
             </Stack.Navigator>
         );

@@ -23,7 +23,13 @@ const Alert = props => {
             cardStyle={styles.card}
         >
             <Line style={{ paddingTop: Layout.screenHorizontalPadding }}>
-                <Title style={{ color: props.titleColor ? props.titleColor : Color.primaryBrandColor }}>
+                <Title
+                    style={{
+                        color: props.titleColor
+                            ? props.titleColor
+                            : Color.primaryBrandColor,
+                    }}
+                >
                     {props.title}
                 </Title>
             </Line>
@@ -49,7 +55,11 @@ const Alert = props => {
                     onPress={props.hide}
                     style={[
                         styles.touchable,
-                        { backgroundColor: Color.primaryBrandColor },
+                        {
+                            backgroundColor: props.cancelButtonColor
+                                ? props.cancelButtonColor
+                                : Color.primaryBrandColor,
+                        },
                     ]}
                 >
                     <Header
@@ -65,7 +75,11 @@ const Alert = props => {
                     onPress={props.onPress}
                     style={[
                         styles.touchable,
-                        { backgroundColor: Color.urgent },
+                        {
+                            backgroundColor: props.buttonColor
+                                ? props.buttonColor
+                                : Color.urgent,
+                        },
                     ]}
                 >
                     <Header
