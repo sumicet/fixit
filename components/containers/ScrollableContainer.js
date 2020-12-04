@@ -8,10 +8,10 @@ const ScrollableContainer = (props) => {
     return (
         <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
             <ScrollView
-                style={{
+                style={[{
                     paddingTop: Layout.screenVerticalPadding,
                     paddingHorizontal: Layout.screenHorizontalPadding,
-                }}
+                }, props.style]}
             >
                 {props.children}
             </ScrollView>

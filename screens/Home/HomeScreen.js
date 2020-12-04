@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
 import Color from '../../constants/Color';
@@ -9,18 +9,18 @@ import Header from '../../components/text/Header';
 import Layout from '../../constants/Layout';
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
 
-const HomeScreen = (props) => {
+const HomeScreen = props => {
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        if(isFocused) {
+        if (isFocused) {
             console.log('created'); // TODO add notification
         }
     }, [props, isFocused]);
 
     return (
-        <ScrollableContainer>
-            <SearchBar />
+        <ScrollableContainer style={{ paddingTop: 0 }}>
+            {/* <SearchBar /> */}
 
             <View style={{ width: '100%', marginBottom: Layout.cardMargin }}>
                 <Header style={{ textAlign: 'left' }}>

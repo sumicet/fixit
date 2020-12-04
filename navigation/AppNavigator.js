@@ -1,14 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
     createStackNavigator,
     CardStyleInterpolators,
+    HeaderStyleInterpolators,
 } from '@react-navigation/stack';
-import {
-    createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
 
@@ -36,6 +35,9 @@ import VerifyCodeScreen from '../screens/ResetEmailOrPassword/VerifyCodeScreen';
 import ResetPasswordScreen from '../screens/ResetEmailOrPassword/ResetPasswordScreen';
 import SelectOptionScreen from '../screens/ResetEmailOrPassword/SelectOptionScreen';
 import ServicesScreen from '../screens/Service/ServicesScreen';
+import SearchScreen from '../screens/Home/SearchScreen';
+import Title from '../components/text/Title';
+import SearchBar from '../components/search/SearchBar';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,6 +45,7 @@ const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const [searchBarHeight, setSearchBarHeight] = useState(0);
 
     useEffect(() => {
         let mounted = true;
@@ -130,10 +133,7 @@ const AppNavigator = () => {
                     name="ResetEmailOrPassword"
                     component={ResetEmailOrPasswordStack}
                 />
-                <Stack.Screen
-                    name="Service"
-                    component={ServiceStack}
-                />
+                <Stack.Screen name="Service" component={ServiceStack} />
             </Stack.Navigator>
         );
     };
@@ -141,15 +141,47 @@ const AppNavigator = () => {
     const HomeStack = () => {
         return (
             <Stack.Navigator
-                headerMode={false}
-                animation
-                screenOptions={{
+                //animation
+                headerMode='float'
+                screenOptions={({ route, navigation }) => ({
+                    headerStyleInterpolator:
+                        HeaderStyleInterpolators.forNoAnimation,
                     cardStyleInterpolator:
-                        CardStyleInterpolators.forHorizontalIOS,
-                }}
+                        CardStyleInterpolators.forFadeFromBottomAndroid,
+                    headerTitle: props => (
+                        <View
+                            onLayout={event => {
+                                var { height } = event.nativeEvent.layout;
+                                setSearchBarHeight(height);
+                            }}
+                            style={{
+                                //Layout.screenTopMargin,
+                                backgroundColor: Color.primaryColor,
+                                paddingHorizontal: Layout.screenVerticalPadding,
+                                //height: 200,
+                            }}
+                        >
+                            <SearchBar navigation={navigation} route={route} />
+                        </View>
+                    ),
+                    headerStyle: {
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0, //for ios?
+                        elevation: 0,
+                        backgroundColor: Color.primaryColor,
+                        //height: searchBarHeight,
+                    },
+                    headerTitleContainerStyle: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                    },
+                })}
             >
                 <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Search" component={SearchScreen} />
                 <Stack.Screen
+                    options={{ headerShown: false }}
                     name="TradespersonProfile"
                     component={TradespersonProfileScreen}
                 />
@@ -175,10 +207,7 @@ const AppNavigator = () => {
                     name="VerifyEmail"
                     component={VerifyEmailScreen}
                 />
-                <Stack.Screen
-                    name="VerifyCode"
-                    component={VerifyCodeScreen}
-                />
+                <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
                 <Stack.Screen
                     name="ResetPassword"
                     component={ResetPasswordScreen}
@@ -197,10 +226,7 @@ const AppNavigator = () => {
                         CardStyleInterpolators.forHorizontalIOS,
                 }}
             >
-                <Stack.Screen
-                    name="Services"
-                    component={ServicesScreen}
-                />
+                <Stack.Screen name="Services" component={ServicesScreen} />
             </Stack.Navigator>
         );
     };

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import Edit from 'react-native-vector-icons/MaterialIcons';
@@ -9,6 +10,17 @@ import Touchable from '../common/Touchable';
 
 const TextField = props => {
     const [height, setHeight] = useState(200);
+    var inputRef = useRef();
+    const isFocused = useIsFocused();
+    const [wasAlreadyFocusedOnce, setWasAlreadyFocusedOnce] = useState(false);
+
+
+    useEffect(() => {
+        if (props.route === 'Search' && isFocused && !wasAlreadyFocusedOnce) {
+            inputRef.focus();
+            setWasAlreadyFocusedOnce(true);
+        }
+    }, [props, isFocused]);
 
     return (
         <View
@@ -20,6 +32,10 @@ const TextField = props => {
             ]}
         >
             <TextInput
+                ref={input => {
+                    inputRef = input;
+                }}
+                //autoFocus={props.route === 'Search' ? true : false}
                 {...props}
                 onContentSizeChange={e => {
                     const newHeight = e.nativeEvent.contentSize.height;
@@ -53,7 +69,6 @@ const TextField = props => {
                     props.style,
                 ]}
                 underlineColorAndroid="transparent"
-                autoFocus={props.showSearchIcon ? false : true}
             />
             {props.showSearchIcon ? (
                 <View

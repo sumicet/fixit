@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, Keyboard } from 'react-native';
 import TextField from '../text/TextField';
 import Layout from '../../constants/Layout';
+import Touchable from '../common/Touchable';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const SearchBar = props => {
-
     const [input, setInput] = useState();
 
-    const onChangeText = (input) => {
-
-    }
+    const onChangeText = input => {};
 
     return (
-        <View
+        <TouchableWithoutFeedback
+            onPress={() => {
+                props.navigation.navigate('Search');
+            }}
             style={{
                 justifyContent: 'center',
                 width: '100%',
+                flex: 0,
             }}
         >
             <TextField
+                route={props.route.name}
+                onTouchStart={() => {
+                    if (props.route.name === 'Home') {
+                        props.navigation.navigate('Search');
+                    }
+                }}
                 showSearchIcon={true}
                 onPress={() => {}}
                 value={props.input}
@@ -30,7 +39,7 @@ const SearchBar = props => {
                 containerStyle={{ marginVertical: Layout.generalMargin }}
                 textAlignVertical="center"
             />
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 
