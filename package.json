@@ -30,6 +30,8 @@
     "react-native-maps": "^0.27.1",
     "react-native-material-textfield": "git+https://github.com/javarahulsharma/react-native-material-textfield.git",
     "react-native-modal": "^11.5.6",
+    "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
+    "react-native-paper": "^4.4.1",
     "react-native-phone-call": "^1.0.9",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
@@ -42,7 +44,8 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "sib-api-v3-sdk": "^8.0.2"
+    "sib-api-v3-sdk": "^8.0.2",
+    "teaset": "^0.7.5"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

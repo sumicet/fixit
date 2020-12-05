@@ -61,7 +61,7 @@ const JobDetailsScreen = props => {
                 <Line style={{ alignItems: 'flex-start' }}>
                     <PostedBy
                         date={job.date}
-                        textColor={Color.textOnTertiaryColorBackground}
+                        textColor={Color.primaryColor}
                     />
                 </Line>
                 <Line
@@ -110,14 +110,14 @@ const JobDetailsScreen = props => {
                     <View style={{ paddingBottom: Layout.generalPadding }}>
                         <Header
                             style={{
-                                color: Color.textOnTertiaryColorBackground,
+                                color: Color.primaryColor,
                             }}
                         >
                             Description:{' '}
                         </Header>
                     </View>
                     <SmallContent
-                        style={{ color: Color.textOnTertiaryColorBackground }}
+                        style={{ color: Color.primaryColor }}
                     >
                         {job.jobDescription}
                     </SmallContent>

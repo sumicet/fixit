@@ -52,7 +52,7 @@ const RateTradespersonModal = props => {
                         <Occupations
                             isRateCard={true}
                             style={{ justifyContent: 'center' }}
-                            textColor={Color.textOnTertiaryColorBackground}
+                            textColor={Color.primaryColor}
                         />
                     </Line>
                     <Line>

@@ -12,7 +12,7 @@ export default {
     urgent: '#b80000',
     tomorrow: '#edba00',
     starColor: '#FF9529',
-    textOnTertiaryColorBackground: 'white',
+    textOnTertiaryColorBackground: '#d3d7f2',
     disabled: '#b9b9bd',
     premiumFixit: "#ec42ff",
     bump: '#42cdff'
