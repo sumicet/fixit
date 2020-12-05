@@ -61,7 +61,7 @@ const JobDetailsScreen = props => {
                 <Line style={{ alignItems: 'flex-start' }}>
                     <PostedBy
                         date={job.date}
-                        textColor={Color.primaryColor}
+                        textColor={Color.textOnTertiaryColorBackground}
                     />
                 </Line>
                 <Line
@@ -73,7 +73,7 @@ const JobDetailsScreen = props => {
                     <Header
                         style={{
                             textAlign: 'left',
-                            color: Color.primaryBrandColor,
+                            color: Color.importantTextOnTertiaryColorBackground,
                         }}
                     >
                         {
@@ -84,7 +84,7 @@ const JobDetailsScreen = props => {
                     <Header
                         style={{
                             textAlign: 'left',
-                            color: Color.primaryBrandColor,
+                            color: Color.importantTextOnTertiaryColorBackground,
                         }}
                     >
                         (
@@ -92,7 +92,7 @@ const JobDetailsScreen = props => {
                     <Header
                         style={{
                             textAlign: 'left',
-                            color: Color.primaryBrandColor,
+                            color: Color.importantTextOnTertiaryColorBackground,
                         }}
                     >
                         {WORK_TYPES.find(occ => occ.id === job.workTypeId).name}
@@ -100,7 +100,7 @@ const JobDetailsScreen = props => {
                     <Header
                         style={{
                             textAlign: 'left',
-                            color: Color.primaryBrandColor,
+                            color: Color.importantTextOnTertiaryColorBackground,
                         }}
                     >
                         )
@@ -110,14 +110,14 @@ const JobDetailsScreen = props => {
                     <View style={{ paddingBottom: Layout.generalPadding }}>
                         <Header
                             style={{
-                                color: Color.primaryColor,
+                                color: Color.textOnTertiaryColorBackground,
                             }}
                         >
                             Description:{' '}
                         </Header>
                     </View>
                     <SmallContent
-                        style={{ color: Color.primaryColor }}
+                        style={{ color: Color.textOnTertiaryColorBackground }}
                     >
                         {job.jobDescription}
                     </SmallContent>
@@ -201,27 +201,27 @@ const JobDetailsScreen = props => {
                 >
                     <StartTime
                         startTimeId={job.startTimeId}
-                        color={Color.primaryColor}
+                        color={Color.textOnTertiaryColorBackground}
                     />
                     <PropertyType
                         propertyType={job.propertyType}
-                        color={Color.primaryColor}
+                        color={Color.textOnTertiaryColorBackground}
                     />
                     <CustomerType
                         customerType={job.customerType}
-                        color={Color.primaryColor}
+                        color={Color.textOnTertiaryColorBackground}
                     />
                 </Line>
                 <Line style={{ flexDirection: 'row' }}>
                     <LocationIcon
                         size={Layout.cardBigIconSize}
-                        color={Color.primaryColor}
+                        color={Color.textOnTertiaryColorBackground}
                     />
                     <View>
                         <SmallContent> </SmallContent>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <SmallContent style={{ color: Color.primaryColor }}>
+                        <SmallContent style={{ color: Color.textOnTertiaryColorBackground }}>
                             25km • {job.jobAddress.line1} •{' '}
                             {job.jobAddress.line2}
                         </SmallContent>
@@ -235,7 +235,7 @@ const JobDetailsScreen = props => {
         return (
             <View>
                 <Line>
-                    <SmallBoldContent>
+                    <SmallBoldContent style={{color: Color.primaryBrandColor}}>
                         3 people have applied for this job.
                     </SmallBoldContent>
                 </Line>
@@ -294,7 +294,7 @@ const JobDetailsScreen = props => {
                     <View style={styles.iconContainer}>
                         <Icon
                             name="edit"
-                            color={Color.primaryColor}
+                            color={Color.textOnTertiaryColorBackground}
                             size={Layout.menuIconSize}
                         />
                     </View>
@@ -312,7 +312,7 @@ const JobDetailsScreen = props => {
                     <View style={styles.iconContainer}>
                         <Trash
                             name="trash"
-                            color={Color.primaryColor}
+                            color={Color.textOnTertiaryColorBackground}
                             size={Layout.menuIconSize}
                         />
                     </View>
@@ -325,6 +325,7 @@ const JobDetailsScreen = props => {
         <View style={{ flex: 1 }}>
             <SectionedContainer
                 title="Details"
+                titleColor={Color.importantTextOnTertiaryColorBackground}
                 topComponent={<TopComponent />}
                 midComponent={<MidComponent />}
                 bottomComponent={<BottomComponent />}

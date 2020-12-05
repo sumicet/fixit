@@ -149,6 +149,7 @@ const TradespersonCard = props => {
                                         rating={props.isRateCard ? updatedRating : 4.5}
                                         isRateCard={props.isRateCard}
                                         onStarPress={handleStarPress}
+                                        readOnly={props.isRateCard ? false : true}
                                     />
                                 )}
                             </View>
@@ -157,11 +158,11 @@ const TradespersonCard = props => {
                     {props.isRateCard ? null : (
                         <View style={styles.bottomContainer}>
                             {props.hasQuote ? (
-                                <Header>{props.quote}</Header>
+                                <Header style={{color: Color.importantTextOnTertiaryColorBackground}}>{props.quote}</Header>
                             ) : (
                                 <SmallContentWithEllipsis
                                     style={{
-                                        color: Color.textColor,
+                                        color: Color.textOnTertiaryColorBackground,
                                     }}
                                 >
                                     Recommended by: Mister Beast, John Doe,

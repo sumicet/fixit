@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Color from '../../../constants/Color';
@@ -8,37 +8,53 @@ import SmallContent from '../../text/SmallContent';
 import Header from '../../text/Header';
 import Touchable from '../../common/Touchable';
 
+export const addFullStars = (count, isRateCard) => {
+    var starsVar = [];
+    var i;
+    for (i = 1; i <= count; i++) {
+        starsVar.push(
+            <Icon
+                name="star"
+                color={Color.starColor}
+                size={isRateCard ? Layout.bigStarIconSize : Layout.starIconSize}
+                key={i}
+            />
+        );
+    }
+    return starsVar;
+};
+
 const Rating = props => {
     const rating =
         Math.round(props.rating * 10) / 10 > 5
             ? 5
             : Math.round(props.rating * 10) / 10; // get the rating with one decimal
 
+    const StarContainer = props => {
+        return (
+            <View>
+                {props.readOnly ? (
+                    <View style={styles.ratingContainer}>{props.children}</View>
+                ) : (
+                    <Touchable
+                        onPress={() => {
+                            handleStarPress(props.index);
+                        }}
+                        style={styles.ratingContainer}
+                    >
+                        {props.children}
+                    </Touchable>
+                )}
+            </View>
+        );
+    };
+
     var starsVar = [];
     const [stars, setStars] = useState([]);
 
     var i;
 
-    const addFullStars = count => {
-        var starsVar = [];
-        for (i = 1; i <= count; i++) {
-            starsVar.push(
-                <Icon
-                    name="star"
-                    color={Color.starColor}
-                    size={
-                        props.isRateCard
-                            ? Layout.bigStarIconSize
-                            : Layout.starIconSize
-                    }
-                    key={i}
-                />
-            );
-        }
-        return starsVar;
-    };
-
-    starsVar = addFullStars(Math.floor(rating));
+    starsVar = addFullStars(Math.floor(rating), props.isRateCard);
 
     if (Math.floor(rating) != Math.ceil(rating)) {
         starsVar.push(
@@ -96,7 +112,9 @@ const Rating = props => {
                 <View style={styles.ratingContainer}>
                     <Header
                         style={{
-                            color: Color.secondaryColor,
+                            color: props.color
+                                ? props.color
+                                : Color.secondaryColor,
                             fontFamily: 'Asap-SemiBold',
                         }}
                     >
@@ -107,20 +125,24 @@ const Rating = props => {
             <View style={styles.starsVar}>
                 {stars.map((value, index) => {
                     return (
-                        <Touchable
-                            onPress={() => {
-                                handleStarPress(index);
-                            }}
-                            style={styles.ratingContainer}
+                        <StarContainer
+                            readOnly={props.readOnly}
+                            index={index}
                         >
                             {value}
-                        </Touchable>
+                        </StarContainer>
                     );
                 })}
             </View>
             {props.isRateCard ? null : (
                 <View style={styles.ratingContainer}>
-                    <SmallContent style={{ color: Color.secondaryColor }}>
+                    <SmallContent
+                        style={{
+                            color: props.color
+                                ? props.color
+                                : Color.secondaryColor,
+                        }}
+                    >
                         (103)
                     </SmallContent>
                 </View>

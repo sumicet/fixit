@@ -19,7 +19,7 @@ const CloseButton = (props) => {
                 <Icon
                     name="close"
                     size={Layout.mediumButtonIconSize}
-                    color={Color.primaryColor}
+                    color={Color.textOnTertiaryColorBackground}
                 />
             </View>
         </Touchable>

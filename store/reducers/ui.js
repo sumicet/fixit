@@ -1,7 +1,7 @@
 import { SET_STATUS_BAR_STYLE } from '../actions/ui';
 
 const initialState = {
-    barStyle: 'dark',
+    barStyle: 'light',
 };
 
 const uiReducer = (state = initialState, action) => {

@@ -19,7 +19,7 @@ const OkButton = (props) => {
                 <Icon
                     name="check"
                     size={Layout.mediumButtonIconSize}
-                    color={Color.primaryBrandColor}
+                    color={Color.importantTextOnTertiaryColorBackground}
                 />
             </View>
         </Touchable>

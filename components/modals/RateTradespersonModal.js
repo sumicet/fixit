@@ -41,7 +41,7 @@ const RateTradespersonModal = props => {
                     <Line
                         style={{ paddingTop: Layout.screenHorizontalPadding }}
                     >
-                        <Title style={{ color: Color.primaryBrandColor }}>
+                        <Title style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                             John McCormack
                         </Title>
                     </Line>
@@ -52,7 +52,7 @@ const RateTradespersonModal = props => {
                         <Occupations
                             isRateCard={true}
                             style={{ justifyContent: 'center' }}
-                            textColor={Color.primaryColor}
+                            textColor={Color.textOnTertiaryColorBackground}
                         />
                     </Line>
                     <Line>

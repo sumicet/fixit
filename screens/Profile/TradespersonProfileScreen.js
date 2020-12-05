@@ -31,6 +31,7 @@ const ProfileScreen = props => {
                 </Line>
                 <Line>
                     <Contact
+                        iconColor={Color.importantTextOnTertiaryColorBackground}
                         showLabels={true}
                         containerStyle={styles.contactContainer}
                     />
@@ -137,7 +138,7 @@ const ProfileScreen = props => {
                     }}
                 >
                     <Header style={{ textAlign: 'left' }}>Rating: </Header>
-                    <Rating rating={4.5} />
+                    <Rating rating={4.5} color={Color.textColor} readOnly={true} />
                 </View>
 
                 <Comment />
@@ -153,6 +154,7 @@ const ProfileScreen = props => {
     return (
         <SectionedContainer
             title="John McCormack"
+            titleColor={Color.importantTextOnTertiaryColorBackground}
             topComponent={<TopComponent />}
             midComponent={<MidComponent />}
             bottomComponent={<BottomComponent />}

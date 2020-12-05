@@ -38,6 +38,7 @@ import ServicesScreen from '../screens/Service/ServicesScreen';
 import SearchScreen from '../screens/Home/SearchScreen';
 import Title from '../components/text/Title';
 import SearchBar from '../components/search/SearchBar';
+import QuizScreen from '../screens/Quiz/QuizScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -147,7 +148,7 @@ const AppNavigator = () => {
                     headerStyleInterpolator:
                         HeaderStyleInterpolators.forNoAnimation,
                     cardStyleInterpolator:
-                        CardStyleInterpolators.forFadeFromBottomAndroid,
+                        CardStyleInterpolators.forHorizontalIOS,
                     headerTitle: props => (
                         <View
                             onLayout={event => {
@@ -241,6 +242,7 @@ const AppNavigator = () => {
                         elevation: 0,
                         borderTopWidth: 0.7,
                         borderTopColor: Color.textField,
+                        backgroundColor: Color.textField
                     },
                 }}
                 screenOptions={({ navigation, route }) => ({
@@ -269,13 +271,14 @@ const AppNavigator = () => {
                         return (
                             <Touchable
                                 onPress={() => {
-                                    if (route.name === 'Quiz') {
-                                        navigation.navigate(route.name, {
-                                            screen: 'Occupations',
-                                        });
-                                    } else {
-                                        navigation.navigate(route.name);
-                                    }
+                                    // if (route.name === 'Quiz') {
+                                    //     navigation.navigate(route.name, {
+                                    //         screen: 'Occupations',
+                                    //     });
+                                    // } else {
+                                    //     navigation.navigate(route.name);
+                                    // }
+                                    navigation.navigate(route.name);
                                 }}
                                 style={styles.touchable}
                             >
@@ -309,7 +312,8 @@ const AppNavigator = () => {
                 />
                 <Tab.Screen
                     name="Quiz"
-                    component={QuizStack}
+                    //component={QuizStack}
+                    component={QuizScreen}
                     listeners={() => ({
                         tabPress: () => {},
                     })}

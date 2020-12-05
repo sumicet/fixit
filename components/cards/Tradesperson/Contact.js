@@ -21,8 +21,8 @@ const Contact = props => {
                     <Call
                         name="ios-call"
                         color={
-                            props.showLabels
-                                ? Color.primaryBrandColor
+                            props.iconColor
+                                ? props.iconColor
                                 : Color.primaryBrandColor
                         }
                         size={Layout.menuIconSize}
@@ -30,9 +30,8 @@ const Contact = props => {
                     {props.showLabels ? (
                         <SuperSmallContent
                             style={{
-                                color: props.showLabels
-                                    ? Color.primaryBrandColor
-                                    : Color.primaryBrandColor,
+                                color:
+                                    Color.importantTextOnTertiaryColorBackground,
                             }}
                         >
                             Call
@@ -45,8 +44,8 @@ const Contact = props => {
                     <Icon
                         name="message-text"
                         color={
-                            props.showLabels
-                                ? Color.primaryBrandColor
+                            props.iconColor
+                                ? props.iconColor
                                 : Color.primaryBrandColor
                         }
                         size={Layout.menuIconSize}
@@ -54,9 +53,8 @@ const Contact = props => {
                     {props.showLabels ? (
                         <SuperSmallContent
                             style={{
-                                color: props.showLabels
-                                    ? Color.primaryBrandColor
-                                    : Color.primaryBrandColor,
+                                color:
+                                    Color.importantTextOnTertiaryColorBackground,
                             }}
                         >
                             Message

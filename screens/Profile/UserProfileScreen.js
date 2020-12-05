@@ -74,7 +74,7 @@ const UserProfileScreen = props => {
 
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('blur', () => {
-            dispatch(setStatusBarStyle('dark'));
+            dispatch(setStatusBarStyle('light'));
         });
 
         return unsubscribe;
@@ -103,12 +103,12 @@ const UserProfileScreen = props => {
                     }}
                     isCard={true}
                 >
-                    <Title style={{ color: Color.primaryBrandColor }}>
+                    <Title style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                         Premium Fixit
                     </Title>
                     <SmallContent
                         style={{
-                            color: Color.primaryColor,
+                            color: Color.textOnTertiaryColorBackground,
                             textAlign: 'center',
                         }}
                     >

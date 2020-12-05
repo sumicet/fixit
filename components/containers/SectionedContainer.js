@@ -20,7 +20,7 @@ const SectionedContainer = props => {
 
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('blur', () => {
-            dispatch(setStatusBarStyle('dark'));
+            dispatch(setStatusBarStyle('light'));
         });
 
         return unsubscribe;
@@ -29,7 +29,9 @@ const SectionedContainer = props => {
     return (
         <TitledScrollableContainer
             title={props.title}
-            titleColor={Color.primaryBrandColor}
+            titleColor={
+                props.titleColor ? props.titleColor : Color.primaryBrandColor
+            }
             backgroundColor={Color.tertiaryBrandColor}
             rightOfTitleComponent={props.rightOfTitleComponent}
         >

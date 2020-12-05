@@ -43,7 +43,7 @@ const ServiceCard = props => {
                                 flex: 0,
                             }}
                         >
-                            <Title style={{ color: Color.primaryColor }}>
+                            <Title style={{ color: Color.importantTextOnTertiaryColorBackground}}>
                                 {props.title}
                             </Title>
                         </Line>
@@ -54,7 +54,7 @@ const ServiceCard = props => {
                                 paddingBottom: 5,
                             }}
                         >
-                            <SmallContent style={{ color: Color.primaryColor }}>
+                            <SmallContent style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                                 {props.perkOne}
                             </SmallContent>
                         </Line>
@@ -64,7 +64,7 @@ const ServiceCard = props => {
                                 flex: 0,
                             }}
                         >
-                            <SmallContent style={{ color: Color.primaryColor }}>
+                            <SmallContent style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                                 {props.perkTwo}
                             </SmallContent>
                         </Line>
@@ -74,7 +74,7 @@ const ServiceCard = props => {
                                 flex: 0,
                             }}
                         >
-                            <Header style={{ color: Color.primaryColor }}>
+                            <Header style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                                 {props.price}
                             </Header>
                         </Line>

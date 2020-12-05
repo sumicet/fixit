@@ -7,7 +7,12 @@ import Color from '../../constants/Color';
 
 const TitledScrollableContent = props => {
     return (
-        <View style={[styles.container, {backgroundColor: props.backgroundColor}]}>
+        <View
+            style={[
+                styles.container,
+                { backgroundColor: props.backgroundColor },
+            ]}
+        >
             <ScrollView style={styles.scrollView}>
                 <QuizScreen
                     title={props.title}

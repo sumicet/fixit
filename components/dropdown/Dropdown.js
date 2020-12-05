@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -8,6 +8,9 @@ import Color from '../../constants/Color';
 import SmallContent from '../text/SmallContent';
 
 const Dropdown = props => {
+
+    const [color, setColor] = useState(Color.textField);
+
     return (
         <View
             style={{
@@ -16,15 +19,18 @@ const Dropdown = props => {
             }}
         >
             <View style={{ paddingRight: Layout.generalPadding }}>
-                <SmallContent style={{ color: Color.secondaryColor }}>
-                    {props.label}
+                <SmallContent style={{ color: Color.textColor }}>
+                    {props.label}:
                 </SmallContent>
             </View>
             <ModalDropdown
+                onSelect={() => {
+                    setColor(Color.primaryBrandColor);
+                }}
                 isFullWidth={true}
                 options={props.options}
                 style={{
-                    backgroundColor: Color.secondaryBrandColor,
+                    backgroundColor: color,
                     padding: Layout.generalPadding,
                     justifyContent: 'center',
                     borderWidth: 0,
@@ -32,9 +38,9 @@ const Dropdown = props => {
                     borderRadius: Layout.borderRadius,
                 }}
                 textStyle={{
-                    color: Color.primaryColor,
+                    color: color === Color.primaryBrandColor ? Color.primaryColor : Color.textColor,
                     fontSize: Layout.smallContentSize,
-                    fontFamily: 'Asap-SemiBold',
+                    fontFamily: color === Color.primaryBrandColor ? 'Asap-SemiBold' : 'Asap-Regular',
                 }}
                 dropdownStyle={{
                     padding: Layout.generalPadding / 2,
@@ -58,7 +64,6 @@ const Dropdown = props => {
                 }}
                 renderSeparator={() => <View></View>}
                 adjustFrame={({ width, height, top, left, right }) => {
-                    console.log(top);
                     top = top + Layout.generalPadding;
                     left = left - Layout.generalPadding;
                     right = right - Layout.generalPadding;
@@ -79,6 +84,7 @@ const Dropdown = props => {
                         />
                     </View>
                 )}
+                defaultValue={props.defaultValue}
             />
         </View>
     );
