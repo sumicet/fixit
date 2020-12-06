@@ -8,18 +8,13 @@ import TextField from '../../components/text/TextField';
 import { setJobDescription } from '../../store/actions/quiz';
 
 const JobDescription = props => {
-    const oldDescription = useSelector(state => state.quiz.jobDescription);
-    const [input, setInput] = useState(oldDescription);
-
-    const onChangeText = updatedInput => {
-        setInput(updatedInput);
-    };
+    
 
     return (
         <TextField
-            value={input}
+            value={props.input}
             onChangeText={input => {
-                onChangeText(input);
+                props.onChangeText(input);
             }}
             placeholder="I need to install a radiator."
             multiline={true}

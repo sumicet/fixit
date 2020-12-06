@@ -156,10 +156,8 @@ const AppNavigator = () => {
                                 setSearchBarHeight(height);
                             }}
                             style={{
-                                //Layout.screenTopMargin,
                                 backgroundColor: Color.primaryColor,
-                                paddingHorizontal: Layout.screenVerticalPadding,
-                                //height: 200,
+                                paddingHorizontal: Layout.screenHorizontalPadding,
                             }}
                         >
                             <SearchBar navigation={navigation} route={route} />
@@ -170,7 +168,6 @@ const AppNavigator = () => {
                         borderBottomWidth: 0, //for ios?
                         elevation: 0,
                         backgroundColor: Color.primaryColor,
-                        //height: searchBarHeight,
                     },
                     headerTitleContainerStyle: {
                         left: 0,

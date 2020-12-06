@@ -7,26 +7,54 @@ import Layout from '../../constants/Layout';
 
 const LocationSearchField = props => {
     const ref = useRef();
-    
+
     useEffect(() => {
-        if(props.oldStreetAddress) {
+        if (props.oldStreetAddress) {
             ref.current?.setAddressText(props.oldStreetAddress);
         }
-    }, [])
+    }, []);
 
     return (
         <GooglePlacesAutocomplete
             {...props}
             ref={ref}
             fetchDetails
+            listViewDisplayed={false}
             styles={fieldStyle}
             query={{
                 key: 'AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0',
                 language: 'en',
             }}
             textInputProps={{
-             placeholderTextColor: Color.placeholderTextColor
-           }}
+                placeholderTextColor: Color.placeholderTextColor,
+            }}
+            listUnderlayColor={Color.primaryBrandColor}
+            enablePoweredByContainer={false}
+            suppressDefaultStyles={true}
+            styles={{
+                textInputContainer: {
+                    backgroundColor: Color.textField,
+                    padding: Layout.generalPadding
+                },
+                textInput: {
+                    fontFamily: 'Asap-Regular',
+                    color: Color.textColor,
+                    fontSize: Layout.smallContentSize
+                },
+                container: {
+                    backgroundColor: Color.textField
+                },
+                poweredContainer: {
+                    backgroundColor: 'blue'
+                },
+                row: {
+                    backgroundColor: Color.textField,
+                    padding: Layout.generalPadding,
+                },
+                description: {
+                    color: Color.secondaryColor
+                }
+            }}
         />
     );
 };
@@ -59,7 +87,7 @@ const fieldStyle = {
     textInputContainer: {
         height: 'auto',
         flex: 0,
-        backgroundColor: Color.primaryColor
+        backgroundColor: Color.primaryColor,
     },
     separator: {
         height: 0.5,

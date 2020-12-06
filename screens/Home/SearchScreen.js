@@ -33,7 +33,6 @@ const SearchScreen = props => {
         if (color === Color.primaryBrandColor) {
             var i;
             for (i = 0; i < updatedColors.length; i++) {
-                console.log(i);
                 if (i !== index) {
                     updatedColors[i] = Color.textField;
                 }

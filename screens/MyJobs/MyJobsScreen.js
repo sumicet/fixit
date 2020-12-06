@@ -12,7 +12,7 @@ import InAppNotification from '../../components/alert/InAppNotification';
 import Empty from '../../components/empty/Empty';
 
 const MyJobsScreen = props => {
-    const userPendingJobs = useSelector(state => state.job.userPendingJobs);
+    const userPendingJobs = useSelector(state => state.job.userPendingJobs).sort((a, b) => a.date < b.date);
     const userInProgressJobs = useSelector(
         state => state.job.userInProgressJobs
     );
@@ -38,9 +38,6 @@ const MyJobsScreen = props => {
     };
 
     useEffect(() => {
-        if (props.route.params) {
-            console.log(props.route.params.action, '2');
-        }
         if (
             isFocused &&
             props.route.params &&

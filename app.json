@@ -30,9 +30,8 @@
     },
     "description": "",
     "androidNavigationBar": {
-     "visible": "true",
-     "barStyle": "light-content",
-     "backgroundColor": "#20212b"
-   }
+      "barStyle": "light-content",
+      "backgroundColor": "#20212b"
+    }
   }
 }

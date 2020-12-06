@@ -13,7 +13,7 @@ const TitledScrollableContent = props => {
                 { backgroundColor: props.backgroundColor },
             ]}
         >
-            <ScrollView style={styles.scrollView}>
+            <ScrollView style={styles.scrollView} keyboardShouldPersistTaps='always'>
                 <QuizScreen
                     title={props.title}
                     centerTitle={true}

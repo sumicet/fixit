@@ -22,6 +22,7 @@ const initialState = {
     jobAddress: {
         line1: null,
         line2: null,
+        place_id: null,
     },
     customerType: null,
     propertyType: null,

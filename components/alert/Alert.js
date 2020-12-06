@@ -36,7 +36,7 @@ const Alert = props => {
             <Line>
                 <Header
                     style={{
-                        color: Color.primaryColor,
+                        color: Color.textOnTertiaryColorBackground,
                         fontFamily: 'Asap-Regular',
                     }}
                 >
@@ -51,26 +51,28 @@ const Alert = props => {
                     paddingBottom: Layout.screenHorizontalPadding,
                 }}
             >
-                <Touchable
-                    onPress={props.hide}
-                    style={[
-                        styles.touchable,
-                        {
-                            backgroundColor: props.cancelButtonColor
-                                ? props.cancelButtonColor
-                                : Color.primaryBrandColor,
-                        },
-                    ]}
-                >
-                    <Header
-                        style={{
-                            color: Color.primaryColor,
-                            fontFamily: 'Asap-Regular',
-                        }}
+                {props.onlyShowOneButton ? null : (
+                    <Touchable
+                        onPress={props.hide}
+                        style={[
+                            styles.touchable,
+                            {
+                                backgroundColor: props.cancelButtonColor
+                                    ? props.cancelButtonColor
+                                    : Color.primaryBrandColor,
+                            },
+                        ]}
                     >
-                        Go back
-                    </Header>
-                </Touchable>
+                        <Header
+                            style={{
+                                color: Color.primaryColor,
+                                fontFamily: 'Asap-Regular',
+                            }}
+                        >
+                            Go back
+                        </Header>
+                    </Touchable>
+                )}
                 <Touchable
                     onPress={props.onPress}
                     style={[
@@ -88,7 +90,7 @@ const Alert = props => {
                             fontFamily: 'Asap-Regular',
                         }}
                     >
-                        Yes
+                        {props.text ? props.text : 'Yes'}
                     </Header>
                 </Touchable>
             </Line>

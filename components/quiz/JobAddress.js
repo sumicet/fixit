@@ -3,27 +3,17 @@ import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Layout from '../../constants/Layout';
-import LocationSearchField from '../../components/APIs/LocationSearchField';
 import GoogleMaps from '../../components/APIs/GoogleMaps';
 import TextField from '../../components/text/TextField';
 import Line from '../common/Line';
+import SmallContent from '../text/SmallContent';
+import Touchable from '../common/Touchable';
+import Color from '../../constants/Color';
 
 const latitudeDelta = 0.00522;
 const longitudeDelta = 0.00221;
 //
 const JobAddress = props => {
-    const [input, setInput] = useState();
-    const [streetAddress, setStreetAddress] = useState();
-
-    const jobAddress = useSelector(state => state.quiz.jobAddress);
-
-    useEffect(() => {
-        if (jobAddress) {
-            setStreetAddress(jobAddress.line1);
-            setInput(jobAddress.line2);
-        }
-    }, []);
-
     const [region, setRegion] = useState({
         latitudeDelta,
         longitudeDelta,
@@ -31,34 +21,71 @@ const JobAddress = props => {
         longitude: 77.651787,
     });
 
-    const onChangeText = updatedInput => {
-        setInput(updatedInput);
+    const [predictions, setPredictions] = useState([]);
+    const [showPredictions, setShowPredictions] = useState(false);
+
+    const onChangeDestination = async destination => {
+        const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0
+          &input=${destination}&location=${0.05}, 
+          ${0.05}&radius=2000`;
+        const result = await fetch(apiUrl);
+        const json = await result.json();
+        setPredictions(json.predictions);
+        if (predictions.length) {
+            setShowPredictions(true);
+        }
+    };
+
+    const handlePredictionPress = async id => {
+        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
+        const selectedResult = await fetch(apiUrlSelected);
+        const jsonSelected = await selectedResult.json();
+        props.onStreetAddressChange(jsonSelected.result.formatted_address, id);
     };
 
     return (
         <View style={{ width: '100%' }}>
             <Line style={{ flex: 0 }}>
-                <View style={styles.locationSearchFieldContainer}>
-                    <LocationSearchField
-                        oldStreetAddress={jobAddress ? jobAddress.line1 : null}
-                        placeholder="Street address"
-                        onPress={(data, details = null) => {
-                            setRegion({
-                                latitudeDelta,
-                                longitudeDelta,
-                                latitude: details.geometry.location.lat,
-                                longitude: details.geometry.location.lng,
-                            });
-                            setStreetAddress(data.description);
-                        }}
-                    />
-                </View>
+                <TextField
+                    value={props.streetAddress}
+                    onChangeText={input => {
+                        onChangeDestination(input);
+                        props.onStreetAddressChange(input, null);
+                    }}
+                    placeholder="Street Address"
+                    multiline={false}
+                    textAlignVertical="center"
+                />
             </Line>
+            {showPredictions ? (
+                <Line
+                    style={{
+                        flex: 0,
+                    }}
+                >
+                    <View style={styles.locationSearchFieldContainer}>
+                        {predictions.map(item => (
+                            <Touchable
+                                isCard={true}
+                                style={{
+                                    padding: Layout.generalPadding,
+                                }}
+                                onPress={() => {
+                                    setShowPredictions(false);
+                                    handlePredictionPress(item.place_id);
+                                }}
+                            >
+                                <SmallContent>{item.description}</SmallContent>
+                            </Touchable>
+                        ))}
+                    </View>
+                </Line>
+            ) : null}
             <Line style={{ flex: 0 }}>
                 <TextField
-                    value={input}
+                    value={props.input}
                     onChangeText={input => {
-                        onChangeText(input);
+                        props.onChangeText(input);
                     }}
                     placeholder="Apartment, building, floor"
                     multiline={false}
@@ -81,8 +108,8 @@ const styles = StyleSheet.create({
     locationSearchFieldContainer: {
         borderRadius: Layout.borderRadius,
         overflow: 'hidden',
-        backgroundColor: 'red',
         width: '100%',
+        backgroundColor: Color.textField,
     },
     googleMapsContainer: {
         borderRadius: Layout.borderRadius,

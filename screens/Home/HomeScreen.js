@@ -14,7 +14,7 @@ const HomeScreen = props => {
 
     useEffect(() => {
         if (isFocused) {
-            console.log('created'); // TODO add notification
+            // TODO add notification
         }
     }, [props, isFocused]);
 
