@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
@@ -14,7 +14,6 @@ import { CUSTOMER_TYPES } from '../../data/Jobs/CustomerTypes';
 import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import { START_TIMES } from '../../data/Jobs/StartTimes';
 import { WORK_TYPES } from '../../data/Jobs/WorkTypes';
-import { setOccupation } from '../../store/actions/quiz';
 import JobDescription from '../../components/quiz/JobDescription';
 import JobAddress from '../../components/quiz/JobAddress';
 import CustomRadioButton from '../../components/common/CustomRadioButton';

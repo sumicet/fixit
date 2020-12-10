@@ -11,13 +11,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
 
-import OccupationsScreen from '../screens/Quiz/OccupationsScreen';
-import WorkTypesScreen from '../screens/Quiz/WorkTypesScreen';
-import JobDescriptionScreen from '../screens/Quiz/JobDescriptionScreen';
-import CustomerTypesScreen from '../screens/Quiz/CustomerTypesScreen';
-import PropertyTypesScreen from '../screens/Quiz/PropertyTypesScreen';
-import JobAddressScreen from '../screens/Quiz/JobAddressScreen';
-import StartTimesScreen from '../screens/Quiz/StartTimesScreen';
 import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
 
 import HomeScreen from '../screens/Home/HomeScreen';
@@ -36,7 +29,6 @@ import ResetPasswordScreen from '../screens/ResetEmailOrPassword/ResetPasswordSc
 import SelectOptionScreen from '../screens/ResetEmailOrPassword/SelectOptionScreen';
 import ServicesScreen from '../screens/Service/ServicesScreen';
 import SearchScreen from '../screens/Home/SearchScreen';
-import Title from '../components/text/Title';
 import SearchBar from '../components/search/SearchBar';
 import QuizScreen from '../screens/Quiz/QuizScreen';
 
@@ -62,39 +54,6 @@ const AppNavigator = () => {
     if (isLoading) {
         return <Loading />;
     }
-
-    const QuizStack = () => {
-        return (
-            <Stack.Navigator
-                headerMode={false}
-                animation
-                screenOptions={{
-                    cardStyleInterpolator:
-                        CardStyleInterpolators.forHorizontalIOS,
-                }}
-            >
-                <Stack.Screen
-                    name="Occupations"
-                    component={OccupationsScreen}
-                />
-                <Stack.Screen name="WorkTypes" component={WorkTypesScreen} />
-                <Stack.Screen
-                    name="JobDescription"
-                    component={JobDescriptionScreen}
-                />
-                <Stack.Screen
-                    name="CustomerTypes"
-                    component={CustomerTypesScreen}
-                />
-                <Stack.Screen
-                    name="PropertyTypes"
-                    component={PropertyTypesScreen}
-                />
-                <Stack.Screen name="JobAddress" component={JobAddressScreen} />
-                <Stack.Screen name="StartTimes" component={StartTimesScreen} />
-            </Stack.Navigator>
-        );
-    };
 
     const MyJobsStack = () => {
         return (
