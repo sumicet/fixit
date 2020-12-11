@@ -30,7 +30,8 @@ import SelectOptionScreen from '../screens/ResetEmailOrPassword/SelectOptionScre
 import ServicesScreen from '../screens/Service/ServicesScreen';
 import SearchScreen from '../screens/Home/SearchScreen';
 import SearchBar from '../components/search/SearchBar';
-import QuizScreen from '../screens/Quiz/QuizScreen';
+import EditJobScreen from '../screens/Quiz/EditJobScreen';
+import NewJobScreen from '../screens/Quiz/NewJobScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -67,6 +68,7 @@ const AppNavigator = () => {
             >
                 <Stack.Screen name="MyJobs" component={MyJobsScreen} />
                 <Stack.Screen name="JobDetails" component={JobDetailsScreen} />
+                <Stack.Screen name="EditJob" component={EditJobScreen} />
             </Stack.Navigator>
         );
     };
@@ -216,7 +218,7 @@ const AppNavigator = () => {
                                     if (route.name === 'Profile') {
                                         iconName = 'user';
                                     } else {
-                                        if (route.name === 'Quiz') {
+                                        if (route.name === 'NewJob') {
                                             iconName = 'plus';
                                         }
                                     }
@@ -267,9 +269,9 @@ const AppNavigator = () => {
                     })}
                 />
                 <Tab.Screen
-                    name="Quiz"
+                    name="NewJob"
                     //component={QuizStack}
-                    component={QuizScreen}
+                    component={NewJobScreen}
                     listeners={() => ({
                         tabPress: () => {},
                     })}

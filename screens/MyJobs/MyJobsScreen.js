@@ -10,9 +10,13 @@ import * as Job from '../../store/actions/job';
 import { useIsFocused } from '@react-navigation/native';
 import InAppNotification from '../../components/alert/InAppNotification';
 import Empty from '../../components/empty/Empty';
+import TitledScrollableContent from '../../components/containers/TitledScrollableContainer';
+import Color from '../../constants/Color';
 
 const MyJobsScreen = props => {
-    const userPendingJobs = useSelector(state => state.job.userPendingJobs).sort((a, b) => a.date < b.date);
+    const userPendingJobs = useSelector(
+        state => state.job.userPendingJobs
+    ).sort((a, b) => a.date < b.date);
     const userInProgressJobs = useSelector(
         state => state.job.userInProgressJobs
     );
@@ -75,27 +79,28 @@ const MyJobsScreen = props => {
     };
 
     return (
-        <QuizScreen
-            title="My jobs"
-            centerTitle={true}
-            style={{ paddingHorizontal: Layout.screenHorizontalPadding }}
+        <TitledScrollableContent
+            title={'My Jobs'}
+            backgroundColor={Color.primaryColor}
         >
-            {userPendingJobs.length !== 0 ? (
-                <FlatList
-                    keyExtractor={item => item.id}
-                    data={userPendingJobs}
-                    renderItem={renderItem}
+            <View style={{ paddingHorizontal: Layout.generalPadding }}>
+                {userPendingJobs.length !== 0 ? (
+                    <FlatList
+                        keyExtractor={item => item.id}
+                        data={userPendingJobs}
+                        renderItem={renderItem}
+                    />
+                ) : (
+                    <Empty />
+                )}
+                <InAppNotification
+                    title={inAppNotificationBody.title}
+                    message={inAppNotificationBody.message}
+                    inAppNotificationVisible={inAppNotificationVisible}
+                    hide={handleHideInAppNotification}
                 />
-            ) : (
-                <Empty />
-            )}
-            <InAppNotification
-                title={inAppNotificationBody.title}
-                message={inAppNotificationBody.message}
-                inAppNotificationVisible={inAppNotificationVisible}
-                hide={handleHideInAppNotification}
-            />
-        </QuizScreen>
+            </View>
+        </TitledScrollableContent>
     );
 };
 

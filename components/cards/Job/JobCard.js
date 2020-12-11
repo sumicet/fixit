@@ -29,7 +29,9 @@ const JobCard = props => {
                     >
                         {
                             WORK_TYPES.find(
-                                elem => elem.id === props.workTypeId
+                                work =>
+                                    work.id === props.workTypeId &&
+                                    work.occupationId === props.occupationId
                             ).name
                         }
                     </SmallContentWithEllipsis>

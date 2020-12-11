@@ -99,8 +99,21 @@ const SearchScreen = props => {
                     style={{
                         flexDirection: 'row',
                         flexWrap: 'wrap',
+                        alignItems: 'center',
                     }}
                 >
+                    <View
+                        style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: Layout.generalPadding,
+                            //marginBottom: Layout.generalPadding,
+                        }}
+                    >
+                        <SmallContent style={{ color: Color.textColor }}>
+                            Rating:
+                        </SmallContent>
+                    </View>
                     {stars.map((value, index) => (
                         <Touchable
                             onPress={() => {

@@ -11,26 +11,41 @@ import Header from '../text/Header';
 import AlertContainer from './AlertContainer';
 
 const Alert = props => {
+
+    const {
+        hide,
+        modalVisible,
+        titleColor,
+        title,
+        message,
+        onlyShowOneButton,
+        cancelButtonColor,
+        leftButtonText,
+        onPress,
+        buttonColor,
+        text,
+    } = props;
+
     return (
         <AlertContainer
             animationIn="pulse"
             animationOut="zoomOut"
             animationInTiming={1000}
             animationOutTiming={500}
-            onBackdropPress={props.hide}
-            modalVisible={props.modalVisible}
+            onBackdropPress={hide}
+            modalVisible={modalVisible}
             containerStyle={styles.container}
             cardStyle={styles.card}
         >
             <Line style={{ paddingTop: Layout.screenHorizontalPadding }}>
                 <Title
                     style={{
-                        color: props.titleColor
-                            ? props.titleColor
+                        color: titleColor
+                            ? titleColor
                             : Color.primaryBrandColor,
                     }}
                 >
-                    {props.title}
+                    {title}
                 </Title>
             </Line>
             <Line>
@@ -40,7 +55,7 @@ const Alert = props => {
                         fontFamily: 'Asap-Regular',
                     }}
                 >
-                    {props.message}
+                    {message}
                 </Header>
             </Line>
             <Line
@@ -51,46 +66,46 @@ const Alert = props => {
                     paddingBottom: Layout.screenHorizontalPadding,
                 }}
             >
-                {props.onlyShowOneButton ? null : (
+                {onlyShowOneButton ? null : (
                     <Touchable
-                        onPress={props.hide}
+                        onPress={hide}
                         style={[
                             styles.touchable,
                             {
-                                backgroundColor: props.cancelButtonColor
-                                    ? props.cancelButtonColor
+                                backgroundColor: cancelButtonColor
+                                    ? cancelButtonColor
                                     : Color.primaryBrandColor,
                             },
                         ]}
                     >
                         <Header
                             style={{
-                                color: Color.primaryColor,
+                                color: Color.importantTextOnTertiaryColorBackground,
                                 fontFamily: 'Asap-Regular',
                             }}
                         >
-                            Go back
+                            {leftButtonText ? leftButtonText : 'Go back'}
                         </Header>
                     </Touchable>
                 )}
                 <Touchable
-                    onPress={props.onPress}
+                    onPress={onPress}
                     style={[
                         styles.touchable,
                         {
-                            backgroundColor: props.buttonColor
-                                ? props.buttonColor
+                            backgroundColor: buttonColor
+                                ? buttonColor
                                 : Color.urgent,
                         },
                     ]}
                 >
                     <Header
                         style={{
-                            color: Color.primaryColor,
+                            color: Color.importantTextOnTertiaryColorBackground,
                             fontFamily: 'Asap-Regular',
                         }}
                     >
-                        {props.text ? props.text : 'Yes'}
+                        {text ? text : 'Yes'}
                     </Header>
                 </Touchable>
             </Line>

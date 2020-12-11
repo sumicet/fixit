@@ -9,13 +9,15 @@ import Color from '../../constants/Color';
 import NextButton from '../common/NextButton';
 
 const QuizScreen = props => {
+    const { showNextButton, style } = props;
+
     const [
         rightOfTitleComponentWidth,
         setRightOfTitleComponentWidth,
     ] = useState(0);
 
     return (
-        <Container style={[{ paddingHorizontal: 0 }, props.style]}>
+        <Container style={[{ paddingHorizontal: 0 }, style]}>
             <View
                 style={{
                     paddingHorizontal: Layout.screenHorizontalPadding,
@@ -58,7 +60,7 @@ const QuizScreen = props => {
                     {props.rightOfTitleComponent}
                 </View>
 
-                {props.showNextButton ? (
+                {showNextButton ? (
                     <View
                         style={{
                             alignItems: 'flex-end',

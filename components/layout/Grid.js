@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 
@@ -9,8 +10,11 @@ import Layout from '../../constants/Layout';
 const Grid = props => {
     const [colors, setColors] = useState([]);
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
-        const initialColors = [];
+        if(isFocused) {
+            const initialColors = [];
         var i;
         for (i = 0; i < props.data.length; i++) {
             if(i === props.initialSelectedIndex) {
@@ -20,6 +24,7 @@ const Grid = props => {
             }
         }
         setColors(initialColors);
+        }
     }, [props.data])
 
     const handleItemPress = index => {

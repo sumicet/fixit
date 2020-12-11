@@ -95,7 +95,13 @@ const JobDetailsScreen = props => {
                             color: Color.importantTextOnTertiaryColorBackground,
                         }}
                     >
-                        {WORK_TYPES.find(occ => occ.id === job.workTypeId).name}
+                        {
+                            WORK_TYPES.find(
+                                work =>
+                                    work.id === job.workTypeId &&
+                                    work.occupationId === job.occupationId
+                            ).name
+                        }
                     </Header>
                     <Header
                         style={{
@@ -107,7 +113,7 @@ const JobDetailsScreen = props => {
                     </Header>
                 </Line>
                 <Line style={{ alignItems: 'flex-start' }}>
-                    <View style={{ paddingBottom: Layout.generalPadding }}>
+                    {/* <View style={{ paddingBottom: Layout.generalPadding }}>
                         <Header
                             style={{
                                 color: Color.textOnTertiaryColorBackground,
@@ -115,9 +121,9 @@ const JobDetailsScreen = props => {
                         >
                             Description:{' '}
                         </Header>
-                    </View>
+                    </View> */}
                     <SmallContent
-                        style={{ color: Color.textOnTertiaryColorBackground }}
+                        style={{ color: Color.importantTextOnTertiaryColorBackground }}
                     >
                         {job.jobDescription}
                     </SmallContent>
@@ -221,7 +227,11 @@ const JobDetailsScreen = props => {
                         <SmallContent> </SmallContent>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <SmallContent style={{ color: Color.textOnTertiaryColorBackground }}>
+                        <SmallContent
+                            style={{
+                                color: Color.textOnTertiaryColorBackground,
+                            }}
+                        >
                             25km • {job.jobAddress.line1} •{' '}
                             {job.jobAddress.line2}
                         </SmallContent>
@@ -235,7 +245,9 @@ const JobDetailsScreen = props => {
         return (
             <View>
                 <Line>
-                    <SmallBoldContent style={{color: Color.primaryBrandColor}}>
+                    <SmallBoldContent
+                        style={{ color: Color.primaryBrandColor }}
+                    >
                         3 people have applied for this job.
                     </SmallBoldContent>
                 </Line>
@@ -274,20 +286,8 @@ const JobDetailsScreen = props => {
                         padding: Layout.screenHorizontalPadding / 2,
                     }}
                     onPress={() => {
-                        dispatch(quiz.setId(job.id));
-                        dispatch(quiz.setOccupation(job.occupationId));
-                        dispatch(quiz.setWorkType(job.workTypeId));
-                        dispatch(quiz.setJobDescription(job.jobDescription));
-                        dispatch(quiz.setStartTime(job.startTimeId));
-                        dispatch(quiz.setJobAddress(job.jobAddress));
-                        dispatch(quiz.setCustomerType(job.customerType));
-                        dispatch(quiz.setPropertyType(job.propertyType));
-
-                        props.navigation.navigate('Quiz', {
-                            screen: 'Occupations',
-                            params: {
-                                action: 'edit',
-                            },
+                        props.navigation.navigate('EditJob', {
+                            id: job.id,
                         });
                     }}
                 >

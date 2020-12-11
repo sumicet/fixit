@@ -5,8 +5,7 @@ import Job from '../../models/Jobs/Job';
 const initialState = {
     allPendingJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
-    userInProgressJobs: [], // assign to customer
-    userFinishedJobs: [], // assign to customer
+    userDoneJobs: [],
 };
 
 const editElement = (array, id, elem) => {
@@ -14,15 +13,6 @@ const editElement = (array, id, elem) => {
     const index = arrayCopy.findIndex(elem => elem.id === id);
     if (index) {
         arrayCopy[index] = elem;
-    }
-    return arrayCopy;
-};
-
-const removeElement = (array, id) => {
-    const arrayCopy = array;
-    const index = arrayCopy.findIndex(elem => elem.id === id);
-    if (index) {
-        arrayCopy.splice(index, 1);
     }
     return arrayCopy;
 };

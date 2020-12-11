@@ -10,8 +10,8 @@ import SmallContent from '../text/SmallContent';
 import Touchable from '../common/Touchable';
 import Color from '../../constants/Color';
 
-const latitudeDelta = 0.00522;
-const longitudeDelta = 0.00221;
+const latitudeDelta = 0.005;
+const longitudeDelta = 0.005;
 //
 const JobAddress = props => {
     const [region, setRegion] = useState({
@@ -24,6 +24,11 @@ const JobAddress = props => {
     const [predictions, setPredictions] = useState([]);
     const [showPredictions, setShowPredictions] = useState(false);
 
+    useEffect(() => {
+        if (props.initial_place_id)
+            initialRegionSettings(props.initial_place_id);
+    }, []);
+
     const onChangeDestination = async destination => {
         const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0
           &input=${destination}&location=${0.05}, 
@@ -35,12 +40,30 @@ const JobAddress = props => {
             setShowPredictions(true);
         }
     };
-
     const handlePredictionPress = async id => {
         const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
         const selectedResult = await fetch(apiUrlSelected);
         const jsonSelected = await selectedResult.json();
         props.onStreetAddressChange(jsonSelected.result.formatted_address, id);
+        setRegion({
+            latitudeDelta: region.latitudeDelta,
+            longitudeDelta: region.longitudeDelta,
+            latitude: jsonSelected.result.geometry.location.lat,
+            longitude: jsonSelected.result.geometry.location.lng
+        })
+    };
+
+    const initialRegionSettings = async id => {
+        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
+        const selectedResult = await fetch(apiUrlSelected);
+        const jsonSelected = await selectedResult.json();
+        props.onStreetAddressChange(jsonSelected.result.formatted_address, id);
+        setRegion({
+            latitudeDelta: region.latitudeDelta,
+            longitudeDelta: region.longitudeDelta,
+            latitude: jsonSelected.result.geometry.location.lat,
+            longitude: jsonSelected.result.geometry.location.lng
+        })
     };
 
     return (
@@ -57,7 +80,7 @@ const JobAddress = props => {
                     textAlignVertical="center"
                 />
             </Line>
-            {showPredictions ? (
+            {showPredictions && predictions.length ? (
                 <Line
                     style={{
                         flex: 0,
@@ -83,7 +106,7 @@ const JobAddress = props => {
             ) : null}
             <Line style={{ flex: 0 }}>
                 <TextField
-                    value={props.input}
+                    value={props.input.line2}
                     onChangeText={input => {
                         props.onChangeText(input);
                     }}

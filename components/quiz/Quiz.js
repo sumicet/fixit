@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigationState } from '@react-navigation/native';
 
 import Line from '../../components/common/Line';
 import TitledScrollableContainer from '../../components/containers/TitledScrollableContainer';
@@ -18,32 +18,99 @@ import JobDescription from '../../components/quiz/JobDescription';
 import JobAddress from '../../components/quiz/JobAddress';
 import CustomRadioButton from '../../components/common/CustomRadioButton';
 import MediumButton from '../../components/buttons/MediumButtom';
-import Job from '../../models/Jobs/Job';
-import { addJob } from '../../store/actions/job';
+import { addJob, editJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
 
-const QuizScreen = props => {
-    const job = new Job(
-        useSelector(state => state.quiz.id),
-        -1,
-        null,
-        useSelector(state => state.quiz.occupationId),
-        useSelector(state => state.quiz.workTypeId),
-        useSelector(state => state.quiz.jobDescription),
-        useSelector(state => state.quiz.customerType),
-        useSelector(state => state.quiz.propertyType),
-        useSelector(state => state.quiz.jobAddress),
-        useSelector(state => state.quiz.startTimeId)
-    );
+const Quiz = props => {
+    const { title, editModeOn, id, navigation, route } = props;
 
-    const [index, setIndex] = useState(0);
-    const [workTypes, setWorkTypes] = useState(
-        WORK_TYPES.filter(item => item.occupationId === 1)
-    );
+    const [alert, setAlert] = useState({
+        title: null,
+        message: null,
+        text: null,
+        hide: null,
+        onlyShowOneButton: null,
+        buttonColor: null,
+        leftButtonText: null,
+        onPress: null,
+    });
 
-    console.log(workTypes);
-    const dispatch = useDispatch();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const onAlertButtonPress = () => {
+        setModalVisible(false);
+    };
+
+    const backAction = () => {
+        setModalVisible(true);
+        setAlert({
+            title: 'Leave',
+            message: 'Are you sure you want to leave this page?',
+            text: 'Yes',
+            hide: onAlertButtonPress,
+            onlyShowOneButton: false,
+            buttonColor: Color.tertiaryBrandColor,
+            leftButtonText: 'Stay',
+            onPress: onAlertRightButtonPress,
+        });
+        return true;
+    };
+
+    const onAlertRightButtonPress = () => {
+        navigation.goBack();
+        setModalVisible(false);
+    };
+
     const isFocused = useIsFocused();
+
+    // #back #howto #isFocused #backNotification
+
+    useEffect(() => {
+        if (isFocused) {
+            BackHandler.addEventListener('hardwareBackPress', backAction);
+        }
+        return () => {
+            if (isFocused) {
+                BackHandler.removeEventListener(
+                    'hardwareBackPress',
+                    backAction
+                );
+            }
+        };
+    }, [isFocused]);
+
+    useEffect(() => {
+        if(isFocused) {
+            const unsub = navigation.addListener('beforeRemove', (e) => {
+                //e.preventDefault();
+                console.log('byeeee');
+            });
+    
+            return unsub;
+        }
+    }, [isFocused]);
+
+    const jobToUpdate = editModeOn
+        ? useSelector(state => state.job.userPendingJobs).find(
+              elem => elem.id === id
+          )
+        : null;
+
+    const [index, setIndex] = useState(
+        editModeOn ? jobToUpdate.occupationId - 1 : 0
+    );
+    const [workTypes, setWorkTypes] = useState([]);
+
+    useEffect(() => {
+        setWorkTypes(
+            WORK_TYPES.filter(item =>
+                editModeOn
+                    ? item.occupationId === jobToUpdate.occupationId
+                    : item.occupationId === 1
+            )
+        );
+    }, [isFocused]);
+    const dispatch = useDispatch();
 
     const LineDescription = props => {
         return (
@@ -55,39 +122,52 @@ const QuizScreen = props => {
         );
     };
 
-    const initialChecked = data => {
+    const initialChecked = (data, value) => {
         const initialChecked = [];
         var i;
-        initialChecked.push(true);
-        for (i = 1; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
+            if (i === value) {
+                initialChecked.push(true);
+            }
             initialChecked.push(false);
         }
         return initialChecked;
     };
 
-    const [workTypeId, setWorkTypeId] = useState();
+    const [workTypeId, setWorkTypeId] = useState(
+        editModeOn ? jobToUpdate.workTypeId - 1 : 0
+    );
     const [customerTypeChecked, setCustomerTypeChecked] = useState(
-        initialChecked(CUSTOMER_TYPES)
+        initialChecked(
+            CUSTOMER_TYPES,
+            editModeOn ? jobToUpdate.customerType - 1 : 0
+        )
     );
     const [propertyTypeChecked, setPropertyTypeChecked] = useState(
-        initialChecked(PROPERTY_TYPES)
+        initialChecked(
+            PROPERTY_TYPES,
+            editModeOn ? jobToUpdate.propertyType - 1 : 0
+        )
     );
     const [startTimesChecked, setStartTimesChecked] = useState(
-        initialChecked(START_TIMES)
+        initialChecked(
+            START_TIMES,
+            editModeOn ? jobToUpdate.startTimeId - 1 : 0
+        )
     );
 
-    const [jobDescriptionInput, setJobDescriptionInput] = useState();
+    const [jobDescriptionInput, setJobDescriptionInput] = useState(
+        editModeOn ? jobToUpdate.jobDescription : null
+    );
     const onChangeJobDescription = updatedInput => {
         setJobDescriptionInput(updatedInput);
     };
 
     const [jobAddressInput, setJobAddressInput] = useState({
         line1: null,
-        line2: null,
+        line2: jobToUpdate ? jobToUpdate.jobAddress.line2 : null,
         place_id: null, // TODO add place_id
     });
-
-    const [modalVisible, setModalVisible] = useState(false);
 
     const handleJobAddressChange = line2 => {
         setJobAddressInput({
@@ -139,21 +219,55 @@ const QuizScreen = props => {
             !jobAddressInput.place_id ||
             !startTimeId
         ) {
+            setAlert({
+                title: 'A problem occured',
+                message: 'Make sure all fields are filled.',
+                text: 'Ok',
+                hide: null,
+                onlyShowOneButton: true,
+                buttonColor: Color.importantTextOnTertiaryColorBackground,
+                leftButtonText: null,
+                onPress: onAlertButtonPress,
+            });
             setModalVisible(true);
         } else {
-            dispatch(
-                addJob(
-                    occupationId,
-                    workTypeId,
-                    jobDescriptionInput,
-                    customerTypeId,
-                    propertyTypeId,
-                    jobAddressInput,
-                    startTimeId
-                )
+            console.log(
+                occupationId,
+                workTypeId,
+                jobDescriptionInput,
+                customerTypeId,
+                propertyTypeId,
+                jobAddressInput.line1,
+                jobAddressInput.line2,
+                jobAddressInput.place_id,
+                startTimeId
             );
-            props.navigation.navigate('Home', {
-                screen: 'Home',
+            editModeOn
+                ? dispatch(
+                      editJob(
+                          id,
+                          occupationId,
+                          workTypeId,
+                          jobDescriptionInput,
+                          customerTypeId,
+                          propertyTypeId,
+                          jobAddressInput,
+                          startTimeId
+                      )
+                  )
+                : dispatch(
+                      addJob(
+                          occupationId,
+                          workTypeId,
+                          jobDescriptionInput,
+                          customerTypeId,
+                          propertyTypeId,
+                          jobAddressInput,
+                          startTimeId
+                      )
+                  );
+            navigation.navigate('MyJobs', {
+                screen: 'MyJobs',
                 params: {
                     isInAppNotificationVisible: true,
                 },
@@ -163,7 +277,7 @@ const QuizScreen = props => {
 
     return (
         <TitledScrollableContainer
-            title={'New'}
+            title={title}
             backgroundColor={Color.primaryColor}
         >
             <View style={{ paddingHorizontal: Layout.screenVerticalPadding }}>
@@ -175,11 +289,13 @@ const QuizScreen = props => {
                             setIndex(index);
                             setWorkTypes(
                                 WORK_TYPES.filter(
-                                    item => item.occupationId === index
+                                    item => item.occupationId === index + 1
                                 )
                             );
                         }}
-                        initialSelectedIndex={0}
+                        initialSelectedIndex={
+                            editModeOn ? jobToUpdate.occupationId - 1 : 0
+                        }
                     />
                 </Line>
                 {index !== 9 ? (
@@ -189,6 +305,9 @@ const QuizScreen = props => {
                             <Grid
                                 data={workTypes}
                                 onPress={handleWorkTypePress}
+                                initialSelectedIndex={
+                                    editModeOn ? jobToUpdate.workTypeId - 1 : 0
+                                }
                             />
                         </Line>
                     </View>
@@ -207,6 +326,9 @@ const QuizScreen = props => {
                         onStreetAddressChange={handleStreetAddressChange}
                         onChangeText={handleJobAddressChange}
                         streetAddress={jobAddressInput.line1}
+                        initial_place_id={
+                            jobToUpdate ? jobToUpdate.jobAddress.place_id : null
+                        }
                     />
                 </Line>
                 <LineDescription text="I am a.." />
@@ -277,23 +399,22 @@ const QuizScreen = props => {
                     }}
                 >
                     <MediumButton
-                        text="Post job"
+                        text={editModeOn ? 'Finish' : 'Post job'}
                         onPress={handlePostJobPress}
                     />
                 </Line>
             </View>
             <Alert
                 modalVisible={modalVisible}
-                onPress={() => {
-                    setModalVisible(false);
-                }}
-                hide={() => {}}
-                title="A problem occured"
+                onPress={alert.onPress}
+                hide={alert.hide}
+                title={alert.title}
                 titleColor={Color.importantTextOnTertiaryColorBackground}
-                message="Make sure all fields are filled."
-                onlyShowOneButton={true}
-                buttonColor={Color.importantTextOnTertiaryColorBackground}
-                text="Ok"
+                message={alert.message}
+                onlyShowOneButton={alert.onlyShowOneButton}
+                buttonColor={alert.buttonColor}
+                text={alert.text}
+                leftButtonText={alert.leftButtonText}
             />
         </TitledScrollableContainer>
     );
@@ -301,4 +422,4 @@ const QuizScreen = props => {
 
 const styles = StyleSheet.create({});
 
-export default QuizScreen;
+export default Quiz;
