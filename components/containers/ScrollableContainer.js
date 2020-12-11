@@ -6,10 +6,9 @@ import Layout from '../../constants/Layout';
 
 const ScrollableContainer = (props) => {
     return (
-        <Container style={{ paddingTop: 0, paddingHorizontal: 0 }}>
+        <Container style={{ paddingTop: 0, paddingHorizontal: 0, marginTop: 0 }}>
             <ScrollView
                 style={[{
-                    paddingTop: Layout.screenVerticalPadding,
                     paddingHorizontal: Layout.screenHorizontalPadding,
                 }, props.style]}
             >

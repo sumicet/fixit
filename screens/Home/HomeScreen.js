@@ -19,7 +19,7 @@ const HomeScreen = props => {
     }, [props, isFocused]);
 
     return (
-        <ScrollableContainer style={{ paddingTop: 0 }}>
+        <ScrollableContainer>
             {/* <SearchBar /> */}
 
             <View style={{ width: '100%', marginBottom: Layout.cardMargin }}>

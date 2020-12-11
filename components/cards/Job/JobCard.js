@@ -28,6 +28,7 @@ const JobCard = props => {
                         style={{ fontFamily: 'Asap-SemiBold' }}
                     >
                         {
+                            
                             WORK_TYPES.find(
                                 work =>
                                     work.id === props.workTypeId &&

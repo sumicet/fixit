@@ -1,5 +1,4 @@
-import { useIsFocused } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import Quiz from '../../components/quiz/Quiz';

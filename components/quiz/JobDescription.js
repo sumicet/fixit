@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import {  StyleSheet } from 'react-native';
 
-import QuizScreen from '../../components/containers/QuizScreen';
 import Layout from '../../constants/Layout';
 import TextField from '../../components/text/TextField';
-import { setJobDescription } from '../../store/actions/quiz';
 
 const JobDescription = props => {
     

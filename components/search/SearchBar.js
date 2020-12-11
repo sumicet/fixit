@@ -17,8 +17,6 @@ const SearchBar = props => {
             }}
             style={{
                 justifyContent: 'center',
-                width: '100%',
-                flex: 0,
             }}
         >
             <TextField
@@ -36,7 +34,6 @@ const SearchBar = props => {
                 }}
                 placeholder="Plumber, John Doe etc."
                 multiline={false}
-                containerStyle={{ marginVertical: Layout.generalMargin }}
                 textAlignVertical="center"
             />
         </TouchableWithoutFeedback>

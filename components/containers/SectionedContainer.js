@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import TitledScrollableContainer from '../../components/containers/TitledScrollableContainer';
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
 import { setStatusBarStyle } from '../../store/actions/ui';
+import ScrollableContainer from './ScrollableContainer';
 
 const SectionedContainer = props => {
     const dispatch = useDispatch();
@@ -27,11 +27,7 @@ const SectionedContainer = props => {
     }, [props.navigation]);
 
     return (
-        <TitledScrollableContainer
-            title={props.title}
-            titleColor={
-                props.titleColor ? props.titleColor : Color.primaryBrandColor
-            }
+        <ScrollableContainer style={{paddingHorizontal: 0}}
             backgroundColor={Color.tertiaryBrandColor}
             rightOfTitleComponent={props.rightOfTitleComponent}
         >
@@ -40,7 +36,7 @@ const SectionedContainer = props => {
             </View>
             <View style={styles.midContainer}>{props.midComponent}</View>
             <View style={styles.bottomContainer}>{props.bottomComponent}</View>
-        </TitledScrollableContainer>
+        </ScrollableContainer>
     );
 };
 

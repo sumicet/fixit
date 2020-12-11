@@ -2,16 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import QuizScreen from '../../components/containers/QuizScreen';
 import JobCard from '../../components/cards/Job/JobCard';
-import Layout from '../../constants/Layout';
 import Touchable from '../../components/common/Touchable';
 import * as Job from '../../store/actions/job';
 import { useIsFocused } from '@react-navigation/native';
 import InAppNotification from '../../components/alert/InAppNotification';
 import Empty from '../../components/empty/Empty';
-import TitledScrollableContent from '../../components/containers/TitledScrollableContainer';
 import Color from '../../constants/Color';
+import ScrollableContainer from '../../components/containers/ScrollableContainer';
 
 const MyJobsScreen = props => {
     const userPendingJobs = useSelector(
@@ -79,11 +77,11 @@ const MyJobsScreen = props => {
     };
 
     return (
-        <TitledScrollableContent
-            title={'My Jobs'}
+        <ScrollableContainer
+            //title={'My Jobs'}
             backgroundColor={Color.primaryColor}
         >
-            <View style={{ paddingHorizontal: Layout.generalPadding }}>
+            <View>
                 {userPendingJobs.length !== 0 ? (
                     <FlatList
                         keyExtractor={item => item.id}
@@ -100,7 +98,7 @@ const MyJobsScreen = props => {
                     hide={handleHideInAppNotification}
                 />
             </View>
-        </TitledScrollableContent>
+        </ScrollableContainer>
     );
 };
 

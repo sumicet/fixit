@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Layout from '../../constants/Layout';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
@@ -18,8 +18,16 @@ import Rating from '../../components/cards/Tradesperson/Rating';
 import Comment from '../../components/cards/Comment/Comment';
 import SectionedContainer from '../../components/containers/SectionedContainer';
 import Line from '../../components/common/Line';
+import { useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = props => {
+
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        props.navigation.setOptions({ headerTitle: "John McCormack" })
+    }, [])
+
     const TopComponent = () => {
         return (
             <View>
@@ -153,8 +161,8 @@ const ProfileScreen = props => {
 
     return (
         <SectionedContainer
-            title="John McCormack"
-            titleColor={Color.importantTextOnTertiaryColorBackground}
+            //title="John McCormack"
+            //titleColor={Color.importantTextOnTertiaryColorBackground}
             topComponent={<TopComponent />}
             midComponent={<MidComponent />}
             bottomComponent={<BottomComponent />}

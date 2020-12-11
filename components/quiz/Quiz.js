@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, useNavigationState } from '@react-navigation/native';
 
 import Line from '../../components/common/Line';
-import TitledScrollableContainer from '../../components/containers/TitledScrollableContainer';
 import Grid from '../../components/layout/Grid';
 import Header from '../../components/text/Header';
 import Color from '../../constants/Color';
@@ -20,6 +19,7 @@ import CustomRadioButton from '../../components/common/CustomRadioButton';
 import MediumButton from '../../components/buttons/MediumButtom';
 import { addJob, editJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
+import ScrollableContainer from '../containers/ScrollableContainer';
 
 const Quiz = props => {
     const { title, editModeOn, id, navigation, route } = props;
@@ -80,15 +80,13 @@ const Quiz = props => {
     }, [isFocused]);
 
     useEffect(() => {
-        if(isFocused) {
-            const unsub = navigation.addListener('beforeRemove', (e) => {
-                //e.preventDefault();
-                console.log('byeeee');
-            });
-    
-            return unsub;
-        }
-    }, [isFocused]);
+        const unsub = navigation.addListener('beforeRemove', () => {
+            //e.preventDefault();
+            console.log('byeeee');
+        });
+
+        return unsub;
+    }, [props.navigation]);
 
     const jobToUpdate = editModeOn
         ? useSelector(state => state.job.userPendingJobs).find(
@@ -115,7 +113,7 @@ const Quiz = props => {
     const LineDescription = props => {
         return (
             <Line style={{ flex: 0, alignItems: 'flex-start' }}>
-                <Header style={{ color: Color.primaryBrandColor }}>
+                <Header style={{ color: Color.textOnTertiaryColorBackground }}>
                     {props.text}
                 </Header>
             </Line>
@@ -135,7 +133,7 @@ const Quiz = props => {
     };
 
     const [workTypeId, setWorkTypeId] = useState(
-        editModeOn ? jobToUpdate.workTypeId - 1 : 0
+        editModeOn ? jobToUpdate.workTypeId : 1
     );
     const [customerTypeChecked, setCustomerTypeChecked] = useState(
         initialChecked(
@@ -164,7 +162,7 @@ const Quiz = props => {
     };
 
     const [jobAddressInput, setJobAddressInput] = useState({
-        line1: null,
+        line1: jobToUpdate ? jobToUpdate.jobAddress.line1 : null,
         line2: jobToUpdate ? jobToUpdate.jobAddress.line2 : null,
         place_id: null, // TODO add place_id
     });
@@ -209,24 +207,35 @@ const Quiz = props => {
         const occupationId = index + 1;
 
         if (
-            !occupationId ||
-            !workTypeId ||
-            !jobDescriptionInput ||
-            !customerTypeId ||
-            !propertyTypeId ||
-            !jobAddressInput.line1 ||
-            !jobAddressInput.line2 ||
-            !jobAddressInput.place_id ||
-            !startTimeId
+            typeof occupationId === 'undefined' ||
+            typeof workTypeId === 'undefined' ||
+            typeof jobDescriptionInput === 'undefined' ||
+            typeof customerTypeId === 'undefined' ||
+            typeof propertyTypeId === 'undefined' ||
+            typeof jobAddressInput.line1 === 'undefined' ||
+            typeof jobAddressInput.line2 === 'undefined' ||
+            typeof jobAddressInput.place_id === 'undefined' ||
+            typeof startTimeId === 'undefined'
         ) {
+            console.log(
+                occupationId,
+                workTypeId,
+                jobDescriptionInput,
+                customerTypeId,
+                propertyTypeId,
+                jobAddressInput.line1,
+                jobAddressInput.line2,
+                jobAddressInput.place_id,
+                startTimeId
+            );
             setAlert({
                 title: 'A problem occured',
                 message: 'Make sure all fields are filled.',
                 text: 'Ok',
                 hide: null,
                 onlyShowOneButton: true,
-                buttonColor: Color.importantTextOnTertiaryColorBackground,
-                leftButtonText: null,
+                buttonColor: Color.textColor,
+                leftButtonText: Color.textColor,
                 onPress: onAlertButtonPress,
             });
             setModalVisible(true);
@@ -276,11 +285,11 @@ const Quiz = props => {
     };
 
     return (
-        <TitledScrollableContainer
-            title={title}
+        <ScrollableContainer
+            //title={title}
             backgroundColor={Color.primaryColor}
         >
-            <View style={{ paddingHorizontal: Layout.screenVerticalPadding }}>
+            <View>
                 <LineDescription text="What are you looking for?" />
                 <Line style={{ flex: 0 }}>
                     <Grid
@@ -416,7 +425,7 @@ const Quiz = props => {
                 text={alert.text}
                 leftButtonText={alert.leftButtonText}
             />
-        </TitledScrollableContainer>
+        </ScrollableContainer>
     );
 };
 

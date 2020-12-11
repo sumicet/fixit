@@ -119,7 +119,7 @@ const TradespersonCard = props => {
                                                 : 'flex-start',
                                         }}
                                     >
-                                        <HeaderWithEllipsis>
+                                        <HeaderWithEllipsis style={{color: Color.textOnTertiaryColorBackground}}>
                                             John McCormack
                                         </HeaderWithEllipsis>
                                     </View>

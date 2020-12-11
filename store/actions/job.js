@@ -4,7 +4,6 @@ export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
 
 import Job from '../../models/Jobs/Job';
-import { resetJobData } from './quiz';
 
 export const addJob = (
     occupationId,
@@ -52,8 +51,6 @@ export const addJob = (
             jobAddress,
             startTimeId,
         });
-
-        dispatch(resetJobData());
     };
 };
 

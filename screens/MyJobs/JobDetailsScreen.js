@@ -20,9 +20,7 @@ import StartTime from '../../components/cards/Job/StartTime';
 import PropertyType from '../../components/myjobs/PropertyType';
 import CustomerType from '../../components/myjobs/CustomerType';
 import Touchable from '../../components/common/Touchable';
-import * as quiz from '../../store/actions/quiz';
-import { deleteJob, fetchMyJobs } from '../../store/actions/job';
-import { showAlert } from '../../store/actions/ui';
+import { deleteJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
 import Loading from '../../components/loading/Loading';
 
@@ -32,6 +30,10 @@ const JobDetailsScreen = props => {
     ); // TODO only works for customer
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(() => {
+        props.navigation.setOptions({headerRight: headerRight})
+    })
 
     const showAlert = () => {
         setModalVisible(true);
@@ -113,15 +115,6 @@ const JobDetailsScreen = props => {
                     </Header>
                 </Line>
                 <Line style={{ alignItems: 'flex-start' }}>
-                    {/* <View style={{ paddingBottom: Layout.generalPadding }}>
-                        <Header
-                            style={{
-                                color: Color.textOnTertiaryColorBackground,
-                            }}
-                        >
-                            Description:{' '}
-                        </Header>
-                    </View> */}
                     <SmallContent
                         style={{ color: Color.importantTextOnTertiaryColorBackground }}
                     >
@@ -272,7 +265,7 @@ const JobDetailsScreen = props => {
         );
     };
 
-    const RightOfTitleComponent = () => {
+    const headerRight = () => {
         return (
             <View
                 style={{
@@ -294,7 +287,7 @@ const JobDetailsScreen = props => {
                     <View style={styles.iconContainer}>
                         <Icon
                             name="edit"
-                            color={Color.textOnTertiaryColorBackground}
+                            color={Color.importantTextOnTertiaryColorBackground}
                             size={Layout.menuIconSize}
                         />
                     </View>
@@ -312,7 +305,7 @@ const JobDetailsScreen = props => {
                     <View style={styles.iconContainer}>
                         <Trash
                             name="trash"
-                            color={Color.textOnTertiaryColorBackground}
+                            color={Color.importantTextOnTertiaryColorBackground}
                             size={Layout.menuIconSize}
                         />
                     </View>
@@ -330,7 +323,6 @@ const JobDetailsScreen = props => {
                 midComponent={<MidComponent />}
                 bottomComponent={<BottomComponent />}
                 navigation={props.navigation}
-                rightOfTitleComponent={<RightOfTitleComponent />}
             />
             <Alert
                 modalVisible={modalVisible}

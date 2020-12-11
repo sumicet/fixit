@@ -3,12 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import MediumButton from '../../components/buttons/MediumButtom';
 import Line from '../../components/common/Line';
 import Layout from '../../constants/Layout';
-import QuizScreen from '../../components/containers/QuizScreen';
 import Color from '../../constants/Color';
+import Container from '../../components/containers/Container';
 
 const SelectOption = props => {
     return (
-        <QuizScreen title="Change account details" centerTitle={true}>
+        <Container style={{paddingTop: 0, marginTop: 0}}>
             <View style={{ justifyContent: 'center', flex: 1 }}>
                 <Line
                     style={{
@@ -29,7 +29,7 @@ const SelectOption = props => {
                     <MediumButton text={'Reset password'} onPress={() => {props.navigation.navigate('VerifyEmail')}} />
                 </Line>
             </View>
-        </QuizScreen>
+        </Container>
     );
 };
 

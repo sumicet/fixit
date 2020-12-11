@@ -14,6 +14,7 @@ import Header from '../../components/text/Header';
 import Dropdown from '../../components/dropdown/Dropdown';
 import Rating from '../../components/cards/Tradesperson/Rating';
 import { addFullStars } from '../../components/cards/Tradesperson/Rating';
+import MediumButton from '../../components/buttons/MediumButtom';
 
 const SearchScreen = props => {
     const [colors, setColors] = useState([
@@ -46,14 +47,20 @@ const SearchScreen = props => {
     const [value, setValue] = useState(5);
 
     return (
-        <ScrollableContainer style={{ paddingTop: 0 }}>
+        <ScrollableContainer>
             <Line
                 style={{
                     flex: 0,
                     alignItems: 'flex-start',
                 }}
             >
-                <Header>Search filters</Header>
+                <Header
+                    style={{
+                        color: Color.importantTextOnTertiaryColorBackground,
+                    }}
+                >
+                    Search filters
+                </Header>
             </Line>
             <Line
                 style={{
@@ -107,10 +114,13 @@ const SearchScreen = props => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginRight: Layout.generalPadding,
-                            //marginBottom: Layout.generalPadding,
                         }}
                     >
-                        <SmallContent style={{ color: Color.textColor }}>
+                        <SmallContent
+                            style={{
+                                color: Color.textOnTertiaryColorBackground,
+                            }}
+                        >
                             Rating:
                         </SmallContent>
                     </View>
@@ -143,8 +153,8 @@ const SearchScreen = props => {
                                         color:
                                             colors[index] ===
                                             Color.primaryBrandColor
-                                                ? Color.textField
-                                                : Color.secondaryColor,
+                                                ? Color.importantTextOnTertiaryColorBackground
+                                                : Color.textOnTertiaryColorBackground,
                                     }}
                                 >
                                     {value} +
@@ -173,144 +183,15 @@ const SearchScreen = props => {
                         padding: 0,
                     }}
                     textStyle={{
-                        color: Color.textColor,
-                        fontFamily: 'Asap-Regular',
+                        color: Color.textOnTertiaryColorBackground,
+                        fontFamily: 'Asap-SemiBold',
                         fontSize: Layout.smallContentSize,
                     }}
                     checkedColor={Color.primaryBrandColor}
-                    uncheckedColor={Color.textColor}
+                    uncheckedColor={Color.textOnTertiaryColorBackground}
                     title="Security liability insurance"
                 />
             </Line>
-            {/* flex: 0,
-                    justifyContent: 'flex-start', */}
-
-            {/* <View style={{ alignItems: 'flex-start' }}>
-                <View style={{ paddingBottom: Layout.generalPadding }}>
-                    <Header>Tradesperson</Header>
-                </View>
-                <View
-                    style={{
-                        marginBottom: Layout.screenVerticalPadding,
-                        backgroundColor: Color.textField,
-                        borderRadius: Layout.borderRadius,
-                        overflow: 'hidden',
-                        width: '100%',
-                    }}
-                >
-                    <List.Accordion
-                        title={title}
-                        expanded={expanded}
-                        titleStyle={{
-                            color: Color.primaryColor,
-                            fontSize: Layout.smallContentSize,
-                            fontFamily: 'Asap-SemiBold',
-                        }}
-                        style={{
-                            paddingVertical: 2,
-                            backgroundColor: Color.primaryBrandColor,
-                            borderTopLeftRadius: Layout.borderRadius,
-                            borderTopRightRadius: Layout.borderRadius,
-                            borderBottomRightRadius: expanded
-                                ? 0
-                                : Layout.borderRadius,
-                            borderBottomLeftRadius: expanded
-                                ? 0
-                                : Layout.borderRadius,
-                        }}
-                        onPress={() => setExpanded(!expanded)}
-                        //left={props => <List.Icon {...props} icon="folder" />}
-                    >
-                        <List.Item
-                            onPress={() => {
-                                setExpanded(false);
-                                setTitle('All');
-                            }}
-                            title="All"
-                            titleStyle={{
-                                color: Color.textColor,
-                                fontSize: Layout.smallContentSize,
-                                fontFamily: 'Asap-Regular',
-                            }}
-                            style={{
-                                paddingVertical: 2,
-                                backgroundColor: Color.textField,
-                            }}
-                        />
-                        {OCCUPATIONS.map(item => (
-                            <List.Item
-                                onPress={() => {
-                                    setExpanded(false);
-                                    setTitle(item.name);
-                                }}
-                                title={item.name}
-                                titleStyle={{
-                                    color: Color.textColor,
-                                    fontSize: Layout.smallContentSize,
-                                    fontFamily: 'Asap-Regular',
-                                }}
-                                style={{
-                                    paddingVertical: 2,
-                                    backgroundColor: Color.textField,
-                                }}
-                            />
-                        ))}
-                    </List.Accordion>
-                </View>
-            </View> */}
-
-            {/* <View
-                style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    //alignItems: 'stretch',
-                    //justifyContent: 'space-between',
-                }}
-            >
-                {data.map((item, index) => {
-                    return (
-                        <Line
-                            style={{
-                                alignItems: 'flex-start',
-                                justifyItems: 'flex-start',
-                                flex: 0,
-                            }}
-                        >
-                            <Touchable
-                                onPress={() => {
-                                    //props.navigation.navigate()
-                                    colorItemAt(index, Color.primaryBrandColor);
-                                    console.log(index);
-                                }}
-                                style={{
-                                    flex: 0,
-                                    borderRadius: Layout.borderRadius,
-                                    backgroundColor: colors[index],
-                                    padding: Layout.generalPadding,
-                                    flexDirection: 'row',
-                                    marginHorizontal: Layout.generalPadding / 2,
-                                }}
-                                isCard={true}
-                            >
-                                <SmallContent
-                                    style={{ color: Color.primaryColor }}
-                                >
-                                    {item.description}:{' '}
-                                </SmallContent>
-
-                                <SmallContent
-                                    style={{
-                                        fontFamily: 'Asap-Regular',
-                                        color: Color.primaryColor,
-                                    }}
-                                >
-                                    {item.selection}
-                                </SmallContent>
-                            </Touchable>
-                        </Line>
-                    );
-                })}
-            </View> */}
         </ScrollableContainer>
     );
 };

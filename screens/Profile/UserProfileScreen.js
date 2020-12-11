@@ -16,6 +16,7 @@ import { setStatusBarStyle } from '../../store/actions/ui';
 import Title from '../../components/text/Title';
 import Line from '../../components/common/Line';
 import InAppNotification from '../../components/alert/InAppNotification';
+import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 
 const UserProfileScreen = props => {
     class ProfileData {
@@ -88,13 +89,11 @@ const UserProfileScreen = props => {
                 <Waves />
                 <Touchable
                     onPress={() => {
-                        props.navigation.navigate('Service', {
-                            screen: 'ServicesScreen',
-                        });
+                        props.navigation.navigate('TradespersonProfile');
                     }}
                     style={{
                         flex: 0,
-                        height: 150,
+                        height: 200,
                         width: '100%',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -103,7 +102,7 @@ const UserProfileScreen = props => {
                     }}
                     isCard={true}
                 >
-                    <Title style={{ color: Color.importantTextOnTertiaryColorBackground }}>
+                    {/* <Title style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                         Premium Fixit
                     </Title>
                     <SmallContent
@@ -114,7 +113,31 @@ const UserProfileScreen = props => {
                     >
                         Join now to unlock unlimited daily quotes,
                         recommendations and much more.
-                    </SmallContent>
+                    </SmallContent> */}
+
+                    <Line style={{ flex: 0 }}>
+                        <Title
+                            style={{
+                                color:
+                                    Color.importantTextOnTertiaryColorBackground,
+                            }}
+                        >
+                            John McCornmack
+                        </Title>
+                    </Line>
+                    <Line style={{ flex: 0 }}>
+                        <ProfilePicture />
+                    </Line>
+                    <Line style={{ flex: 0 }}>
+                        <SmallContent
+                            style={{
+                                color: Color.textOnTertiaryColorBackground,
+                                textAlign: 'center',
+                            }}
+                        >
+                            See your tradesperson profile.
+                        </SmallContent>
+                    </Line>
                 </Touchable>
                 <View
                     style={{
@@ -124,7 +147,7 @@ const UserProfileScreen = props => {
                         paddingHorizontal: Layout.screenHorizontalPadding,
                     }}
                 >
-                    <Touchable
+                    {/* <Touchable
                         style={{
                             flex: 0,
                             borderRadius: Layout.borderRadius,
@@ -144,11 +167,12 @@ const UserProfileScreen = props => {
                         <Header style={{ color: Color.primaryColor }}>
                             My Tradesperson Profile
                         </Header>
-                    </Touchable>
+                    </Touchable> */}
                     <Line
                         style={{
                             justifyContent: 'flex-start',
                             alignItems: 'flex-start',
+                            marginTop: Layout.screenHorizontalPadding, //added after
                         }}
                     >
                         <View
@@ -157,7 +181,7 @@ const UserProfileScreen = props => {
                                 flexDirection: 'row',
                             }}
                         >
-                            <Header>ACCOUNT SETTINGS</Header>
+                            <Header style={{color: Color.importantTextOnTertiaryColorBackground}}>ACCOUNT SETTINGS</Header>
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                 <Touchable
                                     style={{ flex: 0 }}
@@ -172,7 +196,7 @@ const UserProfileScreen = props => {
                                 >
                                     <Icon
                                         name="pencil"
-                                        color={Color.textColor}
+                                        color={Color.importantTextOnTertiaryColorBackground}
                                         size={Layout.menuIconSize}
                                     />
                                 </Touchable>

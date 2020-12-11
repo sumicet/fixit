@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 import MediumButton from '../buttons/MediumButtom';
 import Line from '../common/Line';
-import Touchable from '../common/Touchable';
-import Header from '../text/Header';
 import SmallContent from '../text/SmallContent';
 import TextField from '../text/TextField';
-import QuizScreen from './QuizScreen';
+import Container from './Container';
 
 const ResetEmailOrPasswordContainer = props => {
     const [input, setInput] = useState();
@@ -18,12 +16,10 @@ const ResetEmailOrPasswordContainer = props => {
     };
 
     return (
-        <QuizScreen centerTitle={true} {...props}>
+        <Container style={{paddingTop: 0, marginTop: 0}}>
             <View
                 style={{
                     flex: 1,
-                    //justifyContent: 'center',
-                    paddingHorizontal: Layout.screenHorizontalPadding,
                 }}
             >
                 <Line
@@ -33,7 +29,7 @@ const ResetEmailOrPasswordContainer = props => {
                         alignItems: 'flex-start',
                     }}
                 >
-                    <SmallContent style={{ color: Color.secondaryColor }}>
+                    <SmallContent style={{ color: Color.textOnTertiaryColorBackground }}>
                         {props.text}
                     </SmallContent>
                 </Line>
@@ -49,10 +45,6 @@ const ResetEmailOrPasswordContainer = props => {
                         keyboardType={props.keyboardType}
                         autoCompleteType={props.autoCompleteType}
                         multiline={false}
-                        //style={{paddingVertical: Layout.generalMargin}}
-                        // containerStyle={{
-                        //     marginVertical: Layout.generalMargin,
-                        // }}
                         textAlignVertical="center"
                         secureTextEntry={props.secureTextEntry}
                     />
@@ -67,10 +59,6 @@ const ResetEmailOrPasswordContainer = props => {
                             }}
                             placeholder="confirm new password"
                             multiline={false}
-                            //style={{paddingVertical: Layout.generalMargin}}
-                            // containerStyle={{
-                            //     marginVertical: Layout.generalMargin,
-                            // }}
                             textAlignVertical="center"
                             secureTextEntry={props.secureTextEntry}
                         />
@@ -83,7 +71,7 @@ const ResetEmailOrPasswordContainer = props => {
                     />
                 </Line>
             </View>
-        </QuizScreen>
+        </Container>
     );
 };
 

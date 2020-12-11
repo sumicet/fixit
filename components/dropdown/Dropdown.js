@@ -19,7 +19,7 @@ const Dropdown = props => {
             }}
         >
             <View style={{ paddingRight: Layout.generalPadding }}>
-                <SmallContent style={{ color: Color.textColor }}>
+                <SmallContent style={{ color: Color.textOnTertiaryColorBackground }}>
                     {props.label}:
                 </SmallContent>
             </View>
@@ -38,7 +38,7 @@ const Dropdown = props => {
                     borderRadius: Layout.borderRadius,
                 }}
                 textStyle={{
-                    color: color === Color.primaryBrandColor ? Color.primaryColor : Color.textColor,
+                    color: color === Color.primaryBrandColor ? Color.importantTextOnTertiaryColorBackground : Color.textColor,
                     fontSize: Layout.smallContentSize,
                     fontFamily: color === Color.primaryBrandColor ? 'Asap-SemiBold' : 'Asap-Regular',
                 }}

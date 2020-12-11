@@ -28,7 +28,7 @@ export default {
     smallContentSize: 16,
     superSmallContentSize: 12,
     headerSize: 18,
-    titleSize: 22,
+    titleSize: 20,
 
     // **************** BORDER ****************
     
