@@ -3,12 +3,12 @@ import Svg, { G, Path } from 'react-native-svg';
 import Color from '../../../constants/Color';
 import Layout from '../../../constants/Layout';
 
-function Logo() {
+function Logo(props) {
     return (
         <Svg
-            height={Layout.menuIconSize}
+            height={props.height ? props.height : Layout.menuIconSize}
             viewBox="0 0 64 64"
-            width={Layout.menuIconSize}
+            width={props.width ? props.width : Layout.menuIconSize}
             xmlns="http://www.w3.org/2000/svg"
         >
             <Path

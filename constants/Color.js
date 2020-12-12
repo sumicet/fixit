@@ -18,7 +18,7 @@ export default {
     importantTextOnTertiaryColorBackground: 'white',
 
     success: '#27c47d',
-    error: '#c42751',
+    error: '#ff008c',
     urgent: '#b80000',
     tomorrow: '#edba00',
     starColor: '#f8c33c',

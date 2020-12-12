@@ -31,6 +31,7 @@
     "react-native-gesture-handler": "~1.7.0",
     "react-native-google-places-autocomplete": "^2.1.1",
     "react-native-in-app-notification": "^3.1.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-maps": "^0.27.1",
     "react-native-material-textfield": "git+https://github.com/javarahulsharma/react-native-material-textfield.git",
     "react-native-modal": "^11.5.6",
@@ -51,7 +52,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "sib-api-v3-sdk": "^8.0.2",
-    "teaset": "^0.7.5"
+    "teaset": "^0.7.5",
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

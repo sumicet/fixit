@@ -11,10 +11,12 @@ import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
 import jobReducer from './store/reducers/job';
 import uiReducer from './store/reducers/ui';
+import authReducer from './store/reducers/auth';
 
 const rootReducer = combineReducers({
     job: jobReducer,
     ui: uiReducer,
+    auth: authReducer
 });
 
 const store = createStore(

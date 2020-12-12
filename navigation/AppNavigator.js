@@ -14,7 +14,7 @@ import {
 } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
@@ -40,6 +40,8 @@ import SearchBar from '../components/search/SearchBar';
 import EditJobScreen from '../screens/Quiz/EditJobScreen';
 import NewJobScreen from '../screens/Quiz/NewJobScreen';
 import Logo from '../assets/icons/Logo/Logo';
+import SignUpScreen from '../screens/Authentication/SignUpScreen';
+import LogInScreen from '../screens/Authentication/LogInScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,6 +49,7 @@ const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 
     const coloredHeaderOptions = {
         headerTitle: '',
@@ -147,6 +150,36 @@ const AppNavigator = () => {
         return <Loading />;
     }
 
+    const AuthenticationStack = () => {
+        return (
+            <Stack.Navigator
+                headerMode="screen"
+                animation
+                screenOptions={{
+                    cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                }}
+            >
+                <Stack.Screen
+                    name="LogIn"
+                    component={LogInScreen}
+                    options={{
+                        ...coloredHeaderOptions,
+                        headerTitle: 'Log In',
+                    }}
+                />
+                <Stack.Screen
+                    name="SignUp"
+                    component={SignUpScreen}
+                    options={{
+                        ...coloredHeaderOptions,
+                        headerTitle: 'Sign Up',
+                    }}
+                />
+            </Stack.Navigator>
+        );
+    };
+
     const MyJobsStack = () => {
         return (
             <Stack.Navigator
@@ -206,7 +239,7 @@ const AppNavigator = () => {
                     options={{
                         headerShown: true,
                         ...headerOptions,
-                        headerTitle: 'Customize your profile'
+                        headerTitle: 'Customize your profile',
                     }}
                 />
                 <Stack.Screen
@@ -502,7 +535,7 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <AppStack />
+            {isLoggedIn ? <AppStack /> : <AuthenticationStack />}
         </NavigationContainer>
     );
 };
