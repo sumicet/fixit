@@ -4,7 +4,7 @@ class Tradesperson {
         name,
         occupationsIds,
         streetAddress,
-        experience,
+        experienceId,
         insurance,
         rating,
         ratingVotesAmount,
@@ -18,7 +18,7 @@ class Tradesperson {
         this.name = name;
         this.occupationsIds = occupationsIds;
         this.streetAddress = streetAddress;
-        this.experience = experience;
+        this.experienceId = experienceId;
         this.insurance = insurance;
         this.rating = rating;
         this.ratingVotesAmount = ratingVotesAmount;

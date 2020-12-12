@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useIsFocused } from '@react-navigation/native';
+
 import Layout from '../../constants/Layout';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 import Contact from '../../components/cards/Tradesperson/Contact';
@@ -18,15 +21,49 @@ import Rating from '../../components/cards/Tradesperson/Rating';
 import Comment from '../../components/cards/Comment/Comment';
 import SectionedContainer from '../../components/containers/SectionedContainer';
 import Line from '../../components/common/Line';
-import { useIsFocused } from '@react-navigation/native';
+import Touchable from '../../components/common/Touchable';
 
 const ProfileScreen = props => {
-
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        props.navigation.setOptions({ headerTitle: "John McCormack" })
-    }, [])
+        props.navigation.setOptions({
+            headerTitle: 'John McCormack',
+            headerRight: headerRight,
+        });
+    }, []);
+
+    const headerRight = () => {
+        return (
+            <View
+                style={{
+                    flex: 0,
+                    flexDirection: 'row',
+                }}
+            >
+                <Touchable
+                    style={{
+                        flex: 0,
+                        padding: Layout.screenHorizontalPadding / 2,
+                    }}
+                    onPress={() => {
+                        props.navigation.navigate('Profile', {
+                            screen: 'EditTradespersonProfile',
+                            params: { id: null },
+                        });
+                    }}
+                >
+                    <View style={styles.iconContainer}>
+                        <Icon
+                            name="edit"
+                            color={Color.importantTextOnTertiaryColorBackground}
+                            size={Layout.menuIconSize}
+                        />
+                    </View>
+                </Touchable>
+            </View>
+        );
+    };
 
     const TopComponent = () => {
         return (
@@ -126,7 +163,7 @@ const ProfileScreen = props => {
                     }}
                 >
                     <SmallContent style={{ color: Color.secondaryColor }}>
-                        Lu - Vi: 10 am - 8 pm, national holidays off
+                        Mo - Fr: 10 am - 8 pm, national holidays off
                     </SmallContent>
                 </View>
             </View>
@@ -146,7 +183,11 @@ const ProfileScreen = props => {
                     }}
                 >
                     <Header style={{ textAlign: 'left' }}>Rating: </Header>
-                    <Rating rating={4.5} color={Color.textColor} readOnly={true} />
+                    <Rating
+                        rating={4.5}
+                        color={Color.textColor}
+                        readOnly={true}
+                    />
                 </View>
 
                 <Comment />

@@ -18,11 +18,11 @@ const Dropdown = props => {
                 alignItems: 'center',
             }}
         >
-            <View style={{ paddingRight: Layout.generalPadding }}>
+            {props.label && <View style={{ paddingRight: Layout.generalPadding }}>
                 <SmallContent style={{ color: Color.textOnTertiaryColorBackground }}>
                     {props.label}:
                 </SmallContent>
-            </View>
+            </View>}
             <ModalDropdown
                 onSelect={() => {
                     setColor(Color.primaryBrandColor);
@@ -45,7 +45,7 @@ const Dropdown = props => {
                 dropdownStyle={{
                     padding: Layout.generalPadding / 2,
                     borderBottomWidth: 0,
-                    height: 300,
+                    height: props.height ? props.height : 300,
                     width: 200,
                     borderRadius: Layout.borderRadius,
                     overflow: 'hidden',

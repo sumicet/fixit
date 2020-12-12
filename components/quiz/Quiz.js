@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, useNavigationState } from '@react-navigation/native';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import Line from '../../components/common/Line';
 import Grid from '../../components/layout/Grid';
@@ -20,9 +21,25 @@ import MediumButton from '../../components/buttons/MediumButtom';
 import { addJob, editJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
 import ScrollableContainer from '../containers/ScrollableContainer';
+import LineDescription from '../common/LineDescription';
 
 const Quiz = props => {
     const { title, editModeOn, id, navigation, route } = props;
+
+    useEffect(() => {
+        if (isFocused) {
+            props.navigation.setOptions({
+                headerLeft: props => (
+                    <HeaderBackButton
+                        {...props}
+                        onPress={() => {
+                            backAction();
+                        }}
+                    />
+                ),
+            });
+        }
+    }, [isFocused]);
 
     const [alert, setAlert] = useState({
         title: null,
@@ -88,11 +105,11 @@ const Quiz = props => {
         return unsub;
     }, [props.navigation]);
 
-    const jobToUpdate = editModeOn
-        ? useSelector(state => state.job.userPendingJobs).find(
-              elem => elem.id === id
-          )
-        : null;
+    const jobToUpdate =
+        editModeOn &&
+        useSelector(state => state.job.userPendingJobs).find(
+            elem => elem.id === id
+        );
 
     const [index, setIndex] = useState(
         editModeOn ? jobToUpdate.occupationId - 1 : 0
@@ -109,16 +126,6 @@ const Quiz = props => {
         );
     }, [isFocused]);
     const dispatch = useDispatch();
-
-    const LineDescription = props => {
-        return (
-            <Line style={{ flex: 0, alignItems: 'flex-start' }}>
-                <Header style={{ color: Color.textOnTertiaryColorBackground }}>
-                    {props.text}
-                </Header>
-            </Line>
-        );
-    };
 
     const initialChecked = (data, value) => {
         const initialChecked = [];

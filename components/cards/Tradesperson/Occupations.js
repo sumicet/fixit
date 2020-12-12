@@ -18,7 +18,7 @@ const Occupations = props => {
         >
             {props.isTitle ? (
                 <HeaderWithEllipsis
-                    style={props.textColor ? { color: props.textColor } : null}
+                    style={props.textColor && { color: props.textColor }}
                 >
                     {
                         OCCUPATIONS.find(occ => occ.id === props.occupationId)
@@ -31,7 +31,7 @@ const Occupations = props => {
                 </Header>
             ) : (
                 <SmallContentWithEllipsis
-                    style={props.textColor ? { color: props.textColor } : null}
+                    style={props.textColor && { color: props.textColor }}
                 >
                     Plumber • Builder • Heating Eng. • Painter • Electrician
                 </SmallContentWithEllipsis>

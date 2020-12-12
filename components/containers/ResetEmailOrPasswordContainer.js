@@ -49,7 +49,7 @@ const ResetEmailOrPasswordContainer = props => {
                         secureTextEntry={props.secureTextEntry}
                     />
                 </Line>
-                {props.showConfirmPasswordField ? (
+                {props.showConfirmPasswordField && (
                     <Line style={{ flex: 0 }}>
                         <TextField
                             onPress={() => {}}
@@ -63,7 +63,7 @@ const ResetEmailOrPasswordContainer = props => {
                             secureTextEntry={props.secureTextEntry}
                         />
                     </Line>
-                ) : null}
+                )}
                 <Line style={{ flex: 0, paddingTop: Layout.generalMargin }}>
                     <MediumButton
                         text={props.buttonText}

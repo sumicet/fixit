@@ -12,7 +12,7 @@ const MediumButton = props => {
             onPress={props.onPress}
             isCard={true}
         >
-            <Header style={{ color: Color.primaryColor }}>
+            <Header style={{ color: Color.importantTextOnTertiaryColorBackground }}>
                 {props.text}
             </Header>
         </Touchable>

@@ -8,9 +8,9 @@ import Header from '../text/Header';
 const OccupationCard = props => {
     return (
         <View style={[styles.container, props.style]}>
-            {props.children ? (
+            {props.children && (
                 <View style={styles.iconContainer}>{props.children}</View>
-            ) : null}
+            )}
             <View>
                 <Header>{props.name}</Header>
             </View>

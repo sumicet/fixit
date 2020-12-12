@@ -49,8 +49,8 @@ const JobAddress = props => {
             latitudeDelta: region.latitudeDelta,
             longitudeDelta: region.longitudeDelta,
             latitude: jsonSelected.result.geometry.location.lat,
-            longitude: jsonSelected.result.geometry.location.lng
-        })
+            longitude: jsonSelected.result.geometry.location.lng,
+        });
     };
 
     const initialRegionSettings = async id => {
@@ -62,8 +62,8 @@ const JobAddress = props => {
             latitudeDelta: region.latitudeDelta,
             longitudeDelta: region.longitudeDelta,
             latitude: jsonSelected.result.geometry.location.lat,
-            longitude: jsonSelected.result.geometry.location.lng
-        })
+            longitude: jsonSelected.result.geometry.location.lng,
+        });
     };
 
     return (
@@ -80,7 +80,7 @@ const JobAddress = props => {
                     textAlignVertical="center"
                 />
             </Line>
-            {showPredictions && predictions.length ? (
+            {showPredictions && predictions.length && (
                 <Line
                     style={{
                         flex: 0,
@@ -103,18 +103,20 @@ const JobAddress = props => {
                         ))}
                     </View>
                 </Line>
-            ) : null}
-            <Line style={{ flex: 0 }}>
-                <TextField
-                    value={props.input.line2}
-                    onChangeText={input => {
-                        props.onChangeText(input);
-                    }}
-                    placeholder="Apartment, building, floor"
-                    multiline={false}
-                    textAlignVertical="center"
-                />
-            </Line>
+            )}
+            {props.hideLine2 ? null : (
+                <Line style={{ flex: 0 }}>
+                    <TextField
+                        value={props.input.line2}
+                        onChangeText={input => {
+                            props.onChangeText(input);
+                        }}
+                        placeholder="Apartment, building, floor"
+                        multiline={false}
+                        textAlignVertical="center"
+                    />
+                </Line>
+            )}
             <Line style={{ flex: 0 }}>
                 <View style={styles.googleMapsContainer}>
                     <GoogleMaps

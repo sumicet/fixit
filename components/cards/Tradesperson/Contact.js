@@ -27,7 +27,7 @@ const Contact = props => {
                         }
                         size={Layout.menuIconSize}
                     />
-                    {props.showLabels ? (
+                    {props.showLabels && (
                         <SuperSmallContent
                             style={{
                                 color:
@@ -36,7 +36,7 @@ const Contact = props => {
                         >
                             Call
                         </SuperSmallContent>
-                    ) : null}
+                    )}
                 </View>
             </Touchable>
             <Touchable onPress={() => {}} style={{ flex: 0 }}>
@@ -50,7 +50,7 @@ const Contact = props => {
                         }
                         size={Layout.menuIconSize}
                     />
-                    {props.showLabels ? (
+                    {props.showLabels && (
                         <SuperSmallContent
                             style={{
                                 color:
@@ -59,7 +59,7 @@ const Contact = props => {
                         >
                             Message
                         </SuperSmallContent>
-                    ) : null}
+                    )}
                 </View>
             </Touchable>
         </View>

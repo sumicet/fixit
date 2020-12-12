@@ -10,6 +10,7 @@ import {
     createStackNavigator,
     CardStyleInterpolators,
     HeaderStyleInterpolators,
+    HeaderBackButton,
 } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -23,6 +24,7 @@ import MessagesScreen from '../screens/Messages/MessagesScreen';
 import MyJobsScreen from '../screens/MyJobs/MyJobsScreen';
 import UserProfileScreen from '../screens/Profile/UserProfileScreen';
 import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
+import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
 import Touchable from '../components/common/Touchable';
@@ -167,8 +169,8 @@ const AppNavigator = () => {
                     name="JobDetails"
                     component={JobDetailsScreen}
                     options={({ navigation, route }) => ({
-                        headerTitle: 'Details',
                         ...coloredHeaderOptions,
+                        headerTitle: 'Details',
                     })}
                 />
             </Stack.Navigator>
@@ -196,6 +198,15 @@ const AppNavigator = () => {
                     options={{
                         headerShown: true,
                         ...coloredHeaderOptions,
+                    }}
+                />
+                <Stack.Screen
+                    name="EditTradespersonProfile"
+                    component={EditTradespersonProfileScreen}
+                    options={{
+                        headerShown: true,
+                        ...headerOptions,
+                        headerTitle: 'Customize your profile'
                     }}
                 />
                 <Stack.Screen
