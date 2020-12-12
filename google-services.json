@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "430332052455",
+    "firebase_url": "https://fixit-46444.firebaseio.com",
+    "project_id": "fixit-46444",
+    "storage_bucket": "fixit-46444.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430332052455:android:5e8620a5468a0fb6017342",
+        "android_client_info": {
+          "package_name": "com.fixit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430332052455-i9h0fiu0uioo11of0dh6i25gf77mriqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAPHcLBXEFNGvUlzgJQDbrSz79pEn9oDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430332052455-i9h0fiu0uioo11of0dh6i25gf77mriqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
