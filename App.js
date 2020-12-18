@@ -5,7 +5,8 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-import FlashMessage from 'react-native-flash-message';
+import * as Firebase from './config/Firebase';
+//import FlashMessage from 'react-native-flash-message';
 
 import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
@@ -35,6 +36,7 @@ const fetchFonts = () => {
 export default function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [dropDownAlertRef, setDropDownAlertRef] = useState();
+    const [inAppNotificationVisible, setInAppNotificationVisible] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -50,9 +52,10 @@ export default function App() {
     return (
         <View style={styles.container}>
             <Provider store={store}>
-                <AppNavigator dropDownAlertRef={dropDownAlertRef} />
+                <AppNavigator />
             </Provider>
-            <FlashMessage position="top" />
+            {/* <FlashMessage position="top" /> */}
+
         </View>
     );
 }

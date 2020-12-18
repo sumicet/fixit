@@ -17,6 +17,8 @@ import Title from '../../components/text/Title';
 import Line from '../../components/common/Line';
 import InAppNotification from '../../components/alert/InAppNotification';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
+import MediumButton from '../../components/buttons/MediumButtom';
+import { signOut } from '../../store/actions/auth';
 
 const UserProfileScreen = props => {
     class ProfileData {
@@ -147,27 +149,6 @@ const UserProfileScreen = props => {
                         paddingHorizontal: Layout.screenHorizontalPadding,
                     }}
                 >
-                    {/* <Touchable
-                        style={{
-                            flex: 0,
-                            borderRadius: Layout.borderRadius,
-                            backgroundColor: Color.primaryBrandColor,
-                            padding: Layout.screenHorizontalPadding,
-                            marginTop: Layout.screenHorizontalPadding,
-                            marginBottom: Layout.screenHorizontalPadding * 2,
-                        }}
-                        onPress={() => {
-                            props.navigation.navigate('Profile', {
-                                screen: 'TradespersonProfile',
-                                params: { action: 'edit' },
-                            });
-                        }}
-                        isCard={true}
-                    >
-                        <Header style={{ color: Color.primaryColor }}>
-                            My Tradesperson Profile
-                        </Header>
-                    </Touchable> */}
                     <Line
                         style={{
                             justifyContent: 'flex-start',
@@ -181,7 +162,14 @@ const UserProfileScreen = props => {
                                 flexDirection: 'row',
                             }}
                         >
-                            <Header style={{color: Color.importantTextOnTertiaryColorBackground}}>ACCOUNT SETTINGS</Header>
+                            <Header
+                                style={{
+                                    color:
+                                        Color.importantTextOnTertiaryColorBackground,
+                                }}
+                            >
+                                ACCOUNT SETTINGS
+                            </Header>
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                 <Touchable
                                     style={{ flex: 0 }}
@@ -196,7 +184,9 @@ const UserProfileScreen = props => {
                                 >
                                     <Icon
                                         name="pencil"
-                                        color={Color.importantTextOnTertiaryColorBackground}
+                                        color={
+                                            Color.importantTextOnTertiaryColorBackground
+                                        }
                                         size={Layout.menuIconSize}
                                     />
                                 </Touchable>
@@ -276,6 +266,21 @@ const UserProfileScreen = props => {
                                 </View>
                             </View>
                         </View>
+                    </Line>
+                    <Line
+                        style={{
+                            flex: 0,
+                            justifyContent: 'flex-end',
+                        }}
+                    >
+                        <MediumButton
+                            text="Sign out"
+                            onPress={() => {
+                                dispatch(signOut());
+                            }}
+                            style={{ backgroundColor: Color.textField }}
+                            textColor={Color.secondaryColor}
+                        />
                     </Line>
                 </View>
             </View>

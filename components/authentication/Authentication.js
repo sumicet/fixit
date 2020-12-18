@@ -13,6 +13,7 @@ import Touchable from '../../components/common/Touchable';
 import AuthLine from './AuthLine';
 import SmallContent from '../text/SmallContent';
 import { useIsFocused } from '@react-navigation/native';
+import LineDescription from '../common/LineDescription';
 
 const Authentication = props => {
     const {
@@ -101,20 +102,30 @@ const Authentication = props => {
                     </SmallContent>
                 </Line>
 
-                <AuthLine
-                    iconName="email"
-                    value={email}
-                    onChange={input => setEmail(input)}
-                    placeholder="example@gmail.com"
-                    secureTextEntry={false}
-                />
-                <AuthLine
-                    iconName="key-variant"
-                    value={password}
-                    onChange={input => setPassword(input)}
-                    placeholder="**********"
-                    secureTextEntry={true}
-                />
+                {!props.hideTextFields && (
+                    <AuthLine
+                        iconName="email"
+                        value={email}
+                        onChange={input => setEmail(input)}
+                        placeholder="example@gmail.com"
+                        secureTextEntry={false}
+                    />
+                )}
+                {!props.hideTextFields && (
+                    <AuthLine
+                        iconName="key-variant"
+                        value={password}
+                        onChange={input => setPassword(input)}
+                        placeholder="**********"
+                        secureTextEntry={true}
+                    />
+                )}
+                {props.hideTextFields && (
+                    <LineDescription
+                        centerText={true}
+                        text={`We have sent an email to ${email}. Please verify your account to continue.`}
+                    />
+                )}
                 <Line
                     style={{
                         flex: 0,

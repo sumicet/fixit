@@ -13,19 +13,19 @@ const Grid = props => {
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        if(isFocused) {
+        if (isFocused) {
             const initialColors = [];
-        var i;
-        for (i = 0; i < props.data.length; i++) {
-            if(i === props.initialSelectedIndex) {
-                initialColors.push(Color.tertiaryBrandColor);
-            } else {
-                initialColors.push(Color.textField);
+            var i;
+            for (i = 0; i < props.data.length; i++) {
+                if (i === props.initialSelectedIndex) {
+                    initialColors.push(Color.tertiaryBrandColor);
+                } else {
+                    initialColors.push(Color.textField);
+                }
             }
+            setColors(initialColors);
         }
-        setColors(initialColors);
-        }
-    }, [props.data])
+    }, [props.data]);
 
     const handleItemPress = index => {
         const updatedColors = [...colors];
@@ -39,13 +39,26 @@ const Grid = props => {
         setColors(updatedColors);
     };
 
-    const ItemContainer = props.RenderItemComponent? View : Touchable;
+    const handleMultipleOptionsItemPress = index => {
+        const updatedColors = [...colors];
+        updatedColors[index] =
+            updatedColors[index] === Color.tertiaryBrandColor
+                ? Color.textField
+                : Color.tertiaryBrandColor;
+        setColors(updatedColors);
+    };
+
+    const ItemContainer = props.RenderItemComponent ? View : Touchable;
 
     const RenderItem = props => {
         return (
             <ItemContainer
                 onPress={() => {
-                    handleItemPress(props.index);
+                    if(props.multipleOptions) {
+                        handleMultipleOptionsItemPress(props.index);
+                    } else {
+                        handleItemPress(props.index);
+                    }
                     props.onPress(props.index);
                 }}
                 isCard={true}
@@ -60,7 +73,6 @@ const Grid = props => {
                     height: 50,
                     marginBottom: Layout.generalPadding,
                 }}
-                
             >
                 <SmallContent
                     style={{
@@ -69,7 +81,7 @@ const Grid = props => {
                                 ? Color.importantTextOnTertiaryColorBackground
                                 : Color.textColor,
                         fontFamily: 'Asap-SemiBold',
-                        textAlign: 'center'
+                        textAlign: 'center',
                     }}
                 >
                     {props.text}
@@ -78,7 +90,9 @@ const Grid = props => {
         );
     };
 
-    const RenderItemComponent = props.RenderItemComponent ? props.RenderItemComponent : RenderItem;
+    const RenderItemComponent = props.RenderItemComponent
+        ? props.RenderItemComponent
+        : RenderItem;
 
     return (
         <View style={{ flexDirection: 'row', width: '100%' }}>
@@ -87,7 +101,14 @@ const Grid = props => {
                     if (index > Math.ceil(props.data.length / 2) - 1) {
                         return null;
                     }
-                    return <RenderItemComponent text={item.name} index={index} onPress={props.onPress} {...props} />;
+                    return (
+                        <RenderItemComponent
+                            text={item.name}
+                            index={index}
+                            onPress={props.onPress}
+                            {...props}
+                        />
+                    );
                 })}
             </View>
             <View style={{ width: '50%' }}>
@@ -95,7 +116,14 @@ const Grid = props => {
                     if (index <= Math.ceil(props.data.length / 2) - 1) {
                         return null;
                     }
-                    return <RenderItemComponent text={item.name} index={index} onPress={props.onPress} {...props} />;
+                    return (
+                        <RenderItemComponent
+                            text={item.name}
+                            index={index}
+                            onPress={props.onPress}
+                            {...props}
+                        />
+                    );
                 })}
             </View>
         </View>

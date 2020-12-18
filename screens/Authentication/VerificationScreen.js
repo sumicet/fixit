@@ -1,26 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
-import InAppNotification from '../../components/alert/InAppNotification';
+import { useDispatch, useSelector } from 'react-redux';
 import Authentication from '../../components/authentication/Authentication';
-import { autoLogIn, logIn } from '../../store/actions/auth';
+import { logIn } from '../../store/actions/auth';
 
-const LogInScreen = props => {
+const VerificationScreen = props => {
     const dispatch = useDispatch();
     // const [inAppNotificationVisible, setInAppNotificationVisible] = useState(false);
 
+    const userType = props.route.params && props.route.params.userType;
+
+    console.log(userType);
+
     const handleOnPress = (email, password) => {
         dispatch(logIn(email, password));
+        if (userType === 'tradesperson') {
+            props.navigation.navigate('EditTradespersonProfile', {
+                action: 'signup',
+            });
+        } else {
+            console.log('customer not yet available');
+        }
     };
-
-    useEffect(() => {
-        dispatch(autoLogIn());
-    }, []);
 
     return (
         <View style={{ flex: 1 }}>
             <Authentication
-                buttonText="Log In"
+                buttonText="Continue"
                 onTextPress={() => {
                     props.navigation.navigate('SignUp');
                 }}
@@ -30,6 +36,7 @@ const LogInScreen = props => {
                 defaultPassword={
                     props.route.params && props.route.params.password
                 }
+                hideTextFields={true}
             />
             {/* <InAppNotification
                 title={"Denied!"}
@@ -43,4 +50,4 @@ const LogInScreen = props => {
 
 const styles = StyleSheet.create({});
 
-export default LogInScreen;
+export default VerificationScreen;

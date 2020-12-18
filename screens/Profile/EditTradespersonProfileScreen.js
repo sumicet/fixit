@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import PhoneInput from '../../components/phoneNumberInput/index';
 import MediumButton from '../../components/buttons/MediumButtom';
 import CustomRadioButton from '../../components/common/CustomRadioButton';
 import Line from '../../components/common/Line';
 import LineDescription from '../../components/common/LineDescription';
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
-import Dropdown from '../../components/dropdown/Dropdown';
 import Grid from '../../components/layout/Grid';
 import JobAddress from '../../components/quiz/JobAddress';
 import SmallContent from '../../components/text/SmallContent';
@@ -18,14 +19,17 @@ import { OCCUPATIONS } from '../../data/Jobs/Occupations';
 import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import { EXPERIENCE } from '../../data/Tradesperson/Experience';
 import Touchable from '../../components/common/Touchable';
-import Insurance from '../../components/cards/Tradesperson/Insurance';
+import { useDispatch } from 'react-redux';
+import { setTradespersonInfo } from '../../store/actions/tradesperson';
 
 const EditTradespersonProfile = props => {
-    const [index, setIndex] = useState(); //editModeOn ? jobToUpdate.occupationId - 1 : 0
+    const [occupations, setOccupations] = useState([]);
     const [jobAddressInput, setJobAddressInput] = useState({
         line1: null,
         place_id: null,
     });
+
+    const action = props.route.params && props.route.params.action;
 
     const handleStreetAddressChange = (streetAddress, place_id) => {
         setJobAddressInput({
@@ -110,21 +114,22 @@ const EditTradespersonProfile = props => {
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
+            base64: true,
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
-            setprofilePicture(result.uri);
+            setprofilePicture(result.base64);
         }
     };
 
+    const dispatch = useDispatch();
+
     const handleFinishPress = () => {
-        const occupationId = index + 1;
+        const occupationsIds = occupations.map(id => id + 1);
         const experienceId =
             experienceChecked.findIndex(elem => elem === true) + 1;
         const propertyTypesIds = propertyTypesChecked
@@ -138,23 +143,40 @@ const EditTradespersonProfile = props => {
         };
         const insurance = insuranceChecked;
 
-        console.log(
-            name,
-            occupationId,
-            schedule,
-            experienceId,
-            propertyTypesIds,
-            streetAddress,
-            insurance
+        dispatch(
+            setTradespersonInfo(
+                name,
+                occupationsIds,
+                streetAddress,
+                experienceId,
+                insurance,
+                propertyTypesIds,
+                profilePicture,
+                phoneNumber
+            )
         );
+
+        // if (action === 'signup') {
+        //     props.navigation.navigate('Home');
+        // } else {
+        //     props.navigation.navigate('TradespersonProfile');
+        // }
     };
+
+    const phoneInput = useRef();
+
+    const [phoneNumber, setPhoneNumber] = useState();
 
     return (
         <ScrollableContainer
             //title={title}
             backgroundColor={Color.primaryColor}
         >
-            <LineDescription text="What's your name?" />
+            <LineDescription text="What is your name?">
+                <SmallContent>
+                    This information will be displayed on your profile.
+                </SmallContent>
+            </LineDescription>
             <Line style={{ flex: 0 }}>
                 <TextField
                     value={name}
@@ -167,30 +189,107 @@ const EditTradespersonProfile = props => {
                     textAlignVertical="center"
                 />
             </Line>
-            <LineDescription text="Add a profile picture." />
+            <LineDescription text="Add a profile picture. (optional)">
+                <SmallContent>
+                    Profile pictures have a positive impact on customers' first
+                    impression of trustworthiness. It is not recommended to skip
+                    this field.
+                </SmallContent>
+            </LineDescription>
             <Line style={{ flex: 0 }}>
                 <Touchable
                     onPress={pickImage}
                     style={{ flex: 0, borderRadius: 100, overflow: 'hidden' }}
                 >
                     <Image
-                        source={{ uri: profilePicture }}
+                        source={{
+                            uri: `data:image/gif;base64,${profilePicture}`,
+                        }}
                         style={{ width: 80, height: 80 }}
                         resizeMethod="scale"
                     />
                 </Touchable>
             </Line>
-            <LineDescription text="I am a.." />
+            <LineDescription text="Phone number.">
+                <SmallContent>
+                    This information will be displayed on your profile.
+                </SmallContent>
+            </LineDescription>
+            <Line style={{ flex: 0 }}>
+                <PhoneInput
+                    ref={phoneInput}
+                    defaultValue={phoneNumber}
+                    defaultCode="RO"
+                    layout="first"
+                    onChangeText={text => {
+                        setPhoneNumber(text);
+                    }}
+                    containerStyle={{
+                        borderRadius: Layout.borderRadius,
+                        backgroundColor: Color.textField,
+                        overflow: 'hidden',
+                        width: '100%',
+                    }}
+                    textContainerStyle={{
+                        backgroundColor: Color.textField,
+                        paddingHorizontal: Layout.generalPadding,
+                        paddingVertical: Layout.generalPadding,
+                    }}
+                    textInputStyle={{
+                        color: Color.textColor,
+                        fontFamily: 'Asap-Regular',
+                    }}
+                    renderDropdownImage={
+                        <Icon
+                            name="arrow-drop-down"
+                            color={Color.textColor}
+                            size={Layout.menuIconSize}
+                        />
+                    }
+                    codeTextStyle={{
+                        color: Color.textColor,
+                        fontFamily: 'Asap-Regular',
+                        marginRight: Layout.generalPadding,
+                    }}
+                    flagButtonStyle={{
+                        backgroundColor: Color.textField,
+                    }}
+                    countryPickerButtonStyle={{
+                        backgroundColor: Color.textField,
+                    }}
+                    placeholder="999-999-9999"
+                    placeholderColor={Color.placeholderTextColor}
+                    withDarkTheme
+                />
+            </Line>
+            <LineDescription text="What is your occupation?">
+                <SmallContent>You can select multiple options.</SmallContent>
+            </LineDescription>
             <Line style={{ flex: 0 }}>
                 <Grid
                     data={OCCUPATIONS}
                     onPress={index => {
-                        setIndex(index);
+                        if (occupations.includes(index)) {
+                            const updatedOccupations = occupations.filter(
+                                elem => elem !== index
+                            );
+                            setOccupations(updatedOccupations);
+                        } else {
+                            const updatedOccupations = occupations;
+                            updatedOccupations.push(index);
+                            setOccupations(updatedOccupations);
+                        }
                     }}
-                    initialSelectedIndex={0}
+                    //initialSelectedIndex={0}
+                    multipleOptions={true}
                 />
             </Line>
-            <LineDescription text="What's your schedule?" />
+            <LineDescription text="Schedule.">
+                <SmallContent>
+                    Let your customers know when you are available. Keep it
+                    short.
+                </SmallContent>
+            </LineDescription>
             <Line style={{ flex: 0 }}>
                 <TextField
                     value={schedule}
@@ -246,10 +345,10 @@ const EditTradespersonProfile = props => {
                     RenderItemComponent={CustomRadioButton}
                 />
             </Line>
-            <LineDescription text="What's your street address?">
+            <LineDescription text="Street address.">
                 <SmallContent>
-                    This information will be used to calculate the distance
-                    between you and customers.
+                    This information will NOT be displayed on your profile. It
+                    is used to calculate the distance between you and customers.
                 </SmallContent>
             </LineDescription>
             <Line style={{ flex: 0 }}>

@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -39,6 +40,7 @@
     "react-native-navigation-bar-color": "^2.0.1",
     "react-native-paper": "^4.4.1",
     "react-native-phone-call": "^1.0.9",
+    "react-native-phone-number-input": "^2.0.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",

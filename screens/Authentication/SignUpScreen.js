@@ -3,27 +3,23 @@ import { StyleSheet } from 'react-native';
 import * as Firebase from '../../config/Firebase';
 
 import Authentication from '../../components/authentication/Authentication';
+import { useDispatch } from 'react-redux';
+import { signUp } from '../../store/actions/auth';
 
 const SignUpScreen = props => {
+
+    const dispatch = useDispatch();
+
     const handleOnPress = (email, password) => {
-        Firebase.auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(userData => {
-                userData.user
-                    .sendEmailVerification()
-                    .then(() => {
-                        props.navigation.navigate('LogIn', {
-                            email: email,
-                            password: password,
-                        });
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            })
-            .catch(error => {
-                console.log(error);
+        try {
+            props.navigation.navigate('SelectUserType', {
+                email: email,
+                password: password,
             });
+        } catch (error) {
+            console.log(error);
+        }
+        
     };
 
     return (

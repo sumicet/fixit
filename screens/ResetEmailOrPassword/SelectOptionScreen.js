@@ -5,31 +5,18 @@ import Line from '../../components/common/Line';
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
 import Container from '../../components/containers/Container';
+import OptionSelector from '../../components/common/OptionSelector';
 
 const SelectOption = props => {
     return (
-        <Container style={{paddingTop: 0, marginTop: 0}}>
-            <View style={{ justifyContent: 'center', flex: 1 }}>
-                <Line
-                    style={{
-                        width: '100%',
-                        flex: 0,
-                        paddingBottom: Layout.screenHorizontalPadding,
-                    }}
-                >
-                    <MediumButton text={'Reset email'} style={{backgroundColor: Color.disabled}} onPress={() => {}} />
-                </Line>
-                <Line
-                    style={{
-                        width: '100%',
-                        flex: 0,
-                        paddingBottom: Layout.screenHorizontalPadding,
-                    }}
-                >
-                    <MediumButton text={'Reset password'} onPress={() => {props.navigation.navigate('VerifyEmail')}} />
-                </Line>
-            </View>
-        </Container>
+        <OptionSelector
+            text1="Reset email"
+            onPress1={() => {}}
+            text2="Reset password"
+            onPress2={() => {
+                props.navigation.navigate('VerifyEmail');
+            }}
+        />
     );
 };
 

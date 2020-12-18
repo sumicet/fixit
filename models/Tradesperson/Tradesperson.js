@@ -6,13 +6,13 @@ class Tradesperson {
         streetAddress,
         experienceId,
         insurance,
-        rating,
-        ratingVotesAmount,
         propertyTypesIds,
         profilePicture,
-        contactsIds,
         phoneNumber,
         recommendedByIds,
+        rating,
+        ratingVotesAmount,
+        contactsIds,
     ) {
         this.id = id;
         this.name = name;
