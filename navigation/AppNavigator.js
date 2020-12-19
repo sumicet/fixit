@@ -7,23 +7,30 @@ import { fetchMyJobs } from '../store/actions/job';
 import Loading from '../components/loading/Loading';
 import AuthenticationStack from './AuthenticationStack';
 import AppStack from './AppStack';
+import { fetchAll } from '../store/actions/tradespeople';
 
 const AppNavigator = () => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const hasVerifiedEmail = useSelector(state => state.auth.hasVerifiedEmail);
+    const userId = useSelector(state => state.auth.userId);
+
+    // useEffect(() => {
+    //     let mounted = true;
+    //     setIsLoading(true);
+    //     dispatch(fetchMyJobs()).then(() => {
+    //         if (mounted) {
+    //             setIsLoading(false);
+    //         }
+    //     });
+    //     return () => (mounted = false);
+    // }, []);
 
     useEffect(() => {
-        let mounted = true;
-        setIsLoading(true);
-        dispatch(fetchMyJobs()).then(() => {
-            if (mounted) {
-                setIsLoading(false);
-            }
-        });
-        return () => (mounted = false);
-    }, []);
+        dispatch(fetchMyJobs());
+        dispatch(fetchAll());
+    }, [])
 
     if (isLoading) {
         return <Loading />;

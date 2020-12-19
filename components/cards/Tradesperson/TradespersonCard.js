@@ -33,7 +33,9 @@ const TradespersonCard = props => {
         if (props.isRateCard) {
             setModalVisible(true);
         } else {
-            props.navigation.navigate('TradespersonProfile');
+            props.navigation.navigate('TradespersonProfile', {
+                tradespersonId: props.tradespersonId
+            });
         }
     };
 
@@ -53,10 +55,10 @@ const TradespersonCard = props => {
         }
     };
 
-    const handleStarPress = (updatedRating) => {
+    const handleStarPress = updatedRating => {
         setModalVisible(true);
-        setUpdatedRating(updatedRating)
-    }
+        setUpdatedRating(updatedRating);
+    };
 
     return (
         <View>
@@ -119,7 +121,12 @@ const TradespersonCard = props => {
                                                 : 'flex-start',
                                         }}
                                     >
-                                        <HeaderWithEllipsis style={{color: Color.textOnTertiaryColorBackground}}>
+                                        <HeaderWithEllipsis
+                                            style={{
+                                                color:
+                                                    Color.textOnTertiaryColorBackground,
+                                            }}
+                                        >
                                             John McCormack
                                         </HeaderWithEllipsis>
                                     </View>
@@ -146,10 +153,16 @@ const TradespersonCard = props => {
                                 )}
                                 {props.isBeingRated ? null : (
                                     <Rating
-                                        rating={props.isRateCard ? updatedRating : 4.5}
+                                        rating={
+                                            props.isRateCard
+                                                ? updatedRating
+                                                : 4.5
+                                        }
                                         isRateCard={props.isRateCard}
                                         onStarPress={handleStarPress}
-                                        readOnly={props.isRateCard ? false : true}
+                                        readOnly={
+                                            props.isRateCard ? false : true
+                                        }
                                     />
                                 )}
                             </View>
@@ -158,11 +171,19 @@ const TradespersonCard = props => {
                     {props.isRateCard ? null : (
                         <View style={styles.bottomContainer}>
                             {props.hasQuote ? (
-                                <Header style={{color: Color.importantTextOnTertiaryColorBackground}}>{props.quote}</Header>
+                                <Header
+                                    style={{
+                                        color:
+                                            Color.importantTextOnTertiaryColorBackground,
+                                    }}
+                                >
+                                    {props.quote}
+                                </Header>
                             ) : (
                                 <SmallContentWithEllipsis
                                     style={{
-                                        color: Color.textOnTertiaryColorBackground,
+                                        color:
+                                            Color.textOnTertiaryColorBackground,
                                     }}
                                 >
                                     Recommended by: Mister Beast, John Doe,

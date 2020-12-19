@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import Layout from '../../constants/Layout';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
@@ -22,9 +22,15 @@ import Comment from '../../components/cards/Comment/Comment';
 import SectionedContainer from '../../components/containers/SectionedContainer';
 import Line from '../../components/common/Line';
 import Touchable from '../../components/common/Touchable';
+import { useSelector } from 'react-redux';
 
-const ProfileScreen = props => {
-    const isFocused = useIsFocused();
+const TradespersonProfileScreen = props => {
+    const tradespersonId =
+        props.route.params && props.route.params.tradespersonId;
+
+    const tradesperson = useSelector(state => state.tradesperson.all).find(
+        elem => elem.userId === tradespersonId
+    );
 
     useEffect(() => {
         props.navigation.setOptions({
@@ -254,4 +260,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProfileScreen;
+export default TradespersonProfileScreen;

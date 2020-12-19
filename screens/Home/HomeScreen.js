@@ -33,6 +33,7 @@ const HomeScreen = props => {
                     <TradespersonCard
                         isRateCard={true}
                         navigation={props.navigation}
+                        tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
                     />
                     <View
                         style={{
@@ -42,11 +43,13 @@ const HomeScreen = props => {
                         <TradespersonCard
                             isRateCard={true}
                             navigation={props.navigation}
+                            tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
                         />
                     </View>
                     <TradespersonCard
                         isRateCard={true}
                         navigation={props.navigation}
+                        tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
                     />
                 </ScrollView>
             </View>
@@ -57,11 +60,20 @@ const HomeScreen = props => {
                 </Header>
             </View>
             <View style={{ flex: 1 }}>
-                <TradespersonCard navigation={props.navigation} />
+                <TradespersonCard
+                    navigation={props.navigation}
+                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
+                />
 
-                <TradespersonCard navigation={props.navigation} />
+                <TradespersonCard
+                    navigation={props.navigation}
+                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
+                />
 
-                <TradespersonCard navigation={props.navigation} />
+                <TradespersonCard
+                    navigation={props.navigation}
+                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
+                />
             </View>
             <View style={{ height: 100, width: '100%' }}></View>
         </ScrollableContainer>

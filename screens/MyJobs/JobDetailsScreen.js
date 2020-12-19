@@ -258,9 +258,9 @@ const JobDetailsScreen = props => {
                 <View>
                     <Header style={{ textAlign: 'left' }}>Quotes:</Header>
                 </View>
-                <TradespersonCard hasQuote={true} quote="200£" />
-                <TradespersonCard hasQuote={true} quote="320£" />
-                <TradespersonCard hasQuote={true} quote="190£" />
+                <TradespersonCard navigation={props.navigation} hasQuote={true} quote="200£" tradespersonId='1p6PpA2vNhe6jZ4mfg4GZSLGhYz2' />
+                <TradespersonCard navigation={props.navigation} hasQuote={true} quote="320£" tradespersonId='1p6PpA2vNhe6jZ4mfg4GZSLGhYz2' />
+                <TradespersonCard navigation={props.navigation} hasQuote={true} quote="190£" tradespersonId='1p6PpA2vNhe6jZ4mfg4GZSLGhYz2' />
             </View>
         );
     };

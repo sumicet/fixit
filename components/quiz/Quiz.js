@@ -96,15 +96,6 @@ const Quiz = props => {
         };
     }, [isFocused]);
 
-    useEffect(() => {
-        const unsub = navigation.addListener('beforeRemove', () => {
-            //e.preventDefault();
-            console.log('byeeee');
-        });
-
-        return unsub;
-    }, [props.navigation]);
-
     const jobToUpdate =
         editModeOn &&
         useSelector(state => state.job.userPendingJobs).find(
@@ -309,9 +300,9 @@ const Quiz = props => {
                                 )
                             );
                         }}
-                        initialSelectedIndex={
-                            editModeOn ? jobToUpdate.occupationId - 1 : 0
-                        }
+                        initialSelectedIndexes={[
+                            editModeOn ? jobToUpdate.occupationId - 1 : 0,
+                        ]}
                     />
                 </Line>
                 {index !== 9 ? (
@@ -321,8 +312,8 @@ const Quiz = props => {
                             <Grid
                                 data={workTypes}
                                 onPress={handleWorkTypePress}
-                                initialSelectedIndex={
-                                    editModeOn ? jobToUpdate.workTypeId - 1 : 0
+                                initialSelectedIndexes={
+                                    [editModeOn ? jobToUpdate.workTypeId - 1 : 0]
                                 }
                             />
                         </Line>

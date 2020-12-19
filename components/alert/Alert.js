@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Modal from 'react-native-modal';
 
 import Color from '../../constants/Color';
 import Line from '../common/Line';

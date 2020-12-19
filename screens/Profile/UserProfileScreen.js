@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
@@ -11,7 +11,7 @@ import HeaderWithEllipsis from '../../components/text/HeaderWithEllipsis';
 import Touchable from '../../components/common/Touchable';
 import Waves from '../../assets/icons/Background/Waves';
 import Container from '../../components/containers/Container';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setStatusBarStyle } from '../../store/actions/ui';
 import Title from '../../components/text/Title';
 import Line from '../../components/common/Line';
@@ -19,8 +19,17 @@ import InAppNotification from '../../components/alert/InAppNotification';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 import MediumButton from '../../components/buttons/MediumButtom';
 import { signOut } from '../../store/actions/auth';
+import { fetchTradespersonInfo } from '../../store/actions/tradesperson';
+import * as Firebase from '../../config/Firebase';
 
 const UserProfileScreen = props => {
+    const userId = Firebase.auth.currentUser.uid;
+    useEffect(() => {
+        dispatch(fetchTradespersonInfo(Firebase.auth.currentUser.uid));
+    }, []);
+
+    const tradesperson = useSelector(state => state.tradesperson);
+
     class ProfileData {
         constructor(id, value, description, onChange, onPress) {
             this.id = id;
@@ -91,7 +100,9 @@ const UserProfileScreen = props => {
                 <Waves />
                 <Touchable
                     onPress={() => {
-                        props.navigation.navigate('TradespersonProfile');
+                        props.navigation.navigate('TradespersonProfile', {
+                            tradespersonId: userId
+                        });
                     }}
                     style={{
                         flex: 0,
@@ -128,7 +139,9 @@ const UserProfileScreen = props => {
                         </Title>
                     </Line>
                     <Line style={{ flex: 0 }}>
-                        <ProfilePicture />
+                        <ProfilePicture
+                            profilePicture={tradesperson.profilePicture}
+                        />
                     </Line>
                     <Line style={{ flex: 0 }}>
                         <SmallContent
@@ -137,7 +150,7 @@ const UserProfileScreen = props => {
                                 textAlign: 'center',
                             }}
                         >
-                            See your tradesperson profile.
+                            Check how customers see your profile.
                         </SmallContent>
                     </Line>
                 </Touchable>

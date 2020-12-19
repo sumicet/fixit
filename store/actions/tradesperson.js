@@ -7,6 +7,38 @@ export const SET_TRADESPERSON_INFO = 'SET_TRADESPERSON_INFO';
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 
+export const fetchTradespersonInfo = userId => {
+    return async (dispatch, getState) => {
+        const response = await fetch(
+            `https://fixit-46444.firebaseio.com/tradesperson/${userId}.json`
+        );
+
+        const responseData = await response.json();
+
+        const imageRef = Firebase.storage
+            .ref()
+            .child('/profilePictures/' + userId);
+        const profilePicture = await imageRef.getDownloadURL();
+
+        dispatch({
+            type: SET_TRADESPERSON_INFO,
+            name: responseData.name,
+            occupationsIds: responseData.occupationsIds,
+            streetAddress: responseData.streetAddress,
+            experienceId: responseData.experienceId,
+            insurance: responseData.insurance,
+            propertyTypesIds: responseData.propertyTypesIds,
+            //profilePicture: null,
+            profilePicture: profilePicture,
+            phoneNumber: responseData.phoneNumber,
+            recommendedByIds: responseData.recommendedByIds,
+            rating: responseData.rating,
+            ratingVotesAmount: responseData.ratingVotesAmount,
+            contactsIds: responseData.contactsIds,
+        });
+    };
+};
+
 export const setTradespersonInfo = (
     name,
     occupationsIds,
@@ -18,23 +50,46 @@ export const setTradespersonInfo = (
     phoneNumber
 ) => {
     return async (dispatch, getState) => {
-        const userId = getState().auth.userId;
-        console.log(userId);
+        try {
+            const userId = Firebase.auth.currentUser.uid;
 
-        const ref = Firebase.database.ref('tradesperson').child(userId);
-        ref.child('name').set(name);
-        ref.child('occupationsIds').set(occupationsIds);
-        ref.child('streetAddress').set(streetAddress);
-        ref.child('experienceId').set(experienceId);
-        ref.child('insurance').set(insurance);
-        ref.child('propertyTypesIds').set(propertyTypesIds);
-        ref.child('phoneNumber').set(phoneNumber);
+            const ref = await Firebase.database
+                .ref('tradesperson')
+                .child(userId);
 
-        //ref.child('profilePicture').set(profilePicture);
+            ref.child('name').set(name);
+            ref.child('occupationsIds').set(occupationsIds);
+            ref.child('streetAddress').set(streetAddress);
+            ref.child('experienceId').set(experienceId);
+            ref.child('insurance').set(insurance);
+            ref.child('propertyTypesIds').set(propertyTypesIds);
+            ref.child('phoneNumber').set(phoneNumber);
 
-        console.log(profilePicture)
+            console.log(profilePicture);
 
-        Firebase.storage.ref('/profilePictures/' + userId).putString(profilePicture)
+            fetch(profilePicture)
+                .then(res => res.blob())
+                .then(async blob => {
+                    await Firebase.storage
+                        .ref('/profilePictures/' + userId)
+                        .put(blob);
+                    console.log('ok');
+                });
+
+            // const blob = await new Promise(() => {
+            //     const xhr = new XMLHttpRequest();
+            //     xhr.responseType = 'blob';
+            //     xhr.open('GET', profilePicture, true);
+            //     xhr.send(null);
+            //     console.log('trying2')
+            // });
+
+            // console.log(blob, 'blob');
+
+            //blob.close();
+        } catch (error) {
+            console.log(error);
+        }
 
         dispatch({
             type: SET_TRADESPERSON_INFO,

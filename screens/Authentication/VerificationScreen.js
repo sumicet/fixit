@@ -10,8 +10,6 @@ const VerificationScreen = props => {
 
     const userType = props.route.params && props.route.params.userType;
 
-    console.log(userType);
-
     const handleOnPress = (email, password) => {
         dispatch(logIn(email, password));
         if (userType === 'tradesperson') {

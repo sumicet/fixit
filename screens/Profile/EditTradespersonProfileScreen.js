@@ -19,14 +19,19 @@ import { OCCUPATIONS } from '../../data/Jobs/Occupations';
 import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import { EXPERIENCE } from '../../data/Tradesperson/Experience';
 import Touchable from '../../components/common/Touchable';
-import { useDispatch } from 'react-redux';
-import { setTradespersonInfo } from '../../store/actions/tradesperson';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTradespersonInfo, setTradespersonInfo } from '../../store/actions/tradesperson';
+import * as Firebase from '../../config/Firebase';
 
 const EditTradespersonProfile = props => {
-    const [occupations, setOccupations] = useState([]);
+    const tradesperson = useSelector(state => state.tradesperson);
+
+    const [occupations, setOccupations] = useState(
+        tradesperson.occupationsIds.map(elem => elem - 1)
+    );
     const [jobAddressInput, setJobAddressInput] = useState({
-        line1: null,
-        place_id: null,
+        line1: tradesperson.streetAddress.line1,
+        place_id: tradesperson.streetAddress.place_id,
     });
 
     const action = props.route.params && props.route.params.action;
@@ -38,11 +43,13 @@ const EditTradespersonProfile = props => {
         });
     };
 
-    const [propertyTypesChecked, setPropertyTypesChecked] = useState([
-        false,
-        false,
-        false,
-    ]);
+    const [propertyTypesChecked, setPropertyTypesChecked] = useState(
+        tradesperson
+            ? [0, 1, 2].map(elem =>
+                  tradesperson.propertyTypesIds.includes(elem + 1) ? true : false
+              )
+            : [false, false, false]
+    );
 
     const initialChecked = (data, value) => {
         const initialChecked = [];
@@ -70,7 +77,10 @@ const EditTradespersonProfile = props => {
     };
 
     const [experienceChecked, setExperienceChecked] = useState(
-        initialChecked(EXPERIENCE, 0)
+        initialChecked(
+            EXPERIENCE,
+            tradesperson ? tradesperson.experienceId - 1 : 0
+        )
     );
 
     const handleMultipleOptionsToggleCheck = (index, checked, setChecked) => {
@@ -79,22 +89,22 @@ const EditTradespersonProfile = props => {
         setChecked(updatedChecked);
     };
 
-    const [name, setName] = useState(null);
+    const [name, setName] = useState(tradesperson.name);
 
     const onChangeName = input => {
         setName(input);
     };
 
-    const [schedule, setSchedule] = useState(null);
+    const [schedule, setSchedule] = useState(tradesperson.schedule);
 
     const onChangeSchedule = input => {
         setSchedule(input);
     };
 
-    const [insuranceChecked, setInsuranceChecked] = useState(false);
+    const [insuranceChecked, setInsuranceChecked] = useState(tradesperson ? tradesperson.insurance : false);
 
     const [profilePicture, setprofilePicture] = useState(
-        'https://pbs.twimg.com/profile_images/740272510420258817/sd2e6kJy_400x400.jpg'
+        tradesperson.profilePicture
     );
 
     useEffect(() => {
@@ -114,7 +124,6 @@ const EditTradespersonProfile = props => {
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            base64: true,
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
@@ -122,7 +131,7 @@ const EditTradespersonProfile = props => {
         });
 
         if (!result.cancelled) {
-            setprofilePicture(result.base64);
+            setprofilePicture(result.uri);
         }
     };
 
@@ -165,7 +174,7 @@ const EditTradespersonProfile = props => {
 
     const phoneInput = useRef();
 
-    const [phoneNumber, setPhoneNumber] = useState();
+    const [phoneNumber, setPhoneNumber] = useState(tradesperson.phoneNumber);
 
     return (
         <ScrollableContainer
@@ -203,7 +212,7 @@ const EditTradespersonProfile = props => {
                 >
                     <Image
                         source={{
-                            uri: `data:image/gif;base64,${profilePicture}`,
+                            uri: profilePicture,
                         }}
                         style={{ width: 80, height: 80 }}
                         resizeMethod="scale"
@@ -280,7 +289,9 @@ const EditTradespersonProfile = props => {
                             setOccupations(updatedOccupations);
                         }
                     }}
-                    //initialSelectedIndex={0}
+                    initialSelectedIndexes={tradesperson.occupationsIds.map(
+                        elem => elem - 1
+                    )}
                     multipleOptions={true}
                 />
             </Line>
@@ -319,7 +330,7 @@ const EditTradespersonProfile = props => {
                             setExperienceChecked
                         )
                     }
-                    initialSelectedIndex={0}
+                    initialSelectedIndexes={[0]}
                     RenderItemComponent={CustomRadioButton}
                 />
             </Line>
@@ -357,7 +368,7 @@ const EditTradespersonProfile = props => {
                     onStreetAddressChange={handleStreetAddressChange}
                     hideLine2={true}
                     streetAddress={jobAddressInput.line1}
-                    initial_place_id={null}
+                    initial_place_id={tradesperson ? tradesperson.streetAddress.place_id : null}
                 />
             </Line>
             <LineDescription text="Do you have security liability insurance?">
@@ -383,7 +394,7 @@ const EditTradespersonProfile = props => {
                         setInsuranceChecked(!insuranceChecked)
                     }
                     RenderItemComponent={CustomRadioButton}
-                    initialSelectedIndex={0}
+                    initialSelectedIndexes={[0]}
                 />
             </Line>
             <Line

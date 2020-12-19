@@ -51,6 +51,10 @@ export const signUp = (email, password, userType) => {
                 const ref = Firebase.database.ref(userType).child(userId);
                 ref.child('userId').set(userId);
                 ref.child('email').set(email);
+                ref.child('recommendedByIds').set([]);
+                ref.child('rating').set(null);
+                ref.child('ratingVotesAmount').set(null);
+                ref.child('contactsIds').set([]);
 
                 userData.user.sendEmailVerification().catch(error => {
                     throw error;

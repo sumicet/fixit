@@ -3,7 +3,10 @@ import { SET_TRADESPERSON_INFO } from '../actions/tradesperson';
 const initialState = {
     name: null,
     occupationsIds: [],
-    streetAddress: null,
+    streetAddress: {
+        line1: null,
+        place_id: null,
+    },
     experienceId: null,
     insurance: null,
     propertyTypesIds: [],
@@ -11,7 +14,7 @@ const initialState = {
     phoneNumber: null,
 };
 
-const uiReducer = (state = initialState, action) => {
+const tradespersonReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_TRADESPERSON_INFO:
             return {
@@ -23,10 +26,14 @@ const uiReducer = (state = initialState, action) => {
                 propertyTypesIds: action.propertyTypesIds,
                 profilePicture: action.profilePicture,
                 phoneNumber: action.phoneNumber,
+                recommendedByIds: action.recommendedByIds,
+                rating: action.rating,
+                ratingVotesAmount: action.ratingVotesAmount,
+                contactsIds: action.contactsIds,
             };
         default:
             return state;
     }
 };
 
-export default uiReducer;
+export default tradespersonReducer;

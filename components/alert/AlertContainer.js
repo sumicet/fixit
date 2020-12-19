@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 
 import Layout from '../../constants/Layout';
@@ -16,8 +16,9 @@ const AlertContainer = props => {
             }}
             coverScreen={true}
             hideModalContentWhileAnimating={true}
-            backdropOpacity={0}
+            backdropOpacity={0.5}
             useNativeDriver={true}
+            statusBarTranslucent
         >
             <View style={[styles.container, props.containerStyle]}>
                 <View style={[styles.card, props.cardStyle]}>

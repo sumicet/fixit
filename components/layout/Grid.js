@@ -17,7 +17,7 @@ const Grid = props => {
             const initialColors = [];
             var i;
             for (i = 0; i < props.data.length; i++) {
-                if (i === props.initialSelectedIndex) {
+                if (props.initialSelectedIndexes && props.initialSelectedIndexes.includes(i)) {
                     initialColors.push(Color.tertiaryBrandColor);
                 } else {
                     initialColors.push(Color.textField);

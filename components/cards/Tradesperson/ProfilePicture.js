@@ -21,8 +21,7 @@ const ProfilePicture = props => {
                     },
                 ]}
                 source={{
-                    uri:
-                        'https://www.phamnews.co.uk/web-cont1001/uploads/image002-4.jpg',
+                    uri: props.profilePicture,
                 }}
                 resizeMethod="scale"
             />
