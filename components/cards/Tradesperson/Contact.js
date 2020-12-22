@@ -10,8 +10,11 @@ import Touchable from '../../common/Touchable';
 import SuperSmallContent from '../../text/SuperSmallContent';
 
 const Contact = props => {
+
+    const { phoneNumber } = props;
+
     const handleCallPress = () => {
-        call({ number: '0757570851', prompt: true }).catch(console.error);
+        call({ number: phoneNumber, prompt: true }).catch(console.error);
     };
 
     return (

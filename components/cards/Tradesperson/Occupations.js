@@ -8,6 +8,9 @@ import { OCCUPATIONS } from '../../../data/Jobs/Occupations';
 import Color from '../../../constants/Color';
 
 const Occupations = props => {
+    const occupationsIds = props.occupationsIds ? props.occupationsIds : [];
+    const occList = OCCUPATIONS.filter(occ => occupationsIds.includes(occ.id));
+
     return (
         <View
             style={[
@@ -26,14 +29,25 @@ const Occupations = props => {
                     }
                 </HeaderWithEllipsis>
             ) : props.isOnProfileScreen ? (
-                <Header style={{color: Color.textOnTertiaryColorBackground, fontFamily: 'Asap-Regular'}}>
+                <Header
+                    style={{
+                        color: Color.textOnTertiaryColorBackground,
+                        fontFamily: 'Asap-Regular',
+                    }}
+                >
                     Plumber • Builder • Heating Eng. • Painter • Electrician
                 </Header>
             ) : (
                 <SmallContentWithEllipsis
                     style={props.textColor && { color: props.textColor }}
                 >
-                    Plumber • Builder • Heating Eng. • Painter • Electrician
+                    {occList.map((elem, index) => {
+                        if (index !== occList.length - 1) {
+                            return elem.name + ' • ';
+                        } else {
+                            return elem.name;
+                        }
+                    })}
                 </SmallContentWithEllipsis>
             )}
         </View>

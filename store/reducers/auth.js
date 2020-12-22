@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     LOG_IN,
     UPDATE_TOKEN,
@@ -8,6 +7,8 @@ import {
     SET_USER_TYPE,
     SIGN_UP,
     VERIFY_EMAIL,
+    RESEND_EMAIL_TIMER,
+    CHANGE_EMAIL
 } from '../actions/auth';
 
 const initialState = {
@@ -15,30 +16,40 @@ const initialState = {
     userId: null,
     token: null,
     userType: null,
-    hasVerifiedEmail: false
+    hasVerifiedEmail: false,
+    email: null,
+    resendEmailTimer: null,
 };
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
+        case CHANGE_EMAIL:
+            return {
+                ...state,
+                email: action.email
+            }
         case AUTO_LOG_IN:
             return {
                 ...state,
                 isLoggedIn: action.isLoggedIn,
                 userId: action.userId,
                 token: action.token,
+                email: action.email,
             };
         case LOG_IN:
             return {
                 ...state,
                 userId: action.userId,
                 token: action.token,
+                email: action.email,
             };
         case SIGN_UP:
             return {
                 ...state,
                 userId: action.userId,
                 token: action.token,
-                userType: action.userType
+                userType: action.userType,
+                email: action.email,
             };
         case SET_IS_LOGGED_IN_TO_TRUE:
             return {
@@ -61,6 +72,11 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 hasVerifiedEmail: action.value,
+            }
+        case RESEND_EMAIL_TIMER:
+            return {
+                ...state,
+                resendEmailTimer: action.date
             }
         default:
             return state;

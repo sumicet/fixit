@@ -20,7 +20,7 @@ import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import { EXPERIENCE } from '../../data/Tradesperson/Experience';
 import Touchable from '../../components/common/Touchable';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTradespersonInfo, setTradespersonInfo } from '../../store/actions/tradesperson';
+import { setTradespersonInfo } from '../../store/actions/tradesperson';
 import * as Firebase from '../../config/Firebase';
 
 const EditTradespersonProfile = props => {

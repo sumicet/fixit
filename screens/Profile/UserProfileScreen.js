@@ -18,25 +18,30 @@ import Line from '../../components/common/Line';
 import InAppNotification from '../../components/alert/InAppNotification';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 import MediumButton from '../../components/buttons/MediumButtom';
-import { signOut } from '../../store/actions/auth';
+import { addDummyTradespeople, signOut } from '../../store/actions/auth';
 import { fetchTradespersonInfo } from '../../store/actions/tradesperson';
 import * as Firebase from '../../config/Firebase';
+import ProfileField from '../../components/layout/ProfileField';
+import LineDescription from '../../components/common/LineDescription';
 
 const UserProfileScreen = props => {
-    const userId = Firebase.auth.currentUser.uid;
+    const userId = useSelector(state => state.auth.userId);
+
     useEffect(() => {
-        dispatch(fetchTradespersonInfo(Firebase.auth.currentUser.uid));
+        if (userId) {
+            dispatch(fetchTradespersonInfo(Firebase.auth.currentUser.uid)).then(
+                () => {
+                    props.navigation.setOptions({
+                        headerTitle: tradesperson.name,
+                    });
+                }
+            );
+        }
     }, []);
 
     const tradesperson = useSelector(state => state.tradesperson);
 
-    class ProfileData {
-        constructor(id, value, description, onChange, onPress) {
-            this.id = id;
-            this.value = value;
-            this.description = description;
-        }
-    }
+    const email = useSelector(state => state.auth.email);
 
     const isFocused = useIsFocused();
 
@@ -97,47 +102,24 @@ const UserProfileScreen = props => {
             style={{ marginTop: 0, paddingTop: 0, paddingHorizontal: 0 }}
         >
             <View style={{ flex: 1 }}>
-                <Waves />
                 <Touchable
                     onPress={() => {
                         props.navigation.navigate('TradespersonProfile', {
-                            tradespersonId: userId
+                            tradespersonId: userId,
                         });
                     }}
                     style={{
                         flex: 0,
-                        height: 200,
                         width: '100%',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginTop: StatusBar.currentHeight,
-                        padding: Layout.screenVerticalPadding,
+                        paddingHorizontal: Layout.screenVerticalPadding,
+                        backgroundColor: Color.secondaryBrandColor,
+                        borderBottomLeftRadius: Layout.borderRadius,
+                        borderBottomRightRadius: Layout.borderRadius,
                     }}
                     isCard={true}
                 >
-                    {/* <Title style={{ color: Color.importantTextOnTertiaryColorBackground }}>
-                        Premium Fixit
-                    </Title>
-                    <SmallContent
-                        style={{
-                            color: Color.textOnTertiaryColorBackground,
-                            textAlign: 'center',
-                        }}
-                    >
-                        Join now to unlock unlimited daily quotes,
-                        recommendations and much more.
-                    </SmallContent> */}
-
-                    <Line style={{ flex: 0 }}>
-                        <Title
-                            style={{
-                                color:
-                                    Color.importantTextOnTertiaryColorBackground,
-                            }}
-                        >
-                            John McCornmack
-                        </Title>
-                    </Line>
                     <Line style={{ flex: 0 }}>
                         <ProfilePicture
                             profilePicture={tradesperson.profilePicture}
@@ -156,146 +138,123 @@ const UserProfileScreen = props => {
                 </Touchable>
                 <View
                     style={{
-                        marginTop: Layout.screenVerticalPadding,
                         flex: 1,
-                        paddingTop: Layout.screenVerticalPadding,
                         paddingHorizontal: Layout.screenHorizontalPadding,
+                        paddingTop: Layout.screenHorizontalPadding,
                     }}
                 >
-                    <Line
-                        style={{
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-start',
-                            marginTop: Layout.screenHorizontalPadding, //added after
+                    <LineDescription
+                        text="User settings"
+                        textStyle={{
+                            color: Color.importantTextOnTertiaryColorBackground,
                         }}
-                    >
-                        <View
-                            style={{
-                                marginBottom: Layout.generalPadding,
-                                flexDirection: 'row',
-                            }}
-                        >
-                            <Header
-                                style={{
-                                    color:
-                                        Color.importantTextOnTertiaryColorBackground,
-                                }}
-                            >
-                                ACCOUNT SETTINGS
-                            </Header>
-                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                <Touchable
-                                    style={{ flex: 0 }}
-                                    onPress={() => {
-                                        props.navigation.navigate(
-                                            'ResetEmailOrPassword',
-                                            {
-                                                screen: 'SelectOption',
-                                            }
-                                        );
-                                    }}
-                                >
-                                    <Icon
-                                        name="pencil"
-                                        color={
-                                            Color.importantTextOnTertiaryColorBackground
-                                        }
-                                        size={Layout.menuIconSize}
-                                    />
-                                </Touchable>
-                            </View>
-                        </View>
-
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                marginBottom: Layout.generalPadding,
-                                flex: 1,
-                            }}
-                        >
-                            <View
-                                style={{
-                                    marginRight: Layout.screenHorizontalPadding,
-                                    alignItems: 'flex-end',
-                                }}
-                            >
-                                <View
-                                    style={{
-                                        marginBottom: Layout.generalPadding,
-                                    }}
-                                >
-                                    <Header
-                                        style={{
-                                            fontFamily: 'Asap-Regular',
-                                            textAlign: 'left',
-                                        }}
-                                    >
-                                        Email address:{' '}
-                                    </Header>
-                                </View>
-                                <View
-                                    style={{
-                                        marginBottom: Layout.generalPadding,
-                                    }}
-                                >
-                                    <Header
-                                        style={{
-                                            fontFamily: 'Asap-Regular',
-                                            textAlign: 'left',
-                                        }}
-                                    >
-                                        Password:{' '}
-                                    </Header>
-                                </View>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <View
-                                    style={{
-                                        marginBottom: Layout.generalPadding,
-                                    }}
-                                >
-                                    <HeaderWithEllipsis
-                                        style={{
-                                            fontFamily: 'Asap-Regular',
-                                            textAlign: 'left',
-                                        }}
-                                    >
-                                        johnmccormack@gmail.com
-                                    </HeaderWithEllipsis>
-                                </View>
-                                <View
-                                    style={{
-                                        marginBottom: Layout.generalPadding,
-                                    }}
-                                >
-                                    <HeaderWithEllipsis
-                                        style={{
-                                            fontFamily: 'Asap-Regular',
-                                            textAlign: 'left',
-                                        }}
-                                    >
-                                        ***************
-                                    </HeaderWithEllipsis>
-                                </View>
-                            </View>
-                        </View>
-                    </Line>
-                    <Line
-                        style={{
-                            flex: 0,
-                            justifyContent: 'flex-end',
+                    />
+                    <ProfileField
+                        description="Email"
+                        value={email}
+                        onPress={() => {
+                            props.navigation.navigate('RelogUser', {
+                                action: 'change_email',
+                            });
                         }}
-                    >
-                        <MediumButton
-                            text="Sign out"
-                            onPress={() => {
-                                dispatch(signOut());
-                            }}
-                            style={{ backgroundColor: Color.textField }}
-                            textColor={Color.secondaryColor}
-                        />
-                    </Line>
+                    />
+                    <ProfileField
+                        description="Name"
+                        value={tradesperson.name}
+                        onPress={() => {}}
+                    />
+                    <LineDescription
+                        text="Security"
+                        textStyle={{
+                            color: Color.importantTextOnTertiaryColorBackground,
+                        }}
+                    />
+                    <ProfileField
+                        description="Change password"
+                        onPress={() => {
+                            props.navigation.navigate('RelogUser', {
+                                action: 'change_password',
+                            });
+                        }}
+                    />
+                    <LineDescription
+                        text="Session"
+                        textStyle={{
+                            color: Color.importantTextOnTertiaryColorBackground,
+                        }}
+                    />
+                    <ProfileField
+                        description="Sign out"
+                        onPress={() => {
+                            dispatch(signOut());
+                        }}
+                    />
                 </View>
+                <Line
+                    style={{
+                        flex: 0,
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <MediumButton
+                        text="[dev only] +tradespeople"
+                        onPress={() => {
+                            dispatch(
+                                addDummyTradespeople(
+                                    '1',
+                                    'email1@gmail.com',
+                                    'Name1',
+                                    [1, 4],
+                                    {
+                                        line1:
+                                            'Financial Center Street, Along Sheikh Zayed Road, Next to Burj Khalifa - وسط مدينة دبي - دبي - United Arab Emirates',
+                                        place_id: 'ChIJB1zIKShoXz4RnbaTPPup7aU',
+                                    },
+                                    2,
+                                    true,
+                                    [1, 3],
+                                    '0757570851'
+                                )
+                            );
+                            dispatch(
+                                addDummyTradespeople(
+                                    '2',
+                                    'email2@gmail.com',
+                                    'Name2',
+                                    [2, 3],
+                                    {
+                                        line1:
+                                            'Financial Center Street, Along Sheikh Zayed Road, Next to Burj Khalifa - وسط مدينة دبي - دبي - United Arab Emirates',
+                                        place_id: 'ChIJB1zIKShoXz4RnbaTPPup7aU',
+                                    },
+                                    3,
+                                    true,
+                                    [2, 3],
+                                    '0757570851'
+                                )
+                            );
+                            dispatch(
+                                addDummyTradespeople(
+                                    '3',
+                                    'email3@gmail.com',
+                                    'Name3',
+                                    [3, 4],
+                                    {
+                                        line1:
+                                            'Financial Center Street, Along Sheikh Zayed Road, Next to Burj Khalifa - وسط مدينة دبي - دبي - United Arab Emirates',
+                                        place_id: 'ChIJB1zIKShoXz4RnbaTPPup7aU',
+                                    },
+                                    2,
+                                    true,
+                                    [1, 3],
+                                    '0757570851'
+                                )
+                            );
+                        }}
+                        style={{ backgroundColor: Color.textField }}
+                        textColor={Color.secondaryColor}
+                    />
+                </Line>
             </View>
             <InAppNotification
                 title={inAppNotificationBody.title}

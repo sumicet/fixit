@@ -8,17 +8,23 @@ import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 
 export const fetchTradespersonInfo = userId => {
-    return async (dispatch, getState) => {
+    return async dispatch => {
         const response = await fetch(
             `https://fixit-46444.firebaseio.com/tradesperson/${userId}.json`
         );
 
         const responseData = await response.json();
 
-        const imageRef = Firebase.storage
-            .ref()
-            .child('/profilePictures/' + userId);
-        const profilePicture = await imageRef.getDownloadURL();
+        var profilePicture;
+
+        try {
+            const imageRef = Firebase.storage
+                .ref()
+                .child('/profilePictures/' + userId);
+            profilePicture = await imageRef.getDownloadURL();
+        } catch (error) {
+            profilePicture = null;
+        }
 
         dispatch({
             type: SET_TRADESPERSON_INFO,
@@ -35,6 +41,7 @@ export const fetchTradespersonInfo = userId => {
             rating: responseData.rating,
             ratingVotesAmount: responseData.ratingVotesAmount,
             contactsIds: responseData.contactsIds,
+            email: responseData.email
         });
     };
 };
@@ -65,28 +72,15 @@ export const setTradespersonInfo = (
             ref.child('propertyTypesIds').set(propertyTypesIds);
             ref.child('phoneNumber').set(phoneNumber);
 
-            console.log(profilePicture);
-
-            fetch(profilePicture)
-                .then(res => res.blob())
-                .then(async blob => {
-                    await Firebase.storage
-                        .ref('/profilePictures/' + userId)
-                        .put(blob);
-                    console.log('ok');
-                });
-
-            // const blob = await new Promise(() => {
-            //     const xhr = new XMLHttpRequest();
-            //     xhr.responseType = 'blob';
-            //     xhr.open('GET', profilePicture, true);
-            //     xhr.send(null);
-            //     console.log('trying2')
-            // });
-
-            // console.log(blob, 'blob');
-
-            //blob.close();
+            if (profilePicture) {
+                fetch(profilePicture)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        Firebase.storage
+                            .ref('/profilePictures/' + userId)
+                            .put(blob);
+                    });
+            }
         } catch (error) {
             console.log(error);
         }

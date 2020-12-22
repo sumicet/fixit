@@ -122,7 +122,7 @@ const Authentication = props => {
                 )}
                 {props.hideTextFields && (
                     <LineDescription
-                        centerText={true}
+                        textStyle={{textAlign: 'center'}}
                         text={`We have sent an email to ${email}. Please verify your account to continue.`}
                     />
                 )}

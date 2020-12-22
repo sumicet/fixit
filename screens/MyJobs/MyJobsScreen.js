@@ -65,13 +65,15 @@ const MyJobsScreen = props => {
                     props.navigation.navigate('JobDetails', { id: item.id });
                 }}
             >
-                <JobCard
+                
+                {/* TODO change this
+                    <JobCard
                     date={item.date}
                     occupationId={item.occupationId}
                     workTypeId={item.workTypeId}
                     jobDescription={item.jobDescription}
                     startTimeId={item.startTimeId}
-                />
+                /> */}
             </Touchable>
         );
     };
@@ -84,7 +86,7 @@ const MyJobsScreen = props => {
             <View>
                 {userPendingJobs.length !== 0 ? (
                     <FlatList
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item, i) => `key-${i}`}
                         data={userPendingJobs}
                         renderItem={renderItem}
                     />

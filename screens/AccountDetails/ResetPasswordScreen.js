@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import ResetEmailOrPasswordContainer from '../../components/containers/ResetEmailOrPasswordContainer';
+import AccountDetailsContainer from '../../components/containers/AccountDetailsContainer';
 
 const ResetPasswordScreen = props => {
     return (
-        <ResetEmailOrPasswordContainer
+        <AccountDetailsContainer
             title="Reset password"
             text="Please type a new password."
             showConfirmPasswordField={true}

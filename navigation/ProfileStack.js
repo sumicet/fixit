@@ -8,7 +8,6 @@ import UserProfileScreen from '../screens/Profile/UserProfileScreen';
 import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
 import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
-import ResetEmailOrPasswordStack from './ResetEmailOrPasswordStack';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +25,10 @@ const ProfileStack = () => {
             <Stack.Screen
                 name="UserProfile"
                 component={UserProfileScreen}
+                options={{
+                    headerShown: true,
+                    ...coloredHeaderOptions,
+                }}
             />
             <Stack.Screen
                 name="TradespersonProfile"
@@ -43,10 +46,6 @@ const ProfileStack = () => {
                     ...headerOptions,
                     headerTitle: 'Customize your profile',
                 }}
-            />
-            <Stack.Screen
-                name="ResetEmailOrPassword"
-                component={ResetEmailOrPasswordStack}
             />
             {/* <Stack.Screen name="Service" component={ServiceStack} /> */}
         </Stack.Navigator>

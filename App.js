@@ -12,7 +12,6 @@ import jobReducer from './store/reducers/job';
 import uiReducer from './store/reducers/ui';
 import authReducer from './store/reducers/auth';
 import tradespersonReducer from './store/reducers/tradesperson';
-import { fetchTradespersonInfo } from './store/actions/tradesperson';
 
 import { LogBox } from 'react-native';
 import _ from 'lodash';

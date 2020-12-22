@@ -1,6 +1,5 @@
 export const FETCH_TRADESPEOPLE = 'FETCH_TRADESPEOPLE';
 
-import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 import * as Firebase from '../../config/Firebase';
 
 export const fetchAll = () => {
@@ -18,22 +17,25 @@ export const fetchAll = () => {
             tradespeopleData.push(responseData[key]);
         }
 
-        await Firebase.storage
+        try {
+            const res = await Firebase.storage
             .ref()
             .child('/profilePictures/')
-            .listAll()
-            .then(res => {
-                res.items.forEach(async itemRef => {
-                    const profilePicture = await itemRef.getDownloadURL();
-                    profilePictureList.push({
-                        userId: itemRef.name,
-                        profilePicture,
-                    });
-                    console.log(profilePictureList, 'hey')
+            .listAll();
+
+        const items = res.items;
+        var i;
+        if (items)
+            for (i = 0; i < items.length; i++) {
+                const profilePicture = await items[i].getDownloadURL();
+                profilePictureList.push({
+                    userId: items[i].name,
+                    profilePicture,
                 });
-                
-            })
-        
+            }
+        } catch (error) {
+            console.log('no pics')
+        }
 
         dispatch({
             type: FETCH_TRADESPEOPLE,

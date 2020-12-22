@@ -7,15 +7,23 @@ const initialState = {
 const tradespeopleReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_TRADESPEOPLE:
-            (action.tradespeopleData).forEach(elem => {
-                console.log(action.profilePictureList)
-                const imgIndex = (action.profilePictureList).findIndex(
+            const all = [];
+            action.tradespeopleData.forEach(elem => {
+                const imgIndex = action.profilePictureList.findIndex(
                     img => img.userId === elem.userId
                 );
-                elem.profilePicture = action.profilePictureList[imgIndex];
-                console.log(elem);
+                if(imgIndex !== -1) {
+                    elem.profilePicture = action.profilePictureList[imgIndex].profilePicture;
+                } else {
+                    elem.profilePicture = null;
+                }
+                
+                all.push(elem);
             });
-            return {};
+            return {
+                ...state,
+                all,
+            };
         default:
             return state;
     }

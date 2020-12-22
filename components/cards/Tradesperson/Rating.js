@@ -26,7 +26,9 @@ export const addFullStars = (count, isRateCard) => {
 
 const Rating = props => {
     const rating =
-        Math.round(props.rating * 10) / 10 > 5
+        typeof props.rating === 'undefined'
+            ? 0
+            : Math.round(props.rating * 10) / 10 > 5
             ? 5
             : Math.round(props.rating * 10) / 10; // get the rating with one decimal
 
@@ -118,17 +120,14 @@ const Rating = props => {
                             fontFamily: 'Asap-SemiBold',
                         }}
                     >
-                        {rating}
+                        {rating !== 0 ? rating : 'No rating'}
                     </Header>
                 </View>
             )}
             <View style={styles.starsVar}>
                 {stars.map((value, index) => {
                     return (
-                        <StarContainer
-                            readOnly={props.readOnly}
-                            index={index}
-                        >
+                        <StarContainer readOnly={props.readOnly} index={index}>
                             {value}
                         </StarContainer>
                     );
@@ -143,7 +142,11 @@ const Rating = props => {
                                 : Color.secondaryColor,
                         }}
                     >
-                        (103)
+                        (
+                        {props.ratingVotesAmount
+                            ? props.ratingVotesAmount
+                            : '0'}
+                        )
                     </SmallContent>
                 </View>
             )}

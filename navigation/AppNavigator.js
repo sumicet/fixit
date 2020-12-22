@@ -8,29 +8,35 @@ import Loading from '../components/loading/Loading';
 import AuthenticationStack from './AuthenticationStack';
 import AppStack from './AppStack';
 import { fetchAll } from '../store/actions/tradespeople';
+import * as Firebase from '../config/Firebase';
+import { updateToken } from '../store/actions/auth';
+import { fetchTradespersonInfo } from '../store/actions/tradesperson';
 
 const AppNavigator = () => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-    const hasVerifiedEmail = useSelector(state => state.auth.hasVerifiedEmail);
     const userId = useSelector(state => state.auth.userId);
 
-    // useEffect(() => {
-    //     let mounted = true;
-    //     setIsLoading(true);
-    //     dispatch(fetchMyJobs()).then(() => {
-    //         if (mounted) {
-    //             setIsLoading(false);
-    //         }
-    //     });
-    //     return () => (mounted = false);
-    // }, []);
+    useEffect(() => {
+        const unsub = Firebase.auth.onAuthStateChanged(user => {
+            if (user) {
+                const token = Firebase.auth.currentUser.getIdToken();
+                dispatch(updateToken(token));
+                console.log('token expired / logged in');
+            } else {
+                console.log('logged out');
+            }
+        });
+
+        return () => unsub();
+    }, []);
 
     useEffect(() => {
         dispatch(fetchMyJobs());
+        dispatch(fetchTradespersonInfo(userId));
         dispatch(fetchAll());
-    }, [])
+    }, []);
 
     if (isLoading) {
         return <Loading />;

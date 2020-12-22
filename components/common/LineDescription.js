@@ -8,7 +8,7 @@ import Line from './Line';
 const LineDescription = props => {
     return (
         <Line style={[{ flex: 0, alignItems: 'flex-start' }, props.style]}>
-            <Header style={{ color: Color.textOnTertiaryColorBackground, textAlign: props.centerText ? 'center' : 'left' }}>
+            <Header style={[{ color: Color.textOnTertiaryColorBackground }, props.textStyle]}>
                 {props.text}
             </Header>
             {props.children}

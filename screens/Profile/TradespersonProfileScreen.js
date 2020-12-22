@@ -109,7 +109,8 @@ const TradespersonProfileScreen = props => {
                             </SmallContent>
                         </View>
                         <View style={styles.details}>
-                            <Experience style={{ paddingLeft: 0 }} />
+                            <Experience style={{ paddingLeft: 0 }} experienceId={1} /> 
+                            {/* TODO change this */}
                             <SmallContent
                                 style={{ color: Color.secondaryColor }}
                             >

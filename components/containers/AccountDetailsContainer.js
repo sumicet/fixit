@@ -8,7 +8,7 @@ import SmallContent from '../text/SmallContent';
 import TextField from '../text/TextField';
 import Container from './Container';
 
-const ResetEmailOrPasswordContainer = props => {
+const AccountDetailsContainer = props => {
     const [input, setInput] = useState();
 
     const onChangeText = input => {
@@ -77,4 +77,4 @@ const ResetEmailOrPasswordContainer = props => {
 
 const styles = StyleSheet.create({});
 
-export default ResetEmailOrPasswordContainer;
+export default AccountDetailsContainer;

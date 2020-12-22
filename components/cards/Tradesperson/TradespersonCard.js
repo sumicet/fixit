@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import Color from '../../../constants/Color';
@@ -18,10 +18,35 @@ import Contact from './Contact';
 import ProfilePicture from './ProfilePicture';
 import Touchable from '../../common/Touchable';
 import RateTradespersonModal from '../../modals/RateTradespersonModal';
+import { useSelector } from 'react-redux';
 
 const TradespersonCard = props => {
+    const allTradespeople = useSelector(state => state.tradespeople.all);
+
+    console.log(allTradespeople);
+
+    const {
+        userId,
+        name,
+        occupationsIds,
+        streetAddress,
+        experienceId,
+        insurance,
+        rating,
+        ratingVotesAmount,
+        recommendedByIds,
+        profilePicture,
+        phoneNumber
+    } = props;
+
+    const recommendedByTradespeople = recommendedByIds
+        ? allTradespeople.filter(tp =>
+              recommendedByIds.includes(parseInt(tp.userId))
+          )
+        : [];
+
     const [modalVisible, setModalVisible] = useState(false);
-    const [updatedRating, setUpdatedRating] = useState(0);
+    const [updatedRating, setUpdatedRating] = useState(rating);
 
     const occupations = [];
 
@@ -34,7 +59,7 @@ const TradespersonCard = props => {
             setModalVisible(true);
         } else {
             props.navigation.navigate('TradespersonProfile', {
-                tradespersonId: props.tradespersonId
+                tradespersonId: userId,
             });
         }
     };
@@ -97,7 +122,11 @@ const TradespersonCard = props => {
                                 alignItems: 'center',
                             }}
                         >
-                            <ProfilePicture isRateCard={props.isRateCard} />
+                            <ProfilePicture
+                                isRateCard={props.isRateCard}
+                                profilePicture={profilePicture}
+                                ratingVotesAmount={ratingVotesAmount}
+                            />
                             <View
                                 style={{
                                     flex: props.isBeingRated ? 0 : 1,
@@ -127,17 +156,18 @@ const TradespersonCard = props => {
                                                     Color.textOnTertiaryColorBackground,
                                             }}
                                         >
-                                            John McCormack
+                                            {name}
                                         </HeaderWithEllipsis>
                                     </View>
-                                    {props.isRateCard ? null : <Contact />}
+                                    {props.isRateCard ? null : <Contact phoneNumber={phoneNumber} />}
                                 </View>
                                 <View style={{ paddingBottom: 5 }}>
                                     <Occupations
                                         isRateCard={props.isRateCard}
+                                        occupationsIds={occupationsIds}
                                     />
                                 </View>
-                                {props.isRateCard ? null : (
+                                {!props.isRateCard && (
                                     <View
                                         style={{
                                             flexDirection: 'row',
@@ -146,17 +176,21 @@ const TradespersonCard = props => {
                                             paddingBottom: 5,
                                         }}
                                     >
-                                        <Location />
-                                        <Experience />
-                                        <Insurance />
+                                        <Location
+                                            place_id={streetAddress.place_id}
+                                        />
+                                        <Experience
+                                            experienceId={experienceId}
+                                        />
+                                        {insurance && <Insurance />}
                                     </View>
                                 )}
-                                {props.isBeingRated ? null : (
+                                {!props.isBeingRated && (
                                     <Rating
                                         rating={
                                             props.isRateCard
                                                 ? updatedRating
-                                                : 4.5
+                                                : rating
                                         }
                                         isRateCard={props.isRateCard}
                                         onStarPress={handleStarPress}
@@ -168,9 +202,9 @@ const TradespersonCard = props => {
                             </View>
                         </View>
                     </View>
-                    {props.isRateCard ? null : (
-                        <View style={styles.bottomContainer}>
-                            {props.hasQuote ? (
+                    {!props.isRateCard &&
+                        (props.hasQuote ? (
+                            <View style={styles.bottomContainer}>
                                 <Header
                                     style={{
                                         color:
@@ -179,19 +213,32 @@ const TradespersonCard = props => {
                                 >
                                     {props.quote}
                                 </Header>
-                            ) : (
-                                <SmallContentWithEllipsis
-                                    style={{
-                                        color:
-                                            Color.textOnTertiaryColorBackground,
-                                    }}
-                                >
-                                    Recommended by: Mister Beast, John Doe,
-                                    Scott McCormack
-                                </SmallContentWithEllipsis>
-                            )}
-                        </View>
-                    )}
+                            </View>
+                        ) : (
+                            recommendedByIds && (
+                                <View style={styles.bottomContainer}>
+                                    <SmallContentWithEllipsis
+                                        style={{
+                                            color:
+                                                Color.textOnTertiaryColorBackground,
+                                        }}
+                                    >
+                                        Recommended by:{' '}
+                                        {recommendedByTradespeople.map(
+                                            (tp, index) => {
+                                                if (
+                                                    index !==
+                                                    recommendedByTradespeople.length -
+                                                        1
+                                                )
+                                                    return tp.name + ', ';
+                                                else return tp.name;
+                                            }
+                                        )}
+                                    </SmallContentWithEllipsis>
+                                </View>
+                            )
+                        ))}
                 </View>
             </LocalContainer>
         </View>
