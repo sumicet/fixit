@@ -10,9 +10,8 @@ import NewJobScreen from '../screens/Quiz/NewJobScreen';
 import { headerOptions } from './options/HeaderOptions';
 import BottomTab from './BottomTab';
 import InputNewEmailScreen from '../screens/AccountDetails/InputNewEmailScreen';
-import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
-import ResetPasswordScreen from '../screens/AccountDetails/ResetPasswordScreen';
 import RelogUserScreen from '../screens/AccountDetails/RelogUserScreen';
+import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
 
 const Stack = createStackNavigator();
 
@@ -47,22 +46,6 @@ const AppStack = () => {
                 }}
             />
             <Stack.Screen
-                name="VerifyEmail"
-                component={VerifyEmailScreen}
-                options={{
-                    headerTitle: 'Verify email',
-                    ...headerOptions,
-                }}
-            />
-            <Stack.Screen
-                name="ResetPassword"
-                component={ResetPasswordScreen}
-                options={{
-                    headerTitle: 'Reset password',
-                    ...headerOptions,
-                }}
-            />
-            <Stack.Screen
                 name="RelogUser"
                 component={RelogUserScreen}
                 options={{
@@ -75,6 +58,14 @@ const AppStack = () => {
                 component={InputNewEmailScreen}
                 options={{
                     headerTitle: 'New email',
+                    ...headerOptions,
+                }}
+            />
+            <Stack.Screen
+                name="VerifyEmail"
+                component={VerifyEmailScreen}
+                options={{
+                    headerTitle: 'Verify email',
                     ...headerOptions,
                 }}
             />

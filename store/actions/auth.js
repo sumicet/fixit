@@ -1,37 +1,40 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Firebase from '../../config/Firebase';
+import * as firebase from 'firebase';
 
 export const LOG_IN = 'LOG_IN';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_OUT = 'SIGN_OUT';
 export const UPDATE_TOKEN = 'UPDATE_TOKEN';
 export const AUTO_LOG_IN = 'AUTO_LOG_IN';
-export const SET_IS_LOGGED_IN_TO_TRUE = 'SET_IS_LOGGED_IN_TO_TRUE';
+export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN';
 export const SET_USER_TYPE = 'SET_USER_TYPE';
-export const VERIFY_EMAIL = 'VERIFY_EMAIL';
+export const CHANGE_HAS_VERIFIED_EMAIL = 'CHANGE_HAS_VERIFIED_EMAIL';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const RESEND_EMAIL_TIMER = 'RESEND_EMAIL_TIMER';
 
-export const changeEmail = (email) => {
+export const changeEmail = (email, password) => {
     return async (dispatch, getState) => {
         const userType = getState().auth.userType;
         const userId = getState().auth.userId;
-        Firebase.auth.currentUser.updateEmail(email);
+        await Firebase.auth.currentUser.updateEmail(email);
+        await Firebase.auth.signInWithEmailAndPassword(email, password);
         const ref = Firebase.database.ref(userType).child(userId);
+        
         ref.child('email').set(email);
         dispatch({
             type: CHANGE_EMAIL,
-            email
-        })
-    }
-}
+            email,
+        });
+    };
+};
 
-const saveUserDataToStorage = (token, userId) => {
+const saveUserDataToStorage = (userId, token) => {
     AsyncStorage.setItem(
         'userData',
         JSON.stringify({
-            token: token,
             userId: userId,
+            token: token,
         })
     );
 };
@@ -45,9 +48,8 @@ export const setResendEmailTimer = date => {
     };
 };
 
-export const updateToken = token => {
-    return async (dispatch, getState) => {
-        const userId = getState().auth.userId;
+export const updateToken = (userId, token) => {
+    return async dispatch => {
         saveUserDataToStorage(userId, token);
         dispatch({
             type: UPDATE_TOKEN,
@@ -56,22 +58,20 @@ export const updateToken = token => {
     };
 };
 
-export const verifyEmail = () => {
+export const setIsLoggedIn = isLoggedIn => {
     return async dispatch => {
-        const value =
-            Firebase.auth.currentUser &&
-            Firebase.auth.currentUser.emailVerified;
         dispatch({
-            type: VERIFY_EMAIL,
-            value,
+            type: SET_IS_LOGGED_IN,
+            isLoggedIn,
         });
     };
 };
 
-export const setIsLoggedInToTrue = () => {
+export const changeHasVerifiedEmail = hasVerifiedEmail => {
     return async dispatch => {
         dispatch({
-            type: SET_IS_LOGGED_IN_TO_TRUE,
+            type: CHANGE_HAS_VERIFIED_EMAIL,
+            hasVerifiedEmail,
         });
     };
 };
@@ -112,7 +112,7 @@ export const signUp = (email, password, userType) => {
             .then(async userData => {
                 const userId = userData.user.uid;
                 Firebase.auth.currentUser.getIdToken().then(token => {
-                    saveUserDataToStorage(token, userId);
+                    saveUserDataToStorage(userId, token);
                 });
 
                 const ref = Firebase.database.ref(userType).child(userId);
@@ -146,58 +146,76 @@ export const logIn = (email, password) => {
         Firebase.auth
             .signInWithEmailAndPassword(email, password)
             .then(userData => {
+                userData.user.getIdToken().then(token => {
+                    const userId = userData.user.uid;
+                    saveUserDataToStorage(userId, token);
+                    var ref, userType;
+                    try {
+                        ref = Firebase.database
+                            .ref('tradesperson')
+                            .child(userId);
+                        userType = 'tradesperson';
+                    } catch (error) {
+                        ref = Firebase.database.ref('customer').child(userId);
+                        userType = 'customer';
+                    }
+                    dispatch({
+                        type: LOG_IN,
+                        userId,
+                        token: token,
+                        userType,
+                        email,
+                    });
+                });
+                dispatch({
+                    type: SET_IS_LOGGED_IN,
+                    isLoggedIn: true,
+                });
                 if (userData.user.emailVerified) {
                     dispatch({
-                        type: SET_IS_LOGGED_IN_TO_TRUE,
-                    });
-                    Firebase.auth.currentUser.getIdToken().then(token => {
-                        saveUserDataToStorage(token, userData.user.uid);
+                        type: CHANGE_HAS_VERIFIED_EMAIL,
+                        hasVerifiedEmail: true,
                     });
                 } else {
                     dispatch({
-                        type: LOG_IN,
-                        userId: userData.user.uid,
-                        token,
-                        email,
+                        type: CHANGE_HAS_VERIFIED_EMAIL,
+                        hasVerifiedEmail: false,
                     });
                 }
             })
             .catch(error => {
-                console.log(error);
+                console.log(error, 'login');
             });
     };
 };
 
 export const autoLogIn = () => {
     return async dispatch => {
-        var isLoggedIn, userId, token;
         const userData = await AsyncStorage.getItem('userData');
-        if (userData) {
-            isLoggedIn = true;
-            userId = JSON.parse(userData).userId;
-            token = JSON.parse(userData).token;
-        } else {
-            isLoggedIn = false;
-            userId = null;
-            token = null;
-        }
-        var ref;
-        try {
-            ref = Firebase.database.ref('tradesperson').child(userId);
-        } catch (error) {
-            ref = Firebase.database.ref('customer').child(userId);
-        }
+        const userId = userData && JSON.parse(userData).userId;
+        const token = userData && JSON.parse(userData).token;
 
-        const snap = await ref.child('email').once('value');
-        const email = snap.val();
+        if (userId && token) {
+            var ref, userType;
+            try {
+                ref = Firebase.database.ref('tradesperson').child(userId);
+                userType = 'tradesperson';
+            } catch (error) {
+                ref = Firebase.database.ref('customer').child(userId);
+                userType = 'customer';
+            }
 
-        dispatch({
-            type: AUTO_LOG_IN,
-            userId,
-            token,
-            isLoggedIn,
-            email,
-        });
+            const snap = await ref.child('email').once('value');
+            const email = snap.val();
+
+            dispatch({
+                type: AUTO_LOG_IN,
+                userId,
+                token,
+                email,
+                userType,
+            });
+        }
     };
 };
 

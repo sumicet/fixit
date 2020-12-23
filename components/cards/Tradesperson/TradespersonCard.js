@@ -23,8 +23,6 @@ import { useSelector } from 'react-redux';
 const TradespersonCard = props => {
     const allTradespeople = useSelector(state => state.tradespeople.all);
 
-    console.log(allTradespeople);
-
     const {
         userId,
         name,

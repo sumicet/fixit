@@ -12,7 +12,7 @@ const OptionScreen = props => {
 
     const handlePress = userType => {
         dispatch(signUp(email, password, userType));
-        props.navigation.navigate('Verification', {
+        props.navigation.navigate('VerifyEmail', {
             screen: 'Verification',
             params: {
                 email,

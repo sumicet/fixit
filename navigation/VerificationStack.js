@@ -5,8 +5,8 @@ import {
     CardStyleInterpolators,
 } from '@react-navigation/stack';
 
-import VerificationScreen from '../screens/Authentication/VerificationScreen';
-import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
+import { headerOptions } from './options/HeaderOptions';
+import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,14 +21,12 @@ const VerificationStack = () => {
             }}
         >
             <Stack.Screen
-                name="Verification"
-                component={VerificationScreen}
+                name="VerifyEmail"
+                component={VerifyEmailScreen}
                 options={{
-                    ...coloredHeaderOptions,
-                    headerTitle: 'Verification',
-                    headerLeft: null
+                    headerTitle: 'Verify email',
+                    ...headerOptions,
                 }}
-                
             />
         </Stack.Navigator>
     );

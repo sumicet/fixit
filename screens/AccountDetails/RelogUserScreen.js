@@ -5,10 +5,13 @@ import * as firebase from 'firebase';
 import AuthLine from '../../components/authentication/AuthLine';
 import * as Firebase from '../../config/Firebase';
 import Confirm from '../../components/authentication/Confirm';
+import { changeHasVerifiedEmail } from '../../store/actions/auth';
+import { useDispatch } from 'react-redux';
 
 const RelogUserScreen = props => {
     const [password, setPassword] = useState();
     const action = props.route.params && props.route.params.action;
+    const dispatch = useDispatch();
 
     return (
         <Confirm
@@ -23,7 +26,8 @@ const RelogUserScreen = props => {
                     .then(() => {
                         if (action === 'change_email') {
                             props.navigation.navigate('InputNewEmail', {
-                                action: action,
+                                action,
+                                password
                             });
                         } else {
                             props.navigation.navigate('VerifyEmail', {

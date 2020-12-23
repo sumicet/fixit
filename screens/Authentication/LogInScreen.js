@@ -1,21 +1,17 @@
+import { CommonActions } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
-import InAppNotification from '../../components/alert/InAppNotification';
 import Authentication from '../../components/authentication/Authentication';
-import { autoLogIn, logIn } from '../../store/actions/auth';
+import { logIn } from '../../store/actions/auth';
 
 const LogInScreen = props => {
     const dispatch = useDispatch();
-    // const [inAppNotificationVisible, setInAppNotificationVisible] = useState(false);
+    const action = props.route.params && props.route.params.action;
 
     const handleOnPress = (email, password) => {
         dispatch(logIn(email, password));
     };
-
-    useEffect(() => {
-        dispatch(autoLogIn());
-    }, []);
 
     return (
         <View style={{ flex: 1 }}>
@@ -31,12 +27,6 @@ const LogInScreen = props => {
                     props.route.params && props.route.params.password
                 }
             />
-            {/* <InAppNotification
-                title={"Denied!"}
-                message={"Verify your email to log in."}
-                inAppNotificationVisible={inAppNotificationVisible}
-                hide={() => {setInAppNotificationVisible(false)}}
-            /> */}
         </View>
     );
 };

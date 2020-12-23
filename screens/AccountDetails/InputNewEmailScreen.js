@@ -6,28 +6,23 @@ import * as Firebase from '../../config/Firebase';
 import Confirm from '../../components/authentication/Confirm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import { changeEmail } from '../../store/actions/auth';
+import { changeEmail, changeHasVerifiedEmail } from '../../store/actions/auth';
 
 const InputNewEmailScreen = props => {
     const [email, setEmail] = useState();
-    const oldEmail = useSelector(state => state.auth.email);
     const action = props.route.params && props.route.params.action;
+    const password = props.route.params && props.route.params.password;
     const dispatch = useDispatch();
-
-    const isFocused = useIsFocused();
-
-    useEffect(() => {
-        if (!isFocused) Firebase.auth.currentUser.updateEmail(oldEmail);
-    }, [isFocused]);
 
     return (
         <Confirm
             text="You can select a new email address."
             onPress={() => {
-                dispatch(changeEmail(email));
-                props.navigation.navigate('VerifyEmail', {
-                    email,
-                    action: action
+                dispatch(changeEmail(email, password)).then(() => {
+                    props.navigation.navigate('VerifyEmail', {
+                        email,
+                        action: action,
+                    });
                 });
             }}
         >

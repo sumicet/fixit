@@ -25,11 +25,6 @@ const Authentication = props => {
         onTextPress,
     } = props;
 
-    const [user, setUser] = useState({
-        email: null,
-        password: null,
-    });
-
     const [email, setEmail] = useState(defaultEmail);
     const [password, setPassword] = useState(defaultPassword);
     const [info, setInfo] = useState({

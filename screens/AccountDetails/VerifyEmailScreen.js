@@ -10,7 +10,11 @@ import Header from '../../components/text/Header';
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 import * as Firebase from '../../config/Firebase';
-import { setResendEmailTimer } from '../../store/actions/auth';
+import {
+    changeHasVerifiedEmail,
+    setResendEmailTimer,
+} from '../../store/actions/auth';
+import { CommonActions, StackActions } from '@react-navigation/native';
 
 const VerifyEmailScreen = props => {
     const email =
@@ -24,19 +28,57 @@ const VerifyEmailScreen = props => {
         state => state.auth.resendEmailTimer
     );
 
+    const checkIfEmailHasBeenVerified = async () => {
+        await Firebase.auth.currentUser.reload();
+        if (Firebase.auth.currentUser.emailVerified) {
+            dispatch(changeHasVerifiedEmail(true));
+            if (action === 'change_email' || action === 'change_password') {
+                props.navigation.navigate('BottomTab', {
+                    screen: 'Profile',
+                });
+            } else {
+                if (typeof action === 'undefined') {
+                    props.navigation.navigate('BottomTab', {
+                        screen: 'Home',
+                    });
+                } else {
+                    console.log(
+                        'wrong action in verifyemailscreen // navigation'
+                    );
+                }
+            }
+        } else {
+            console.log(
+                'Please verify your email',
+                Firebase.auth.currentUser.email
+            );
+        }
+    };
+
+    const handleFinishChangePassword = async () => {
+        await Firebase.auth.currentUser.reload();
+        props.navigation.navigate('BottomTab', {
+            screen: 'Profile',
+        });
+    };
+
     const sendVerificationEmail = () => {
         const timeDiff = Date.now() - oldResendEmailTimer;
         if (oldResendEmailTimer === null || timeDiff >= 60000) {
-            if (action === 'change_email') {
+            if (action === 'change_email' || typeof action === 'undefined') {
                 Firebase.auth.currentUser
                     .sendEmailVerification()
                     .catch(error => {
                         throw error;
                     });
             } else {
-                Firebase.auth
-                    .sendPasswordResetEmail(email)
-                    .catch(error => console.log(error));
+                if (action === 'change_password') {
+                    Firebase.auth
+                        .sendPasswordResetEmail(email)
+                        .catch(error => console.log(error));
+                } else {
+                    console.log('wrong action in verifyemailscreen');
+                }
             }
 
             dispatch(setResendEmailTimer(Date.now()));
@@ -81,11 +123,29 @@ const VerifyEmailScreen = props => {
                 textStyle={{ fontFamily: 'Asap-Regular', textAlign: 'left' }}
             />
             <Line
-                style={{ flex: 0, paddingTop: Layout.screenHorizontalPadding }}
+                style={{
+                    flex: 0,
+                    paddingTop: Layout.screenHorizontalPadding,
+                    paddingBottom:
+                        Layout.screenHorizontalPadding - Layout.generalPadding,
+                }}
             >
+                <MediumButton
+                    text={action === 'change_password' ? 'Finish' : 'Continue'}
+                    onPress={
+                        action === 'change_password'
+                            ? handleFinishChangePassword
+                            : checkIfEmailHasBeenVerified
+                    }
+                />
+            </Line>
+            <Line style={{ flex: 0 }}>
                 <MediumButton
                     text="Resend email"
                     onPress={sendVerificationEmail}
+                    style={{
+                        backgroundColor: 'transparent',
+                    }}
                 />
             </Line>
         </Container>

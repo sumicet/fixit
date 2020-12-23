@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     createStackNavigator,
     CardStyleInterpolators,
@@ -9,19 +9,22 @@ import SignUpScreen from '../screens/Authentication/SignUpScreen';
 import LogInScreen from '../screens/Authentication/LogInScreen';
 import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
-import SelectUserTypeScreen from '../screens/Authentication/SelectUserTypeScreen'
-import VerificationStack from './VerificationStack';
+import SelectUserTypeScreen from '../screens/Authentication/SelectUserTypeScreen';
+import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
+import * as Firebase from '../config/Firebase';
+import { useNavigation } from '@react-navigation/native';
+import { navigationRef } from './AppNavigator';
 
 const Stack = createStackNavigator();
 
-const AuthenticationStack = () => {
+const AuthenticationStack = (props) => {
+
     return (
         <Stack.Navigator
             headerMode="screen"
             animation
             screenOptions={{
-                cardStyleInterpolator:
-                    CardStyleInterpolators.forHorizontalIOS,
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
         >
             <Stack.Screen
@@ -30,15 +33,6 @@ const AuthenticationStack = () => {
                 options={{
                     ...coloredHeaderOptions,
                     headerTitle: 'Log In',
-                }}
-            />
-            <Stack.Screen
-                name="Verification"
-                component={VerificationStack}
-                options={{
-                    ...coloredHeaderOptions,
-                    headerTitle: 'Verification',
-                    headerLeft: null
                 }}
             />
             <Stack.Screen
@@ -55,7 +49,7 @@ const AuthenticationStack = () => {
                 options={{
                     ...headerOptions,
                     headerTitle: 'Customize your profile',
-                    headerLeft: null
+                    headerLeft: null,
                 }}
             />
             <Stack.Screen
@@ -64,7 +58,15 @@ const AuthenticationStack = () => {
                 options={{
                     ...headerOptions,
                     headerTitle: 'Account type',
-                    headerLeft: null
+                    headerLeft: null,
+                }}
+            />
+            <Stack.Screen
+                name="VerifyEmail"
+                component={VerifyEmailScreen}
+                options={{
+                    headerTitle: 'Verify email',
+                    ...headerOptions,
                 }}
             />
         </Stack.Navigator>
