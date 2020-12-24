@@ -1,30 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
-import { setStatusBarStyle } from '../../store/actions/ui';
 import ScrollableContainer from './ScrollableContainer';
 
 const SectionedContainer = props => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', () => {
-            dispatch(setStatusBarStyle('light'));
-        });
-
-        return unsubscribe;
-    }, [props.navigation]);
-
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('blur', () => {
-            dispatch(setStatusBarStyle('light'));
-        });
-
-        return unsubscribe;
-    }, [props.navigation]);
 
     return (
         <ScrollableContainer style={{paddingHorizontal: 0}}

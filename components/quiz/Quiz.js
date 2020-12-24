@@ -22,6 +22,7 @@ import { addJob, editJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
 import ScrollableContainer from '../containers/ScrollableContainer';
 import LineDescription from '../common/LineDescription';
+import { WARNING } from '../../constants/Actions';
 
 const Quiz = props => {
     const { title, editModeOn, id, navigation, route } = props;
@@ -215,17 +216,17 @@ const Quiz = props => {
             typeof jobAddressInput.place_id === 'undefined' ||
             typeof startTimeId === 'undefined'
         ) {
-            console.log(
-                occupationId,
-                workTypeId,
-                jobDescriptionInput,
-                customerTypeId,
-                propertyTypeId,
-                jobAddressInput.line1,
-                jobAddressInput.line2,
-                jobAddressInput.place_id,
-                startTimeId
-            );
+            // console.log(
+            //     occupationId,
+            //     workTypeId,
+            //     jobDescriptionInput,
+            //     customerTypeId,
+            //     propertyTypeId,
+            //     jobAddressInput.line1,
+            //     jobAddressInput.line2,
+            //     jobAddressInput.place_id,
+            //     startTimeId
+            // );
             setAlert({
                 title: 'A problem occured',
                 message: 'Make sure all fields are filled.',
@@ -238,17 +239,17 @@ const Quiz = props => {
             });
             setModalVisible(true);
         } else {
-            console.log(
-                occupationId,
-                workTypeId,
-                jobDescriptionInput,
-                customerTypeId,
-                propertyTypeId,
-                jobAddressInput.line1,
-                jobAddressInput.line2,
-                jobAddressInput.place_id,
-                startTimeId
-            );
+            // console.log(
+            //     occupationId,
+            //     workTypeId,
+            //     jobDescriptionInput,
+            //     customerTypeId,
+            //     propertyTypeId,
+            //     jobAddressInput.line1,
+            //     jobAddressInput.line2,
+            //     jobAddressInput.place_id,
+            //     startTimeId
+            // );
             editModeOn
                 ? dispatch(
                       editJob(
@@ -283,147 +284,153 @@ const Quiz = props => {
     };
 
     return (
-        <ScrollableContainer
-            //title={title}
-            backgroundColor={Color.primaryColor}
-        >
-            <View>
-                <LineDescription text="What are you looking for?" />
-                <Line style={{ flex: 0 }}>
-                    <Grid
-                        data={OCCUPATIONS}
-                        onPress={index => {
-                            setIndex(index);
-                            setWorkTypes(
-                                WORK_TYPES.filter(
-                                    item => item.occupationId === index + 1
-                                )
-                            );
-                        }}
-                        initialSelectedIndexes={[
-                            editModeOn ? jobToUpdate.occupationId - 1 : 0,
-                        ]}
-                    />
-                </Line>
-                {index !== 9 ? (
-                    <View>
-                        <LineDescription text="What kind of work do you need?" />
-                        <Line style={{ flex: 0 }}>
-                            <Grid
-                                data={workTypes}
-                                onPress={handleWorkTypePress}
-                                initialSelectedIndexes={
-                                    [editModeOn ? jobToUpdate.workTypeId - 1 : 0]
-                                }
-                            />
-                        </Line>
-                    </View>
-                ) : null}
-                <LineDescription text="Description" />
-                <Line style={{ flex: 0 }}>
-                    <JobDescription
-                        input={jobDescriptionInput}
-                        onChangeText={onChangeJobDescription}
-                    />
-                </Line>
-                <LineDescription text="Where are you?" />
-                <Line style={{ flex: 0 }}>
-                    <JobAddress
-                        input={jobAddressInput}
-                        onStreetAddressChange={handleStreetAddressChange}
-                        onChangeText={handleJobAddressChange}
-                        streetAddress={jobAddressInput.line1}
-                        initial_place_id={
-                            jobToUpdate ? jobToUpdate.jobAddress.place_id : null
-                        }
-                    />
-                </Line>
-                <LineDescription text="I am a.." />
-                <Line
-                    style={{
-                        flex: 0,
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <Grid
-                        data={CUSTOMER_TYPES}
-                        checked={customerTypeChecked}
-                        onToggleCheck={index =>
-                            handleToggleCheck(
-                                index,
-                                customerTypeChecked,
-                                setCustomerTypeChecked
-                            )
-                        }
-                        RenderItemComponent={CustomRadioButton}
-                    />
-                </Line>
-                <LineDescription text="What type of property is the job for?" />
-                <Line
-                    style={{
-                        flex: 0,
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <Grid
-                        data={PROPERTY_TYPES}
-                        checked={propertyTypeChecked}
-                        onToggleCheck={index =>
-                            handleToggleCheck(
-                                index,
-                                propertyTypeChecked,
-                                setPropertyTypeChecked
-                            )
-                        }
-                        RenderItemComponent={CustomRadioButton}
-                    />
-                </Line>
-                <LineDescription text="When should the work start?" />
-                <Line
-                    style={{
-                        flex: 0,
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <Grid
-                        data={START_TIMES}
-                        checked={startTimesChecked}
-                        onToggleCheck={index =>
-                            handleToggleCheck(
-                                index,
-                                startTimesChecked,
-                                setStartTimesChecked
-                            )
-                        }
-                        RenderItemComponent={CustomRadioButton}
-                    />
-                </Line>
-                <Line
-                    style={{
-                        flex: 0,
-                        paddingTop: Layout.screenHorizontalPadding,
-                        paddingBottom: Layout.endOfPageSpace,
-                    }}
-                >
-                    <MediumButton
-                        text={editModeOn ? 'Finish' : 'Post job'}
-                        onPress={handlePostJobPress}
-                    />
-                </Line>
-            </View>
+        <View style={{flex: 1}}>
             <Alert
                 modalVisible={modalVisible}
                 onPress={alert.onPress}
                 hide={alert.hide}
                 title={alert.title}
-                titleColor={Color.importantTextOnTertiaryColorBackground}
                 message={alert.message}
                 onlyShowOneButton={alert.onlyShowOneButton}
-                buttonColor={alert.buttonColor}
                 text={alert.text}
                 leftButtonText={alert.leftButtonText}
+                style={WARNING}
             />
-        </ScrollableContainer>
+
+            <ScrollableContainer
+                //title={title}
+                backgroundColor={Color.primaryColor}
+            >
+                <View>
+                    <LineDescription text="What are you looking for?" />
+                    <Line style={{ flex: 0 }}>
+                        <Grid
+                            data={OCCUPATIONS}
+                            onPress={index => {
+                                setIndex(index);
+                                setWorkTypes(
+                                    WORK_TYPES.filter(
+                                        item => item.occupationId === index + 1
+                                    )
+                                );
+                            }}
+                            initialSelectedIndexes={[
+                                editModeOn ? jobToUpdate.occupationId - 1 : 0,
+                            ]}
+                        />
+                    </Line>
+                    {index !== 9 ? (
+                        <View>
+                            <LineDescription text="What kind of work do you need?" />
+                            <Line style={{ flex: 0 }}>
+                                <Grid
+                                    data={workTypes}
+                                    onPress={handleWorkTypePress}
+                                    initialSelectedIndexes={[
+                                        editModeOn
+                                            ? jobToUpdate.workTypeId - 1
+                                            : 0,
+                                    ]}
+                                />
+                            </Line>
+                        </View>
+                    ) : null}
+                    <LineDescription text="Description" />
+                    <Line style={{ flex: 0 }}>
+                        <JobDescription
+                            input={jobDescriptionInput}
+                            onChangeText={onChangeJobDescription}
+                        />
+                    </Line>
+                    <LineDescription text="Where are you?" />
+                    <Line style={{ flex: 0 }}>
+                        <JobAddress
+                            input={jobAddressInput}
+                            onStreetAddressChange={handleStreetAddressChange}
+                            onChangeText={handleJobAddressChange}
+                            streetAddress={jobAddressInput.line1}
+                            initial_place_id={
+                                jobToUpdate
+                                    ? jobToUpdate.jobAddress.place_id
+                                    : null
+                            }
+                        />
+                    </Line>
+                    <LineDescription text="I am a.." />
+                    <Line
+                        style={{
+                            flex: 0,
+                            alignItems: 'flex-start',
+                        }}
+                    >
+                        <Grid
+                            data={CUSTOMER_TYPES}
+                            checked={customerTypeChecked}
+                            onToggleCheck={index =>
+                                handleToggleCheck(
+                                    index,
+                                    customerTypeChecked,
+                                    setCustomerTypeChecked
+                                )
+                            }
+                            RenderItemComponent={CustomRadioButton}
+                        />
+                    </Line>
+                    <LineDescription text="What type of property is the job for?" />
+                    <Line
+                        style={{
+                            flex: 0,
+                            alignItems: 'flex-start',
+                        }}
+                    >
+                        <Grid
+                            data={PROPERTY_TYPES}
+                            checked={propertyTypeChecked}
+                            onToggleCheck={index =>
+                                handleToggleCheck(
+                                    index,
+                                    propertyTypeChecked,
+                                    setPropertyTypeChecked
+                                )
+                            }
+                            RenderItemComponent={CustomRadioButton}
+                        />
+                    </Line>
+                    <LineDescription text="When should the work start?" />
+                    <Line
+                        style={{
+                            flex: 0,
+                            alignItems: 'flex-start',
+                        }}
+                    >
+                        <Grid
+                            data={START_TIMES}
+                            checked={startTimesChecked}
+                            onToggleCheck={index =>
+                                handleToggleCheck(
+                                    index,
+                                    startTimesChecked,
+                                    setStartTimesChecked
+                                )
+                            }
+                            RenderItemComponent={CustomRadioButton}
+                        />
+                    </Line>
+                    <Line
+                        style={{
+                            flex: 0,
+                            paddingTop: Layout.screenHorizontalPadding,
+                            paddingBottom: Layout.endOfPageSpace,
+                        }}
+                    >
+                        <MediumButton
+                            text={editModeOn ? 'Finish' : 'Post job'}
+                            onPress={handlePostJobPress}
+                        />
+                    </Line>
+                </View>
+            </ScrollableContainer>
+        </View>
     );
 };
 

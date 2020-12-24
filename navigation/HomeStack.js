@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     createStackNavigator,
     CardStyleInterpolators,
@@ -7,10 +7,22 @@ import {
 } from '@react-navigation/stack';
 import HomeStackWithSearchBar from './HomeStackWithSearchBar';
 import TradespersonProfileStack from './TradespersonProfileStack';
+import { useSelector } from 'react-redux';
+import { navigationRef } from './AppNavigator';
 
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
+
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
+    useEffect(() => {
+        if(!isLoggedIn) {
+            navigationRef.current?.navigate('LogIn');
+            console.log('navigated to log in');
+        }
+    }, [isLoggedIn])
+
     return (
         <Stack.Navigator
             //animation

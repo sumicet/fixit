@@ -8,7 +8,7 @@ import SmallContent from '../../text/SmallContent';
 import Header from '../../text/Header';
 import Touchable from '../../common/Touchable';
 
-export const addFullStars = (count, isRateCard) => {
+export const addFullStars = (count, isRateCard, size) => {
     var starsVar = [];
     var i;
     for (i = 1; i <= count; i++) {
@@ -16,7 +16,13 @@ export const addFullStars = (count, isRateCard) => {
             <Icon
                 name="star"
                 color={Color.starColor}
-                size={isRateCard ? Layout.bigStarIconSize : Layout.starIconSize}
+                size={
+                    isRateCard
+                        ? Layout.bigStarIconSize
+                        : size === 'medium'
+                        ? 25
+                        : Layout.starIconSize
+                }
                 key={i}
             />
         );
@@ -56,7 +62,7 @@ const Rating = props => {
 
     var i;
 
-    starsVar = addFullStars(Math.floor(rating), props.isRateCard);
+    starsVar = addFullStars(Math.floor(rating), props.isRateCard, props.size);
 
     if (Math.floor(rating) != Math.ceil(rating)) {
         starsVar.push(
@@ -66,6 +72,8 @@ const Rating = props => {
                 size={
                     props.isRateCard
                         ? Layout.bigStarIconSize
+                        : props.size === 'medium'
+                        ? 24
                         : Layout.starIconSize
                 }
                 key={Math.ceil(rating)}
@@ -83,6 +91,8 @@ const Rating = props => {
                     size={
                         props.isRateCard
                             ? Layout.bigStarIconSize
+                            : props.size === 'medium'
+                            ? 24
                             : Layout.starIconSize
                     }
                     key={i}
@@ -102,29 +112,48 @@ const Rating = props => {
 
     const handleStarPress = async index => {
         var starsVar = [];
-        starsVar = addFullStars(index + 1);
+        starsVar = addFullStars(index + 1, props.isRateCard, props.size);
         starsVar = starsVar.concat(addEmptyStars(index + 2));
         setStars(starsVar);
         props.onStarPress(index + 1);
     };
 
+    const Content = props => {
+        return props.size === 'medium' ? (
+            <Header {...props}>{props.children}</Header>
+        ) : (
+            <SmallContent {...props}>{props.children}</SmallContent>
+        );
+    };
+
     return (
-        <View style={[styles.container]}>
-            {props.isRateCard ? null : (
-                <View style={styles.ratingContainer}>
-                    <Header
+        <View
+            style={[
+                styles.container,
+                props.spread && { width: '100%', justifyContent: 'center' },
+            ]}
+        >
+            {!props.isRateCard && (
+                <View style={[styles.ratingContainer]}>
+                    <Content
                         style={{
-                            color: props.color
-                                ? props.color
-                                : Color.secondaryColor,
+                            color: props.color ? props.color : Color.starColor,
                             fontFamily: 'Asap-SemiBold',
                         }}
                     >
-                        {rating !== 0 ? rating : 'No rating'}
-                    </Header>
+                        {rating !== 0 ? rating : 'N/A'}
+                    </Content>
                 </View>
             )}
-            <View style={styles.starsVar}>
+            <View
+                style={[
+                    styles.starsVar,
+                    props.spread && {
+                        width: '80%',
+                        justifyContent: 'space-around',
+                    },
+                ]}
+            >
                 {stars.map((value, index) => {
                     return (
                         <StarContainer readOnly={props.readOnly} index={index}>
@@ -133,9 +162,9 @@ const Rating = props => {
                     );
                 })}
             </View>
-            {props.isRateCard ? null : (
+            {!props.isRateCard && !props.hideVotes && (
                 <View style={styles.ratingContainer}>
-                    <SmallContent
+                    <Content
                         style={{
                             color: props.color
                                 ? props.color
@@ -147,7 +176,7 @@ const Rating = props => {
                             ? props.ratingVotesAmount
                             : '0'}
                         )
-                    </SmallContent>
+                    </Content>
                 </View>
             )}
         </View>

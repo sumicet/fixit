@@ -4,8 +4,9 @@ import {
     createStackNavigator,
     CardStyleInterpolators,
 } from '@react-navigation/stack';
-import { coloredHeaderOptions } from './options/HeaderOptions';
+import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
 import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
+import ReviewScreen from '../screens/Profile/ReviewScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,15 @@ const TradespersonProfileStack = () => {
                 options={{ ...coloredHeaderOptions }}
                 name="TradespersonProfile"
                 component={TradespersonProfileScreen}
+            />
+            <Stack.Screen
+                name="Review"
+                component={ReviewScreen}
+                options={{
+                    headerShown: true,
+                    ...headerOptions,
+                    headerTitle: 'Leave a review',
+                }}
             />
         </Stack.Navigator>
     );

@@ -11,9 +11,7 @@ import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonPr
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
 import SelectUserTypeScreen from '../screens/Authentication/SelectUserTypeScreen';
 import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
-import * as Firebase from '../config/Firebase';
-import { useNavigation } from '@react-navigation/native';
-import { navigationRef } from './AppNavigator';
+import { useSelector } from 'react-redux';
 
 const Stack = createStackNavigator();
 

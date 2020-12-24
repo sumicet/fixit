@@ -23,10 +23,13 @@ const Occupations = props => {
                 <HeaderWithEllipsis
                     style={props.textColor && { color: props.textColor }}
                 >
-                    {
-                        OCCUPATIONS.find(occ => occ.id === props.occupationId)
-                            .name
-                    }
+                    {occList.map((elem, index) => {
+                        if (index !== occList.length - 1) {
+                            return elem.name + ' • ';
+                        } else {
+                            return elem.name;
+                        }
+                    })}
                 </HeaderWithEllipsis>
             ) : props.isOnProfileScreen ? (
                 <Header
@@ -35,7 +38,13 @@ const Occupations = props => {
                         fontFamily: 'Asap-Regular',
                     }}
                 >
-                    Plumber • Builder • Heating Eng. • Painter • Electrician
+                    {occList.map((elem, index) => {
+                        if (index !== occList.length - 1) {
+                            return elem.name + ' • ';
+                        } else {
+                            return elem.name;
+                        }
+                    })}
                 </Header>
             ) : (
                 <SmallContentWithEllipsis

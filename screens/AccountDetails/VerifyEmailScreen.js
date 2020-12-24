@@ -17,10 +17,12 @@ import {
 import { CommonActions, StackActions } from '@react-navigation/native';
 
 const VerifyEmailScreen = props => {
-    const email =
-        props.route.params && props.route.params.email
+    const user = Firebase.auth.currentUser;
+    const email = user
+        ? props.route.params && props.route.params.email
             ? props.route.params.email
-            : Firebase.auth.currentUser.email;
+            : user.email
+        : useSelector(state => state.auth.email);
 
     const action = props.route.params && props.route.params.action;
     const dispatch = useDispatch();
@@ -29,8 +31,8 @@ const VerifyEmailScreen = props => {
     );
 
     const checkIfEmailHasBeenVerified = async () => {
-        await Firebase.auth.currentUser.reload();
-        if (Firebase.auth.currentUser.emailVerified) {
+        await user.reload();
+        if (user.emailVerified) {
             dispatch(changeHasVerifiedEmail(true));
             if (action === 'change_email' || action === 'change_password') {
                 props.navigation.navigate('BottomTab', {
@@ -48,15 +50,12 @@ const VerifyEmailScreen = props => {
                 }
             }
         } else {
-            console.log(
-                'Please verify your email',
-                Firebase.auth.currentUser.email
-            );
+            console.log('Please verify your email', user.email);
         }
     };
 
     const handleFinishChangePassword = async () => {
-        await Firebase.auth.currentUser.reload();
+        await user.reload();
         props.navigation.navigate('BottomTab', {
             screen: 'Profile',
         });
@@ -66,11 +65,9 @@ const VerifyEmailScreen = props => {
         const timeDiff = Date.now() - oldResendEmailTimer;
         if (oldResendEmailTimer === null || timeDiff >= 60000) {
             if (action === 'change_email' || typeof action === 'undefined') {
-                Firebase.auth.currentUser
-                    .sendEmailVerification()
-                    .catch(error => {
-                        throw error;
-                    });
+                user.sendEmailVerification().catch(error => {
+                    throw error;
+                });
             } else {
                 if (action === 'change_password') {
                     Firebase.auth
@@ -132,17 +129,18 @@ const VerifyEmailScreen = props => {
             >
                 <MediumButton
                     text={action === 'change_password' ? 'Finish' : 'Continue'}
-                    onPress={
-                        action === 'change_password'
+                    onPress={() =>
+                        user &&
+                        (action === 'change_password'
                             ? handleFinishChangePassword
-                            : checkIfEmailHasBeenVerified
+                            : checkIfEmailHasBeenVerified)
                     }
                 />
             </Line>
             <Line style={{ flex: 0 }}>
                 <MediumButton
                     text="Resend email"
-                    onPress={sendVerificationEmail}
+                    onPress={() => user && sendVerificationEmail()}
                     style={{
                         backgroundColor: 'transparent',
                     }}

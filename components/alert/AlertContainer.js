@@ -14,9 +14,10 @@ const AlertContainer = props => {
                 flex: 1,
                 padding: Layout.screenHorizontalPadding,
             }}
-            coverScreen={true}
+            coverScreen={false}
+            //coverScreen={true}
             hideModalContentWhileAnimating={true}
-            backdropOpacity={0.5}
+            backdropOpacity={0}
             useNativeDriver={true}
             statusBarTranslucent
         >

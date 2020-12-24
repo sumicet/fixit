@@ -5,19 +5,40 @@ import Layout from '../../../constants/Layout';
 import SmallContent from '../../text/SmallContent';
 import SmallBoldContent from '../../text/SmallBoldContent';
 import PostedBy from '../Job/PostedBy';
+import Rating from '../Tradesperson/Rating';
+import Line from '../../common/Line';
+import { useSelector } from 'react-redux';
 
 const Screen = props => {
+    const name = useSelector(state => state.tradespeople.all).find(
+        elem => elem.userId === props.review.userId
+    ).name;
+
     return (
         <View style={styles.container}>
-            <View style={styles.line}>
-                <PostedBy />
+            <View style={[styles.line, { flexDirection: 'row' }]}>
+                <View>
+                    <SmallBoldContent
+                        style={{
+                            color: Color.importantTextOnTertiaryColorBackground,
+                        }}
+                    >
+                        {name}
+                    </SmallBoldContent>
+                </View>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                    <Rating
+                        rating={props.review.rating}
+                        readOnly={true}
+                        hideVotes={true}
+                    />
+                </View>
             </View>
-            <View style={styles.line}>
-                <SmallBoldContent>Amazing!</SmallBoldContent>
-            </View>
-            <View style={styles.line}>
-                <SmallContent>Did a great job.</SmallContent>
-            </View>
+            {props.review.comment && (
+                <View style={styles.line}>
+                    <SmallContent>{props.review.comment}</SmallContent>
+                </View>
+            )}
         </View>
     );
 };
@@ -31,7 +52,7 @@ const styles = StyleSheet.create({
         marginBottom: Layout.cardMargin,
     },
     line: {
-        paddingBottom: 5,
+        paddingBottom: Layout.generalPadding / 2,
     },
 });
 

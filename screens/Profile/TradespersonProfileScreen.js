@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -22,20 +22,24 @@ import Comment from '../../components/cards/Comment/Comment';
 import SectionedContainer from '../../components/containers/SectionedContainer';
 import Line from '../../components/common/Line';
 import Touchable from '../../components/common/Touchable';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import MediumButton from '../../components/buttons/MediumButtom';
+import { FlatList } from 'react-native-gesture-handler';
 
 const TradespersonProfileScreen = props => {
-    const tradespersonId =
-        props.route.params && props.route.params.tradespersonId;
+    const userId = props.route.params && props.route.params.userId;
+    const reviews = useSelector(state => state.reviews.all);
 
-    const tradesperson = useSelector(state => state.tradesperson.all).find(
-        elem => elem.userId === tradespersonId
+    const currentUserId = useSelector(state => state.auth.userId);
+
+    const tradesperson = useSelector(state => state.tradespeople.all).find(
+        elem => elem.userId === userId
     );
 
     useEffect(() => {
         props.navigation.setOptions({
-            headerTitle: 'John McCormack',
-            headerRight: headerRight,
+            headerTitle: tradesperson.name,
+            headerRight: currentUserId === tradesperson.userId && headerRight,
         });
     }, []);
 
@@ -55,7 +59,7 @@ const TradespersonProfileScreen = props => {
                     onPress={() => {
                         props.navigation.navigate('Profile', {
                             screen: 'EditTradespersonProfile',
-                            params: { id: null },
+                            params: { id: currentUserId },
                         });
                     }}
                 >
@@ -75,18 +79,62 @@ const TradespersonProfileScreen = props => {
         return (
             <View>
                 <Line>
-                    <ProfilePicture isLarge={true} />
+                    <ProfilePicture
+                        isLarge={true}
+                        profilePicture={tradesperson.profilePicture}
+                    />
                 </Line>
                 <Line>
-                    <Occupations isOnProfileScreen={true} />
+                    <Occupations
+                        occupationsIds={tradesperson.occupationsIds}
+                        isOnProfileScreen={true}
+                    />
                 </Line>
                 <Line>
                     <Contact
                         iconColor={Color.importantTextOnTertiaryColorBackground}
                         showLabels={true}
                         containerStyle={styles.contactContainer}
+                        phoneNumber={tradesperson.phoneNumber}
                     />
                 </Line>
+            </View>
+        );
+    };
+
+    const getTwoColumnsElemPropertyTypes = elem => {
+        if (elem === 1) {
+            return <Residential />;
+        }
+        if (elem === 2) {
+            return <Commercial />;
+        }
+        return <Industrial />;
+    };
+
+    const MakeTwoColumns = props => {
+        console.log(props.array);
+        return (
+            <View style={{ flexDirection: 'row' }}>
+                {[0, 1].map(i => {
+                    return (
+                        <View style={styles.column}>
+                            {props.array.map((elem, index) => {
+                                if (index % 2 === i) {
+                                    const result = props.getTwoColumnsElem(
+                                        elem
+                                    );
+                                    console.log(result);
+                                    return (
+                                        <View style={styles.details}>
+                                            {result}
+                                        </View>
+                                    );
+                                }
+                            })}
+                        </View>
+                    );
+                })}
             </View>
         );
     };
@@ -100,7 +148,9 @@ const TradespersonProfileScreen = props => {
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.column}>
                         <View style={styles.details}>
-                            <Location />
+                            <Location
+                                place_id={tradesperson.streetAddress.place_id}
+                            />
                             <SmallContent
                                 style={{ color: Color.secondaryColor }}
                             >
@@ -108,9 +158,24 @@ const TradespersonProfileScreen = props => {
                                 away
                             </SmallContent>
                         </View>
+
+                        {/* TODO change this */}
+                        {tradesperson.insurance && (
+                            <View style={styles.details}>
+                                <Insurance style={{ paddingLeft: 0 }} />
+                            </View>
+                        )}
+                    </View>
+                    <View style={styles.column}>
+                        {/* TODO completed jobs
                         <View style={styles.details}>
-                            <Experience style={{ paddingLeft: 0 }} experienceId={1} /> 
-                            {/* TODO change this */}
+                            <CompletedJobs />
+                        </View> */}
+                        <View style={styles.details}>
+                            <Experience
+                                style={{ paddingLeft: 0 }}
+                                experienceId={tradesperson.experienceId}
+                            />
                             <SmallContent
                                 style={{ color: Color.secondaryColor }}
                             >
@@ -119,33 +184,23 @@ const TradespersonProfileScreen = props => {
                             </SmallContent>
                         </View>
                     </View>
-                    <View style={styles.column}>
-                        <View style={styles.details}>
-                            <CompletedJobs />
-                        </View>
-                        <View style={styles.details}>
-                            <Insurance style={{ paddingLeft: 0 }} />
-                        </View>
-                    </View>
                 </View>
 
-                <View
-                    style={{
-                        paddingTop:
-                            Layout.screenHorizontalPadding -
-                            Layout.generalPadding,
-                    }}
-                >
+                <View>
                     <Header style={{ textAlign: 'left' }}>Work types</Header>
                 </View>
 
                 <View
                     style={{
-                        flexDirection: 'row',
+                        //flexDirection: 'row',
                         paddingTop: Layout.generalPadding,
                     }}
                 >
-                    <View style={styles.column}>
+                    <MakeTwoColumns
+                        array={tradesperson.propertyTypesIds}
+                        getTwoColumnsElem={getTwoColumnsElemPropertyTypes}
+                    />
+                    {/* <View style={styles.column}>
                         <View style={styles.details}>
                             <Residential />
                         </View>
@@ -157,7 +212,7 @@ const TradespersonProfileScreen = props => {
                         <View style={styles.details}>
                             <Commercial />
                         </View>
-                    </View>
+                    </View> */}
                 </View>
                 <View style={{ paddingBottom: Layout.generalPadding }}>
                     <Header style={{ textAlign: 'left' }}>Schedule</Header>
@@ -170,7 +225,7 @@ const TradespersonProfileScreen = props => {
                     }}
                 >
                     <SmallContent style={{ color: Color.secondaryColor }}>
-                        Mo - Fr: 10 am - 8 pm, national holidays off
+                        {tradesperson.schedule ? tradesperson.schedule : 'N/A'}
                     </SmallContent>
                 </View>
             </View>
@@ -191,18 +246,47 @@ const TradespersonProfileScreen = props => {
                 >
                     <Header style={{ textAlign: 'left' }}>Rating: </Header>
                     <Rating
-                        rating={4.5}
+                        rating={tradesperson.rating}
+                        ratingVotesAmount={tradesperson.ratingVotesAmount}
                         color={Color.textColor}
                         readOnly={true}
+                        size="medium"
                     />
+                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                        <Touchable
+                            style={{
+                                flex: 0,
+                                backgroundColor: Color.primaryBrandColor,
+                                paddingHorizontal: Layout.generalPadding,
+                                paddingVertical: 3,
+                                borderRadius: Layout.borderRadius,
+                            }}
+                        >
+                            <SmallContent
+                                style={{
+                                    fontFamily: 'Asap-SemiBold',
+                                    color:
+                                        Color.importantTextOnTertiaryColorBackground,
+                                }}
+                                onPress={() => {
+                                    props.navigation.navigate('Review', {
+                                        tradesperson: tradesperson
+                                    });
+                                }}
+                            >
+                                Write a review
+                            </SmallContent>
+                        </Touchable>
+                    </View>
                 </View>
 
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
+                <FlatList
+                    data={reviews}
+                    keyExtractor={(item, i) => `key-${i}`}
+                    renderItem={itemData => (
+                        <Comment review={itemData.item} />
+                    )}
+                />
             </View>
         );
     };

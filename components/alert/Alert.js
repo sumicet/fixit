@@ -8,9 +8,9 @@ import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
 import Header from '../text/Header';
 import AlertContainer from './AlertContainer';
+import { SUCCESS, WARNING } from '../../constants/Actions';
 
 const Alert = props => {
-
     const {
         hide,
         modalVisible,
@@ -34,23 +34,34 @@ const Alert = props => {
             onBackdropPress={hide}
             modalVisible={modalVisible}
             containerStyle={styles.container}
-            cardStyle={styles.card}
+            cardStyle={[
+                styles.card,
+                {
+                    backgroundColor:
+                        props.style === WARNING
+                            ? Color.warning
+                            : props.style === SUCCESS
+                            ? Color.success
+                            : Color.error,
+                },
+            ]}
+            hasBackdrop={true}
         >
-            <Line style={{ paddingTop: Layout.screenHorizontalPadding }}>
+            <Line
+                style={{ flex: 0, paddingTop: Layout.screenHorizontalPadding }}
+            >
                 <Title
                     style={{
-                        color: titleColor
-                            ? titleColor
-                            : Color.primaryBrandColor,
+                        color: Color.importantTextOnTertiaryColorBackground,
                     }}
                 >
                     {title}
                 </Title>
             </Line>
-            <Line>
+            <Line style={{ flex: 0 }}>
                 <Header
                     style={{
-                        color: Color.textOnTertiaryColorBackground,
+                        color: Color.importantTextOnTertiaryColorBackground,
                         fontFamily: 'Asap-Regular',
                     }}
                 >
@@ -59,54 +70,57 @@ const Alert = props => {
             </Line>
             <Line
                 style={{
+                    flex: 0,
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
                     width: '100%',
                     paddingBottom: Layout.screenHorizontalPadding,
                 }}
             >
-                {onlyShowOneButton ? null : (
-                    <Touchable
-                        onPress={hide}
-                        style={[
-                            styles.touchable,
-                            {
-                                backgroundColor: cancelButtonColor
-                                    ? cancelButtonColor
-                                    : Color.primaryBrandColor,
-                            },
-                        ]}
-                    >
-                        <Header
-                            style={{
-                                color: Color.importantTextOnTertiaryColorBackground,
-                                fontFamily: 'Asap-Regular',
-                            }}
-                        >
-                            {leftButtonText ? leftButtonText : 'Go back'}
-                        </Header>
-                    </Touchable>
-                )}
                 <Touchable
-                    onPress={onPress}
+                    onPress={hide}
                     style={[
                         styles.touchable,
                         {
-                            backgroundColor: buttonColor
-                                ? buttonColor
-                                : Color.urgent,
+                            backgroundColor: Color.importantTextOnTertiaryColorBackground
                         },
                     ]}
                 >
                     <Header
                         style={{
-                            color: Color.importantTextOnTertiaryColorBackground,
-                            fontFamily: 'Asap-Regular',
+                            color: props.style === WARNING
+                            ? Color.warning
+                            : props.style === SUCCESS
+                            ? Color.success
+                            : Color.error,
+                            //fontFamily: 'Asap-Regular',
                         }}
                     >
-                        {text ? text : 'Yes'}
+                        {leftButtonText ? leftButtonText : 'Go back'}
                     </Header>
                 </Touchable>
+
+                {!onlyShowOneButton && (
+                    <Touchable
+                        onPress={onPress}
+                        style={[
+                            styles.touchable,
+                            {
+                                backgroundColor: 'transparent'
+                            },
+                        ]}
+                    >
+                        <Header
+                            style={{
+                                color:
+                                    Color.importantTextOnTertiaryColorBackground,
+                                //fontFamily: 'Asap-Regular',
+                            }}
+                        >
+                            {text ? text : 'Yes'}
+                        </Header>
+                    </Touchable>
+                )}
             </Line>
         </AlertContainer>
     );
@@ -114,11 +128,11 @@ const Alert = props => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
+        flex: 1,
     },
     card: {
-        height: 250,
-        width: 350,
-        backgroundColor: Color.tertiaryBrandColor,
+        flex: 0,
+        //height: 250,
         paddingHorizontal: Layout.generalMargin,
     },
     touchable: {

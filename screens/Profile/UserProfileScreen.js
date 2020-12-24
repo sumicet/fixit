@@ -12,7 +12,6 @@ import Touchable from '../../components/common/Touchable';
 import Waves from '../../assets/icons/Background/Waves';
 import Container from '../../components/containers/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStatusBarStyle } from '../../store/actions/ui';
 import Title from '../../components/text/Title';
 import Line from '../../components/common/Line';
 import InAppNotification from '../../components/alert/InAppNotification';
@@ -23,6 +22,8 @@ import { fetchTradespersonInfo } from '../../store/actions/tradesperson';
 import * as Firebase from '../../config/Firebase';
 import ProfileField from '../../components/layout/ProfileField';
 import LineDescription from '../../components/common/LineDescription';
+import { setInAppNotification } from '../../store/actions/ui';
+import { ERROR, SUCCESS } from '../../constants/Actions';
 
 const UserProfileScreen = props => {
     const userId = useSelector(state => state.auth.userId);
@@ -80,22 +81,6 @@ const UserProfileScreen = props => {
     }, [props, isFocused]);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', () => {
-            dispatch(setStatusBarStyle('light'));
-        });
-
-        return unsubscribe;
-    }, [props.navigation]);
-
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('blur', () => {
-            dispatch(setStatusBarStyle('light'));
-        });
-
-        return unsubscribe;
-    }, [props.navigation]);
 
     return (
         <Container
@@ -255,13 +240,22 @@ const UserProfileScreen = props => {
                         textColor={Color.secondaryColor}
                     />
                 </Line>
+                <Line
+                    style={{
+                        flex: 0,
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <MediumButton
+                        text="[dev only] alert test"
+                        onPress={() => {
+                            dispatch(setInAppNotification('Success!', 'You leveled up!', ERROR))
+                        }}
+                        style={{ backgroundColor: Color.textField }}
+                        textColor={Color.secondaryColor}
+                    />
+                </Line>
             </View>
-            <InAppNotification
-                title={inAppNotificationBody.title}
-                message={inAppNotificationBody.message}
-                inAppNotificationVisible={inAppNotificationVisible}
-                hide={handleHideInAppNotification}
-            />
         </Container>
     );
 };

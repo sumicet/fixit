@@ -18,13 +18,14 @@ export default {
     importantTextOnTertiaryColorBackground: 'white',
 
     success: '#27c47d',
-    error: '#ff008c',
+    error: '#B00020',
     urgent: '#b80000',
     tomorrow: '#edba00',
     starColor: '#f8c33c',
     disabled: '#b9b9bd',
     premiumFixit: "#ec42ff",
-    bump: '#42cdff'
+    bump: '#42cdff',
+    warning: '#ffae42'
     // primaryColor: 'white',
     // secondaryColor: '#6e6e70',
     // textColor: '#3d4144',

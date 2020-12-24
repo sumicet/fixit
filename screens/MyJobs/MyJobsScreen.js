@@ -93,12 +93,6 @@ const MyJobsScreen = props => {
                 ) : (
                     <Empty />
                 )}
-                <InAppNotification
-                    title={inAppNotificationBody.title}
-                    message={inAppNotificationBody.message}
-                    inAppNotificationVisible={inAppNotificationVisible}
-                    hide={handleHideInAppNotification}
-                />
             </View>
         </ScrollableContainer>
     );

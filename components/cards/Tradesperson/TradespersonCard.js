@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import Shield from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Color from '../../../constants/Color';
 import Layout from '../../../constants/Layout';
@@ -34,7 +35,7 @@ const TradespersonCard = props => {
         ratingVotesAmount,
         recommendedByIds,
         profilePicture,
-        phoneNumber
+        phoneNumber,
     } = props;
 
     const recommendedByTradespeople = recommendedByIds
@@ -52,12 +53,14 @@ const TradespersonCard = props => {
     occupations.push(<StoreIcon key={2} />);
     occupations.push(<FactoryIcon key={3} />);
 
-    const onCardPress = index => {
+    const onCardPress = () => {
         if (props.isRateCard) {
             setModalVisible(true);
         } else {
+            console.log(userId, 'before');
             props.navigation.navigate('TradespersonProfile', {
-                tradespersonId: userId,
+                screen: 'TradespersonProfile',
+                params: { userId },
             });
         }
     };
@@ -66,7 +69,9 @@ const TradespersonCard = props => {
         if (props.isBeingRated) {
             return <View>{props.children}</View>;
         } else {
-            return (
+            return props.readOnly ? (
+                <View>{props.children}</View>
+            ) : (
                 <Touchable
                     isCard={true}
                     onPress={onCardPress}
@@ -91,7 +96,10 @@ const TradespersonCard = props => {
                 updatedRating={updatedRating}
                 setUpdatedRating={setUpdatedRating}
             />
-            <LocalContainer isBeingRated={props.isBeingRated}>
+            <LocalContainer
+                isBeingRated={props.isBeingRated}
+                readOnly={props.readOnly}
+            >
                 <View
                     style={[
                         styles.container,
@@ -101,102 +109,162 @@ const TradespersonCard = props => {
                                 : props.isRateCard
                                 ? 250
                                 : 'auto',
-                            //height: props.isBeingRated ? '100%' : 'auto',
-                            marginVertical: props.isBeingRated
-                                ? 0
-                                : Layout.cardMargin,
                             backgroundColor: props.isBeingRated
                                 ? Color.starColor
                                 : Color.textField,
                         },
                     ]}
                 >
-                    <View style={styles.topContainer}>
+                    <View
+                        style={{
+                            backgroundColor: recommendedByIds
+                                ? Color.secondaryBrandColor
+                                : 'transparent',
+                            borderTopLeftRadius: Layout.borderRadius,
+                            borderTopRightRadius: Layout.borderRadius,
+                            overflow: 'hidden',
+                        }}
+                    >
                         <View
-                            style={{
-                                flexDirection: props.isRateCard
-                                    ? 'column'
-                                    : 'row',
-                                alignItems: 'center',
-                            }}
+                            style={[
+                                styles.topContainer,
+                                {
+                                    backgroundColor: props.isBeingRated
+                                        ? Color.starColor
+                                        : Color.textField,
+                                    borderRadius: Layout.borderRadius,
+                                },
+                            ]}
                         >
-                            <ProfilePicture
-                                isRateCard={props.isRateCard}
-                                profilePicture={profilePicture}
-                                ratingVotesAmount={ratingVotesAmount}
-                            />
                             <View
                                 style={{
-                                    flex: props.isBeingRated ? 0 : 1,
-                                    justifyContent: 'center',
-                                    alignItems: props.isRateCard
-                                        ? 'center'
-                                        : 'flex-start',
+                                    //marginBottom: 5,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    //backgroundColor: Color.secondaryBrandColor,
+                                    paddingTop: Layout.generalPadding,
+                                    paddingHorizontal: Layout.generalPadding,
+                                    paddingBottom: 5,
+                                    borderRadius: Layout.borderRadius,
                                 }}
                             >
+                                {insurance && (
+                                    <View
+                                        style={{
+                                            paddingRight: Layout.generalPadding,
+                                        }}
+                                    >
+                                        <Shield
+                                            name="shield-check"
+                                            color={Color.secondaryColor}
+                                            size={18}
+                                        />
+                                    </View>
+                                )}
                                 <View
                                     style={{
-                                        paddingBottom: 5,
-                                        flexDirection: 'row',
+                                        flex: 1,
+                                        alignItems: props.isRateCard
+                                            ? 'center'
+                                            : 'flex-start',
                                     }}
                                 >
-                                    <View
+                                    <HeaderWithEllipsis
                                         style={{
-                                            flex: 1,
-                                            alignItems: props.isRateCard
-                                                ? 'center'
-                                                : 'flex-start',
+                                            color:
+                                                Color.textOnTertiaryColorBackground,
                                         }}
                                     >
-                                        <HeaderWithEllipsis
+                                        {name}
+                                    </HeaderWithEllipsis>
+                                </View>
+                                {!props.isRateCard && !props.readOnly && (
+                                    <Contact phoneNumber={phoneNumber} />
+                                )}
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: props.isRateCard
+                                        ? 'column'
+                                        : 'row',
+                                    alignItems: 'center',
+                                    //backgroundColor: 'yellow',
+                                    paddingHorizontal: Layout.generalPadding,
+                                    paddingBottom: Layout.generalPadding,
+                                    borderRadius: Layout.borderRadius,
+                                }}
+                            >
+                                <ProfilePicture
+                                    isRateCard={props.isRateCard}
+                                    profilePicture={profilePicture}
+                                    ratingVotesAmount={ratingVotesAmount}
+                                />
+                                <View
+                                    style={{
+                                        flex: props.isBeingRated ? 0 : 1,
+                                        justifyContent: 'center',
+                                        alignItems: props.isRateCard
+                                            ? 'center'
+                                            : 'flex-start',
+                                        //backgroundColor: 'red',
+                                    }}
+                                >
+                                    <View style={{ paddingBottom: 5 }}>
+                                        <Occupations
+                                            isRateCard={props.isRateCard}
+                                            occupationsIds={occupationsIds}
+                                        />
+                                    </View>
+                                    {!props.isRateCard && (
+                                        <View
                                             style={{
-                                                color:
-                                                    Color.textOnTertiaryColorBackground,
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                width: '100%',
+                                                paddingBottom: 5,
                                             }}
                                         >
-                                            {name}
-                                        </HeaderWithEllipsis>
-                                    </View>
-                                    {props.isRateCard ? null : <Contact phoneNumber={phoneNumber} />}
+                                            <Location
+                                                place_id={
+                                                    streetAddress.place_id
+                                                }
+                                            />
+                                            <Experience
+                                                experienceId={experienceId}
+                                            />
+                                            {!props.isBeingRated && (
+                                                <View
+                                                    style={{
+                                                        paddingLeft:
+                                                            Layout.generalPadding,
+                                                    }}
+                                                >
+                                                    <Rating
+                                                        rating={
+                                                            props.isRateCard
+                                                                ? updatedRating
+                                                                : rating
+                                                        }
+                                                        ratingVotesAmount={
+                                                            ratingVotesAmount
+                                                        }
+                                                        isRateCard={
+                                                            props.isRateCard
+                                                        }
+                                                        onStarPress={
+                                                            handleStarPress
+                                                        }
+                                                        readOnly={
+                                                            props.isRateCard
+                                                                ? false
+                                                                : true
+                                                        }
+                                                    />
+                                                </View>
+                                            )}
+                                        </View>
+                                    )}
                                 </View>
-                                <View style={{ paddingBottom: 5 }}>
-                                    <Occupations
-                                        isRateCard={props.isRateCard}
-                                        occupationsIds={occupationsIds}
-                                    />
-                                </View>
-                                {!props.isRateCard && (
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            width: '100%',
-                                            paddingBottom: 5,
-                                        }}
-                                    >
-                                        <Location
-                                            place_id={streetAddress.place_id}
-                                        />
-                                        <Experience
-                                            experienceId={experienceId}
-                                        />
-                                        {insurance && <Insurance />}
-                                    </View>
-                                )}
-                                {!props.isBeingRated && (
-                                    <Rating
-                                        rating={
-                                            props.isRateCard
-                                                ? updatedRating
-                                                : rating
-                                        }
-                                        isRateCard={props.isRateCard}
-                                        onStarPress={handleStarPress}
-                                        readOnly={
-                                            props.isRateCard ? false : true
-                                        }
-                                    />
-                                )}
                             </View>
                         </View>
                     </View>
@@ -250,8 +318,6 @@ const styles = StyleSheet.create({
     },
     topContainer: {
         flex: 0,
-        padding: Layout.generalPadding,
-        borderRadius: Layout.borderRadius,
     },
     bottomContainer: {
         flex: 0,

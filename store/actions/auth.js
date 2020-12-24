@@ -20,7 +20,7 @@ export const changeEmail = (email, password) => {
         await Firebase.auth.currentUser.updateEmail(email);
         await Firebase.auth.signInWithEmailAndPassword(email, password);
         const ref = Firebase.database.ref(userType).child(userId);
-        
+
         ref.child('email').set(email);
         dispatch({
             type: CHANGE_EMAIL,
@@ -221,17 +221,11 @@ export const autoLogIn = () => {
 
 export const signOut = () => {
     return async dispatch => {
-        Firebase.auth
-            .signOut()
-            .then(() => {
-                // Sign-out successful.
-            })
-            .catch(error => {
-                // An error happened.
+        await Firebase.auth.signOut().then(() => {
+            AsyncStorage.removeItem('userData');
+            dispatch({
+                type: SIGN_OUT,
             });
-        await AsyncStorage.removeItem('userData');
-        dispatch({
-            type: SIGN_OUT,
         });
     };
 };

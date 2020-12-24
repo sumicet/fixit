@@ -7,14 +7,13 @@ import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 
 const Container = props => {
-    const barStyle = useSelector(state => state.ui.barStyle);
 
     return (
         <View style={styles.container}>
             <View style={[styles.insideContainer, props.style]}>
                 {props.children}
             </View>
-            <StatusBar style={barStyle} StatusBarAnimation="fade" />
+            <StatusBar style='light' StatusBarAnimation="fade" />
         </View>
     );
 };

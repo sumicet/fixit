@@ -9,8 +9,8 @@ const ProfilePicture = props => {
     return (
         <View
             style={{
-                height: props.isLarge ? 80 : 60,
-                width: props.isLarge ? 80 : 60,
+                height: props.isLarge ? 80 : 50,
+                width: props.isLarge ? 80 : 50,
                 marginRight: props.isRateCard ? 0 : Layout.generalPadding,
             }}
         >
@@ -19,8 +19,8 @@ const ProfilePicture = props => {
                     style={[
                         styles.profilePicture,
                         {
-                            height: props.isLarge ? 80 : 60,
-                            width: props.isLarge ? 80 : 60,
+                            height: props.isLarge ? 80 : 50,
+                            width: props.isLarge ? 80 : 50,
                         },
                     ]}
                     source={{
@@ -33,17 +33,17 @@ const ProfilePicture = props => {
                     style={[
                         styles.profilePicture,
                         {
-                            backgroundColor: Color.secondaryBrandColor,
+                            backgroundColor: Color.textColor,
                             flex: 1,
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
                         },
                     ]}
                 >
                     <Icon
                         name="user"
-                        size={props.isLarge ? 60 : 40}
-                        color={Color.textColor}
+                        size={props.isLarge ? 60 : 30}
+                        color={Color.importantTextOnTertiaryColorBackground}
                     />
                 </View>
             )}

@@ -14,10 +14,10 @@ export default {
 
     // **************** ICON SIZES ****************
     occupationIconSize: 55,
-    cardIconSize: 15,
+    cardIconSize: 16,
     cardBigIconSize: 18,
     menuIconSize: 25,
-    starIconSize: 25,
+    starIconSize: 20,
     bigStarIconSize: 35,
     buttonIconSize: 20,
     mediumButtonIconSize: 30,
@@ -26,7 +26,7 @@ export default {
 
     contentSize: 16,
     smallContentSize: 16,
-    superSmallContentSize: 12,
+    superSmallContentSize: 13,
     headerSize: 18,
     titleSize: 20,
 

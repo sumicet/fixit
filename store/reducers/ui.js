@@ -1,16 +1,27 @@
-import { SET_STATUS_BAR_STYLE } from '../actions/ui';
+import { SET_IN_APP_NOTIFICATION, SET_IN_APP_NOTIFICATION_VISIBLE } from '../actions/ui';
 
 const initialState = {
-    barStyle: 'light',
+    title: null,
+    message: null,
+    inAppNotificationVisible: false,
+    style: null,
 };
 
 const uiReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_STATUS_BAR_STYLE:
+        case SET_IN_APP_NOTIFICATION:
             return {
                 ...state,
-                barStyle: action.barStyle,
+                title: action.title,
+                message: action.message,
+                inAppNotificationVisible: true,
+                style: action.style
             };
+        case SET_IN_APP_NOTIFICATION_VISIBLE:
+            return {
+                ...state,
+                inAppNotificationVisible: action.inAppNotificationVisible,
+            }
         default:
             return state;
     }

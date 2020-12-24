@@ -1,13 +1,26 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { SUCCESS } from '../../constants/Actions';
 
 import Color from '../../constants/Color';
+import { setInAppNotificationVisible } from '../../store/actions/ui';
 import Line from '../common/Line';
 import Header from '../text/Header';
 import SmallContent from '../text/SmallContent';
 import AlertContainer from './AlertContainer';
 
 const InAppNotification = props => {
+    const dispatch = useDispatch();
+    const data = {
+        title: useSelector(state => state.ui.title),
+        message: useSelector(state => state.ui.message),
+        inAppNotificationVisible: useSelector(
+            state => state.ui.inAppNotificationVisible
+        ),
+        style: useSelector(state => state.ui.style),
+    };
+
     return (
         <AlertContainer
             animationIn="bounceInDown"
@@ -15,11 +28,18 @@ const InAppNotification = props => {
             animationInTiming={1000}
             animationOutTiming={300}
             swipeDirection={['left', 'right']}
-            onSwipeComplete={props.hide}
+            onSwipeComplete={() => {
+                dispatch(setInAppNotificationVisible(false));
+            }}
             swipeThreshold={50}
             propagateSwipe={true}
-            modalVisible={props.inAppNotificationVisible}
-            cardStyle={styles.card}
+            modalVisible={data.inAppNotificationVisible}
+            hasBackdrop={false}
+            cardStyle={{
+                height: 70,
+                width: '100%',
+                backgroundColor: data.style === SUCCESS ? Color.primaryBrandColor : Color.error,
+            }}
         >
             <Line
                 style={{
@@ -29,11 +49,11 @@ const InAppNotification = props => {
             >
                 <Header
                     style={{
-                        color: Color.primaryColor,
+                        color: Color.importantTextOnTertiaryColorBackground,
                         textAlignVertical: 'center',
                     }}
                 >
-                    {props.title}
+                    {data.title}
                 </Header>
             </Line>
             <Line
@@ -44,22 +64,14 @@ const InAppNotification = props => {
             >
                 <SmallContent
                     style={{
-                        color: Color.primaryColor,
+                        color: Color.importantTextOnTertiaryColorBackground,
                         fontFamily: 'Asap-Regular',
                     }}
                 >
-                    {props.message}
+                    {data.message}
                 </SmallContent>
             </Line>
         </AlertContainer>
     );
 };
-const styles = StyleSheet.create({
-    card: {
-        height: 70,
-        width: '100%',
-        backgroundColor: Color.primaryBrandColor,
-    },
-});
-
 export default InAppNotification;

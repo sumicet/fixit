@@ -57,7 +57,7 @@ const HomeScreen = props => {
                 </ScrollView>
             </View> */}
 
-            <View style={{ width: '100%', marginBottom: Layout.cardMargin }}>
+            <View style={{ width: '100%', marginBottom: Layout.screenHorizontalPadding }}>
                 <Header style={{ textAlign: 'left' }}>
                     Recommended tradespeople:
                 </Header>
@@ -67,6 +67,11 @@ const HomeScreen = props => {
                     data={allTradespeople}
                     style={{ flex: 1 }}
                     keyExtractor={(item, i) => `key-${i}`}
+                    ItemSeparatorComponent={() => (
+                        <View
+                            style={{ height: Layout.screenHorizontalPadding }}
+                        ></View>
+                    )}
                     renderItem={itemData => (
                         <TradespersonCard
                             navigation={props.navigation}

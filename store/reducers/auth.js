@@ -38,7 +38,6 @@ const authReducer = (state = initialState, action) => {
                 userType: action.userType,
             };
         case LOG_IN:
-            console.log('done with log in');
             return {
                 ...state,
                 userId: action.userId,
@@ -55,7 +54,6 @@ const authReducer = (state = initialState, action) => {
                 email: action.email,
             };
         case SET_IS_LOGGED_IN:
-            console.log('done with set is logged in to true');
             return {
                 ...state,
                 isLoggedIn: action.isLoggedIn,
