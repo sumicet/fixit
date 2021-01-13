@@ -19,12 +19,22 @@ const AuthLine = props => {
             }}
         >
             <View style={{ paddingRight: Layout.screenHorizontalPadding }}>
-                <Icon
-                    name={props.iconName}
-                    size={Layout.menuIconSize}
-                    color={Color.importantTextOnTertiaryColorBackground}
-                />
+                <View
+                    style={{
+                        height: Layout.menuIconSize,
+                        width: Layout.menuIconSize,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Icon
+                        name={props.iconName}
+                        size={Layout.menuIconSize}
+                        color={Color.importantTextOnTertiaryColorBackground}
+                    />
+                </View>
             </View>
+
             <View style={{ flex: 1 }}>
                 <TextField
                     defaultValue={props.value}

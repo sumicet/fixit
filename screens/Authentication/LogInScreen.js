@@ -10,7 +10,7 @@ const LogInScreen = props => {
     const action = props.route.params && props.route.params.action;
 
     const handleOnPress = (email, password) => {
-        dispatch(logIn(email, password));aut
+        dispatch(logIn(email, password));
     };
 
     return (

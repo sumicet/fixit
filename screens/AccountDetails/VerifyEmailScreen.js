@@ -14,7 +14,8 @@ import {
     changeHasVerifiedEmail,
     setResendEmailTimer,
 } from '../../store/actions/auth';
-import { CommonActions, StackActions } from '@react-navigation/native';
+import { setInAppNotification } from '../../store/actions/ui';
+import { ERROR, SUCCESS } from '../../constants/Actions';
 
 const VerifyEmailScreen = props => {
     const user = Firebase.auth.currentUser;
@@ -31,6 +32,7 @@ const VerifyEmailScreen = props => {
     );
 
     const checkIfEmailHasBeenVerified = async () => {
+        console.log(user.emailVerified);
         await user.reload();
         if (user.emailVerified) {
             dispatch(changeHasVerifiedEmail(true));
@@ -39,9 +41,9 @@ const VerifyEmailScreen = props => {
                     screen: 'Profile',
                 });
             } else {
-                if (typeof action === 'undefined') {
-                    props.navigation.navigate('BottomTab', {
-                        screen: 'Home',
+                if (action === 'signup') {
+                    props.navigation.navigate('EditTradespersonProfile', {
+                        action,
                     });
                 } else {
                     console.log(
@@ -50,7 +52,13 @@ const VerifyEmailScreen = props => {
                 }
             }
         } else {
-            console.log('Please verify your email', user.email);
+            dispatch(
+                setInAppNotification(
+                    'Email not verified',
+                    'Please verify your email to proceed.',
+                    ERROR
+                )
+            );
         }
     };
 
@@ -64,7 +72,7 @@ const VerifyEmailScreen = props => {
     const sendVerificationEmail = () => {
         const timeDiff = Date.now() - oldResendEmailTimer;
         if (oldResendEmailTimer === null || timeDiff >= 60000) {
-            if (action === 'change_email' || typeof action === 'undefined') {
+            if (action === 'change_email' || action === 'signup') {
                 user.sendEmailVerification().catch(error => {
                     throw error;
                 });
@@ -87,9 +95,11 @@ const VerifyEmailScreen = props => {
         }
     };
 
-    useEffect(() => {
-        sendVerificationEmail();
-    }, []);
+    console.log(action);
+
+    // useEffect(() => {
+    //     sendVerificationEmail();
+    // }, []);
 
     return (
         <Container style={{ marginTop: 0 }}>
@@ -129,18 +139,29 @@ const VerifyEmailScreen = props => {
             >
                 <MediumButton
                     text={action === 'change_password' ? 'Finish' : 'Continue'}
-                    onPress={() =>
-                        user &&
-                        (action === 'change_password'
-                            ? handleFinishChangePassword
-                            : checkIfEmailHasBeenVerified)
-                    }
+                    onPress={() => {
+                        console.log('click');
+                        if (user) {
+                            action === 'change_password'
+                                ? handleFinishChangePassword()
+                                : checkIfEmailHasBeenVerified();
+                        }
+                    }}
                 />
             </Line>
             <Line style={{ flex: 0 }}>
                 <MediumButton
                     text="Resend email"
-                    onPress={() => user && sendVerificationEmail()}
+                    onPress={() => {
+                        user && sendVerificationEmail();
+                        dispatch(
+                            setInAppNotification(
+                                'Email sent',
+                                'We have sent a verification email.',
+                                SUCCESS
+                            )
+                        );
+                    }}
                     style={{
                         backgroundColor: 'transparent',
                     }}

@@ -106,6 +106,7 @@ const Grid = props => {
                             text={item.name}
                             index={index}
                             onPress={props.onPress}
+                            uncheckedColor={props.uncheckedColor}
                             {...props}
                         />
                     );

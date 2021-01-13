@@ -64,7 +64,7 @@ const HomeScreen = props => {
             </View>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={allTradespeople}
+                    data={allTradespeople.filter(tp => tp.occupationsIds === true)}
                     style={{ flex: 1 }}
                     keyExtractor={(item, i) => `key-${i}`}
                     ItemSeparatorComponent={() => (

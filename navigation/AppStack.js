@@ -12,6 +12,7 @@ import BottomTab from './BottomTab';
 import InputNewEmailScreen from '../screens/AccountDetails/InputNewEmailScreen';
 import RelogUserScreen from '../screens/AccountDetails/RelogUserScreen';
 import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
+import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -67,6 +68,15 @@ const AppStack = () => {
                 options={{
                     headerTitle: 'Verify email',
                     ...headerOptions,
+                }}
+            />
+            <Stack.Screen
+                name="EditTradespersonProfile"
+                component={EditTradespersonProfileScreen}
+                options={{
+                    headerShown: true,
+                    ...headerOptions,
+                    headerTitle: 'Customize your profile',
                 }}
             />
         </Stack.Navigator>

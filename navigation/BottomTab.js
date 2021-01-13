@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import MessagesScreen from '../screens/Messages/MessagesScreen';
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
 import Touchable from '../components/common/Touchable';
@@ -13,6 +12,7 @@ import NewJobScreen from '../screens/Quiz/NewJobScreen';
 import ProfileStack from './ProfileStack';
 import MyJobsStack from './MyJobsStack';
 import HomeStack from './HomeStack';
+import MessagesStack from './MessagesStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -100,7 +100,7 @@ const BottomTab = () => {
             />
             <Tab.Screen
                 name="Messages"
-                component={MessagesScreen}
+                component={MessagesStack}
                 listeners={() => ({
                     tabPress: () => {},
                 })}

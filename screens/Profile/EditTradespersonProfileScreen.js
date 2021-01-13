@@ -21,17 +21,21 @@ import { EXPERIENCE } from '../../data/Tradesperson/Experience';
 import Touchable from '../../components/common/Touchable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTradespersonInfo } from '../../store/actions/tradesperson';
-import * as Firebase from '../../config/Firebase';
+import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 
 const EditTradespersonProfile = props => {
+    console.log('edit tradesperson profile here');
     const tradesperson = useSelector(state => state.tradesperson);
 
     const [occupations, setOccupations] = useState(
-        tradesperson.occupationsIds.map(elem => elem - 1)
+        tradesperson &&
+            tradesperson.occupationsIds ?
+            tradesperson.occupationsIds.map(elem => elem - 1) : []
     );
     const [jobAddressInput, setJobAddressInput] = useState({
-        line1: tradesperson.streetAddress.line1,
-        place_id: tradesperson.streetAddress.place_id,
+        line1: tradesperson.streetAddress && tradesperson.streetAddress.line1,
+        place_id:
+            tradesperson.streetAddress && tradesperson.streetAddress.place_id,
     });
 
     const action = props.route.params && props.route.params.action;
@@ -44,9 +48,11 @@ const EditTradespersonProfile = props => {
     };
 
     const [propertyTypesChecked, setPropertyTypesChecked] = useState(
-        tradesperson
+        tradesperson && tradesperson.propertyTypesIds
             ? [0, 1, 2].map(elem =>
-                  tradesperson.propertyTypesIds.includes(elem + 1) ? true : false
+                  tradesperson.propertyTypesIds.includes(elem + 1)
+                      ? true
+                      : false
               )
             : [false, false, false]
     );
@@ -79,7 +85,9 @@ const EditTradespersonProfile = props => {
     const [experienceChecked, setExperienceChecked] = useState(
         initialChecked(
             EXPERIENCE,
-            tradesperson ? tradesperson.experienceId - 1 : 0
+            tradesperson && tradesperson.experienceId
+                ? tradesperson.experienceId - 1
+                : 0
         )
     );
 
@@ -89,22 +97,28 @@ const EditTradespersonProfile = props => {
         setChecked(updatedChecked);
     };
 
-    const [name, setName] = useState(tradesperson.name);
+    const [name, setName] = useState(tradesperson && tradesperson.name);
 
     const onChangeName = input => {
         setName(input);
     };
 
-    const [schedule, setSchedule] = useState(tradesperson.schedule);
+    const [schedule, setSchedule] = useState(
+        tradesperson && tradesperson.schedule ? tradesperson.schedule : null
+    );
 
     const onChangeSchedule = input => {
         setSchedule(input);
     };
 
-    const [insuranceChecked, setInsuranceChecked] = useState(tradesperson ? tradesperson.insurance : false);
+    const [insuranceChecked, setInsuranceChecked] = useState(
+        tradesperson && tradesperson.insurance ? tradesperson.insurance : false
+    );
 
     const [profilePicture, setprofilePicture] = useState(
-        tradesperson.profilePicture
+        tradesperson && tradesperson.profilePicture
+            ? tradesperson.profilePicture
+            : null
     );
 
     useEffect(() => {
@@ -165,16 +179,18 @@ const EditTradespersonProfile = props => {
             )
         );
 
-        // if (action === 'signup') {
-        //     props.navigation.navigate('Home');
-        // } else {
-        //     props.navigation.navigate('TradespersonProfile');
-        // }
+        if (action === 'signup') {
+            props.navigation.navigate('BottomTab', {
+                screen: 'Home',
+            });
+        } else {
+            props.navigation.goBack();
+        }
     };
 
     const phoneInput = useRef();
 
-    const [phoneNumber, setPhoneNumber] = useState(tradesperson.phoneNumber);
+    const [phoneNumber, setPhoneNumber] = useState(tradesperson && tradesperson.phoneNumber ? tradesperson.phoneNumber : null);
 
     return (
         <ScrollableContainer
@@ -210,13 +226,7 @@ const EditTradespersonProfile = props => {
                     onPress={pickImage}
                     style={{ flex: 0, borderRadius: 100, overflow: 'hidden' }}
                 >
-                    <Image
-                        source={{
-                            uri: profilePicture,
-                        }}
-                        style={{ width: 80, height: 80 }}
-                        resizeMethod="scale"
-                    />
+                    <ProfilePicture profilePicture={profilePicture} isLarge={true} />
                 </Touchable>
             </Line>
             <LineDescription text="Phone number.">
@@ -278,7 +288,7 @@ const EditTradespersonProfile = props => {
                 <Grid
                     data={OCCUPATIONS}
                     onPress={index => {
-                        if (occupations.includes(index)) {
+                        if (occupations && occupations.includes(index)) {
                             const updatedOccupations = occupations.filter(
                                 elem => elem !== index
                             );
@@ -289,7 +299,7 @@ const EditTradespersonProfile = props => {
                             setOccupations(updatedOccupations);
                         }
                     }}
-                    initialSelectedIndexes={tradesperson.occupationsIds.map(
+                    initialSelectedIndexes={tradesperson.occupationsIds && tradesperson.occupationsIds.map(
                         elem => elem - 1
                     )}
                     multipleOptions={true}
@@ -368,7 +378,10 @@ const EditTradespersonProfile = props => {
                     onStreetAddressChange={handleStreetAddressChange}
                     hideLine2={true}
                     streetAddress={jobAddressInput.line1}
-                    initial_place_id={tradesperson ? tradesperson.streetAddress.place_id : null}
+                    initial_place_id={
+                        tradesperson.streetAddress &&
+                        tradesperson.streetAddress.place_id
+                    }
                 />
             </Line>
             <LineDescription text="Do you have security liability insurance?">

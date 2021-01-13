@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import * as yup from 'yup';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Logo from '../../assets/icons/Logo/Logo';
 import MediumButton from '../../components/buttons/MediumButtom';
@@ -14,6 +15,9 @@ import AuthLine from './AuthLine';
 import SmallContent from '../text/SmallContent';
 import { useIsFocused } from '@react-navigation/native';
 import LineDescription from '../common/LineDescription';
+import Grid from '../layout/Grid';
+import CustomRadioButton from '../common/CustomRadioButton';
+import { View } from 'react-native';
 
 const Authentication = props => {
     const {
@@ -26,7 +30,9 @@ const Authentication = props => {
     } = props;
 
     const [email, setEmail] = useState(defaultEmail);
+    
     const [password, setPassword] = useState(defaultPassword);
+    
     const [info, setInfo] = useState({
         color: Color.tertiaryBrandColor,
         text: null,
@@ -59,6 +65,19 @@ const Authentication = props => {
         onPress(email, password);
     };
 
+    const handleToggleCheck = (index, checked, setChecked) => {
+        const updatedChecked = [...checked];
+        var i;
+        for (i = 0; i < updatedChecked.length; i++) {
+            if (i !== index) {
+                updatedChecked[i] = false;
+            } else {
+                updatedChecked[i] = true;
+            }
+        }
+        setChecked(updatedChecked);
+    };
+
     return (
         <Container
             style={{
@@ -66,17 +85,19 @@ const Authentication = props => {
                 marginTop: 0,
                 paddingTop: 0,
                 paddingHorizontal: 0,
+                
             }}
         >
-            {/* <KeyboardAvoidingView style={{ flex: 1 }}> */}
             <ScrollView
-                //bounces={false}
+                keyboardDismissMode='none'
+                keyboardShouldPersistTaps='always'
                 style={{
                     paddingHorizontal: Layout.screenHorizontalPadding,
                 }}
                 contentContainerStyle={{
                     justifyContent: 'center',
-                    flex: 1,
+                    flexGrow: 1
+                    //flex: 1,
                 }}
             >
                 <Line
@@ -96,7 +117,15 @@ const Authentication = props => {
                         {info.text}
                     </SmallContent>
                 </Line>
-
+                {!props.hideTextFields && props.action === 'signup' && (
+                    <AuthLine
+                        iconName="account"
+                        value={props.name}
+                        onChange={input => props.setName(input)}
+                        placeholder="Full name"
+                        secureTextEntry={false}
+                    />
+                )}
                 {!props.hideTextFields && (
                     <AuthLine
                         iconName="email"
@@ -117,9 +146,60 @@ const Authentication = props => {
                 )}
                 {props.hideTextFields && (
                     <LineDescription
-                        textStyle={{textAlign: 'center'}}
+                        textStyle={{ textAlign: 'center' }}
                         text={`We have sent an email to ${email}. Please verify your account to continue.`}
                     />
+                )}
+                {props.action === 'signup' && (
+                    <Line
+                        style={{
+                            flex: 0,
+                            alignItems: 'flex-start',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <View
+                            style={{
+                                paddingRight: Layout.screenHorizontalPadding,
+                            }}
+                        >
+                            <View
+                                style={{
+                                    height: Layout.menuIconSize,
+                                    width: Layout.menuIconSize,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Icon
+                                    name="account-question"
+                                    size={Layout.menuIconSize}
+                                    color={
+                                        Color.importantTextOnTertiaryColorBackground
+                                    }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
+                            <Grid
+                                data={[
+                                    { name: 'Customer', id: 0 },
+                                    { name: 'Tradesperson', id: 1 },
+                                ]}
+                                checked={props.accountTypeChecked}
+                                onToggleCheck={index =>
+                                    handleToggleCheck(
+                                        index,
+                                        props.accountTypeChecked,
+                                        props.setAccountTypeChecked
+                                    )
+                                }
+                                RenderItemComponent={CustomRadioButton}
+                                uncheckedColor={Color.importantTextOnTertiaryColorBackground}
+                            />
+                        </View>
+                    </Line>
                 )}
                 <Line
                     style={{

@@ -41,7 +41,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             {isLoggedIn && hasVerifiedEmail && <AppStack />}
-            {isLoggedIn && !hasVerifiedEmail && <VerificationStack />}
+            {isLoggedIn && !hasVerifiedEmail && <AuthenticationStack />}
             {!isLoggedIn && <AuthenticationStack />}
         </NavigationContainer>
     );

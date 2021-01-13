@@ -18,11 +18,23 @@ const CustomRadioButton = props => {
                         props.checked[props.index] ? 'checked' : 'unchecked'
                     }
                     onPress={handlePress}
-                    uncheckedColor={Color.textColor}
+                    uncheckedColor={
+                        props.uncheckedColor
+                            ? props.uncheckedColor
+                            : Color.textColor
+                    }
                     color={Color.primaryBrandColor}
                 />
                 <View style={{ justifyContent: 'center' }}>
-                    <SmallContent>{props.text}</SmallContent>
+                    <SmallContent
+                        style={
+                            props.uncheckedColor && {
+                                color: props.uncheckedColor,
+                            }
+                        }
+                    >
+                        {props.text}
+                    </SmallContent>
                 </View>
             </View>
         </TouchableWithoutFeedback>

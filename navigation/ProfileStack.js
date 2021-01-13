@@ -6,7 +6,6 @@ import {
 } from '@react-navigation/stack';
 import UserProfileScreen from '../screens/Profile/UserProfileScreen';
 import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
-import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
 import ReviewScreen from '../screens/Profile/ReviewScreen';
 
@@ -37,15 +36,6 @@ const ProfileStack = () => {
                 options={{
                     headerShown: true,
                     ...coloredHeaderOptions,
-                }}
-            />
-            <Stack.Screen
-                name="EditTradespersonProfile"
-                component={EditTradespersonProfileScreen}
-                options={{
-                    headerShown: true,
-                    ...headerOptions,
-                    headerTitle: 'Customize your profile',
                 }}
             />
             <Stack.Screen

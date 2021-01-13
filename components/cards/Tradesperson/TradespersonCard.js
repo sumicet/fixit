@@ -13,7 +13,6 @@ import StoreIcon from '../../../assets/icons/Properties/StoreIcon';
 import FactoryIcon from '../../../assets/icons/Properties/FactoryIcon';
 import Location from './Location';
 import Experience from './Experience';
-import Insurance from './Insurance';
 import Header from '../../text/Header';
 import Contact from './Contact';
 import ProfilePicture from './ProfilePicture';
@@ -226,6 +225,7 @@ const TradespersonCard = props => {
                                         >
                                             <Location
                                                 place_id={
+                                                    streetAddress &&
                                                     streetAddress.place_id
                                                 }
                                             />

@@ -7,9 +7,7 @@ import {
 
 import SignUpScreen from '../screens/Authentication/SignUpScreen';
 import LogInScreen from '../screens/Authentication/LogInScreen';
-import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
-import SelectUserTypeScreen from '../screens/Authentication/SelectUserTypeScreen';
 import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
 import { useSelector } from 'react-redux';
 
@@ -39,24 +37,6 @@ const AuthenticationStack = (props) => {
                 options={{
                     ...coloredHeaderOptions,
                     headerTitle: 'Sign Up',
-                }}
-            />
-            <Stack.Screen
-                name="EditTradespersonProfile"
-                component={EditTradespersonProfileScreen}
-                options={{
-                    ...headerOptions,
-                    headerTitle: 'Customize your profile',
-                    headerLeft: null,
-                }}
-            />
-            <Stack.Screen
-                name="SelectUserType"
-                component={SelectUserTypeScreen}
-                options={{
-                    ...headerOptions,
-                    headerTitle: 'Account type',
-                    headerLeft: null,
                 }}
             />
             <Stack.Screen

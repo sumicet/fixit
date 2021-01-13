@@ -57,9 +57,8 @@ const TradespersonProfileScreen = props => {
                         padding: Layout.screenHorizontalPadding / 2,
                     }}
                     onPress={() => {
-                        props.navigation.navigate('Profile', {
-                            screen: 'EditTradespersonProfile',
-                            params: { id: currentUserId },
+                        props.navigation.navigate('EditTradespersonProfile', {
+                            id: currentUserId,
                         });
                     }}
                 >
@@ -270,7 +269,7 @@ const TradespersonProfileScreen = props => {
                                 }}
                                 onPress={() => {
                                     props.navigation.navigate('Review', {
-                                        tradesperson: tradesperson
+                                        tradesperson: tradesperson,
                                     });
                                 }}
                             >
@@ -283,9 +282,7 @@ const TradespersonProfileScreen = props => {
                 <FlatList
                     data={reviews}
                     keyExtractor={(item, i) => `key-${i}`}
-                    renderItem={itemData => (
-                        <Comment review={itemData.item} />
-                    )}
+                    renderItem={itemData => <Comment review={itemData.item} />}
                 />
             </View>
         );

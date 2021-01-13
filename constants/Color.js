@@ -5,6 +5,7 @@ export default {
     // **************** BRAND ****************
 
     primaryBrandColor: '#449c6c',
+    primaryBrandColorHighlight: '#50ba80',
     primaryBrandColorLogoShadow: '#00ff74',
     secondaryBrandColor: '#46449c',
     tertiaryBrandColor: '#46449c',

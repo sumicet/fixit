@@ -76,16 +76,13 @@ const AppContainer = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetchFonts()
-            .then(() => {
-                dispatch(fetchTradespersonInfo(userId));
-                dispatch(fetchMyJobs());
-                dispatch(fetchAll());
-                dispatch(fetchReviews());
-            })
-            .then(() => {
-                setIsLoading(false);
-            });
+        fetchFonts();
+        dispatch(fetchTradespersonInfo(userId));
+        dispatch(fetchMyJobs());
+        dispatch(fetchAll());
+        dispatch(fetchReviews());
+
+        setIsLoading(false);
     }, [userId]);
 
     if (isLoading) {

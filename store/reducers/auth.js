@@ -19,6 +19,7 @@ const initialState = {
     hasVerifiedEmail: true,
     email: null,
     resendEmailTimer: null,
+    name: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -52,6 +53,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 userType: action.userType,
                 email: action.email,
+                name: action.name
             };
         case SET_IS_LOGGED_IN:
             return {
