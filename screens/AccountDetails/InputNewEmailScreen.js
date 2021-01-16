@@ -5,6 +5,7 @@ import AuthLine from '../../components/authentication/AuthLine';
 import Confirm from '../../components/authentication/Confirm';
 import { useDispatch } from 'react-redux';
 import { changeEmail } from '../../store/actions/auth';
+import { CommonActions } from '@react-navigation/native';
 
 const InputNewEmailScreen = props => {
     const [email, setEmail] = useState();
@@ -17,10 +18,22 @@ const InputNewEmailScreen = props => {
             text="You can select a new email address."
             onPress={() => {
                 dispatch(changeEmail(email, password)).then(() => {
-                    props.navigation.navigate('VerifyEmail', {
-                        email,
-                        action: action,
-                    });
+                    props.navigation.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [
+                                {
+                                    name: 'VerifyEmail',
+                                    params: {
+                                        email,
+                                        action,
+                                        message:
+                                            'This change can be reverted by following the instructions sent to your old email address.',
+                                    },
+                                },
+                            ],
+                        })
+                    );
                 });
             }}
         >

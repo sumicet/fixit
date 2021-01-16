@@ -15,14 +15,6 @@ const Stack = createStackNavigator();
 
 const HomeStack = () => {
 
-    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-
-    useEffect(() => {
-        if(!isLoggedIn) {
-            navigationRef.current?.navigate('LogIn');
-        }
-    }, [isLoggedIn])
-
     return (
         <Stack.Navigator
             //animation

@@ -27,13 +27,23 @@ const RelogUserScreen = props => {
                         if (action === 'change_email') {
                             props.navigation.navigate('InputNewEmail', {
                                 action,
-                                password
+                                password,
                             });
                         } else {
-                            props.navigation.navigate('VerifyEmail', {
-                                action: action,
-                                email: user.email
-                            });
+                            props.navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 1,
+                                    routes: [
+                                        {
+                                            name: 'VerifyEmail',
+                                            params: {
+                                                email: user.email,
+                                                action,
+                                            },
+                                        },
+                                    ],
+                                })
+                            );
                         }
                     })
                     .catch(error => {

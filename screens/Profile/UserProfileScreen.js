@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import {
+    CommonActions,
+    useFocusEffect,
+    useIsFocused,
+} from '@react-navigation/native';
 
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
@@ -113,6 +117,7 @@ const UserProfileScreen = props => {
                         <Line style={{ flex: 0 }}>
                             <ProfilePicture
                                 profilePicture={tradesperson.profilePicture}
+                                isLarge={true}
                             />
                         </Line>
                         <Line style={{ flex: 0 }}>
@@ -177,7 +182,18 @@ const UserProfileScreen = props => {
                     <ProfileField
                         description="Sign out"
                         onPress={() => {
-                            dispatch(signOut());
+                            dispatch(signOut()).then(() => {
+                                props.navigation.dispatch(
+                                    CommonActions.reset({
+                                        index: 1,
+                                        routes: [
+                                            {
+                                                name: 'LogIn',
+                                            },
+                                        ],
+                                    })
+                                );
+                            });
                         }}
                     />
                 </View>

@@ -7,12 +7,14 @@ import {
 
 import EditJobScreen from '../screens/Quiz/EditJobScreen';
 import NewJobScreen from '../screens/Quiz/NewJobScreen';
-import { headerOptions } from './options/HeaderOptions';
+import { coloredHeaderOptions, headerOptions } from './options/HeaderOptions';
 import BottomTab from './BottomTab';
 import InputNewEmailScreen from '../screens/AccountDetails/InputNewEmailScreen';
 import RelogUserScreen from '../screens/AccountDetails/RelogUserScreen';
 import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
 import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
+import LogInScreen from '../screens/Authentication/LogInScreen';
+import SignUpScreen from '../screens/Authentication/SignUpScreen';
 
 const Stack = createStackNavigator();
 
@@ -77,6 +79,23 @@ const AppStack = () => {
                     headerShown: true,
                     ...headerOptions,
                     headerTitle: 'Customize your profile',
+                }}
+            />
+
+            <Stack.Screen
+                name="LogIn"
+                component={LogInScreen}
+                options={{
+                    ...coloredHeaderOptions,
+                    headerTitle: 'Log In',
+                }}
+            />
+            <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{
+                    ...coloredHeaderOptions,
+                    headerTitle: 'Sign Up',
                 }}
             />
         </Stack.Navigator>

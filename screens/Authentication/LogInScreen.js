@@ -10,7 +10,18 @@ const LogInScreen = props => {
     const action = props.route.params && props.route.params.action;
 
     const handleOnPress = (email, password) => {
-        dispatch(logIn(email, password));
+        dispatch(logIn(email, password)).then(() => {
+            props.navigation.dispatch(
+                CommonActions.reset({
+                    index: 1,
+                    routes: [
+                        {
+                            name: 'BottomTab',
+                        },
+                    ],
+                })
+            );
+        });
     };
 
     return (

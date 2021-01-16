@@ -27,13 +27,11 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
+            <AppStack />
             {/* {isLoading && <LoadingStack />}
             {!isLoading && isLoggedIn && hasVerifiedEmail && <AppStack />}
             {!isLoading && isLoggedIn && !hasVerifiedEmail && <AuthenticationStack />}
             {!isLoading && !isLoggedIn && <AuthenticationStack />} */}
-            {isLoading && <LoadingStack />}
-            {!isLoading && isLoggedIn && <AppStack />}
-            {!isLoading && !isLoggedIn && <AuthenticationStack />}
         </NavigationContainer>
     );
 };

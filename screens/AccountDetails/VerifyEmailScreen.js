@@ -16,9 +16,11 @@ import {
 } from '../../store/actions/auth';
 import { setInAppNotification } from '../../store/actions/ui';
 import { ERROR, SUCCESS } from '../../constants/Actions';
+import { CommonActions } from '@react-navigation/native';
 
 const VerifyEmailScreen = props => {
     const user = Firebase.auth.currentUser;
+    const message = props.route.params && props.route.params.message;
     const email = user
         ? props.route.params && props.route.params.email
             ? props.route.params.email
@@ -37,14 +39,32 @@ const VerifyEmailScreen = props => {
         if (user.emailVerified) {
             dispatch(changeHasVerifiedEmail(true));
             if (action === 'change_email' || action === 'change_password') {
-                props.navigation.navigate('BottomTab', {
-                    screen: 'Profile',
-                });
+                props.navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: 'BottomTab',
+                                screen: 'Profile',
+                            },
+                        ],
+                    })
+                );
             } else {
                 if (action === 'signup') {
-                    props.navigation.navigate('EditTradespersonProfile', {
-                        action,
-                    });
+                    props.navigation.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [
+                                {
+                                    name: 'EditTradespersonProfile',
+                                    params: {
+                                        action,
+                                    },
+                                },
+                            ],
+                        })
+                    );
                 } else {
                     console.log(
                         'wrong action in verifyemailscreen // navigation'
@@ -64,9 +84,17 @@ const VerifyEmailScreen = props => {
 
     const handleFinishChangePassword = async () => {
         await user.reload();
-        props.navigation.navigate('BottomTab', {
-            screen: 'Profile',
-        });
+        props.navigation.dispatch(
+            CommonActions.reset({
+                index: 1,
+                routes: [
+                    {
+                        name: 'BottomTab',
+                        screen: 'Profile',
+                    },
+                ],
+            })
+        );
     };
 
     const sendVerificationEmail = () => {
@@ -97,9 +125,9 @@ const VerifyEmailScreen = props => {
 
     console.log(action);
 
-    // useEffect(() => {
-    //     sendVerificationEmail();
-    // }, []);
+    useEffect(() => {
+        sendVerificationEmail();
+    }, []);
 
     return (
         <Container style={{ marginTop: 0 }}>
@@ -129,6 +157,16 @@ const VerifyEmailScreen = props => {
                 text="Please verify your email address in order to proceed."
                 textStyle={{ fontFamily: 'Asap-Regular', textAlign: 'left' }}
             />
+            {message && (
+                <LineDescription
+                    text={message}
+                    textStyle={{
+                        fontFamily: 'Asap-Regular',
+                        textAlign: 'left',
+                        color: Color.warning,
+                    }}
+                />
+            )}
             <Line
                 style={{
                     flex: 0,
