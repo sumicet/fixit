@@ -17,32 +17,23 @@ import {
 } from '../store/actions/auth';
 import { fetchTradespersonInfo } from '../store/actions/tradesperson';
 import VerificationStack from './VerificationStack';
+import LoadingStack from './LoadingStack';
 
 const AppNavigator = () => {
-    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const hasVerifiedEmail = useSelector(state => state.auth.hasVerifiedEmail);
-
-    useEffect(() => {
-        
-    }, []);
-
-    // useEffect(() => {
-    //     dispatch(fetchMyJobs());
-    //     //dispatch(fetchTradespersonInfo(userId));
-    //     dispatch(fetchAll());
-    // }, []);
-
-    if (isLoading) {
-        return <Loading />;
-    }
+    const isLoading = useSelector(state => state.ui.isLoading);
 
     return (
         <NavigationContainer>
-            {isLoggedIn && hasVerifiedEmail && <AppStack />}
-            {isLoggedIn && !hasVerifiedEmail && <AuthenticationStack />}
-            {!isLoggedIn && <AuthenticationStack />}
+            {/* {isLoading && <LoadingStack />}
+            {!isLoading && isLoggedIn && hasVerifiedEmail && <AppStack />}
+            {!isLoading && isLoggedIn && !hasVerifiedEmail && <AuthenticationStack />}
+            {!isLoading && !isLoggedIn && <AuthenticationStack />} */}
+            {isLoading && <LoadingStack />}
+            {!isLoading && isLoggedIn && <AppStack />}
+            {!isLoading && !isLoggedIn && <AuthenticationStack />}
         </NavigationContainer>
     );
 };

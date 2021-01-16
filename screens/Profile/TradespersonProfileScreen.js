@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -18,17 +18,29 @@ import Commercial from '../../components/cards/Tradesperson/Commercial';
 import Industrial from '../../components/cards/Tradesperson/Industrial';
 import Header from '../../components/text/Header';
 import Rating from '../../components/cards/Tradesperson/Rating';
-import Comment from '../../components/cards/Comment/Comment';
+import Review from '../../components/cards/Review/Review';
 import SectionedContainer from '../../components/containers/SectionedContainer';
 import Line from '../../components/common/Line';
 import Touchable from '../../components/common/Touchable';
-import { useDispatch, useSelector } from 'react-redux';
-import MediumButton from '../../components/buttons/MediumButtom';
+import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
+import { getText } from '../../actions/distance';
 
 const TradespersonProfileScreen = props => {
     const userId = props.route.params && props.route.params.userId;
-    const reviews = useSelector(state => state.reviews.all);
+    const reviews = useSelector(state => state.reviews.all).filter(review => review.tradespersonId === userId);
+
+    const user_place_id = useSelector(state => state.tradesperson.streetAddress)
+        .place_id;
+    const [distance, setDistance] = useState();
+
+    useEffect(() => {
+        tradesperson.streetAddress
+            ? getText(user_place_id, tradesperson.streetAddress.place_id).then(result => {
+                  setDistance(result);
+              })
+            : setDistance('N/A');
+    }, []);
 
     const currentUserId = useSelector(state => state.auth.userId);
 
@@ -148,7 +160,7 @@ const TradespersonProfileScreen = props => {
                     <View style={styles.column}>
                         <View style={styles.details}>
                             <Location
-                                place_id={tradesperson.streetAddress.place_id}
+                                distance={distance}
                             />
                             <SmallContent
                                 style={{ color: Color.secondaryColor }}
@@ -282,7 +294,7 @@ const TradespersonProfileScreen = props => {
                 <FlatList
                     data={reviews}
                     keyExtractor={(item, i) => `key-${i}`}
-                    renderItem={itemData => <Comment review={itemData.item} />}
+                    renderItem={itemData => <Review review={itemData.item} />}
                 />
             </View>
         );

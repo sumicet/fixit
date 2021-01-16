@@ -9,29 +9,36 @@ import Rating from '../Tradesperson/Rating';
 import Line from '../../common/Line';
 import { useSelector } from 'react-redux';
 
-const Screen = props => {
+const Review = props => {
     const name = useSelector(state => state.tradespeople.all).find(
         elem => elem.userId === props.review.userId
     ).name;
 
+    const date = new Date(props.review.date)
+
     return (
         <View style={styles.container}>
-            <View style={[styles.line, { flexDirection: 'row' }]}>
+            <View
+                style={[
+                    props.review.comment && styles.line,
+                    { flexDirection: 'row' },
+                ]}
+            >
                 <View>
-                    <SmallBoldContent
-                        style={{
-                            color: Color.importantTextOnTertiaryColorBackground,
-                        }}
-                    >
-                        {name}
-                    </SmallBoldContent>
-                </View>
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Rating
                         rating={props.review.rating}
                         readOnly={true}
                         hideVotes={true}
                     />
+                </View>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                    <SmallContent>
+                        {date.toLocaleString('default', {
+                            month: 'short',
+                        })}{' '}
+                        {date.getDate()},{' '}
+                        {date.getFullYear()}
+                    </SmallContent>
                 </View>
             </View>
             {props.review.comment && (
@@ -39,6 +46,12 @@ const Screen = props => {
                     <SmallContent>{props.review.comment}</SmallContent>
                 </View>
             )}
+            <View style={styles.line}>
+                <SmallBoldContent>
+                    <SmallContent>By </SmallContent>
+                    {name}
+                </SmallBoldContent>
+            </View>
         </View>
     );
 };
@@ -56,4 +69,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Screen;
+export default Review;

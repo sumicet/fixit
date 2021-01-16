@@ -14,6 +14,17 @@ export const SET_USER_TYPE = 'SET_USER_TYPE';
 export const CHANGE_HAS_VERIFIED_EMAIL = 'CHANGE_HAS_VERIFIED_EMAIL';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const RESEND_EMAIL_TIMER = 'RESEND_EMAIL_TIMER';
+export const SET_STREET_ADDRESS = 'SET_STREET_ADDRESS';
+
+
+export const setStreetAddress = streetAddress => {
+    return async dispatch => {
+        dispatch({
+            type: SET_STREET_ADDRESS,
+            streetAddress,
+        });
+    };
+};
 
 export const changeEmail = (email, password) => {
     return async (dispatch, getState) => {

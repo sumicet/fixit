@@ -1,9 +1,7 @@
-export const getDistance = async (origin, destination) => {
+const getDistance = async (origin, destination) => {
     const response = await fetch(
         `https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${origin}&destination=place_id:${destination}&key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0`
     );
-
-    console.log(origin, destination);
 
     const responseData = await response.json();
 
@@ -13,4 +11,25 @@ export const getDistance = async (origin, destination) => {
     
 
     return { status, meters };
+};
+
+export const getText = async (origin, destination) => {
+    const { status, meters } = await getDistance(origin, destination);
+    let text;
+
+    if (status === 'OK') {
+        if (meters < 1000) {
+            text = '<1km';
+        } else {
+            if (meters >= 1000 && meters <= 100000) {
+                text = (meters / 1000).toString();
+            } else {
+                text = 'far';
+            }
+        }
+    } else {
+        text = '?';
+    }
+
+    return text;
 };

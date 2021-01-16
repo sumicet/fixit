@@ -9,13 +9,17 @@ export const addReview = (userId, tradespersonId, rating, comment) => {
             .ref('reviews')
             .child(tradespersonId);
         ref.child(userId).child('rating').set(rating);
+        const date = (new Date()).toString();
+        ref.child(userId).child('date').set(date);
         ref.child(userId).child('comment').set(comment);
+        console.log('i done', userId, tradespersonId, rating, comment, date)
         dispatch({
             type: ADD_REVIEW,
             userId,
             tradespersonId,
             rating,
             comment,
+            date
         });
     };
 };
@@ -36,6 +40,7 @@ export const fetchReviews = () => {
                     userId: key2,
                     rating: responseData[key][key2].rating,
                     comment: responseData[key][key2].comment,
+                    date: responseData[key][key2].date,
                 })
             }
         }

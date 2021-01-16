@@ -87,40 +87,46 @@ const UserProfileScreen = props => {
             style={{ marginTop: 0, paddingTop: 0, paddingHorizontal: 0 }}
         >
             <View style={{ flex: 1 }}>
-                <Touchable
-                    onPress={() => {
-                        props.navigation.navigate('TradespersonProfile', {
-                            tradespersonId: userId,
-                        });
-                    }}
+                <View
                     style={{
-                        flex: 0,
-                        width: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingHorizontal: Layout.screenVerticalPadding,
                         backgroundColor: Color.secondaryBrandColor,
                         borderBottomLeftRadius: Layout.borderRadius,
                         borderBottomRightRadius: Layout.borderRadius,
+                        overflow: 'hidden',
                     }}
-                    isCard={true}
                 >
-                    <Line style={{ flex: 0 }}>
-                        <ProfilePicture
-                            profilePicture={tradesperson.profilePicture}
-                        />
-                    </Line>
-                    <Line style={{ flex: 0 }}>
-                        <SmallContent
-                            style={{
-                                color: Color.textOnTertiaryColorBackground,
-                                textAlign: 'center',
-                            }}
-                        >
-                            Check how customers see your profile.
-                        </SmallContent>
-                    </Line>
-                </Touchable>
+                    <Touchable
+                        onPress={() => {
+                            props.navigation.navigate('TradespersonProfile', {
+                                userId,
+                            });
+                        }}
+                        style={{
+                            flex: 0,
+                            width: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingHorizontal: Layout.screenVerticalPadding,
+                        }}
+                        isCard={true}
+                    >
+                        <Line style={{ flex: 0 }}>
+                            <ProfilePicture
+                                profilePicture={tradesperson.profilePicture}
+                            />
+                        </Line>
+                        <Line style={{ flex: 0 }}>
+                            <SmallContent
+                                style={{
+                                    color: Color.textOnTertiaryColorBackground,
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Check how customers see your profile.
+                            </SmallContent>
+                        </Line>
+                    </Touchable>
+                </View>
                 <View
                     style={{
                         flex: 1,
@@ -249,7 +255,13 @@ const UserProfileScreen = props => {
                     <MediumButton
                         text="[dev only] alert test"
                         onPress={() => {
-                            dispatch(setInAppNotification('Success!', 'You leveled up!', ERROR))
+                            dispatch(
+                                setInAppNotification(
+                                    'Success!',
+                                    'You leveled up!',
+                                    ERROR
+                                )
+                            );
                         }}
                         style={{ backgroundColor: Color.textField }}
                         textColor={Color.secondaryColor}

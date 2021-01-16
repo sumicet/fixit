@@ -9,6 +9,7 @@ import HomeStackWithSearchBar from './HomeStackWithSearchBar';
 import TradespersonProfileStack from './TradespersonProfileStack';
 import { useSelector } from 'react-redux';
 import { navigationRef } from './AppNavigator';
+import HomeStackWithoutSearchBar from './HomeStackWithoutSearchBar';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,6 @@ const HomeStack = () => {
     useEffect(() => {
         if(!isLoggedIn) {
             navigationRef.current?.navigate('LogIn');
-            console.log('navigated to log in');
         }
     }, [isLoggedIn])
 
@@ -41,6 +41,10 @@ const HomeStack = () => {
             <Stack.Screen
                 name="TradespersonProfile"
                 component={TradespersonProfileStack}
+            />
+            <Stack.Screen
+                name="HomeStackWithoutSearchBar"
+                component={HomeStackWithoutSearchBar}
             />
         </Stack.Navigator>
     );

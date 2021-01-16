@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import Layout from '../../../constants/Layout';
@@ -9,8 +9,25 @@ import Location from '../Tradesperson/Location';
 import StartTime from './StartTime';
 import PostedBy from './PostedBy';
 import { WORK_TYPES } from '../../../data/Jobs/WorkTypes';
+import { getText } from '../../../actions/distance';
+import { useSelector } from 'react-redux';
 
 const JobCard = props => {
+    const user_place_id = useSelector(state => state.tradesperson.streetAddress)
+        .place_id;
+    const [distance, setDistance] = useState();
+
+    useEffect(() => {
+        streetAddress
+            ? getText(user_place_id, props.streetAddress.place_id).then(
+                  result => {
+                      //TODO make sure u get props.stree.. from the other comp
+                      setDistance(result);
+                  }
+              )
+            : setDistance('N/A');
+    }, []);
+
     return (
         <View style={styles.container}>
             <View style={{ width: '100%' }}>
@@ -28,7 +45,6 @@ const JobCard = props => {
                         style={{ fontFamily: 'Asap-SemiBold' }}
                     >
                         {
-                            
                             WORK_TYPES.find(
                                 work =>
                                     work.id === props.workTypeId &&
@@ -50,7 +66,7 @@ const JobCard = props => {
                         width: '100%',
                     }}
                 >
-                    <Location />
+                    <Location distance={distance} />
                     <View style={{ paddingLeft: Layout.generalPadding }}>
                         <StartTime startTimeId={props.startTimeId} />
                     </View>

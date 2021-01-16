@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Shield from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -19,9 +19,30 @@ import ProfilePicture from './ProfilePicture';
 import Touchable from '../../common/Touchable';
 import RateTradespersonModal from '../../modals/RateTradespersonModal';
 import { useSelector } from 'react-redux';
+import Loading from '../../loading/Loading';
+import { getText } from '../../../actions/distance';
 
 const TradespersonCard = props => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const allTradespeople = useSelector(state => state.tradespeople.all);
+
+    const user_place_id = useSelector(state => state.tradesperson.streetAddress)
+        .place_id;
+    const [distance, setDistance] = useState();
+
+    useEffect(() => {
+        console.log('ye', user_place_id, streetAddress.place_id)
+        if(user_place_id && streetAddress) {
+            getText(user_place_id, streetAddress.place_id).then(result => {
+                setDistance(result);
+                setIsLoading(false);
+            })
+        } else {
+            setDistance('N/A');
+            setIsLoading(false);
+        }
+    }, []);
 
     const {
         userId,
@@ -56,7 +77,6 @@ const TradespersonCard = props => {
         if (props.isRateCard) {
             setModalVisible(true);
         } else {
-            console.log(userId, 'before');
             props.navigation.navigate('TradespersonProfile', {
                 screen: 'TradespersonProfile',
                 params: { userId },
@@ -86,6 +106,10 @@ const TradespersonCard = props => {
         setModalVisible(true);
         setUpdatedRating(updatedRating);
     };
+
+    if(isLoading) {
+        return <Loading />
+    }
 
     return (
         <View>
@@ -223,12 +247,7 @@ const TradespersonCard = props => {
                                                 paddingBottom: 5,
                                             }}
                                         >
-                                            <Location
-                                                place_id={
-                                                    streetAddress &&
-                                                    streetAddress.place_id
-                                                }
-                                            />
+                                            <Location distance={distance} />
                                             <Experience
                                                 experienceId={experienceId}
                                             />
@@ -328,22 +347,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TradespersonCard;
-
-{
-    /* <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                flex: 1,
-                            }}
-                        >
-                            {occupations.map(value => {
-                                return (
-                                    <View style={{ paddingRight: 3 }}>
-                                        {value}
-                                    </View>
-                                ); // TODO delete padding for the last one
-                            })}
-                        </View> */
-}
+export default memo(TradespersonCard);

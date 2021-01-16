@@ -9,6 +9,7 @@ import {
     RESEND_EMAIL_TIMER,
     CHANGE_EMAIL,
     CHANGE_HAS_VERIFIED_EMAIL,
+    SET_STREET_ADDRESS,
 } from '../actions/auth';
 
 const initialState = {
@@ -53,7 +54,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 userType: action.userType,
                 email: action.email,
-                name: action.name
+                name: action.name,
             };
         case SET_IS_LOGGED_IN:
             return {
@@ -81,6 +82,11 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 resendEmailTimer: action.date,
+            };
+        case SET_STREET_ADDRESS:
+            return {
+                ...state,
+                streetAddress: action.streetAddress,
             };
         default:
             return state;

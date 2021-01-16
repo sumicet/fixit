@@ -1,4 +1,4 @@
-import { ADD_COMMENT, FETCH_REVIEWS } from '../actions/reviews';
+import { ADD_REVIEW, FETCH_REVIEWS } from '../actions/reviews';
 
 const initialState = {
     all: {},
@@ -6,19 +6,21 @@ const initialState = {
 
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ADD_COMMENT:
-            const updatedAll = [...updatedAll];
+        case ADD_REVIEW:
+            const updatedAll = [...state.all];
             const index = updatedAll.findIndex(
                 elem =>
                     elem.tradespersonId === action.tradespersonId &&
                     elem.userId === action.userId
             );
+            console.log(index, 'index here');
             if (index === -1) {
                 updatedAll.push({
                     tradespersonId: action.tradespersonId,
                     userId: action.userId,
                     rating: action.rating,
                     comment: action.comment,
+                    date: action.date
                 });
             } else {
                 updatedAll[index] = {
@@ -26,6 +28,7 @@ const reviewsReducer = (state = initialState, action) => {
                     userId: action.userId,
                     rating: action.rating,
                     comment: action.comment,
+                    date: action.date
                 };
             }
 

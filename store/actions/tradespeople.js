@@ -1,4 +1,5 @@
 export const FETCH_TRADESPEOPLE = 'FETCH_TRADESPEOPLE';
+export const SET_DISTANCES = 'SET_DISTANCES';
 
 import * as Firebase from '../../config/Firebase';
 
@@ -44,3 +45,41 @@ export const fetchAll = () => {
         });
     };
 };
+
+export const setDistances = (place_id) => {
+    return async (dispatch, getState) => {
+        const all = getState().tradespeople.all;
+        const updatedAllDistances = [];
+            for(const key in all) {
+                const { status, meters } = await getDistance(
+                    place_id,
+                    all[key].streetAddress.place_id
+                );
+
+                var distance;
+
+                if (status === 'OK') {
+                    if (meters < 1000) {
+                        distance = -1;
+                    } else {
+                        if (meters >= 1000 && meters <= 50000) {
+                            distance = Math.floor(meters / 1000).toString();
+                        } else {
+                            distance = -2;
+                        }
+                    }
+                } else {
+                    distance = 'N/A';
+                }
+
+                updatedAllDistances.push({
+                    ...all[key],
+                    distance,
+                });
+            }
+        dispatch({
+            type: SET_DISTANCES,
+            all: updatedAllDistances
+        })
+    }
+}

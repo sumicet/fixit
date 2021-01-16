@@ -1,4 +1,5 @@
 export const SET_IN_APP_NOTIFICATION = 'SET_IN_APP_NOTIFICATION';
+export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_IN_APP_NOTIFICATION_VISIBLE =
     'SET_IN_APP_NOTIFICATION_VISIBLE';
 
@@ -7,6 +8,15 @@ export const hideInAppNotification = () => {
         dispatch({
             type: SET_IN_APP_NOTIFICATION_VISIBLE,
             inAppNotificationVisible: false
+        });
+    };
+};
+
+export const setIsLoading = (value) => {
+    return async dispatch => {
+        dispatch({
+            type: SET_IS_LOADING,
+            value
         });
     };
 };

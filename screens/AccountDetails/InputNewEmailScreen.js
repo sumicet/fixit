@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import AuthLine from '../../components/authentication/AuthLine';
-import * as Firebase from '../../config/Firebase';
 import Confirm from '../../components/authentication/Confirm';
-import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
-import { changeEmail, changeHasVerifiedEmail } from '../../store/actions/auth';
+import { useDispatch } from 'react-redux';
+import { changeEmail } from '../../store/actions/auth';
 
 const InputNewEmailScreen = props => {
     const [email, setEmail] = useState();
