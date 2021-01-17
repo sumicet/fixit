@@ -25,23 +25,34 @@ import Touchable from '../../components/common/Touchable';
 import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import { getText } from '../../actions/distance';
+import LineDescription from '../../components/common/LineDescription';
+import SmallBoldContent from '../../components/text/SmallBoldContent';
+import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
 
 const TradespersonProfileScreen = props => {
     const userId = props.route.params && props.route.params.userId;
-    const reviews = useSelector(state => state.reviews.all).filter(review => review.tradespersonId === userId);
+    const reviews = useSelector(state => state.reviews.all).filter(
+        review => review.tradespersonId === userId
+    );
 
-    const user_place_id = useSelector(state => state.auth.streetAddress).place_id;
+    const user_place_id = useSelector(state => state.auth.streetAddress)
+        .place_id;
     const [distance, setDistance] = useState();
 
     useEffect(() => {
         user_place_id && tradesperson.streetAddress
-            ? getText(user_place_id, tradesperson.streetAddress.place_id).then(result => {
-                  setDistance(result);
-              })
+            ? getText(user_place_id, tradesperson.streetAddress.place_id).then(
+                  result => {
+                      setDistance(result);
+                  }
+              )
             : setDistance('N/A');
     }, []);
 
     const currentUserId = useSelector(state => state.auth.userId);
+    const currentUserReview = reviews.find(
+        review => review.userId === currentUserId
+    );
 
     const tradesperson = useSelector(state => state.tradespeople.all).find(
         elem => elem.userId === userId
@@ -90,6 +101,7 @@ const TradespersonProfileScreen = props => {
             <View>
                 <Line>
                     <ProfilePicture
+                        isRateCard={true}
                         isLarge={true}
                         profilePicture={tradesperson.profilePicture}
                     />
@@ -156,9 +168,7 @@ const TradespersonProfileScreen = props => {
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.column}>
                         <View style={styles.details}>
-                            <Location
-                                distance={distance}
-                            />
+                            <Location distance={distance} />
                             <SmallContent
                                 style={{ color: Color.secondaryColor }}
                             >
@@ -245,9 +255,7 @@ const TradespersonProfileScreen = props => {
             <View>
                 <View
                     style={{
-                        paddingBottom:
-                            Layout.screenHorizontalPadding -
-                            Layout.generalPadding,
+                        paddingBottom: Layout.screenHorizontalPadding,
                         flexDirection: 'row',
                         alignItems: 'center',
                     }}
@@ -260,52 +268,96 @@ const TradespersonProfileScreen = props => {
                         readOnly={true}
                         size="medium"
                     />
-                    {tradesperson.userId !== currentUserId && <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                        <Touchable
-                            style={{
-                                flex: 0,
-                                backgroundColor: Color.primaryBrandColor,
-                                paddingHorizontal: Layout.generalPadding,
-                                paddingVertical: 3,
-                                borderRadius: Layout.borderRadius,
-                            }}
-                        >
-                            <SmallContent
+                    {tradesperson.userId !== currentUserId && (
+                        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                            <Touchable
                                 style={{
-                                    fontFamily: 'Asap-SemiBold',
-                                    color:
-                                        Color.importantTextOnTertiaryColorBackground,
-                                }}
-                                onPress={() => {
-                                    props.navigation.navigate('Review', {
-                                        tradesperson: tradesperson,
-                                    });
+                                    flex: 0,
+                                    backgroundColor: Color.primaryBrandColor,
+                                    paddingHorizontal: Layout.generalPadding,
+                                    paddingVertical: 3,
+                                    borderRadius: Layout.borderRadius,
                                 }}
                             >
-                                Write a review
-                            </SmallContent>
-                        </Touchable>
-                    </View>}
+                                <SmallContent
+                                    style={{
+                                        fontFamily: 'Asap-SemiBold',
+                                        color:
+                                            Color.importantTextOnTertiaryColorBackground,
+                                    }}
+                                    onPress={() => {
+                                        props.navigation.navigate('Review', {
+                                            tradesperson: tradesperson,
+                                            oldReview: currentUserReview
+                                        });
+                                    }}
+                                >
+                                    {currentUserReview ? 'Edit your review' : 'Write a review'}
+                                </SmallContent>
+                            </Touchable>
+                        </View>
+                    )}
                 </View>
 
-                <FlatList
-                    data={reviews}
-                    keyExtractor={(item, i) => `key-${i}`}
-                    renderItem={itemData => <Review review={itemData.item} />}
+                {currentUserReview && (
+                    <View
+                        style={{
+                            paddingBottom:
+                                Layout.screenHorizontalPadding -
+                                Layout.generalPadding,
+                        }}
+                    >
+                        <LineDescription
+                            text="Your review"
+                            style={{ paddingBottom: Layout.generalPadding }}
+                        />
+                        <Review review={currentUserReview} />
+                    </View>
+                )}
+                <LineDescription
+                    text="Ratings and reviews"
+                    style={{ paddingBottom: Layout.generalPadding }}
                 />
             </View>
         );
     };
 
     return (
-        <SectionedContainer
-            //title="John McCormack"
-            //titleColor={Color.importantTextOnTertiaryColorBackground}
-            topComponent={<TopComponent />}
-            midComponent={<MidComponent />}
-            bottomComponent={<BottomComponent />}
-            navigation={props.navigation}
+        <View style={{backgroundColor: Color.primaryColor}}>
+            <FlatList
+            data={reviews}
+            keyExtractor={(item, i) => `key-${i}`}
+            renderItem={itemData => <View style={{paddingHorizontal: Layout.screenHorizontalPadding}}>
+                <Review review={itemData.item} />
+            </View>}
+            ListEmptyComponent={() => (
+                <View
+                    style={{
+                        paddingTop:
+                            Layout.screenHorizontalPadding -
+                            Layout.generalPadding,
+                    }}
+                >
+                    <SmallContent style={{ textAlign: 'center' }}>
+                        Be the first one to write a review!
+                    </SmallContent>
+                </View>
+            )}
+            ListHeaderComponent={() => (
+                <SectionedContainer
+                    //title="John McCormack"
+                    //titleColor={Color.importantTextOnTertiaryColorBackground}
+                    topComponent={<TopComponent />}
+                    midComponent={<MidComponent />}
+                    bottomComponent={<BottomComponent />}
+                    navigation={props.navigation}
+                />
+            )}
+            ListFooterComponent={() => (
+            <EndOfPageSpace />
+            )}
         />
+        </View>
     );
 };
 

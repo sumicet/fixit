@@ -22,8 +22,10 @@ import { ERROR } from '../../constants/Actions';
 import { addReview } from '../../store/actions/reviews';
 
 const ReviewScreen = props => {
-    const [text, setText] = useState(null);
-    const [rating, setRating] = useState();
+    const oldReview = props.route.params && props.route.params.oldReview;
+    const [text, setText] = useState(oldReview && oldReview.comment);
+    const [rating, setRating] = useState(oldReview && oldReview.rating);
+
     const tradesperson = props.route.params && props.route.params.tradesperson;
     const userId = useSelector(state => state.auth.userId);
     const dispatch = useDispatch();
@@ -89,7 +91,7 @@ const ReviewScreen = props => {
             >
                 <Rating
                     isRateCard={true}
-                    rating={0}
+                    rating={oldReview ? oldReview.rating : 0}
                     onStarPress={index => {
                         setRating(index);
                     }}
