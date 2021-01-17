@@ -362,8 +362,6 @@ const TradespersonProfileScreen = props => {
                 )}
                 ListHeaderComponent={() => (
                     <SectionedContainer
-                        //title="John McCormack"
-                        //titleColor={Color.importantTextOnTertiaryColorBackground}
                         topComponent={<TopComponent />}
                         midComponent={<MidComponent />}
                         bottomComponent={<BottomComponent />}

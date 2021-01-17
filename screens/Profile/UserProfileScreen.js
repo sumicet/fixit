@@ -28,8 +28,11 @@ import ProfileField from '../../components/layout/ProfileField';
 import LineDescription from '../../components/common/LineDescription';
 import { setInAppNotification } from '../../store/actions/ui';
 import { ERROR, SUCCESS } from '../../constants/Actions';
+import { isLoading } from 'expo-font';
+import Loading from '../../components/loading/Loading';
 
 const UserProfileScreen = props => {
+    const [isLoading, setIsLoading] = useState(true);
     const userId = useSelector(state => state.auth.userId);
 
     useEffect(() => {
@@ -39,6 +42,7 @@ const UserProfileScreen = props => {
                     props.navigation.setOptions({
                         headerTitle: tradesperson.name,
                     });
+                    setIsLoading(false);
                 }
             );
         }
@@ -85,6 +89,15 @@ const UserProfileScreen = props => {
     }, [props, isFocused]);
 
     const dispatch = useDispatch();
+
+    if (isLoading) {
+        return (
+            <Loading
+                spinnerColor={Color.textOnTertiaryColorBackground}
+                style={{ backgroundColor: Color.secondaryBrandColor }}
+            />
+        );
+    }
 
     return (
         <Container
