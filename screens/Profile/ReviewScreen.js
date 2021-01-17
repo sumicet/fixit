@@ -28,8 +28,6 @@ const ReviewScreen = props => {
     const userId = useSelector(state => state.auth.userId);
     const dispatch = useDispatch();
 
-    console.log(tradesperson.userId, userId)
-
     const handleSubmitPress = () => {
         if (!rating) {
             dispatch(
@@ -40,7 +38,6 @@ const ReviewScreen = props => {
                 )
             );
         } else {
-            console.log('dispatching');
             dispatch(addReview(userId, tradesperson.userId, rating, text));
             props.navigation.goBack();
         }

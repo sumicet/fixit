@@ -24,7 +24,6 @@ import { setTradespersonInfo } from '../../store/actions/tradesperson';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 
 const EditTradespersonProfile = props => {
-    console.log('edit tradesperson profile here');
     const tradesperson = useSelector(state => state.tradesperson);
 
     const [occupations, setOccupations] = useState(

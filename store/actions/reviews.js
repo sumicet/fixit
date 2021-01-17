@@ -2,15 +2,63 @@ export const ADD_REVIEW = 'ADD_REVIEW';
 export const FETCH_REVIEWS = 'FETCH_REVIEWS';
 
 import * as Firebase from '../../config/Firebase';
+import { setRating } from './tradespeople';
 
 export const addReview = (userId, tradespersonId, rating, comment) => {
-    return async dispatch => {
-        console.log(userId, tradespersonId, rating, comment);
+    return async (dispatch, getState) => {
+        const ref2 = Firebase.database
+            .ref('tradesperson')
+            .child(tradespersonId);
+
+        const snap = await ref2.child('rating').once('value');
+        const oldRating = snap.val();
+        if (oldRating) {
+            const snap2 = await ref2.child('ratingVotesAmount').once('value');
+            const reviews = getState().reviews.all;
+            const oldReview = reviews.find(
+                review =>
+                    review.tradespersonId === tradespersonId &&
+                    review.userId === userId
+            );
+            console.log('old review', oldReview)
+            var ratingVotesAmount, newRating;
+            if (oldReview) {
+                console.log('yeah, old');
+                ratingVotesAmount = snap2.val();
+                newRating =
+                    (oldRating * ratingVotesAmount -
+                        oldReview.rating +
+                        rating) /
+                    ratingVotesAmount;
+            } else {
+                console.log('no, old');
+                ratingVotesAmount = snap2.val() + 1;
+                newRating =
+                    (oldRating * ratingVotesAmount + rating) /
+                    ratingVotesAmount;
+            }
+
+            console.log(
+                'the new rating & count are',
+                newRating,
+                ratingVotesAmount
+            );
+
+            ref2.child('rating').set(newRating);
+            ref2.child('ratingVotesAmount').set(ratingVotesAmount);
+            dispatch(setRating(tradespersonId, newRating, ratingVotesAmount));
+        } else {
+            ref2.child('rating').set(rating);
+            ref2.child('ratingVotesAmount').set(1);
+            dispatch(setRating(tradespersonId, rating, 1));
+        }
+
         const ref = Firebase.database.ref('reviews').child(tradespersonId);
         ref.child(userId).child('rating').set(rating);
         const date = new Date().toString();
         ref.child(userId).child('date').set(date);
         ref.child(userId).child('comment').set(comment);
+
         dispatch({
             type: ADD_REVIEW,
             userId,
@@ -19,49 +67,6 @@ export const addReview = (userId, tradespersonId, rating, comment) => {
             comment,
             date,
         });
-
-        //const ref2 = Firebase.database.ref('tradesperson').child(tradespersonId);
-
-        const ref2 = Firebase.database
-            .ref('tradesperson')
-            .child(tradespersonId);
-
-        ref2.child('rating')
-            .once('value')
-            .then(snap => {
-                const oldRating = snap.val();
-                if (oldRating) {
-                    ref2.child('ratingVotesAmount')
-                        .once('value')
-                        .then(snap2 => {
-                            const oldRatingVotesAmount = snap2.val();
-                            const newRating =
-                                (oldRating * oldRatingVotesAmount + rating) /
-                                (oldRatingVotesAmount + 1);
-                            ref2.child('rating').set(newRating);
-                            ref2.child('ratingVotesAmount').set(
-                                oldRatingVotesAmount + 1
-                            );
-                            dispatch(
-                                setRating(
-                                    tradespersonId,
-                                    newRating,
-                                    oldRatingVotesAmount + 1
-                                )
-                            );
-                        });
-                } else {
-                    ref2.child('rating').set(rating);
-                    ref2.child('ratingVotesAmount').set(1);
-                    dispatch(
-                        setRating(
-                            tradespersonId,
-                            newRating,
-                            oldRatingVotesAmount + 1
-                        )
-                    );
-                }
-            });
     };
 };
 

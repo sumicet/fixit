@@ -1,7 +1,7 @@
 import { ADD_REVIEW, FETCH_REVIEWS } from '../actions/reviews';
 
 const initialState = {
-    all: {},
+    all: [],
 };
 
 const reviewsReducer = (state = initialState, action) => {
@@ -13,7 +13,6 @@ const reviewsReducer = (state = initialState, action) => {
                     elem.tradespersonId === action.tradespersonId &&
                     elem.userId === action.userId
             );
-            console.log(index, 'index here');
             if (index === -1) {
                 updatedAll.push({
                     tradespersonId: action.tradespersonId,

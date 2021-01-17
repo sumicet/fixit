@@ -34,7 +34,6 @@ const VerifyEmailScreen = props => {
     );
 
     const checkIfEmailHasBeenVerified = async () => {
-        console.log(user.emailVerified);
         await user.reload();
         if (user.emailVerified) {
             dispatch(changeHasVerifiedEmail(true));
@@ -123,8 +122,6 @@ const VerifyEmailScreen = props => {
         }
     };
 
-    console.log(action);
-
     useEffect(() => {
         sendVerificationEmail();
     }, []);
@@ -178,7 +175,6 @@ const VerifyEmailScreen = props => {
                 <MediumButton
                     text={action === 'change_password' ? 'Finish' : 'Continue'}
                     onPress={() => {
-                        console.log('click');
                         if (user) {
                             action === 'change_password'
                                 ? handleFinishChangePassword()

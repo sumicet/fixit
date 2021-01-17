@@ -34,7 +34,6 @@ const TradespersonProfileScreen = props => {
     const [distance, setDistance] = useState();
 
     useEffect(() => {
-        console.log(user_place_id, tradesperson.streetAddress)
         user_place_id && tradesperson.streetAddress
             ? getText(user_place_id, tradesperson.streetAddress.place_id).then(result => {
                   setDistance(result);
@@ -124,7 +123,6 @@ const TradespersonProfileScreen = props => {
     };
 
     const MakeTwoColumns = props => {
-        console.log(props.array);
         return (
             <View style={{ flexDirection: 'row' }}>
                 {[0, 1].map(i => {
@@ -135,7 +133,6 @@ const TradespersonProfileScreen = props => {
                                     const result = props.getTwoColumnsElem(
                                         elem
                                     );
-                                    console.log(result);
                                     return (
                                         <View style={styles.details}>
                                             {result}
