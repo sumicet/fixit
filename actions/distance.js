@@ -22,7 +22,7 @@ export const getText = async (origin, destination) => {
             text = '<1km';
         } else {
             if (meters >= 1000 && meters <= 100000) {
-                text = (meters / 1000).toString();
+                text = (Math.round(meters / 1000)).toString() + 'km';
             } else {
                 text = 'far';
             }

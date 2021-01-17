@@ -47,6 +47,7 @@ const AppContainer = () => {
         dispatch(fetchMyJobs());
         dispatch(fetchAll());
         dispatch(fetchReviews());
+        
         navigator.geolocation.getCurrentPosition(async position => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
@@ -69,7 +70,7 @@ const AppContainer = () => {
     useEffect(() => {
         initialFetches().then(() => {
             setIsLoading(false);
-        })
+        });
     }, [userId]);
 
     if (isLoading) {

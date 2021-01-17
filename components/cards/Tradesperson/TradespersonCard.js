@@ -27,12 +27,12 @@ const TradespersonCard = props => {
 
     const allTradespeople = useSelector(state => state.tradespeople.all);
 
-    const user_place_id = useSelector(state => state.tradesperson.streetAddress)
-        .place_id;
+    const street = useSelector(state => state.auth.streetAddress);
+
+    const user_place_id = street && street.place_id;
     const [distance, setDistance] = useState();
 
     useEffect(() => {
-        console.log('ye', user_place_id, streetAddress.place_id)
         if(user_place_id && streetAddress) {
             getText(user_place_id, streetAddress.place_id).then(result => {
                 setDistance(result);

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 
 import LocationIcon from '../../../assets/icons/Card/LocationIcon';
 import CardIcon from './CardIcon';
-import { getText } from '../../../actions/distance';
 
 const Location = props => {
     return (

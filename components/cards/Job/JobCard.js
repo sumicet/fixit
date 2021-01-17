@@ -13,12 +13,11 @@ import { getText } from '../../../actions/distance';
 import { useSelector } from 'react-redux';
 
 const JobCard = props => {
-    const user_place_id = useSelector(state => state.tradesperson.streetAddress)
-        .place_id;
+    const user_place_id = useSelector(state => state.auth.streetAddress).place_id;
     const [distance, setDistance] = useState();
 
     useEffect(() => {
-        streetAddress
+        user_place_id && props.streetAddress
             ? getText(user_place_id, props.streetAddress.place_id).then(
                   result => {
                       //TODO make sure u get props.stree.. from the other comp

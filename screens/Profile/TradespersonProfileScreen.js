@@ -30,12 +30,12 @@ const TradespersonProfileScreen = props => {
     const userId = props.route.params && props.route.params.userId;
     const reviews = useSelector(state => state.reviews.all).filter(review => review.tradespersonId === userId);
 
-    const user_place_id = useSelector(state => state.tradesperson.streetAddress)
-        .place_id;
+    const user_place_id = useSelector(state => state.auth.streetAddress).place_id;
     const [distance, setDistance] = useState();
 
     useEffect(() => {
-        tradesperson.streetAddress
+        console.log(user_place_id, tradesperson.streetAddress)
+        user_place_id && tradesperson.streetAddress
             ? getText(user_place_id, tradesperson.streetAddress.place_id).then(result => {
                   setDistance(result);
               })
@@ -263,7 +263,7 @@ const TradespersonProfileScreen = props => {
                         readOnly={true}
                         size="medium"
                     />
-                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                    {tradesperson.userId !== currentUserId && <View style={{ flex: 1, alignItems: 'flex-end' }}>
                         <Touchable
                             style={{
                                 flex: 0,
@@ -288,7 +288,7 @@ const TradespersonProfileScreen = props => {
                                 Write a review
                             </SmallContent>
                         </Touchable>
-                    </View>
+                    </View>}
                 </View>
 
                 <FlatList

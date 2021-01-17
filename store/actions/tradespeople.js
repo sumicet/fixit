@@ -1,7 +1,19 @@
 export const FETCH_TRADESPEOPLE = 'FETCH_TRADESPEOPLE';
 export const SET_DISTANCES = 'SET_DISTANCES';
+export const SET_RATING = 'SET_RATING';
 
 import * as Firebase from '../../config/Firebase';
+
+export const setRating = (userId, rating, ratingVotesAmount) => {
+    return async dispatch => {
+        dispatch({
+            type: SET_RATING,
+            userId,
+            rating,
+            ratingVotesAmount,
+        });
+    };
+};
 
 export const fetchAll = () => {
     return async dispatch => {
@@ -20,22 +32,22 @@ export const fetchAll = () => {
 
         try {
             const res = await Firebase.storage
-            .ref()
-            .child('/profilePictures/')
-            .listAll();
+                .ref()
+                .child('/profilePictures/')
+                .listAll();
 
-        const items = res.items;
-        var i;
-        if (items)
-            for (i = 0; i < items.length; i++) {
-                const profilePicture = await items[i].getDownloadURL();
-                profilePictureList.push({
-                    userId: items[i].name,
-                    profilePicture,
-                });
-            }
+            const items = res.items;
+            var i;
+            if (items)
+                for (i = 0; i < items.length; i++) {
+                    const profilePicture = await items[i].getDownloadURL();
+                    profilePictureList.push({
+                        userId: items[i].name,
+                        profilePicture,
+                    });
+                }
         } catch (error) {
-            console.log('no pics')
+            console.log('no pics');
         }
 
         dispatch({
@@ -46,40 +58,40 @@ export const fetchAll = () => {
     };
 };
 
-export const setDistances = (place_id) => {
+export const setDistances = place_id => {
     return async (dispatch, getState) => {
         const all = getState().tradespeople.all;
         const updatedAllDistances = [];
-            for(const key in all) {
-                const { status, meters } = await getDistance(
-                    place_id,
-                    all[key].streetAddress.place_id
-                );
+        for (const key in all) {
+            const { status, meters } = await getDistance(
+                place_id,
+                all[key].streetAddress.place_id
+            );
 
-                var distance;
+            var distance;
 
-                if (status === 'OK') {
-                    if (meters < 1000) {
-                        distance = -1;
-                    } else {
-                        if (meters >= 1000 && meters <= 50000) {
-                            distance = Math.floor(meters / 1000).toString();
-                        } else {
-                            distance = -2;
-                        }
-                    }
+            if (status === 'OK') {
+                if (meters < 1000) {
+                    distance = -1;
                 } else {
-                    distance = 'N/A';
+                    if (meters >= 1000 && meters <= 50000) {
+                        distance = Math.floor(meters / 1000).toString();
+                    } else {
+                        distance = -2;
+                    }
                 }
-
-                updatedAllDistances.push({
-                    ...all[key],
-                    distance,
-                });
+            } else {
+                distance = 'N/A';
             }
+
+            updatedAllDistances.push({
+                ...all[key],
+                distance,
+            });
+        }
         dispatch({
             type: SET_DISTANCES,
-            all: updatedAllDistances
-        })
-    }
-}
+            all: updatedAllDistances,
+        });
+    };
+};

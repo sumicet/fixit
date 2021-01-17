@@ -31,7 +31,6 @@ const reviewsReducer = (state = initialState, action) => {
                     date: action.date
                 };
             }
-
             return {
                 ...state,
                 all: updatedAll,

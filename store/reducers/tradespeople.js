@@ -1,4 +1,4 @@
-import { FETCH_TRADESPEOPLE, SET_DISTANCES } from '../actions/tradespeople';
+import { FETCH_TRADESPEOPLE, SET_DISTANCES, SET_RATING } from '../actions/tradespeople';
 
 const initialState = {
     all: [],
@@ -30,6 +30,15 @@ const tradespeopleReducer = (state = initialState, action) => {
                 ...state,
                 all: action.all,
             };
+        case SET_RATING:
+            const updatedAll = [...state.all];
+            const index = updatedAll.findIndex(tp => tp.userId === action.userId);
+            updatedAll[index].rating = action.rating;
+            updatedAll[index].ratingVotesAmount = action.ratingVotesAmount;
+            return {
+                ...state,
+                all: updatedAll
+            }
         default:
             return state;
     }
