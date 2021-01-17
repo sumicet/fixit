@@ -118,6 +118,7 @@ const UserProfileScreen = props => {
                             <ProfilePicture
                                 profilePicture={tradesperson.profilePicture}
                                 isLarge={true}
+                                isRateCard={true}
                             />
                         </Line>
                         <Line style={{ flex: 0 }}>

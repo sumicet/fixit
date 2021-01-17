@@ -65,7 +65,6 @@ const MyJobsScreen = props => {
                     props.navigation.navigate('JobDetails', { id: item.id });
                 }}
             >
-                
                 {/* TODO change this
                     <JobCard
                     date={item.date}
@@ -79,22 +78,23 @@ const MyJobsScreen = props => {
     };
 
     return (
-        <ScrollableContainer
-            //title={'My Jobs'}
-            backgroundColor={Color.primaryColor}
-        >
-            <View>
-                {userPendingJobs.length !== 0 ? (
+        <View style={{ flex: 1, backgroundColor: Color.primaryColor }}>
+            {userPendingJobs.length !== 0 ? (
+                <ScrollableContainer
+                    //title={'My Jobs'}
+                    backgroundColor={Color.primaryColor}
+                    style={{ flex: 1 }}
+                >
                     <FlatList
                         keyExtractor={(item, i) => `key-${i}`}
                         data={userPendingJobs}
                         renderItem={renderItem}
                     />
-                ) : (
-                    <Empty />
-                )}
-            </View>
-        </ScrollableContainer>
+                </ScrollableContainer>
+            ) : (
+                <Empty />
+            )}
+        </View>
     );
 };
 

@@ -28,6 +28,7 @@ import { getText } from '../../actions/distance';
 import LineDescription from '../../components/common/LineDescription';
 import SmallBoldContent from '../../components/text/SmallBoldContent';
 import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
+import Empty from '../../components/empty/Empty';
 
 const TradespersonProfileScreen = props => {
     const userId = props.route.params && props.route.params.userId;
@@ -260,11 +261,18 @@ const TradespersonProfileScreen = props => {
                         alignItems: 'center',
                     }}
                 >
-                    <Header style={{ textAlign: 'left' }}>Rating: </Header>
+                    <Header
+                        style={{
+                            textAlign: 'left',
+                            color: Color.textOnTertiaryColorBackground,
+                        }}
+                    >
+                        Rating:{' '}
+                    </Header>
                     <Rating
                         rating={tradesperson.rating}
                         ratingVotesAmount={tradesperson.ratingVotesAmount}
-                        color={Color.textColor}
+                        color={Color.textOnTertiaryColorBackground}
                         readOnly={true}
                         size="medium"
                     />
@@ -288,11 +296,13 @@ const TradespersonProfileScreen = props => {
                                     onPress={() => {
                                         props.navigation.navigate('Review', {
                                             tradesperson: tradesperson,
-                                            oldReview: currentUserReview
+                                            oldReview: currentUserReview,
                                         });
                                     }}
                                 >
-                                    {currentUserReview ? 'Edit your review' : 'Write a review'}
+                                    {currentUserReview
+                                        ? 'Edit your review'
+                                        : 'Write a review'}
                                 </SmallContent>
                             </Touchable>
                         </View>
@@ -323,40 +333,45 @@ const TradespersonProfileScreen = props => {
     };
 
     return (
-        <View style={{backgroundColor: Color.primaryColor}}>
+        <View style={{ backgroundColor: Color.primaryColor, flex: 1 }}>
             <FlatList
-            data={reviews}
-            keyExtractor={(item, i) => `key-${i}`}
-            renderItem={itemData => <View style={{paddingHorizontal: Layout.screenHorizontalPadding}}>
-                <Review review={itemData.item} />
-            </View>}
-            ListEmptyComponent={() => (
-                <View
-                    style={{
-                        paddingTop:
-                            Layout.screenHorizontalPadding -
-                            Layout.generalPadding,
-                    }}
-                >
-                    <SmallContent style={{ textAlign: 'center' }}>
-                        Be the first one to write a review!
-                    </SmallContent>
-                </View>
-            )}
-            ListHeaderComponent={() => (
-                <SectionedContainer
-                    //title="John McCormack"
-                    //titleColor={Color.importantTextOnTertiaryColorBackground}
-                    topComponent={<TopComponent />}
-                    midComponent={<MidComponent />}
-                    bottomComponent={<BottomComponent />}
-                    navigation={props.navigation}
-                />
-            )}
-            ListFooterComponent={() => (
-            <EndOfPageSpace />
-            )}
-        />
+                data={reviews}
+                keyExtractor={(item, i) => `key-${i}`}
+                renderItem={itemData => (
+                    <View
+                        style={{
+                            paddingHorizontal: Layout.screenHorizontalPadding,
+                        }}
+                    >
+                        <Review review={itemData.item} />
+                    </View>
+                )}
+                ListEmptyComponent={() => (
+                    <View
+                        style={{
+                            paddingTop:
+                                Layout.screenHorizontalPadding -
+                                Layout.generalPadding,
+                        }}
+                    >
+                        <Empty
+                            size="small"
+                            message="Be the first one to add a review!"
+                        />
+                    </View>
+                )}
+                ListHeaderComponent={() => (
+                    <SectionedContainer
+                        //title="John McCormack"
+                        //titleColor={Color.importantTextOnTertiaryColorBackground}
+                        topComponent={<TopComponent />}
+                        midComponent={<MidComponent />}
+                        bottomComponent={<BottomComponent />}
+                        navigation={props.navigation}
+                    />
+                )}
+                ListFooterComponent={() => <EndOfPageSpace />}
+            />
         </View>
     );
 };

@@ -225,7 +225,7 @@ const EditTradespersonProfile = props => {
                     onPress={pickImage}
                     style={{ flex: 0, borderRadius: 100, overflow: 'hidden' }}
                 >
-                    <ProfilePicture profilePicture={profilePicture} isLarge={true} />
+                    <ProfilePicture isRateCard={true} profilePicture={profilePicture} isLarge={true} />
                 </Touchable>
             </Line>
             <LineDescription text="Phone number.">
