@@ -45,7 +45,7 @@ const InitialLoadingScreen = props => {
 
     useEffect(() => {
         detectUserChanges().then(() => dispatch(setIsLoading(false)));
-    });
+    }, []);
 
     return <Loading />;
 };

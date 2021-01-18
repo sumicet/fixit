@@ -30,7 +30,8 @@ const jobReducer = (state = initialState, action) => {
                 action.customerType,
                 action.propertyType,
                 action.jobAddress,
-                action.startTimeId
+                action.startTimeId,
+                action.images
             );
 
             return {
@@ -49,7 +50,8 @@ const jobReducer = (state = initialState, action) => {
                 action.customerType,
                 action.propertyType,
                 action.jobAddress,
-                action.startTimeId
+                action.startTimeId,
+                action.images
             );
 
             const updatedAllPendingJobs = editElement(

@@ -9,7 +9,8 @@ class Job {
         customerType,
         propertyType,
         jobAddress,
-        startTimeId
+        startTimeId,
+        images
     ) {
         this.id = id;
         this.userId = userId;
@@ -21,6 +22,7 @@ class Job {
         this.propertyType = propertyType;
         this.jobAddress = jobAddress;
         this.startTimeId = startTimeId;
+        this.images = images;
     }
 }
 

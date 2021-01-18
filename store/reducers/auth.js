@@ -38,6 +38,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 email: action.email,
                 userType: action.userType,
+                name: action.name
             };
         case LOG_IN:
             return {
@@ -46,6 +47,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 email: action.email,
                 userType: action.userType,
+                name: action.name
             };
         case SIGN_UP:
             return {

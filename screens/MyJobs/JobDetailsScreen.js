@@ -30,6 +30,8 @@ import { START_TIMES } from '../../data/Jobs/StartTimes';
 import GoogleMaps from '../../components/APIs/GoogleMaps';
 import { CUSTOMER_TYPES } from '../../data/Jobs/CustomerTypes';
 import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
+import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
+import ImageSelector from '../../components/images/ImageSelector';
 
 const latitudeDelta = 0.005;
 const longitudeDelta = 0.005;
@@ -422,31 +424,22 @@ const JobDetailsScreen = props => {
     };
 
     return (
-        // <View style={{ flex: 1 }}>
-        //     <SectionedContainer
-        //         title="Details"
-        //         titleColor={Color.importantTextOnTertiaryColorBackground}
-        //         topComponent={<TopComponent />}
-        //         midComponent={<MidComponent />}
-        //         bottomComponent={<BottomComponent />}
-        //         navigation={props.navigation}
-        //     />
-        //     <Alert
-        //         modalVisible={modalVisible}
-        //         onPress={onDeleteConfirm}
-        //         hide={handleHideAlert}
-        //         title="Delete"
-        //         titleColor={Color.urgent}
-        //         message="Are you sure you want to delete this job?"
-        //     />
-        // </View>
         <ScrollableContainer backgroundColor={Color.primaryColor}>
+            <Alert
+                modalVisible={modalVisible}
+                onPress={onDeleteConfirm}
+                hide={handleHideAlert}
+                title="Delete"
+                titleColor={Color.urgent}
+                message="Are you sure you want to delete this job?"
+            />
             <View>
                 <Line style={{ flex: 0, alignItems: 'flex-start' }}>
                     <PostedBy
                         size="medium"
                         textColor={Color.textOnTertiaryColorBackground}
                         date={job.date}
+                        userId={job.userId}
                     />
                 </Line>
                 <Line style={{ flex: 0, flexDirection: 'row' }}>
@@ -544,7 +537,7 @@ const JobDetailsScreen = props => {
                     <SmallBubble
                         style={{
                             marginLeft: Layout.generalPadding,
-                            flex: 0
+                            flex: 0,
                         }}
                         text={
                             CUSTOMER_TYPES.find(
@@ -555,7 +548,7 @@ const JobDetailsScreen = props => {
                     <SmallBubble
                         style={{
                             marginLeft: Layout.generalPadding,
-                            flex: 0
+                            flex: 0,
                         }}
                         text={
                             PROPERTY_TYPES.find(
@@ -564,111 +557,15 @@ const JobDetailsScreen = props => {
                         }
                     />
                 </LineDescription>
-                {/* {index !== 9 ? (
+                {job.images.length > 0 && (
                     <View>
-                        <LineDescription text="What kind of work do you need?" />
+                        <LineDescription text="Images" />
                         <Line style={{ flex: 0 }}>
-                            <Grid
-                                data={workTypes}
-                                onPress={handleWorkTypePress}
-                                initialSelectedIndexes={[
-                                    editModeOn ? jobToUpdate.workTypeId - 1 : 0,
-                                ]}
-                            />
+                            <ImageSelector images={job.images} />
                         </Line>
                     </View>
-                ) : null}
-                <LineDescription text="Description" />
-                <Line style={{ flex: 0 }}>
-                    <JobDescription
-                        input={jobDescriptionInput}
-                        onChangeText={onChangeJobDescription}
-                    />
-                </Line>
-                <LineDescription text="Where are you?" />
-                <Line style={{ flex: 0 }}>
-                    <JobAddress
-                        input={jobAddressInput}
-                        onStreetAddressChange={handleStreetAddressChange}
-                        onChangeText={handleJobAddressChange}
-                        streetAddress={jobAddressInput.line1}
-                        initial_place_id={
-                            jobToUpdate ? jobToUpdate.jobAddress.place_id : null
-                        }
-                    />
-                </Line>
-                <LineDescription text="I am a.." />
-                <Line
-                    style={{
-                        flex: 0,
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <Grid
-                        data={CUSTOMER_TYPES}
-                        checked={customerTypeChecked}
-                        onToggleCheck={index =>
-                            handleToggleCheck(
-                                index,
-                                customerTypeChecked,
-                                setCustomerTypeChecked
-                            )
-                        }
-                        RenderItemComponent={CustomRadioButton}
-                    />
-                </Line>
-                <LineDescription text="What type of property is the job for?" />
-                <Line
-                    style={{
-                        flex: 0,
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <Grid
-                        data={PROPERTY_TYPES}
-                        checked={propertyTypeChecked}
-                        onToggleCheck={index =>
-                            handleToggleCheck(
-                                index,
-                                propertyTypeChecked,
-                                setPropertyTypeChecked
-                            )
-                        }
-                        RenderItemComponent={CustomRadioButton}
-                    />
-                </Line>
-                <LineDescription text="When should the work start?" />
-                <Line
-                    style={{
-                        flex: 0,
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <Grid
-                        data={START_TIMES}
-                        checked={startTimesChecked}
-                        onToggleCheck={index =>
-                            handleToggleCheck(
-                                index,
-                                startTimesChecked,
-                                setStartTimesChecked
-                            )
-                        }
-                        RenderItemComponent={CustomRadioButton}
-                    />
-                </Line>
-                <Line
-                    style={{
-                        flex: 0,
-                        paddingTop: Layout.screenHorizontalPadding,
-                        paddingBottom: Layout.endOfPageSpace,
-                    }}
-                >
-                    <MediumButton
-                        text={editModeOn ? 'Finish' : 'Post job'}
-                        onPress={handlePostJobPress}
-                    />
-                </Line> */}
+                )}
+                <EndOfPageSpace />
             </View>
         </ScrollableContainer>
     );

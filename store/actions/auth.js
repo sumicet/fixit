@@ -161,7 +161,7 @@ export const logIn = (email, password) => {
             const token = await userData.user.getIdToken();
             const userId = userData.user.uid;
             saveUserDataToStorage(userId, token);
-            var ref, userType;
+            var ref, userType, name;
             try {
                 ref = Firebase.database.ref('tradesperson').child(userId);
                 userType = 'tradesperson';
@@ -169,12 +169,14 @@ export const logIn = (email, password) => {
                 ref = Firebase.database.ref('customer').child(userId);
                 userType = 'customer';
             }
+            ref.child('name').once('value').then(res => name = res.val());
             dispatch({
                 type: LOG_IN,
                 userId,
                 token: token,
                 userType,
                 email,
+                name
             });
             dispatch({
                 type: SET_IS_LOGGED_IN,
@@ -311,7 +313,7 @@ export const autoLogIn = () => {
         const token = userData && JSON.parse(userData).token;
 
         if (userId && token) {
-            var ref, userType;
+            var ref, userType, name;
             try {
                 ref = Firebase.database.ref('tradesperson').child(userId);
                 userType = 'tradesperson';
@@ -319,6 +321,7 @@ export const autoLogIn = () => {
                 ref = Firebase.database.ref('customer').child(userId);
                 userType = 'customer';
             }
+            ref.child('name').once('value').then(res => name = res.val());
 
             const snap = await ref.child('email').once('value');
             const email = snap.val();
@@ -329,6 +332,7 @@ export const autoLogIn = () => {
                 token,
                 email,
                 userType,
+                name
             });
         }
     };

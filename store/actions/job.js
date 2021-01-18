@@ -47,8 +47,10 @@ export const addJob = (
                 .then(res => res.blob())
                 .then(blob => {
                     Firebase.storage
-                        .ref(`/jobImages/${userId}/${responseData.name}/${index}`)
-                        .put(blob)
+                        .ref(
+                            `/jobImages/${userId}/${responseData.name}/${index}`
+                        )
+                        .put(blob);
                 });
         });
 
@@ -64,6 +66,7 @@ export const addJob = (
             propertyType,
             jobAddress,
             startTimeId,
+            images,
         });
     };
 };
@@ -76,7 +79,8 @@ export const editJob = (
     customerType,
     propertyType,
     jobAddress,
-    startTimeId
+    startTimeId,
+    images
 ) => {
     return async dispatch => {
         const responseGet = await fetch(
@@ -108,6 +112,22 @@ export const editJob = (
 
         const responsePatchData = await responsePatch.json();
 
+        Firebase.storage
+            .ref(`/jobImages/${userId}/${responsePatchData.name}`)
+            .delete();
+
+        images.forEach((image, index) => {
+            fetch(image)
+                .then(res => res.blob())
+                .then(blob => {
+                    Firebase.storage
+                        .ref(
+                            `/jobImages/${userId}/${responsePatchData.name}/${index}`
+                        )
+                        .put(blob);
+                });
+        });
+
         dispatch({
             type: UPDATE_JOB,
             id,
@@ -120,6 +140,7 @@ export const editJob = (
             propertyType,
             jobAddress,
             startTimeId,
+            images,
         });
 
         dispatch(resetJobData());
@@ -144,7 +165,7 @@ export const deleteJob = id => {
     };
 };
 
-export const fetchMyJobs = () => {
+export const fetchMyJobs = userId => {
     return async dispatch => {
         try {
             const response = await fetch(
@@ -156,7 +177,21 @@ export const fetchMyJobs = () => {
             const userPendingJobs = [];
 
             for (const key in responseData) {
-                if (responseData[key].userId === 'u1') {
+                if (responseData[key].userId === userId) {
+                    const images = [];
+                    var i;
+                    for (i = 0; i < 10; i++) {
+                        try {
+                            const imageRef = Firebase.storage
+                                .ref()
+                                .child(`/jobImages/${userId}/${key}/${i}`);
+                            const image = await imageRef.getDownloadURL();
+                            images.push(image);
+                        } catch (error) {
+                            break;
+                        }
+                    }
+
                     userPendingJobs.push(
                         new Job(
                             key,
@@ -168,7 +203,8 @@ export const fetchMyJobs = () => {
                             responseData[key].customerType,
                             responseData[key].propertyType,
                             responseData[key].jobAddress,
-                            responseData[key].startTimeId
+                            responseData[key].startTimeId,
+                            images
                         )
                     );
                 }

@@ -44,7 +44,7 @@ const AppContainer = () => {
     const initialFetches = async () => {
         fetchFonts();
         dispatch(fetchTradespersonInfo(userId));
-        dispatch(fetchMyJobs());
+        dispatch(fetchMyJobs(userId));
         dispatch(fetchAll());
         dispatch(fetchReviews());
         
