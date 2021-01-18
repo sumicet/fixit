@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import Layout from '../../../constants/Layout';
@@ -13,12 +13,25 @@ import { getText } from '../../../actions/distance';
 import { useSelector } from 'react-redux';
 
 const JobCard = props => {
-    const user_place_id = useSelector(state => state.auth.streetAddress).place_id;
+    const user_place_id = useSelector(state => state.auth.streetAddress)
+        .place_id;
     const [distance, setDistance] = useState();
 
+    const {
+        userId,
+        occupationId,
+        workTypeId,
+        jobDescription,
+        customerType,
+        propertyType,
+        jobAddress,
+        startTimeId,
+    } = props;
+    const date = new Date(props.date);
+
     useEffect(() => {
-        user_place_id && props.streetAddress
-            ? getText(user_place_id, props.streetAddress.place_id).then(
+        user_place_id && jobAddress
+            ? getText(user_place_id, jobAddress.place_id).then(
                   result => {
                       //TODO make sure u get props.stree.. from the other comp
                       setDistance(result);
@@ -27,14 +40,16 @@ const JobCard = props => {
             : setDistance('N/A');
     }, []);
 
+    
+
     return (
         <View style={styles.container}>
             <View style={{ width: '100%' }}>
-                <PostedBy date={props.date} />
+                <PostedBy date={date} />
                 <View style={{ paddingBottom: 5, flexDirection: 'row' }}>
                     <View style={{ flex: 1 }}>
                         <Occupations
-                            occupationId={props.occupationId}
+                            occupationsIds={[occupationId]}
                             isTitle={true}
                         />
                     </View>
@@ -46,16 +61,16 @@ const JobCard = props => {
                         {
                             WORK_TYPES.find(
                                 work =>
-                                    work.id === props.workTypeId &&
-                                    work.occupationId === props.occupationId
-                            ).name
+                                    work.id === workTypeId &&
+                                    work.occupationId === occupationId
+                            )?.name
                         }
                     </SmallContentWithEllipsis>
                 </View>
 
                 <View style={{ paddingBottom: 5 }}>
                     <SmallContentWithEllipsis>
-                        {props.jobDescription}
+                        {jobDescription}
                     </SmallContentWithEllipsis>
                 </View>
                 <View
@@ -67,7 +82,7 @@ const JobCard = props => {
                 >
                     <Location distance={distance} />
                     <View style={{ paddingLeft: Layout.generalPadding }}>
-                        <StartTime startTimeId={props.startTimeId} />
+                        <StartTime startTimeId={startTimeId} />
                     </View>
                 </View>
             </View>

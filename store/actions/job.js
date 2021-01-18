@@ -4,17 +4,21 @@ export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
 
 import Job from '../../models/Jobs/Job';
+import * as Firebase from '../../config/Firebase';
 
 export const addJob = (
+    userId,
     occupationId,
     workTypeId,
     jobDescription,
     customerType,
     propertyType,
     jobAddress,
-    startTimeId
+    startTimeId,
+    images
 ) => {
     return async dispatch => {
+        const date = new Date().toString();
         const response = await fetch(
             `https://fixit-46444.firebaseio.com/allPendingJobs.json`,
             {
@@ -23,8 +27,8 @@ export const addJob = (
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userId: 'u1',
-                    date: Date.now(),
+                    userId,
+                    date,
                     occupationId,
                     workTypeId,
                     jobDescription,
@@ -38,11 +42,21 @@ export const addJob = (
 
         const responseData = await response.json();
 
+        images.forEach((image, index) => {
+            fetch(image)
+                .then(res => res.blob())
+                .then(blob => {
+                    Firebase.storage
+                        .ref(`/jobImages/${userId}/${responseData.name}/${index}`)
+                        .put(blob)
+                });
+        });
+
         dispatch({
             type: ADD_JOB,
             id: responseData.name,
-            userId: 'u1',
-            date: Date.now(),
+            userId,
+            date,
             occupationId,
             workTypeId,
             jobDescription,

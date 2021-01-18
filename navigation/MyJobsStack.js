@@ -33,7 +33,7 @@ const MyJobsStack = () => {
                 name="JobDetails"
                 component={JobDetailsScreen}
                 options={() => ({
-                    ...coloredHeaderOptions,
+                    ...headerOptions,
                     headerTitle: 'Details',
                 })}
             />

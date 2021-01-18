@@ -10,6 +10,7 @@ import InAppNotification from '../../components/alert/InAppNotification';
 import Empty from '../../components/empty/Empty';
 import Color from '../../constants/Color';
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
+import Container from '../../components/containers/Container';
 
 const MyJobsScreen = props => {
     const userPendingJobs = useSelector(
@@ -65,23 +66,25 @@ const MyJobsScreen = props => {
                     props.navigation.navigate('JobDetails', { id: item.id });
                 }}
             >
-                {/* TODO change this
-                    <JobCard
+                <JobCard
+                    userId={item.userId}
                     date={item.date}
                     occupationId={item.occupationId}
                     workTypeId={item.workTypeId}
                     jobDescription={item.jobDescription}
+                    customerType={item.customerType}
+                    propertyType={item.propertyType}
+                    jobAddress={item.jobAddress}
                     startTimeId={item.startTimeId}
-                /> */}
+                />
             </Touchable>
         );
     };
 
     return (
         <View style={{ flex: 1, backgroundColor: Color.primaryColor }}>
-            {userPendingJobs.length !== 0 ? (
-                <ScrollableContainer
-                    //title={'My Jobs'}
+            {userPendingJobs.length > 0 ? (
+                <Container
                     backgroundColor={Color.primaryColor}
                     style={{ flex: 1 }}
                 >
@@ -90,7 +93,7 @@ const MyJobsScreen = props => {
                         data={userPendingJobs}
                         renderItem={renderItem}
                     />
-                </ScrollableContainer>
+                </Container>
             ) : (
                 <Empty />
             )}

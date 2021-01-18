@@ -114,7 +114,7 @@ const EditTradespersonProfile = props => {
         tradesperson && tradesperson.insurance ? tradesperson.insurance : false
     );
 
-    const [profilePicture, setprofilePicture] = useState(
+    const [profilePicture, setProfilePicture] = useState(
         tradesperson && tradesperson.profilePicture
             ? tradesperson.profilePicture
             : null
@@ -144,7 +144,7 @@ const EditTradespersonProfile = props => {
         });
 
         if (!result.cancelled) {
-            setprofilePicture(result.uri);
+            setProfilePicture(result.uri);
         }
     };
 
@@ -304,7 +304,7 @@ const EditTradespersonProfile = props => {
                     multipleOptions={true}
                 />
             </Line>
-            <LineDescription text="Schedule.">
+            <LineDescription textStyle={{textAlign: 'left'}} text="Schedule.">
                 <SmallContent>
                     Let your customers know when you are available. Keep it
                     short.
@@ -322,7 +322,7 @@ const EditTradespersonProfile = props => {
                     textAlignVertical="center"
                 />
             </Line>
-            <LineDescription text="How much experience do you have in the selected field of work?">
+            <LineDescription textStyle={{textAlign: 'left'}} text="How much experience do you have in the selected field of work?">
                 <SmallContent>
                     Example: 3y+ means you have between 3 and 5 years of
                     experience.
@@ -343,7 +343,7 @@ const EditTradespersonProfile = props => {
                     RenderItemComponent={CustomRadioButton}
                 />
             </Line>
-            <LineDescription text="What type of properties do you work with?">
+            <LineDescription textStyle={{textAlign: 'left'}} text="What type of properties do you work with?">
                 <SmallContent>You can select multiple options.</SmallContent>
             </LineDescription>
             <Line
@@ -365,7 +365,7 @@ const EditTradespersonProfile = props => {
                     RenderItemComponent={CustomRadioButton}
                 />
             </Line>
-            <LineDescription text="Street address.">
+            <LineDescription textStyle={{textAlign: 'left'}} text="Street address.">
                 <SmallContent>
                     This information will NOT be displayed on your profile. It
                     is used to calculate the distance between you and customers.
@@ -383,7 +383,7 @@ const EditTradespersonProfile = props => {
                     }
                 />
             </Line>
-            <LineDescription text="Do you have security liability insurance?">
+            <LineDescription textStyle={{textAlign: 'left'}} text="Do you have security liability insurance?">
                 <SmallContent>
                     Liability insurance is a part of the general insurance
                     system of risk financing to protect the purchaser (the

@@ -1,8 +1,38 @@
 import React from 'react';
+import { View } from 'react-native';
 import Color from '../../constants/Color';
+import SmallContent from '../text/SmallContent';
 import SuperSmallContent from '../text/SuperSmallContent';
 
 const RelativeTime = props => {
+    const Text = props => {
+        return (
+            <View>
+                {props.size === 'medium' ? (
+                    <SmallContent
+                        style={{
+                            color: props.textColor
+                                ? props.textColor
+                                : Color.secondaryColor,
+                        }}
+                    >
+                        {props.text}
+                    </SmallContent>
+                ) : (
+                    <SuperSmallContent
+                        style={{
+                            color: props.textColor
+                                ? props.textColor
+                                : Color.secondaryColor,
+                        }}
+                    >
+                        {props.text}
+                    </SuperSmallContent>
+                )}
+            </View>
+        );
+    };
+
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
     var msPerDay = msPerHour * 24;
@@ -12,76 +42,46 @@ const RelativeTime = props => {
     var elapsed = Math.abs(Date.now() - props.date);
 
     if (elapsed < msPerMinute) {
-        return (
-            <SuperSmallContent
-                style={{
-                    color: props.textColor
-                        ? props.textColor
-                        : Color.secondaryColor,
-                }}
-            >
-                Now
-            </SuperSmallContent>
-        );
+        return <Text size={props.size} text="Now" />;
     } else if (elapsed < msPerHour) {
         return (
-            <SuperSmallContent
-                style={{
-                    color: props.textColor
-                        ? props.textColor
-                        : Color.secondaryColor,
-                }}
-            >
-                {Math.round(elapsed / msPerMinute)}m ago
-            </SuperSmallContent>
+            <Text
+                size={props.size}
+                textColor={props.textColor}
+                text={Math.round(elapsed / msPerMinute) + 'm ago'}
+            />
         );
     } else if (elapsed < msPerDay) {
         return (
-            <SuperSmallContent
-                style={{
-                    color: props.textColor
-                        ? props.textColor
-                        : Color.secondaryColor,
-                }}
-            >
-                {Math.round(elapsed / msPerHour)}h ago
-            </SuperSmallContent>
+            <Text
+                size={props.size}
+                textColor={props.textColor}
+                text={Math.round(elapsed / msPerHour) + 'h ago'}
+            />
         );
     } else if (elapsed < msPerMonth) {
         return (
-            <SuperSmallContent
-                style={{
-                    color: props.textColor
-                        ? props.textColor
-                        : Color.secondaryColor,
-                }}
-            >
-                {Math.round(elapsed / msPerDay)}d ago
-            </SuperSmallContent>
+            <Text
+                size={props.size}
+                textColor={props.textColor}
+                text={Math.round(elapsed / msPerDay) + 'd ago'}
+            />
         );
     } else if (elapsed < msPerYear) {
         return (
-            <SuperSmallContent
-                style={{
-                    color: props.textColor
-                        ? props.textColor
-                        : Color.secondaryColor,
-                }}
-            >
-                {Math.round(elapsed / msPerMonth)}mo ago
-            </SuperSmallContent>
+            <Text
+                size={props.size}
+                textColor={props.textColor}
+                text={Math.round(elapsed / msPerMonth) + 'mo ago'}
+            />
         );
     } else {
         return (
-            <SuperSmallContent
-                style={{
-                    color: props.textColor
-                        ? props.textColor
-                        : Color.secondaryColor,
-                }}
-            >
-                {Math.round(elapsed / msPerYear)}y ago
-            </SuperSmallContent>
+            <Text
+                size={props.size}
+                textColor={props.textColor}
+                text={Math.round(elapsed / msPerYear) + 'y ago'}
+            />
         );
     }
 };

@@ -23,6 +23,16 @@ import Touchable from '../../components/common/Touchable';
 import { deleteJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
 import Loading from '../../components/loading/Loading';
+import ScrollableContainer from '../../components/containers/ScrollableContainer';
+import Grid from '../../components/layout/Grid';
+import LineDescription from '../../components/common/LineDescription';
+import { START_TIMES } from '../../data/Jobs/StartTimes';
+import GoogleMaps from '../../components/APIs/GoogleMaps';
+import { CUSTOMER_TYPES } from '../../data/Jobs/CustomerTypes';
+import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
+
+const latitudeDelta = 0.005;
+const longitudeDelta = 0.005;
 
 const JobDetailsScreen = props => {
     const job = useSelector(state => state.job.userPendingJobs).find(
@@ -32,8 +42,8 @@ const JobDetailsScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
-        props.navigation.setOptions({headerRight: headerRight})
-    })
+        props.navigation.setOptions({ headerRight: headerRight });
+    });
 
     const showAlert = () => {
         setModalVisible(true);
@@ -57,182 +67,183 @@ const JobDetailsScreen = props => {
         return <Loading />;
     }
 
-    const TopComponent = () => {
-        return (
-            <View>
-                <Line style={{ alignItems: 'flex-start' }}>
-                    <PostedBy
-                        date={job.date}
-                        textColor={Color.textOnTertiaryColorBackground}
-                    />
-                </Line>
-                <Line
-                    style={{
-                        justifyContent: 'flex-start',
-                        flexDirection: 'row',
-                    }}
-                >
-                    <Header
-                        style={{
-                            textAlign: 'left',
-                            color: Color.importantTextOnTertiaryColorBackground,
-                        }}
-                    >
-                        {
-                            OCCUPATIONS.find(occ => occ.id === job.occupationId)
-                                .name
-                        }{' '}
-                    </Header>
-                    <Header
-                        style={{
-                            textAlign: 'left',
-                            color: Color.importantTextOnTertiaryColorBackground,
-                        }}
-                    >
-                        (
-                    </Header>
-                    <Header
-                        style={{
-                            textAlign: 'left',
-                            color: Color.importantTextOnTertiaryColorBackground,
-                        }}
-                    >
-                        {
-                            WORK_TYPES.find(
-                                work =>
-                                    work.id === job.workTypeId &&
-                                    work.occupationId === job.occupationId
-                            ).name
-                        }
-                    </Header>
-                    <Header
-                        style={{
-                            textAlign: 'left',
-                            color: Color.importantTextOnTertiaryColorBackground,
-                        }}
-                    >
-                        )
-                    </Header>
-                </Line>
-                <Line style={{ alignItems: 'flex-start' }}>
-                    <SmallContent
-                        style={{ color: Color.importantTextOnTertiaryColorBackground }}
-                    >
-                        {job.jobDescription}
-                    </SmallContent>
-                </Line>
-                <Line>
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        <View
-                            style={{
-                                marginRight: 5,
-                                borderRadius: Layout.borderRadius,
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <Image
-                                source={{
-                                    uri:
-                                        'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gh-why-do-my-feet-hurt-toes-1594663599.png?crop=0.914xw:0.687xh;0.0864xw,0.110xh&resize=480:*',
-                                }}
-                                resizeMethod="scale"
-                                style={styles.image}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                marginRight: 5,
-                                borderRadius: Layout.borderRadius,
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <Image
-                                source={{
-                                    uri:
-                                        'https://cdn10.phillymag.com/wp-content/uploads/sites/3/2019/10/feet-fb.jpg',
-                                }}
-                                resizeMethod="scale"
-                                style={styles.image}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                marginRight: 5,
-                                borderRadius: Layout.borderRadius,
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <Image
-                                source={{
-                                    uri:
-                                        'https://original-content.imgix.net/2017/03/Man_Feet-1024x576.jpg?w=1024&h=1024',
-                                }}
-                                resizeMethod="scale"
-                                style={styles.image}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                marginRight: 5,
-                                borderRadius: Layout.borderRadius,
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <Image
-                                source={{
-                                    uri:
-                                        'https://www.saga.co.uk/contentlibrary/saga/publishing/verticals/health-and-wellbeing/conditions/happyfeetshutterstock_297390392768x576.jpg',
-                                }}
-                                resizeMethod="scale"
-                                style={styles.image}
-                            />
-                        </View>
-                    </ScrollView>
-                </Line>
-                <Line
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                    }}
-                >
-                    <StartTime
-                        startTimeId={job.startTimeId}
-                        color={Color.textOnTertiaryColorBackground}
-                    />
-                    <PropertyType
-                        propertyType={job.propertyType}
-                        color={Color.textOnTertiaryColorBackground}
-                    />
-                    <CustomerType
-                        customerType={job.customerType}
-                        color={Color.textOnTertiaryColorBackground}
-                    />
-                </Line>
-                <Line style={{ flexDirection: 'row' }}>
-                    <LocationIcon
-                        size={Layout.cardBigIconSize}
-                        color={Color.textOnTertiaryColorBackground}
-                    />
-                    <View>
-                        <SmallContent> </SmallContent>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <SmallContent
-                            style={{
-                                color: Color.textOnTertiaryColorBackground,
-                            }}
-                        >
-                            25km • {job.jobAddress.line1} •{' '}
-                            {job.jobAddress.line2}
-                        </SmallContent>
-                    </View>
-                </Line>
-            </View>
-        );
-    };
+    // const TopComponent = () => {
+    //     return (
+
+    //         // <View>
+    //         //     <Line style={{ alignItems: 'flex-start' }}>
+    //         //         <PostedBy
+    //         //             date={job.date}
+    //         //             textColor={Color.textOnTertiaryColorBackground}
+    //         //         />
+    //         //     </Line>
+    //         //     <Line
+    //         //         style={{
+    //         //             justifyContent: 'flex-start',
+    //         //             flexDirection: 'row',
+    //         //         }}
+    //         //     >
+    //         //         <Header
+    //         //             style={{
+    //         //                 textAlign: 'left',
+    //         //                 color: Color.importantTextOnTertiaryColorBackground,
+    //         //             }}
+    //         //         >
+    //         //             {
+    //         //                 OCCUPATIONS.find(occ => occ.id === job.occupationId)
+    //         //                     .name
+    //         //             }{' '}
+    //         //         </Header>
+    //         //         <Header
+    //         //             style={{
+    //         //                 textAlign: 'left',
+    //         //                 color: Color.importantTextOnTertiaryColorBackground,
+    //         //             }}
+    //         //         >
+    //         //             (
+    //         //         </Header>
+    //         //         <Header
+    //         //             style={{
+    //         //                 textAlign: 'left',
+    //         //                 color: Color.importantTextOnTertiaryColorBackground,
+    //         //             }}
+    //         //         >
+    //         //             {
+    //         //                 WORK_TYPES.find(
+    //         //                     work =>
+    //         //                         work.id === job.workTypeId &&
+    //         //                         work.occupationId === job.occupationId
+    //         //                 ).name
+    //         //             }
+    //         //         </Header>
+    //         //         <Header
+    //         //             style={{
+    //         //                 textAlign: 'left',
+    //         //                 color: Color.importantTextOnTertiaryColorBackground,
+    //         //             }}
+    //         //         >
+    //         //             )
+    //         //         </Header>
+    //         //     </Line>
+    //         //     <Line style={{ alignItems: 'flex-start' }}>
+    //         //         <SmallContent
+    //         //             style={{ color: Color.importantTextOnTertiaryColorBackground }}
+    //         //         >
+    //         //             {job.jobDescription}
+    //         //         </SmallContent>
+    //         //     </Line>
+    //         //     <Line>
+    //         //         <ScrollView
+    //         //             horizontal
+    //         //             showsHorizontalScrollIndicator={false}
+    //         //         >
+    //         //             <View
+    //         //                 style={{
+    //         //                     marginRight: 5,
+    //         //                     borderRadius: Layout.borderRadius,
+    //         //                     overflow: 'hidden',
+    //         //                 }}
+    //         //             >
+    //         //                 <Image
+    //         //                     source={{
+    //         //                         uri:
+    //         //                             'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gh-why-do-my-feet-hurt-toes-1594663599.png?crop=0.914xw:0.687xh;0.0864xw,0.110xh&resize=480:*',
+    //         //                     }}
+    //         //                     resizeMethod="scale"
+    //         //                     style={styles.image}
+    //         //                 />
+    //         //             </View>
+    //         //             <View
+    //         //                 style={{
+    //         //                     marginRight: 5,
+    //         //                     borderRadius: Layout.borderRadius,
+    //         //                     overflow: 'hidden',
+    //         //                 }}
+    //         //             >
+    //         //                 <Image
+    //         //                     source={{
+    //         //                         uri:
+    //         //                             'https://cdn10.phillymag.com/wp-content/uploads/sites/3/2019/10/feet-fb.jpg',
+    //         //                     }}
+    //         //                     resizeMethod="scale"
+    //         //                     style={styles.image}
+    //         //                 />
+    //         //             </View>
+    //         //             <View
+    //         //                 style={{
+    //         //                     marginRight: 5,
+    //         //                     borderRadius: Layout.borderRadius,
+    //         //                     overflow: 'hidden',
+    //         //                 }}
+    //         //             >
+    //         //                 <Image
+    //         //                     source={{
+    //         //                         uri:
+    //         //                             'https://original-content.imgix.net/2017/03/Man_Feet-1024x576.jpg?w=1024&h=1024',
+    //         //                     }}
+    //         //                     resizeMethod="scale"
+    //         //                     style={styles.image}
+    //         //                 />
+    //         //             </View>
+    //         //             <View
+    //         //                 style={{
+    //         //                     marginRight: 5,
+    //         //                     borderRadius: Layout.borderRadius,
+    //         //                     overflow: 'hidden',
+    //         //                 }}
+    //         //             >
+    //         //                 <Image
+    //         //                     source={{
+    //         //                         uri:
+    //         //                             'https://www.saga.co.uk/contentlibrary/saga/publishing/verticals/health-and-wellbeing/conditions/happyfeetshutterstock_297390392768x576.jpg',
+    //         //                     }}
+    //         //                     resizeMethod="scale"
+    //         //                     style={styles.image}
+    //         //                 />
+    //         //             </View>
+    //         //         </ScrollView>
+    //         //     </Line>
+    //         //     <Line
+    //         //         style={{
+    //         //             flexDirection: 'row',
+    //         //             justifyContent: 'flex-start',
+    //         //         }}
+    //         //     >
+    //         //         <StartTime
+    //         //             startTimeId={job.startTimeId}
+    //         //             color={Color.textOnTertiaryColorBackground}
+    //         //         />
+    //         //         <PropertyType
+    //         //             propertyType={job.propertyType}
+    //         //             color={Color.textOnTertiaryColorBackground}
+    //         //         />
+    //         //         <CustomerType
+    //         //             customerType={job.customerType}
+    //         //             color={Color.textOnTertiaryColorBackground}
+    //         //         />
+    //         //     </Line>
+    //         //     <Line style={{ flexDirection: 'row' }}>
+    //         //         <LocationIcon
+    //         //             size={Layout.cardBigIconSize}
+    //         //             color={Color.textOnTertiaryColorBackground}
+    //         //         />
+    //         //         <View>
+    //         //             <SmallContent> </SmallContent>
+    //         //         </View>
+    //         //         <View style={{ flex: 1 }}>
+    //         //             <SmallContent
+    //         //                 style={{
+    //         //                     color: Color.textOnTertiaryColorBackground,
+    //         //                 }}
+    //         //             >
+    //         //                 25km • {job.jobAddress.line1} •{' '}
+    //         //                 {job.jobAddress.line2}
+    //         //             </SmallContent>
+    //         //         </View>
+    //         //     </Line>
+    //         // </View>
+    //     );
+    // };
 
     const MidComponent = () => {
         return (
@@ -258,9 +269,24 @@ const JobDetailsScreen = props => {
                 <View>
                     <Header style={{ textAlign: 'left' }}>Quotes:</Header>
                 </View>
-                <TradespersonCard navigation={props.navigation} hasQuote={true} quote="200£" tradespersonId='1p6PpA2vNhe6jZ4mfg4GZSLGhYz2' />
-                <TradespersonCard navigation={props.navigation} hasQuote={true} quote="320£" tradespersonId='1p6PpA2vNhe6jZ4mfg4GZSLGhYz2' />
-                <TradespersonCard navigation={props.navigation} hasQuote={true} quote="190£" tradespersonId='1p6PpA2vNhe6jZ4mfg4GZSLGhYz2' />
+                <TradespersonCard
+                    navigation={props.navigation}
+                    hasQuote={true}
+                    quote="200£"
+                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
+                />
+                <TradespersonCard
+                    navigation={props.navigation}
+                    hasQuote={true}
+                    quote="320£"
+                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
+                />
+                <TradespersonCard
+                    navigation={props.navigation}
+                    hasQuote={true}
+                    quote="190£"
+                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
+                />
             </View>
         );
     };
@@ -314,25 +340,337 @@ const JobDetailsScreen = props => {
         );
     };
 
+    const [region, setRegion] = useState({
+        latitudeDelta,
+        longitudeDelta,
+        latitude: 12.840575,
+        longitude: 77.651787,
+    });
+
+    const initialRegionSettings = async id => {
+        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
+        const selectedResult = await fetch(apiUrlSelected);
+        const jsonSelected = await selectedResult.json();
+        setRegion({
+            latitudeDelta: region.latitudeDelta,
+            longitudeDelta: region.longitudeDelta,
+            latitude: jsonSelected.result.geometry.location.lat,
+            longitude: jsonSelected.result.geometry.location.lng,
+        });
+    };
+
+    useEffect(() => {
+        initialRegionSettings(job.jobAddress.place_id);
+    }, []);
+
+    const Bubble = props => {
+        return (
+            <View
+                style={{
+                    padding: Layout.generalPadding,
+                    marginHorizontal: Layout.generalPadding / 2,
+                    backgroundColor: props.backgroundColor,
+                    borderRadius: Layout.borderRadius,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                    height: 50,
+                    marginBottom: Layout.generalPadding,
+                }}
+            >
+                <SmallContent
+                    style={{
+                        color: Color.importantTextOnTertiaryColorBackground,
+                        fontFamily: 'Asap-SemiBold',
+                        textAlign: 'center',
+                    }}
+                >
+                    {props.text}
+                </SmallContent>
+            </View>
+        );
+    };
+
+    const SmallBubble = props => {
+        return (
+            <View
+                style={[
+                    {
+                        flex: 1,
+                        padding: Layout.generalPadding,
+                        paddingHorizontal: Layout.generalPadding * 2,
+                        borderRadius: Layout.borderRadius,
+                        backgroundColor: Color.textField,
+                        //width: '100%',
+                    },
+
+                    props.style,
+                ]}
+            >
+                <SmallContent
+                    style={[
+                        {
+                            color: Color.textColor,
+                        },
+                        props.textStyle,
+                    ]}
+                >
+                    {props.text}
+                </SmallContent>
+            </View>
+        );
+    };
+
     return (
-        <View style={{ flex: 1 }}>
-            <SectionedContainer
-                title="Details"
-                titleColor={Color.importantTextOnTertiaryColorBackground}
-                topComponent={<TopComponent />}
-                midComponent={<MidComponent />}
-                bottomComponent={<BottomComponent />}
-                navigation={props.navigation}
-            />
-            <Alert
-                modalVisible={modalVisible}
-                onPress={onDeleteConfirm}
-                hide={handleHideAlert}
-                title="Delete"
-                titleColor={Color.urgent}
-                message="Are you sure you want to delete this job?"
-            />
-        </View>
+        // <View style={{ flex: 1 }}>
+        //     <SectionedContainer
+        //         title="Details"
+        //         titleColor={Color.importantTextOnTertiaryColorBackground}
+        //         topComponent={<TopComponent />}
+        //         midComponent={<MidComponent />}
+        //         bottomComponent={<BottomComponent />}
+        //         navigation={props.navigation}
+        //     />
+        //     <Alert
+        //         modalVisible={modalVisible}
+        //         onPress={onDeleteConfirm}
+        //         hide={handleHideAlert}
+        //         title="Delete"
+        //         titleColor={Color.urgent}
+        //         message="Are you sure you want to delete this job?"
+        //     />
+        // </View>
+        <ScrollableContainer backgroundColor={Color.primaryColor}>
+            <View>
+                <Line style={{ flex: 0, alignItems: 'flex-start' }}>
+                    <PostedBy
+                        size="medium"
+                        textColor={Color.textOnTertiaryColorBackground}
+                        date={job.date}
+                    />
+                </Line>
+                <Line style={{ flex: 0, flexDirection: 'row' }}>
+                    <Bubble
+                        text={
+                            OCCUPATIONS.find(oc => oc.id === job.occupationId)
+                                ?.name
+                        }
+                        backgroundColor={Color.primaryBrandColor}
+                    />
+                    <Bubble
+                        text={
+                            WORK_TYPES.find(
+                                work =>
+                                    work.id === job.workTypeId &&
+                                    work.occupationId === job.occupationId
+                            )?.name
+                        }
+                        backgroundColor={Color.secondaryBrandColor}
+                    />
+                </Line>
+                <LineDescription
+                    text="Requested starting time"
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                    }}
+                >
+                    <SmallBubble
+                        style={{
+                            flex: 0,
+                            backgroundColor:
+                                job.startTimeId === 1 || job.startTimeId === 2
+                                    ? Color.error
+                                    : job.startTimeId === 3 ||
+                                      job.startTimeId === 4
+                                    ? Color.warning
+                                    : Color.textField,
+                            marginLeft: Layout.generalPadding,
+                        }}
+                        textStyle={{
+                            fontFamily: 'Asap-SemiBold',
+                            color: Color.importantTextOnTertiaryColorBackground,
+                        }}
+                        text={
+                            START_TIMES.find(
+                                time => time.id === job.startTimeId
+                            )?.name
+                        }
+                    />
+                </LineDescription>
+                <LineDescription text="Description" />
+                <Line style={{ flex: 0 }}>
+                    <SmallBubble
+                        style={{
+                            width: '100%',
+                        }}
+                        text={job.jobDescription}
+                    />
+                </Line>
+                <LineDescription text="Address" />
+                <Line style={{ flex: 0 }}>
+                    <SmallBubble
+                        style={{
+                            width: '100%',
+                        }}
+                        text={
+                            job.jobAddress.line1 + '; ' + job.jobAddress.line2
+                        }
+                    />
+                </Line>
+                <Line style={{ flex: 0 }}>
+                    <View
+                        style={{
+                            borderRadius: Layout.borderRadius,
+                            overflow: 'hidden',
+                            width: '100%',
+                        }}
+                    >
+                        <GoogleMaps
+                            region={region}
+                            onRegionChange={region => setRegion(region)}
+                        />
+                    </View>
+                </Line>
+                <LineDescription
+                    text="Tags"
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                    }}
+                >
+                    <SmallBubble
+                        style={{
+                            marginLeft: Layout.generalPadding,
+                            flex: 0
+                        }}
+                        text={
+                            CUSTOMER_TYPES.find(
+                                customer => customer.id === job.customerType
+                            ).name
+                        }
+                    />
+                    <SmallBubble
+                        style={{
+                            marginLeft: Layout.generalPadding,
+                            flex: 0
+                        }}
+                        text={
+                            PROPERTY_TYPES.find(
+                                property => property.id === job.propertyType
+                            ).name
+                        }
+                    />
+                </LineDescription>
+                {/* {index !== 9 ? (
+                    <View>
+                        <LineDescription text="What kind of work do you need?" />
+                        <Line style={{ flex: 0 }}>
+                            <Grid
+                                data={workTypes}
+                                onPress={handleWorkTypePress}
+                                initialSelectedIndexes={[
+                                    editModeOn ? jobToUpdate.workTypeId - 1 : 0,
+                                ]}
+                            />
+                        </Line>
+                    </View>
+                ) : null}
+                <LineDescription text="Description" />
+                <Line style={{ flex: 0 }}>
+                    <JobDescription
+                        input={jobDescriptionInput}
+                        onChangeText={onChangeJobDescription}
+                    />
+                </Line>
+                <LineDescription text="Where are you?" />
+                <Line style={{ flex: 0 }}>
+                    <JobAddress
+                        input={jobAddressInput}
+                        onStreetAddressChange={handleStreetAddressChange}
+                        onChangeText={handleJobAddressChange}
+                        streetAddress={jobAddressInput.line1}
+                        initial_place_id={
+                            jobToUpdate ? jobToUpdate.jobAddress.place_id : null
+                        }
+                    />
+                </Line>
+                <LineDescription text="I am a.." />
+                <Line
+                    style={{
+                        flex: 0,
+                        alignItems: 'flex-start',
+                    }}
+                >
+                    <Grid
+                        data={CUSTOMER_TYPES}
+                        checked={customerTypeChecked}
+                        onToggleCheck={index =>
+                            handleToggleCheck(
+                                index,
+                                customerTypeChecked,
+                                setCustomerTypeChecked
+                            )
+                        }
+                        RenderItemComponent={CustomRadioButton}
+                    />
+                </Line>
+                <LineDescription text="What type of property is the job for?" />
+                <Line
+                    style={{
+                        flex: 0,
+                        alignItems: 'flex-start',
+                    }}
+                >
+                    <Grid
+                        data={PROPERTY_TYPES}
+                        checked={propertyTypeChecked}
+                        onToggleCheck={index =>
+                            handleToggleCheck(
+                                index,
+                                propertyTypeChecked,
+                                setPropertyTypeChecked
+                            )
+                        }
+                        RenderItemComponent={CustomRadioButton}
+                    />
+                </Line>
+                <LineDescription text="When should the work start?" />
+                <Line
+                    style={{
+                        flex: 0,
+                        alignItems: 'flex-start',
+                    }}
+                >
+                    <Grid
+                        data={START_TIMES}
+                        checked={startTimesChecked}
+                        onToggleCheck={index =>
+                            handleToggleCheck(
+                                index,
+                                startTimesChecked,
+                                setStartTimesChecked
+                            )
+                        }
+                        RenderItemComponent={CustomRadioButton}
+                    />
+                </Line>
+                <Line
+                    style={{
+                        flex: 0,
+                        paddingTop: Layout.screenHorizontalPadding,
+                        paddingBottom: Layout.endOfPageSpace,
+                    }}
+                >
+                    <MediumButton
+                        text={editModeOn ? 'Finish' : 'Post job'}
+                        onPress={handlePostJobPress}
+                    />
+                </Line> */}
+            </View>
+        </ScrollableContainer>
     );
 };
 

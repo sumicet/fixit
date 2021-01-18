@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, BackHandler } from 'react-native';
+import { View, StyleSheet, BackHandler, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, useNavigationState } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -23,9 +23,12 @@ import Alert from '../../components/alert/Alert';
 import ScrollableContainer from '../containers/ScrollableContainer';
 import LineDescription from '../common/LineDescription';
 import { WARNING } from '../../constants/Actions';
+import Touchable from '../common/Touchable';
+import ImageSelector from '../images/ImageSelector';
 
 const Quiz = props => {
     const { title, editModeOn, id, navigation, route } = props;
+    const userId = useSelector(state => state.auth.userId);
 
     useEffect(() => {
         if (isFocused) {
@@ -107,6 +110,8 @@ const Quiz = props => {
         editModeOn ? jobToUpdate.occupationId - 1 : 0
     );
     const [workTypes, setWorkTypes] = useState([]);
+
+    const [images, setImages] = useState(editModeOn ? jobToUpdate.images : []);
 
     useEffect(() => {
         setWorkTypes(
@@ -260,18 +265,21 @@ const Quiz = props => {
                           customerTypeId,
                           propertyTypeId,
                           jobAddressInput,
-                          startTimeId
+                          startTimeId,
+                          images
                       )
                   )
                 : dispatch(
                       addJob(
+                          userId,
                           occupationId,
                           workTypeId,
                           jobDescriptionInput,
                           customerTypeId,
                           propertyTypeId,
                           jobAddressInput,
-                          startTimeId
+                          startTimeId,
+                          images
                       )
                   );
             navigation.navigate('MyJobs', {
@@ -284,7 +292,7 @@ const Quiz = props => {
     };
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <Alert
                 modalVisible={modalVisible}
                 onPress={alert.onPress}
@@ -416,6 +424,17 @@ const Quiz = props => {
                             RenderItemComponent={CustomRadioButton}
                         />
                     </Line>
+                    <LineDescription text="Attach some images." />
+                    <Line
+                        style={{
+                            flex: 0,
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                        }}
+                    >
+                        <ImageSelector images={images} setImages={setImages} showPicker={true} />
+                    </Line>
+
                     <Line
                         style={{
                             flex: 0,

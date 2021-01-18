@@ -11,7 +11,7 @@ const Experience = props => {
     return (
         <CardIcon
             style={[{ paddingLeft: Layout.generalPadding }, props.style]}
-            text={EXPERIENCE.find(elem => elem.id === experienceId).name}
+            text={EXPERIENCE.find(elem => elem.id === experienceId)?.name}
         >
             <ExperienceIcon />
         </CardIcon>
