@@ -2,6 +2,7 @@ export const ADD_JOB = 'ADD_JOB';
 export const SET_MY_JOBS = 'SET_MY_JOBS';
 export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
+export const FETCH_ALL_JOBS = 'FETCH_ALL_JOBS';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
@@ -213,6 +214,59 @@ export const fetchMyJobs = userId => {
             dispatch({
                 type: SET_MY_JOBS,
                 userPendingJobs,
+            });
+        } catch (error) {
+            console.log('err');
+        }
+    };
+};
+
+export const fetchAllJobs = () => {
+    return async dispatch => {
+        try {
+            const response = await fetch(
+                'https://fixit-46444.firebaseio.com/allPendingJobs.json'
+            );
+
+            const responseData = await response.json();
+
+            const allJobs = [];
+
+            for (const key in responseData) {
+                const images = [];
+                var i;
+                for (i = 0; i < 10; i++) {
+                    try {
+                        const imageRef = Firebase.storage
+                            .ref()
+                            .child(`/jobImages/${userId}/${key}/${i}`);
+                        const image = await imageRef.getDownloadURL();
+                        images.push(image);
+                    } catch (error) {
+                        break;
+                    }
+                }
+
+                allJobs.push(
+                    new Job(
+                        key,
+                        responseData[key].userId,
+                        responseData[key].date,
+                        responseData[key].occupationId,
+                        responseData[key].workTypeId,
+                        responseData[key].jobDescription,
+                        responseData[key].customerType,
+                        responseData[key].propertyType,
+                        responseData[key].jobAddress,
+                        responseData[key].startTimeId,
+                        images
+                    )
+                );
+            }
+
+            dispatch({
+                type: FETCH_ALL_JOBS,
+                allJobs,
             });
         } catch (error) {
             console.log('err');

@@ -1,11 +1,16 @@
-import { ADD_JOB, UPDATE_JOB, DELETE_JOB, SET_MY_JOBS } from '../actions/job';
+import {
+    ADD_JOB,
+    UPDATE_JOB,
+    DELETE_JOB,
+    SET_MY_JOBS,
+    FETCH_ALL_JOBS,
+} from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
 
 const initialState = {
-    allPendingJobs: [], // all pending jobs from all customers :)
+    allJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
-    userDoneJobs: [],
 };
 
 const editElement = (array, id, elem) => {
@@ -76,6 +81,11 @@ const jobReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userPendingJobs: action.userPendingJobs,
+            };
+        case FETCH_ALL_JOBS:
+            return {
+                ...state,
+                allJobs: action.allJobs,
             };
         default:
             return state;

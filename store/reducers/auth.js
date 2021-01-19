@@ -10,6 +10,7 @@ import {
     CHANGE_EMAIL,
     CHANGE_HAS_VERIFIED_EMAIL,
     SET_STREET_ADDRESS,
+    CHANGE_NAME,
 } from '../actions/auth';
 
 const initialState = {
@@ -90,6 +91,11 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 streetAddress: action.streetAddress,
             };
+        case CHANGE_NAME:
+            return {
+                ...state,
+                name: action.name
+            }
         default:
             return state;
     }

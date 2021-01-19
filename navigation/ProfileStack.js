@@ -8,6 +8,7 @@ import UserProfileScreen from '../screens/Profile/UserProfileScreen';
 import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScreen';
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
 import ReviewScreen from '../screens/Profile/ReviewScreen';
+import ChangeNameScreen from '../screens/Profile/ChangeNameScreen';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,15 @@ const ProfileStack = () => {
                     headerShown: true,
                     ...headerOptions,
                     headerTitle: 'Leave a review',
+                }}
+            />
+            <Stack.Screen
+                name="ChangeName"
+                component={ChangeNameScreen}
+                options={{
+                    headerShown: true,
+                    ...headerOptions,
+                    headerTitle: 'Change name',
                 }}
             />
             {/* <Stack.Screen name="Service" component={ServiceStack} /> */}

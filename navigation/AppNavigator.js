@@ -11,7 +11,7 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            {isLoading ? <LoadingStack /> : <AppStack />}
+            <AppStack />
         </NavigationContainer>
     );
 };

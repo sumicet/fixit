@@ -28,7 +28,6 @@ export const fetchTradespersonInfo = userId => {
 
         dispatch({
             type: SET_TRADESPERSON_INFO,
-            name: responseData.name,
             occupationsIds: responseData.occupationsIds,
             streetAddress: responseData.streetAddress,
             experienceId: responseData.experienceId,

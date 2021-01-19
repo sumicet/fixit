@@ -15,6 +15,7 @@ import VerifyEmailScreen from '../screens/AccountDetails/VerifyEmailScreen';
 import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonProfileScreen';
 import LogInScreen from '../screens/Authentication/LogInScreen';
 import SignUpScreen from '../screens/Authentication/SignUpScreen';
+import InitialLoadingScreen from '../screens/Loading/InitialLoadingScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,11 @@ const AppStack = () => {
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
         >
+            <Stack.Screen
+                name="InitialLoadingScreen"
+                component={InitialLoadingScreen}
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name="BottomTab"
                 component={BottomTab}
@@ -98,6 +104,7 @@ const AppStack = () => {
                     headerTitle: 'Sign Up',
                 }}
             />
+            
         </Stack.Navigator>
     );
 };

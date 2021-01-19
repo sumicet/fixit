@@ -25,6 +25,7 @@ import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 
 const EditTradespersonProfile = props => {
     const tradesperson = useSelector(state => state.tradesperson);
+    const name = useSelector(state => state.auth.name);
 
     const [occupations, setOccupations] = useState(
         tradesperson &&
@@ -95,8 +96,6 @@ const EditTradespersonProfile = props => {
         updatedChecked[index] = !updatedChecked[index];
         setChecked(updatedChecked);
     };
-
-    const [name, setName] = useState(tradesperson && tradesperson.name);
 
     const onChangeName = input => {
         setName(input);

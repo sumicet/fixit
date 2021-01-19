@@ -34,43 +34,20 @@ import Loading from '../../components/loading/Loading';
 const UserProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(true);
     const userId = useSelector(state => state.auth.userId);
-
-    useEffect(() => {
-        if (userId) {
-            dispatch(fetchTradespersonInfo(Firebase.auth.currentUser.uid)).then(
-                () => {
-                    props.navigation.setOptions({
-                        headerTitle: tradesperson.name,
-                    });
-                    setIsLoading(false);
-                }
-            );
-        }
-    }, []);
+    const name = useSelector(state => state.auth.name);
 
     const tradesperson = useSelector(state => state.tradesperson);
-
     const email = useSelector(state => state.auth.email);
-
     const isFocused = useIsFocused();
+    const dispatch = useDispatch();
 
-    const [inAppNotificationVisible, setInAppNotificationVisible] = useState(
-        false
-    );
-    const [inAppNotificationBody, setInAppNotificationBody] = useState({
-        title: null,
-        message: null,
-    });
-
-    const handleHideInAppNotification = () => {
-        setInAppNotificationVisible(false);
-    };
-
-    const closeInAppNotificationAfterTimerExpires = async () => {
-        setTimeout(() => {
-            handleHideInAppNotification();
-        }, 5000);
-    };
+    useEffect(() => {
+        setIsLoading(true);
+        props.navigation.setOptions({
+            headerTitle: name,
+        });
+        setIsLoading(false);
+    }, [name]);
 
     useEffect(() => {
         if (
@@ -78,17 +55,15 @@ const UserProfileScreen = props => {
             props.route.params &&
             props.route.params.action === 'password-reset'
         ) {
-            // TODO fetch email and password
-            setInAppNotificationBody({
-                title: 'Success',
-                message: 'Your password was successfully updated.',
-            });
-            setInAppNotificationVisible(true);
-            closeInAppNotificationAfterTimerExpires();
+            dispatch(
+                setInAppNotification(
+                    'Changes saved!',
+                    'You password has been successfully updated.',
+                    SUCCESS
+                )
+            );
         }
     }, [props, isFocused]);
-
-    const dispatch = useDispatch();
 
     if (isLoading) {
         return (
@@ -170,8 +145,10 @@ const UserProfileScreen = props => {
                     />
                     <ProfileField
                         description="Name"
-                        value={tradesperson.name}
-                        onPress={() => {}}
+                        value={name}
+                        onPress={() => {
+                            props.navigation.navigate('ChangeName');
+                        }}
                     />
                     <LineDescription
                         text="Security"

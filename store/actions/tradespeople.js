@@ -1,6 +1,7 @@
 export const FETCH_TRADESPEOPLE = 'FETCH_TRADESPEOPLE';
 export const SET_DISTANCES = 'SET_DISTANCES';
 export const SET_RATING = 'SET_RATING';
+export const CHANGE_TRADESPERSON_NAME = 'CHANGE_TRADESPERSON_NAME';
 
 import * as Firebase from '../../config/Firebase';
 

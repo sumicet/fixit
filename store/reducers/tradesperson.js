@@ -1,7 +1,6 @@
 import { SET_TRADESPERSON_INFO } from '../actions/tradesperson';
 
 const initialState = {
-    name: null,
     occupationsIds: [],
     streetAddress: {
         line1: null,
@@ -18,7 +17,6 @@ const tradespersonReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_TRADESPERSON_INFO:
             return {
-                name: action.name,
                 occupationsIds: action.occupationsIds,
                 streetAddress: action.streetAddress,
                 experienceId: action.experienceId,

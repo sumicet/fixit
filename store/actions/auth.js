@@ -3,6 +3,7 @@ import * as Firebase from '../../config/Firebase';
 import * as firebase from 'firebase';
 import { setInAppNotification } from './ui';
 import { ERROR } from '../../constants/Actions';
+import { CHANGE_TRADESPERSON_NAME } from './tradespeople';
 
 export const LOG_IN = 'LOG_IN';
 export const SIGN_UP = 'SIGN_UP';
@@ -15,7 +16,27 @@ export const CHANGE_HAS_VERIFIED_EMAIL = 'CHANGE_HAS_VERIFIED_EMAIL';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const RESEND_EMAIL_TIMER = 'RESEND_EMAIL_TIMER';
 export const SET_STREET_ADDRESS = 'SET_STREET_ADDRESS';
+export const CHANGE_NAME = 'CHANGE_NAME';
 
+export const changeName = (userId, name, userType) => {
+    return async (dispatch, getState) => {
+        const ref = Firebase.database.ref(userType).child(userId);
+        ref.child('name').set(name);
+
+        dispatch({
+            type: CHANGE_NAME,
+            name,
+        });
+
+        if(userType === 'tradesperson') {
+            dispatch({
+                type: CHANGE_TRADESPERSON_NAME,
+                userId,
+                name
+            })
+        }
+    };
+};
 
 export const setStreetAddress = streetAddress => {
     return async dispatch => {
@@ -143,7 +164,7 @@ export const signUp = (email, name, password, userType) => {
                 token,
                 userType,
                 email,
-                name
+                name,
             });
         } catch (error) {
             throw error;
@@ -169,14 +190,16 @@ export const logIn = (email, password) => {
                 ref = Firebase.database.ref('customer').child(userId);
                 userType = 'customer';
             }
-            ref.child('name').once('value').then(res => name = res.val());
+            ref.child('name')
+                .once('value')
+                .then(res => (name = res.val()));
             dispatch({
                 type: LOG_IN,
                 userId,
                 token: token,
                 userType,
                 email,
-                name
+                name,
             });
             dispatch({
                 type: SET_IS_LOGGED_IN,
@@ -321,7 +344,9 @@ export const autoLogIn = () => {
                 ref = Firebase.database.ref('customer').child(userId);
                 userType = 'customer';
             }
-            ref.child('name').once('value').then(res => name = res.val());
+            ref.child('name')
+                .once('value')
+                .then(res => (name = res.val()));
 
             const snap = await ref.child('email').once('value');
             const email = snap.val();
@@ -332,7 +357,7 @@ export const autoLogIn = () => {
                 token,
                 email,
                 userType,
-                name
+                name,
             });
         }
     };

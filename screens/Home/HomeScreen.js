@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';

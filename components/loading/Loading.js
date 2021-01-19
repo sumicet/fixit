@@ -4,7 +4,7 @@ import Color from '../../constants/Color';
 
 const Loading = props => {
     return (
-        <View style={[styles.center, props.style]}>
+        <View style={[styles.container, props.style]}>
             <ActivityIndicator
                 size="large"
                 color={props.spinnerColor ? props.spinnerColor : Color.placeholderTextColor}
@@ -14,10 +14,11 @@ const Loading = props => {
 };
 
 const styles = StyleSheet.create({
-    center: {
+    container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: Color.primaryColor
     },
 });
 

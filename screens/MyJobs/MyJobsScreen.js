@@ -13,7 +13,7 @@ import ScrollableContainer from '../../components/containers/ScrollableContainer
 import Container from '../../components/containers/Container';
 
 const MyJobsScreen = props => {
-    const currentUserId = useSelector(state => state.auth.userId)
+    const currentUserId = useSelector(state => state.auth.userId);
     const userPendingJobs = useSelector(
         state => state.job.userPendingJobs
     ).sort((a, b) => a.date < b.date);
@@ -87,7 +87,7 @@ const MyJobsScreen = props => {
             {userPendingJobs.length > 0 ? (
                 <Container
                     backgroundColor={Color.primaryColor}
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, paddingTop: 0, marginTop: 0 }}
                 >
                     <FlatList
                         keyExtractor={(item, i) => `key-${i}`}
