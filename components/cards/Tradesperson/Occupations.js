@@ -16,20 +16,21 @@ const Occupations = props => {
             style={[
                 styles.container,
                 { justifyContent: props.isRateCard ? 'center' : 'flex-start' },
-                props.styles,
+                props.style,
             ]}
         >
             {props.isTitle ? (
                 <HeaderWithEllipsis
                     style={props.textColor && { color: props.textColor }}
                 >
-                    {occList.map((elem, index) => {
-                        if (index !== occList.length - 1) {
-                            return elem.name + ' • ';
-                        } else {
-                            return elem.name;
-                        }
-                    })}
+                    {occList &&
+                        occList.map((elem, index) => {
+                            if (index !== occList.length - 1) {
+                                return elem.name + ' • ';
+                            } else {
+                                return elem.name;
+                            }
+                        })}
                 </HeaderWithEllipsis>
             ) : props.isOnProfileScreen ? (
                 <Header

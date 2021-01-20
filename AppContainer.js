@@ -7,7 +7,7 @@ import AppNavigator from './navigation/AppNavigator';
 import Loading from './components/loading/Loading';
 import InAppNotification from './components/alert/InAppNotification';
 import { fetchTradespersonInfo } from './store/actions/tradesperson';
-import { fetchMyJobs } from './store/actions/job';
+import { fetchAllJobs, fetchMyJobs } from './store/actions/job';
 import { fetchAll, setDistances } from './store/actions/tradespeople';
 import * as Firebase from './config/Firebase';
 import {
@@ -18,7 +18,6 @@ import {
     updateToken,
 } from './store/actions/auth';
 import { fetchReviews } from './store/actions/reviews';
-import Color from './constants/Color';
 import * as ui from './store/actions/ui';
 
 const AppContainer = () => {
@@ -73,8 +72,13 @@ const AppContainer = () => {
     }, [userId]);
 
     useEffect(() => {
-        uiIsLoading && isLoggedIn && initialFetches();
-    }, [isLoggedIn, uiIsLoading]);
+        if (isLoggedIn) {
+            setIsLoading(true);
+            initialFetches().then(() => {
+                setIsLoading(false);
+            })
+        }
+    }, [isLoggedIn]);
 
     const fetchFonts = () => {
         return Font.loadAsync({
@@ -91,6 +95,7 @@ const AppContainer = () => {
             dispatch(fetchTradespersonInfo(userId)),
             dispatch(fetchMyJobs(userId)),
             dispatch(fetchAll()),
+            dispatch(fetchAllJobs()),
             dispatch(fetchReviews()),
             navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude;
@@ -105,9 +110,10 @@ const AppContainer = () => {
                         line1: resultData.results[0].formatted_address,
                         place_id: resultData.results[0].place_id,
                     })
-                ).then(() => {
-                    dispatch(setDistances(resultData.results[0].place_id));
-                });
+                )
+                // .then(() => {
+                //     dispatch(setDistances(resultData.results[0].place_id));
+                // });
             }),
         ]).then(() => {
             dispatch(ui.setIsLoading(false)).then(() => {
@@ -119,7 +125,7 @@ const AppContainer = () => {
     };
 
     if (isLoading) {
-        return <Loading style={{ backgroundColor: 'blue' }} />;
+        return <Loading />;
     }
 
     return (

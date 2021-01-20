@@ -1,19 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
-import { StatusBar, StatusBarAnimation } from 'expo-status-bar';
 
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
 
 const Container = props => {
-
     return (
         <View style={styles.container}>
             <View style={[styles.insideContainer, props.style]}>
                 {props.children}
             </View>
-            <StatusBar style='light' StatusBarAnimation="fade" />
         </View>
     );
 };

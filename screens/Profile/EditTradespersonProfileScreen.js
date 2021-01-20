@@ -28,9 +28,9 @@ const EditTradespersonProfile = props => {
     const name = useSelector(state => state.auth.name);
 
     const [occupations, setOccupations] = useState(
-        tradesperson &&
-            tradesperson.occupationsIds ?
-            tradesperson.occupationsIds.map(elem => elem - 1) : []
+        tradesperson && tradesperson.occupationsIds
+            ? tradesperson.occupationsIds.map(elem => elem - 1)
+            : []
     );
     const [jobAddressInput, setJobAddressInput] = useState({
         line1: tradesperson.streetAddress && tradesperson.streetAddress.line1,
@@ -59,24 +59,28 @@ const EditTradespersonProfile = props => {
 
     const initialChecked = (data, value) => {
         const initialChecked = [];
-        var i;
-        for (i = 0; i < data.length; i++) {
-            if (i === value) {
-                initialChecked.push(true);
+        if (data) {
+            var i;
+            for (i = 0; i < data.length; i++) {
+                if (i === value) {
+                    initialChecked.push(true);
+                }
+                initialChecked.push(false);
             }
-            initialChecked.push(false);
         }
         return initialChecked;
     };
 
     const handleToggleCheck = (index, checked, setChecked) => {
         const updatedChecked = [...checked];
-        var i;
-        for (i = 0; i < updatedChecked.length; i++) {
-            if (i !== index) {
-                updatedChecked[i] = false;
-            } else {
-                updatedChecked[i] = true;
+        if (updatedChecked) {
+            var i;
+            for (i = 0; i < updatedChecked.length; i++) {
+                if (i !== index) {
+                    updatedChecked[i] = false;
+                } else {
+                    updatedChecked[i] = true;
+                }
             }
         }
         setChecked(updatedChecked);
@@ -188,7 +192,11 @@ const EditTradespersonProfile = props => {
 
     const phoneInput = useRef();
 
-    const [phoneNumber, setPhoneNumber] = useState(tradesperson && tradesperson.phoneNumber ? tradesperson.phoneNumber : null);
+    const [phoneNumber, setPhoneNumber] = useState(
+        tradesperson && tradesperson.phoneNumber
+            ? tradesperson.phoneNumber
+            : null
+    );
 
     return (
         <ScrollableContainer
@@ -224,7 +232,11 @@ const EditTradespersonProfile = props => {
                     onPress={pickImage}
                     style={{ flex: 0, borderRadius: 100, overflow: 'hidden' }}
                 >
-                    <ProfilePicture isRateCard={true} profilePicture={profilePicture} isLarge={true} />
+                    <ProfilePicture
+                        isRateCard={true}
+                        profilePicture={profilePicture}
+                        isLarge={true}
+                    />
                 </Touchable>
             </Line>
             <LineDescription text="Phone number.">
@@ -297,13 +309,14 @@ const EditTradespersonProfile = props => {
                             setOccupations(updatedOccupations);
                         }
                     }}
-                    initialSelectedIndexes={tradesperson.occupationsIds && tradesperson.occupationsIds.map(
-                        elem => elem - 1
-                    )}
+                    initialSelectedIndexes={
+                        tradesperson.occupationsIds &&
+                        tradesperson.occupationsIds.map(elem => elem - 1)
+                    }
                     multipleOptions={true}
                 />
             </Line>
-            <LineDescription textStyle={{textAlign: 'left'}} text="Schedule.">
+            <LineDescription textStyle={{ textAlign: 'left' }} text="Schedule.">
                 <SmallContent>
                     Let your customers know when you are available. Keep it
                     short.
@@ -321,7 +334,10 @@ const EditTradespersonProfile = props => {
                     textAlignVertical="center"
                 />
             </Line>
-            <LineDescription textStyle={{textAlign: 'left'}} text="How much experience do you have in the selected field of work?">
+            <LineDescription
+                textStyle={{ textAlign: 'left' }}
+                text="How much experience do you have in the selected field of work?"
+            >
                 <SmallContent>
                     Example: 3y+ means you have between 3 and 5 years of
                     experience.
@@ -342,7 +358,10 @@ const EditTradespersonProfile = props => {
                     RenderItemComponent={CustomRadioButton}
                 />
             </Line>
-            <LineDescription textStyle={{textAlign: 'left'}} text="What type of properties do you work with?">
+            <LineDescription
+                textStyle={{ textAlign: 'left' }}
+                text="What type of properties do you work with?"
+            >
                 <SmallContent>You can select multiple options.</SmallContent>
             </LineDescription>
             <Line
@@ -364,7 +383,10 @@ const EditTradespersonProfile = props => {
                     RenderItemComponent={CustomRadioButton}
                 />
             </Line>
-            <LineDescription textStyle={{textAlign: 'left'}} text="Street address.">
+            <LineDescription
+                textStyle={{ textAlign: 'left' }}
+                text="Street address."
+            >
                 <SmallContent>
                     This information will NOT be displayed on your profile. It
                     is used to calculate the distance between you and customers.
@@ -382,7 +404,10 @@ const EditTradespersonProfile = props => {
                     }
                 />
             </Line>
-            <LineDescription textStyle={{textAlign: 'left'}} text="Do you have security liability insurance?">
+            <LineDescription
+                textStyle={{ textAlign: 'left' }}
+                text="Do you have security liability insurance?"
+            >
                 <SmallContent>
                     Liability insurance is a part of the general insurance
                     system of risk financing to protect the purchaser (the

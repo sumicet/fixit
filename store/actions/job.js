@@ -3,9 +3,53 @@ export const SET_MY_JOBS = 'SET_MY_JOBS';
 export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
 export const FETCH_ALL_JOBS = 'FETCH_ALL_JOBS';
+export const MARK_AS_COMPLETED = 'MARK_AS_COMPLETED';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
+
+export const markAsCompleted = id => {
+    return async dispatch => {
+        const response = await fetch(
+            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
+        );
+
+        const responseData = await response.json();
+
+        await fetch(
+            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
+            {
+                method: 'DELETE',
+            }
+        );
+
+        await fetch(
+            `https://fixit-46444.firebaseio.com/allCompletedJobs/${id}.json`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: responseData.userId,
+                    date: responseData.date,
+                    occupationId: responseData.occupationId,
+                    workTypeId: responseData.workTypeId,
+                    jobDescription: responseData.jobDescription,
+                    customerType: responseData.customerType,
+                    propertyType: responseData.propertyType,
+                    jobAddress: responseData.jobAddress,
+                    startTimeId: responseData.startTimeId,
+                }),
+            }
+        );
+
+        dispatch({
+            type: MARK_AS_COMPLETED,
+            id,
+        });
+    };
+};
 
 export const addJob = (
     userId,
@@ -114,7 +158,9 @@ export const editJob = (
         const responsePatchData = await responsePatch.json();
 
         Firebase.storage
-            .ref(`/jobImages/${userId}/${responsePatchData.name}`)
+            .ref(
+                `/jobImages/${responseGetData.userId}/${responsePatchData.name}`
+            )
             .delete();
 
         images.forEach((image, index) => {
@@ -123,7 +169,7 @@ export const editJob = (
                 .then(blob => {
                     Firebase.storage
                         .ref(
-                            `/jobImages/${userId}/${responsePatchData.name}/${index}`
+                            `/jobImages/${responseGetData.userId}/${responsePatchData.name}/${index}`
                         )
                         .put(blob);
                 });
@@ -150,14 +196,19 @@ export const editJob = (
 
 export const deleteJob = id => {
     return async dispatch => {
-        const response = await fetch(
+        await fetch(
             `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
             {
                 method: 'DELETE',
             }
         );
 
-        const responseData = await response.json();
+        await fetch(
+            `https://fixit-46444.firebaseio.com/allCompletedJobs/${id}.json`,
+            {
+                method: 'DELETE',
+            }
+        );
 
         dispatch({
             type: DELETE_JOB,
@@ -168,6 +219,7 @@ export const deleteJob = id => {
 
 export const fetchMyJobs = userId => {
     return async dispatch => {
+        console.log(userId, 'in fetch my jobs');
         try {
             const response = await fetch(
                 'https://fixit-46444.firebaseio.com/allPendingJobs.json'
@@ -211,9 +263,52 @@ export const fetchMyJobs = userId => {
                 }
             }
 
+            const response2 = await fetch(
+                'https://fixit-46444.firebaseio.com/allCompletedJobs.json'
+            );
+
+            const responseData2 = await response2.json();
+
+            const userCompletedJobs = [];
+
+            for (const key2 in responseData2) {
+                if (responseData2[key2].userId === userId) {
+                    const images2 = [];
+                    var i;
+                    for (i = 0; i < 10; i++) {
+                        try {
+                            const imageRef2 = Firebase.storage
+                                .ref()
+                                .child(`/jobImages/${userId}/${key2}/${i}`);
+                            const image2 = await imageRef2.getDownloadURL();
+                            images2.push(image2);
+                        } catch (error) {
+                            break;
+                        }
+                    }
+
+                    userCompletedJobs.push(
+                        new Job(
+                            key2,
+                            responseData2[key2].userId,
+                            responseData2[key2].date,
+                            responseData2[key2].occupationId,
+                            responseData2[key2].workTypeId,
+                            responseData2[key2].jobDescription,
+                            responseData2[key2].customerType,
+                            responseData2[key2].propertyType,
+                            responseData2[key2].jobAddress,
+                            responseData2[key2].startTimeId,
+                            images2
+                        )
+                    );
+                }
+            }
+
             dispatch({
                 type: SET_MY_JOBS,
                 userPendingJobs,
+                userCompletedJobs,
             });
         } catch (error) {
             console.log('err');
@@ -224,11 +319,11 @@ export const fetchMyJobs = userId => {
 export const fetchAllJobs = () => {
     return async dispatch => {
         try {
-            const response = await fetch(
+            var response = await fetch(
                 'https://fixit-46444.firebaseio.com/allPendingJobs.json'
             );
 
-            const responseData = await response.json();
+            var responseData = await response.json();
 
             const allJobs = [];
 
@@ -239,7 +334,9 @@ export const fetchAllJobs = () => {
                     try {
                         const imageRef = Firebase.storage
                             .ref()
-                            .child(`/jobImages/${userId}/${key}/${i}`);
+                            .child(
+                                `/jobImages/${responseData[key].userId}/${key}/${i}`
+                            );
                         const image = await imageRef.getDownloadURL();
                         images.push(image);
                     } catch (error) {

@@ -9,17 +9,20 @@ import TradespersonProfileScreen from '../screens/Profile/TradespersonProfileScr
 import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
 import ReviewScreen from '../screens/Profile/ReviewScreen';
 import ChangeNameScreen from '../screens/Profile/ChangeNameScreen';
+import { useSelector } from 'react-redux';
+import Color from '../constants/Color';
 
 const Stack = createStackNavigator();
 
 const ProfileStack = () => {
+    const userType = useSelector(state => state.auth.userType);
+
     return (
         <Stack.Navigator
             headerMode="screen"
             animation
             screenOptions={{
-                cardStyleInterpolator:
-                    CardStyleInterpolators.forHorizontalIOS,
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerShown: false,
             }}
         >
@@ -37,6 +40,12 @@ const ProfileStack = () => {
                 options={{
                     headerShown: true,
                     ...coloredHeaderOptions,
+                    headerStyle: {
+                        backgroundColor:
+                            userType === 'tradesperson'
+                                ? Color.tertiaryBrandColor
+                                : Color.primaryColor,
+                    },
                 }}
             />
             <Stack.Screen

@@ -11,11 +11,20 @@ import PostedBy from './PostedBy';
 import { WORK_TYPES } from '../../../data/Jobs/WorkTypes';
 import { getText } from '../../../actions/distance';
 import { useSelector } from 'react-redux';
+import SmallBubble from '../../common/SmallBubble';
+import { OCCUPATIONS } from '../../../data/Jobs/Occupations';
+import SmallBoldContent from '../../text/SmallBoldContent';
+import Header from '../../text/Header';
+import { ClipPath } from 'react-native-svg';
+import SmallContent from '../../text/SmallContent';
+import Quotes from './Quotes';
 
 const JobCard = props => {
-    const user_place_id = useSelector(state => state.auth.streetAddress)
-        .place_id;
+    const street = useSelector(state => state.auth.streetAddress);
+    const user_place_id = street && street.place_id;
     const [distance, setDistance] = useState();
+    const userType = useSelector(state => state.auth.userType);
+    const currentUserId = useSelector(state => state.auth.userId);
 
     const {
         userId,
@@ -31,45 +40,71 @@ const JobCard = props => {
 
     useEffect(() => {
         user_place_id && jobAddress
-            ? getText(user_place_id, jobAddress.place_id).then(
-                  result => {
-                      //TODO make sure u get props.stree.. from the other comp
-                      setDistance(result);
-                  }
-              )
+            ? getText(user_place_id, jobAddress.place_id).then(result => {
+                  //TODO make sure u get props.stree.. from the other comp
+                  setDistance(result);
+              })
             : setDistance('N/A');
     }, []);
 
-    
+    const Bubble = props => {
+        return (
+            <View
+                style={[
+                    {
+                        backgroundColor: Color.primaryBrandColor,
+                        padding: 5,
+                        paddingHorizontal: 10,
+                        borderRadius: Layout.borderRadius,
+                    },
+                    props.style,
+                ]}
+            >
+                <SmallContent
+                    style={{
+                        textAlign: 'left',
+                        color: Color.importantTextOnTertiaryColorBackground,
+                    }}
+                >
+                    {props.text}
+                </SmallContent>
+            </View>
+        );
+    };
 
     return (
         <View style={styles.container}>
-            <View style={{ width: '100%' }}>
-                <PostedBy date={date} />
-                <View style={{ paddingBottom: 5, flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }}>
-                        <Occupations
-                            occupationsIds={[occupationId]}
-                            isTitle={true}
-                        />
-                    </View>
+            <View>
+                <View style={{ paddingBottom: 10 }}>
+                    <PostedBy userId={userId} date={date} />
                 </View>
-                <View style={{ paddingBottom: 5 }}>
-                    <SmallContentWithEllipsis
-                        style={{ fontFamily: 'Asap-SemiBold' }}
-                    >
-                        {
+                <View
+                    style={{ paddingBottom: 10, flex: 0, flexDirection: 'row' }}
+                >
+                    <Bubble
+                        text={
+                            OCCUPATIONS.find(oc => oc.id === occupationId)?.name
+                        }
+                    />
+                    <Bubble
+                        text={
                             WORK_TYPES.find(
                                 work =>
                                     work.id === workTypeId &&
                                     work.occupationId === occupationId
                             )?.name
                         }
-                    </SmallContentWithEllipsis>
+                        style={{
+                            backgroundColor: Color.secondaryBrandColor,
+                            marginLeft: 10,
+                        }}
+                    />
                 </View>
 
-                <View style={{ paddingBottom: 5 }}>
-                    <SmallContentWithEllipsis>
+                <View style={{ paddingBottom: 10 }}>
+                    <SmallContentWithEllipsis
+                        style={{ color: Color.textOnTertiaryColorBackground }}
+                    >
                         {jobDescription}
                     </SmallContentWithEllipsis>
                 </View>
@@ -80,7 +115,9 @@ const JobCard = props => {
                         width: '100%',
                     }}
                 >
-                    <Location distance={distance} />
+                    {currentUserId === userId ? <Quotes quotes={5} /> : (
+                        <Location distance={distance} />
+                    )}
                     <View style={{ paddingLeft: Layout.generalPadding }}>
                         <StartTime startTimeId={startTimeId} />
                     </View>
@@ -94,9 +131,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 0,
         borderRadius: Layout.borderRadius,
-        marginVertical: Layout.cardMargin,
+        marginBottom: Layout.screenHorizontalPadding,
         backgroundColor: Color.textField,
-        padding: Layout.generalPadding,
+        padding: Layout.screenHorizontalPadding,
     },
 });
 

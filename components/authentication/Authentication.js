@@ -30,9 +30,9 @@ const Authentication = props => {
     } = props;
 
     const [email, setEmail] = useState(defaultEmail);
-    
+
     const [password, setPassword] = useState(defaultPassword);
-    
+
     const [info, setInfo] = useState({
         color: Color.tertiaryBrandColor,
         text: null,
@@ -67,12 +67,14 @@ const Authentication = props => {
 
     const handleToggleCheck = (index, checked, setChecked) => {
         const updatedChecked = [...checked];
-        var i;
-        for (i = 0; i < updatedChecked.length; i++) {
-            if (i !== index) {
-                updatedChecked[i] = false;
-            } else {
-                updatedChecked[i] = true;
+        if (updatedChecked) {
+            var i;
+            for (i = 0; i < updatedChecked.length; i++) {
+                if (i !== index) {
+                    updatedChecked[i] = false;
+                } else {
+                    updatedChecked[i] = true;
+                }
             }
         }
         setChecked(updatedChecked);
@@ -85,18 +87,17 @@ const Authentication = props => {
                 marginTop: 0,
                 paddingTop: 0,
                 paddingHorizontal: 0,
-                
             }}
         >
             <ScrollView
-                keyboardDismissMode='none'
-                keyboardShouldPersistTaps='always'
+                keyboardDismissMode="none"
+                keyboardShouldPersistTaps="always"
                 style={{
                     paddingHorizontal: Layout.screenHorizontalPadding,
                 }}
                 contentContainerStyle={{
                     justifyContent: 'center',
-                    flexGrow: 1
+                    flexGrow: 1,
                     //flex: 1,
                 }}
             >
@@ -196,7 +197,9 @@ const Authentication = props => {
                                     )
                                 }
                                 RenderItemComponent={CustomRadioButton}
-                                uncheckedColor={Color.importantTextOnTertiaryColorBackground}
+                                uncheckedColor={
+                                    Color.importantTextOnTertiaryColorBackground
+                                }
                             />
                         </View>
                     </Line>

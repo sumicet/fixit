@@ -36,7 +36,7 @@ const JobAddress = props => {
         const result = await fetch(apiUrl);
         const json = await result.json();
         setPredictions(json.predictions);
-        if (predictions.length) {
+        if (predictions && predictions.length) {
             setShowPredictions(true);
         }
     };
@@ -80,7 +80,7 @@ const JobAddress = props => {
                     textAlignVertical="center"
                 />
             </Line>
-            {showPredictions && predictions.length && (
+            {showPredictions && predictions && predictions.length && (
                 <Line
                     style={{
                         flex: 0,

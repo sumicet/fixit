@@ -7,6 +7,7 @@ import { signUp } from '../../store/actions/auth';
 import { ERROR } from '../../constants/Actions';
 import { setInAppNotification } from '../../store/actions/ui';
 import { CommonActions } from '@react-navigation/native';
+import Loading from '../../components/loading/Loading';
 
 const SignUpScreen = props => {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const SignUpScreen = props => {
         false,
     ]);
     const [name, setName] = useState();
+    const [isLoading, setIsLoading] = useState();
 
     const handleOnPress = (email, password) => {
         try {
@@ -113,6 +115,10 @@ const SignUpScreen = props => {
             console.log(error);
         }
     };
+
+    if(isLoading) {
+        return <Loading />
+    }
 
     return (
         <Authentication

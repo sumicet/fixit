@@ -4,6 +4,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import { StatusBar } from 'expo-status-bar';
 
 import jobReducer from './store/reducers/job';
 import uiReducer from './store/reducers/ui';
@@ -44,6 +45,7 @@ export default function App() {
             <Provider store={store}>
                 <AppContainer />
             </Provider>
+            <StatusBar style='light' StatusBarAnimation="fade" />
         </View>
     );
 }

@@ -45,7 +45,7 @@ const Contact = props => {
             <Touchable onPress={() => {}} style={{ flex: 0 }}>
                 <View style={styles.message}>
                     <Icon
-                        name="message-text"
+                        name="briefcase-plus"
                         color={
                             props.iconColor
                                 ? props.iconColor

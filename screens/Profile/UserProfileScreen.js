@@ -35,9 +35,11 @@ const UserProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(true);
     const userId = useSelector(state => state.auth.userId);
     const name = useSelector(state => state.auth.name);
+    const email = useSelector(state => state.auth.email);
+    const userType = useSelector(state => state.auth.userType);
 
     const tradesperson = useSelector(state => state.tradesperson);
-    const email = useSelector(state => state.auth.email);
+
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
 
@@ -79,53 +81,62 @@ const UserProfileScreen = props => {
             style={{ marginTop: 0, paddingTop: 0, paddingHorizontal: 0 }}
         >
             <View style={{ flex: 1 }}>
-                <View
-                    style={{
-                        backgroundColor: Color.secondaryBrandColor,
-                        borderBottomLeftRadius: Layout.borderRadius,
-                        borderBottomRightRadius: Layout.borderRadius,
-                        overflow: 'hidden',
-                    }}
-                >
-                    <Touchable
-                        onPress={() => {
-                            props.navigation.navigate('TradespersonProfile', {
-                                userId,
-                            });
-                        }}
+                {userType === 'tradesperson' && (
+                    <View
                         style={{
-                            flex: 0,
-                            width: '100%',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            paddingHorizontal: Layout.screenVerticalPadding,
+                            backgroundColor: Color.secondaryBrandColor,
+                            borderBottomLeftRadius: Layout.borderRadius,
+                            borderBottomRightRadius: Layout.borderRadius,
+                            overflow: 'hidden',
                         }}
-                        isCard={true}
                     >
-                        <Line style={{ flex: 0 }}>
-                            <ProfilePicture
-                                profilePicture={tradesperson.profilePicture}
-                                isLarge={true}
-                                isRateCard={true}
-                            />
-                        </Line>
-                        <Line style={{ flex: 0 }}>
-                            <SmallContent
-                                style={{
-                                    color: Color.textOnTertiaryColorBackground,
-                                    textAlign: 'center',
-                                }}
-                            >
-                                Check how customers see your profile.
-                            </SmallContent>
-                        </Line>
-                    </Touchable>
-                </View>
+                        <Touchable
+                            onPress={() => {
+                                props.navigation.navigate(
+                                    'TradespersonProfile',
+                                    {
+                                        userId,
+                                    }
+                                );
+                            }}
+                            style={{
+                                flex: 0,
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                paddingHorizontal: Layout.screenVerticalPadding,
+                            }}
+                            isCard={true}
+                        >
+                            <Line style={{ flex: 0 }}>
+                                <ProfilePicture
+                                    profilePicture={tradesperson.profilePicture}
+                                    isLarge={true}
+                                    isRateCard={true}
+                                />
+                            </Line>
+                            <Line style={{ flex: 0 }}>
+                                <SmallContent
+                                    style={{
+                                        color:
+                                            Color.textOnTertiaryColorBackground,
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    Check how customers see your profile.
+                                </SmallContent>
+                            </Line>
+                        </Touchable>
+                    </View>
+                )}
                 <View
                     style={{
                         flex: 1,
                         paddingHorizontal: Layout.screenHorizontalPadding,
-                        paddingTop: Layout.screenHorizontalPadding,
+                        paddingTop:
+                            userType === 'tradesperson'
+                                ? Layout.screenHorizontalPadding
+                                : 0,
                     }}
                 >
                     <LineDescription

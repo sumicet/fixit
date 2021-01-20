@@ -8,13 +8,10 @@ import Color from '../../constants/Color';
 import Line from '../../components/common/Line';
 import SmallContent from '../../components/text/SmallContent';
 import Touchable from '../../components/common/Touchable';
-import { List } from 'react-native-paper';
 import { OCCUPATIONS } from '../../data/Jobs/Occupations';
 import Header from '../../components/text/Header';
 import Dropdown from '../../components/dropdown/Dropdown';
-import Rating from '../../components/cards/Tradesperson/Rating';
 import { addFullStars } from '../../components/cards/Tradesperson/Rating';
-import MediumButton from '../../components/buttons/MediumButtom';
 
 const SearchScreen = props => {
     const [colors, setColors] = useState([

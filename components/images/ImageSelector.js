@@ -33,7 +33,8 @@ const ImageSelector = props => {
                 flexWrap: 'wrap',
             }}
         >
-            {props.images.length > 0 &&
+            {props.images &&
+                props.images.length > 0 &&
                 props.images.map((uri, index) => {
                     console.log(index % 2);
                     return (

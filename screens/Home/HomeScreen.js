@@ -15,10 +15,16 @@ import GoogleLocation from '../../assets/icons/User/GoogleLocationIcon';
 import Line from '../../components/common/Line';
 import Touchable from '../../components/common/Touchable';
 import HeaderWithEllipsis from '../../components/text/HeaderWithEllipsis';
+import LineDescription from '../../components/common/LineDescription';
+import JobList from '../../components/cards/Job/JobList';
+import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
+import Container from '../../components/containers/Container';
 
 const HomeScreen = props => {
     const isFocused = useIsFocused();
+    const userType = useSelector(state => state.auth.userType);
     const allTradespeople = useSelector(state => state.tradespeople.all);
+    const allJobs = useSelector(state => state.job.allJobs);
     const streetAddress = useSelector(state => state.auth.streetAddress);
 
     useEffect(() => {
@@ -27,8 +33,8 @@ const HomeScreen = props => {
         }
     }, [props, isFocused]);
 
-    return (
-        <ScrollableContainer style={{ paddingHorizontal: 0 }}>
+    const CurrentLocation = () => {
+        return (
             <Line
                 style={{
                     flex: 0,
@@ -57,7 +63,12 @@ const HomeScreen = props => {
                     }}
                 >
                     <View style={{ flex: 1 }}>
-                        <Header style={{ textAlign: 'left', paddingBottom: 5 }}>
+                        <Header
+                            style={{
+                                textAlign: 'left',
+                                paddingBottom: 5,
+                            }}
+                        >
                             Where will the job be?
                         </Header>
                         <HeaderWithEllipsis
@@ -84,30 +95,45 @@ const HomeScreen = props => {
                     </View>
                 </Touchable>
             </Line>
-            <View style={{ paddingHorizontal: Layout.screenHorizontalPadding }}>
-                <View
-                    style={{
-                        width: '100%',
-                        marginBottom: Layout.screenHorizontalPadding,
-                    }}
-                >
-                    <Header style={{ textAlign: 'left' }}>
-                        Recommended tradespeople:
-                    </Header>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <FlatList
-                        data={allTradespeople.filter(tp => tp.occupationsIds)}
-                        style={{ flex: 1 }}
-                        keyExtractor={(item, i) => `key-${i}`}
-                        ItemSeparatorComponent={() => (
-                            <View
+        );
+    };
+
+    return (
+        <Container
+            style={{ paddingHorizontal: 0, paddingTop: 0, marginTop: 0 }}
+        >
+            {userType === 'tradesperson' ? (
+                <FlatList
+                    data={allTradespeople.filter(tp => tp.occupationsIds)}
+                    style={{ flex: 1 }}
+                    keyExtractor={(item, i) => `key-${i}`}
+                    ItemSeparatorComponent={() => (
+                        <View
+                            style={{
+                                height: Layout.screenHorizontalPadding,
+                            }}
+                        ></View>
+                    )}
+                    ListHeaderComponent={() => (
+                        <View>
+                            <CurrentLocation />
+                            <LineDescription
                                 style={{
-                                    height: Layout.screenHorizontalPadding,
+                                    paddingHorizontal:
+                                        Layout.screenHorizontalPadding,
                                 }}
-                            ></View>
-                        )}
-                        renderItem={itemData => (
+                                text="Recommended tradespeople"
+                            />
+                        </View>
+                    )}
+                    ListFooterComponent={() => <EndOfPageSpace />}
+                    renderItem={itemData => (
+                        <View
+                            style={{
+                                paddingHorizontal:
+                                    Layout.screenHorizontalPadding,
+                            }}
+                        >
                             <TradespersonCard
                                 navigation={props.navigation}
                                 userId={itemData.item.userId}
@@ -126,12 +152,13 @@ const HomeScreen = props => {
                                 profilePicture={itemData.item.profilePicture}
                                 phoneNumber={itemData.item.phoneNumber}
                             />
-                        )}
-                    />
-                </View>
-            </View>
-            <View style={{ height: 100, width: '100%' }}></View>
-        </ScrollableContainer>
+                        </View>
+                    )}
+                />
+            ) : (
+                <JobList list={allJobs} navigation={props.navigation} />
+            )}
+        </Container>
     );
 };
 

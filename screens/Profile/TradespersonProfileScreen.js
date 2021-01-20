@@ -1,7 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import Layout from '../../constants/Layout';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
@@ -12,7 +11,6 @@ import Experience from '../../components/cards/Tradesperson/Experience';
 import Insurance from '../../components/cards/Tradesperson/Insurance';
 import Color from '../../constants/Color';
 import SmallContent from '../../components/text/SmallContent';
-import CompletedJobs from '../../components/cards/Tradesperson/CompletedJobs';
 import Residential from '../../components/cards/Tradesperson/Residential';
 import Commercial from '../../components/cards/Tradesperson/Commercial';
 import Industrial from '../../components/cards/Tradesperson/Industrial';
@@ -26,7 +24,6 @@ import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import { getText } from '../../actions/distance';
 import LineDescription from '../../components/common/LineDescription';
-import SmallBoldContent from '../../components/text/SmallBoldContent';
 import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
 import Empty from '../../components/empty/Empty';
 
@@ -36,8 +33,8 @@ const TradespersonProfileScreen = props => {
         review => review.tradespersonId === userId
     );
 
-    const user_place_id = useSelector(state => state.auth.streetAddress)
-        .place_id;
+    const street = useSelector(state => state.auth.streetAddress);
+    const user_place_id = street.place_id;
     const [distance, setDistance] = useState();
 
     useEffect(() => {

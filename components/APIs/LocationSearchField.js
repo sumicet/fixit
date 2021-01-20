@@ -44,9 +44,9 @@ const LocationSearchField = props => {
                 container: {
                     backgroundColor: Color.textField
                 },
-                poweredContainer: {
-                    backgroundColor: 'blue'
-                },
+                // poweredContainer: {
+                //     backgroundColor: 'blue'
+                // },
                 row: {
                     backgroundColor: Color.textField,
                     padding: Layout.generalPadding,

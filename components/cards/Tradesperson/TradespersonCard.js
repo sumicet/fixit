@@ -165,22 +165,22 @@ const TradespersonCard = props => {
                                     flexDirection: 'row',
                                     alignItems: 'center',
                                     //backgroundColor: Color.secondaryBrandColor,
-                                    paddingTop: Layout.generalPadding,
-                                    paddingHorizontal: Layout.generalPadding,
-                                    paddingBottom: 5,
+                                    paddingTop: Layout.screenHorizontalPadding,
+                                    paddingHorizontal: Layout.screenHorizontalPadding,
+                                    paddingBottom: 10,
                                     borderRadius: Layout.borderRadius,
                                 }}
                             >
                                 {insurance && (
                                     <View
                                         style={{
-                                            paddingRight: Layout.generalPadding,
+                                            paddingRight: 10,
                                         }}
                                     >
                                         <Shield
                                             name="shield-check"
                                             color={Color.secondaryColor}
-                                            size={18}
+                                            size={Layout.menuIconSize}
                                         />
                                     </View>
                                 )}
@@ -212,8 +212,8 @@ const TradespersonCard = props => {
                                         : 'row',
                                     alignItems: 'center',
                                     //backgroundColor: 'yellow',
-                                    paddingHorizontal: Layout.generalPadding,
-                                    paddingBottom: Layout.generalPadding,
+                                    paddingHorizontal: Layout.screenHorizontalPadding,
+                                    paddingBottom: Layout.screenHorizontalPadding,
                                     borderRadius: Layout.borderRadius,
                                 }}
                             >
@@ -232,7 +232,7 @@ const TradespersonCard = props => {
                                         //backgroundColor: 'red',
                                     }}
                                 >
-                                    <View style={{ paddingBottom: 5 }}>
+                                    <View style={{ paddingBottom: 10 }}>
                                         <Occupations
                                             isRateCard={props.isRateCard}
                                             occupationsIds={occupationsIds}
@@ -244,7 +244,7 @@ const TradespersonCard = props => {
                                                 flexDirection: 'row',
                                                 alignItems: 'center',
                                                 width: '100%',
-                                                paddingBottom: 5,
+                                                //paddingBottom: 10,
                                             }}
                                         >
                                             <Location distance={distance} />
@@ -300,7 +300,7 @@ const TradespersonCard = props => {
                                 </Header>
                             </View>
                         ) : (
-                            recommendedByIds && (
+                            recommendedByTradespeople && recommendedByTradespeople.length > 0 && (
                                 <View style={styles.bottomContainer}>
                                     <SmallContentWithEllipsis
                                         style={{

@@ -5,7 +5,6 @@ import Layout from '../../constants/Layout';
 import TextField from '../../components/text/TextField';
 
 const JobDescription = props => {
-    
 
     return (
         <TextField

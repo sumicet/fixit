@@ -126,12 +126,14 @@ const Quiz = props => {
 
     const initialChecked = (data, value) => {
         const initialChecked = [];
-        var i;
-        for (i = 0; i < data.length; i++) {
-            if (i === value) {
-                initialChecked.push(true);
+        if (data) {
+            var i;
+            for (i = 0; i < data.length; i++) {
+                if (i === value) {
+                    initialChecked.push(true);
+                }
+                initialChecked.push(false);
             }
-            initialChecked.push(false);
         }
         return initialChecked;
     };
@@ -189,12 +191,14 @@ const Quiz = props => {
 
     const handleToggleCheck = (index, checked, setChecked) => {
         const updatedChecked = [...checked];
-        var i;
-        for (i = 0; i < updatedChecked.length; i++) {
-            if (i !== index) {
-                updatedChecked[i] = false;
-            } else {
-                updatedChecked[i] = true;
+        if (updatedChecked) {
+            var i;
+            for (i = 0; i < updatedChecked.length; i++) {
+                if (i !== index) {
+                    updatedChecked[i] = false;
+                } else {
+                    updatedChecked[i] = true;
+                }
             }
         }
         setChecked(updatedChecked);
@@ -432,7 +436,11 @@ const Quiz = props => {
                             justifyContent: 'flex-start',
                         }}
                     >
-                        <ImageSelector images={images} setImages={setImages} showPicker={true} />
+                        <ImageSelector
+                            images={images}
+                            setImages={setImages}
+                            showPicker={true}
+                        />
                     </Line>
 
                     <Line

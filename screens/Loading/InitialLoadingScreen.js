@@ -38,7 +38,7 @@ const InitialLoadingScreen = props => {
             );
     }, [isLoading, userId, isLoggedIn]);
 
-    return <Loading style={{ backgroundColor: 'yellow' }} />;
+    return <Loading />;
 };
 
 const styles = StyleSheet.create({});

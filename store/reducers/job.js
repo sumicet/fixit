@@ -4,6 +4,7 @@ import {
     DELETE_JOB,
     SET_MY_JOBS,
     FETCH_ALL_JOBS,
+    MARK_AS_COMPLETED,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
@@ -11,6 +12,7 @@ import Job from '../../models/Jobs/Job';
 const initialState = {
     allJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
+    userCompletedJobs: [],
 };
 
 const editElement = (array, id, elem) => {
@@ -76,16 +78,44 @@ const jobReducer = (state = initialState, action) => {
                 userPendingJobs: updatedUserPendingJobs, // TODO this only works for customers
             };
         case DELETE_JOB:
-            return state;
+            return {
+                ...state,
+                allJobs: [...state.allJobs].filter(job => job.id !== action.id),
+                userPendingJobs: [...state.userPendingJobs].filter(
+                    job => job.id !== action.id
+                ),
+                userCompletedJobs: [...state.userCompletedJobs].filter(
+                    job => job.id !== action.id
+                ),
+            };
         case SET_MY_JOBS:
             return {
                 ...state,
                 userPendingJobs: action.userPendingJobs,
+                userCompletedJobs: action.userCompletedJobs,
             };
         case FETCH_ALL_JOBS:
             return {
                 ...state,
                 allJobs: action.allJobs,
+            };
+        case MARK_AS_COMPLETED:
+            const newUserPendingJobs = [...state.userPendingJobs].filter(
+                job => job.id !== action.id
+            );
+            const updatedAllJobs = [...state.allJobs].filter(
+                job => job.id !== action.id
+            );
+            const completedJob = state.userPendingJobs.find(
+                job => job.id === action.id
+            );
+            const updatedUserCompletedJobs = [...state.userCompletedJobs];
+            updatedUserCompletedJobs.push(completedJob);
+            return {
+                ...state,
+                allJobs: updatedAllJobs,
+                userPendingJobs: newUserPendingJobs,
+                userCompletedJobs: updatedUserCompletedJobs,
             };
         default:
             return state;
