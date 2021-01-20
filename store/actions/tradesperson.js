@@ -3,9 +3,24 @@ export const SET_MY_JOBS = 'SET_MY_JOBS';
 export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
 export const SET_TRADESPERSON_INFO = 'SET_TRADESPERSON_INFO';
+export const ADD_QUOTED_JOB = 'ADD_QUOTED_JOB';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
+
+export const addQuotedJob = (jobId, tradespersonId) => {
+    return async (dispatch, getState) => {
+        await Firebase.database
+            .ref(`tradesperson/${tradespersonId}`)
+            .child('jobsQuoted')
+            .set(jobId);
+
+        dispatch({
+            type: ADD_QUOTED_JOB,
+            jobId
+        });
+    };
+};
 
 export const fetchTradespersonInfo = userId => {
     return async dispatch => {
@@ -33,14 +48,14 @@ export const fetchTradespersonInfo = userId => {
             experienceId: responseData.experienceId,
             insurance: responseData.insurance,
             propertyTypesIds: responseData.propertyTypesIds,
-            //profilePicture: null,
             profilePicture: profilePicture,
             phoneNumber: responseData.phoneNumber,
             recommendedByIds: responseData.recommendedByIds,
             rating: responseData.rating,
             ratingVotesAmount: responseData.ratingVotesAmount,
             contactsIds: responseData.contactsIds,
-            email: responseData.email
+            email: responseData.email,
+            quotedJobs: responseData.quotedJobs
         });
     };
 };

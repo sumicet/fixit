@@ -11,7 +11,7 @@ const Title = (props) => {
 
 const styles = StyleSheet.create({
     title: {
-        fontFamily: 'Asap-Bold',
+        fontFamily: 'Bold',
         fontSize: Layout.titleSize,
         color: Color.textColor,
     }

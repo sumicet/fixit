@@ -1,4 +1,4 @@
-import { SET_TRADESPERSON_INFO } from '../actions/tradesperson';
+import { ADD_QUOTED_JOB, SET_TRADESPERSON_INFO } from '../actions/tradesperson';
 
 const initialState = {
     occupationsIds: [],
@@ -11,6 +11,7 @@ const initialState = {
     propertyTypesIds: [],
     profilePicture: null,
     phoneNumber: null,
+    quotedJobs: null,
 };
 
 const tradespersonReducer = (state = initialState, action) => {
@@ -28,7 +29,14 @@ const tradespersonReducer = (state = initialState, action) => {
                 rating: action.rating,
                 ratingVotesAmount: action.ratingVotesAmount,
                 contactsIds: action.contactsIds,
+                quotedJobs: action.quotedJobs,
             };
+        case ADD_QUOTED_JOB:
+            const updatedQuotedJobs = [...state.quotedJobs];
+            updatedQuotedJobs.push(action.jobId);
+            return {
+                quotedJobs: updatedQuotedJobs
+            }
         default:
             return state;
     }

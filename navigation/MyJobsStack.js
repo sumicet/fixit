@@ -4,38 +4,35 @@ import {
     createStackNavigator,
     CardStyleInterpolators,
 } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
-import MyJobsScreen from '../screens/MyJobs/MyJobsScreen';
-import { headerOptions, coloredHeaderOptions } from './options/HeaderOptions';
+import { View } from 'react-native';
+import Header from '../components/text/Header';
+import Color from '../constants/Color';
+import Touchable from '../components/common/Touchable';
+import Layout from '../constants/Layout';
+import MyJobsStackWithoutCustomHeader from './MyJobsStackWithoutCustomHeader';
+import MyJobsStackWithCustomHeader from './MyJobsStackWithCustomHeader';
 
 const Stack = createStackNavigator();
 
 const MyJobsStack = () => {
+
     return (
         <Stack.Navigator
-            headerMode="screen"
+            headerMode="none"
             animation
             screenOptions={{
-                cardStyleInterpolator:
-                    CardStyleInterpolators.forHorizontalIOS,
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
         >
             <Stack.Screen
-                name="MyJobs"
-                component={MyJobsScreen}
-                options={{
-                    headerTitle: 'My Jobs',
-                    ...headerOptions,
-                }}
+                name="MyJobsStackWithCustomHeader"
+                component={MyJobsStackWithCustomHeader}
             />
             <Stack.Screen
-                name="JobDetails"
-                component={JobDetailsScreen}
-                options={() => ({
-                    ...headerOptions,
-                    headerTitle: 'Details',
-                })}
+                name="MyJobsStackWithoutCustomHeader"
+                component={MyJobsStackWithoutCustomHeader}
             />
         </Stack.Navigator>
     );

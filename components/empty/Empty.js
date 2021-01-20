@@ -9,14 +9,25 @@ import Layout from '../../constants/Layout';
 const Empty = props => {
     return (
         <View
-            style={{
-                flex: props.size === 'small' ? 0 : 1,
-                flexDirection: props.size === 'small' ? 'row' : 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
+            style={[
+                {
+                    flex: props.size === 'small' ? 0 : 1,
+                    flexDirection: props.size === 'small' ? 'row' : 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                },
+                props.style,
+            ]}
         >
-            <Line style={[{ flex: 0 }, props.size === 'small' && {paddingBottom: 0, paddingRight: Layout.generalPadding}]}>
+            <Line
+                style={[
+                    { flex: 0 },
+                    props.size === 'small' && {
+                        paddingBottom: 0,
+                        paddingRight: Layout.generalPadding,
+                    },
+                ]}
+            >
                 {props.size === 'small' ? (
                     <EmptyIcon size={40} />
                 ) : (

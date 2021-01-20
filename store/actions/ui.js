@@ -25,7 +25,7 @@ export const setInAppNotification = (title, message, style) => {
     return async dispatch => {
         setTimeout(() => {
             dispatch(hideInAppNotification())
-        }, 5000);
+        }, 7000);
         dispatch({
             type: SET_IN_APP_NOTIFICATION,
             title,

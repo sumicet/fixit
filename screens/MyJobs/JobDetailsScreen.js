@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Trash from 'react-native-vector-icons/Foundation';
+import Briefcase from 'react-native-vector-icons/MaterialCommunityIcons';
 import Check from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Layout from '../../constants/Layout';
@@ -35,6 +36,7 @@ const latitudeDelta = 0.005;
 const longitudeDelta = 0.005;
 
 const JobDetailsScreen = props => {
+    const userType = useSelector(state => state.auth.userType);
     const job1 = useSelector(state => state.job.userPendingJobs).find(
         elem => elem.id === props.route.params.id
     );
@@ -150,7 +152,7 @@ const JobDetailsScreen = props => {
                     flexDirection: 'row',
                 }}
             >
-                {job1 && (
+                {userType === 'customer' && job1 && (
                     <Touchable
                         style={{
                             flex: 0,
@@ -177,7 +179,7 @@ const JobDetailsScreen = props => {
                     </Touchable>
                 )}
 
-                {job1 && (
+                {userType === 'customer' && job1 && (
                     <Touchable
                         style={{
                             flex: 0,
@@ -201,28 +203,56 @@ const JobDetailsScreen = props => {
                     </Touchable>
                 )}
 
-                <Touchable
-                    style={{
-                        flex: 0,
-                        padding: Layout.screenHorizontalPadding / 2,
-                    }}
-                    onPress={() => {
-                        showAlert(
-                            'Delete',
-                            'Are you sure you want to delete this job?',
-                            onDeleteConfirm,
-                            ERROR
-                        );
-                    }}
-                >
-                    <View style={styles.iconContainer}>
-                        <Trash
-                            name="trash"
-                            color={Color.importantTextOnTertiaryColorBackground}
-                            size={Layout.menuIconSize}
-                        />
-                    </View>
-                </Touchable>
+                {userType === 'customer' && (
+                    <Touchable
+                        style={{
+                            flex: 0,
+                            padding: Layout.screenHorizontalPadding / 2,
+                        }}
+                        onPress={() => {
+                            showAlert(
+                                'Delete',
+                                'Are you sure you want to delete this job?',
+                                onDeleteConfirm,
+                                ERROR
+                            );
+                        }}
+                    >
+                        <View style={styles.iconContainer}>
+                            <Trash
+                                name="trash"
+                                color={
+                                    Color.importantTextOnTertiaryColorBackground
+                                }
+                                size={Layout.menuIconSize}
+                            />
+                        </View>
+                    </Touchable>
+                )}
+
+                {userType === 'tradesperson' && (
+                    <Touchable
+                        style={{
+                            flex: 0,
+                            padding: Layout.screenHorizontalPadding / 2,
+                        }}
+                        onPress={() => {
+                            props.navigation.navigate('NewQuote', {
+                                jobId: job.id,
+                            });
+                        }}
+                    >
+                        <View style={styles.iconContainer}>
+                            <Briefcase
+                                name="briefcase-plus"
+                                color={
+                                    Color.importantTextOnTertiaryColorBackground
+                                }
+                                size={Layout.menuIconSize}
+                            />
+                        </View>
+                    </Touchable>
+                )}
             </View>
         );
     };
@@ -268,7 +298,7 @@ const JobDetailsScreen = props => {
                 <SmallContent
                     style={{
                         color: Color.importantTextOnTertiaryColorBackground,
-                        fontFamily: 'Asap-SemiBold',
+                        fontFamily: 'SemiBold',
                         textAlign: 'center',
                     }}
                 >
@@ -341,7 +371,7 @@ const JobDetailsScreen = props => {
                                 marginLeft: Layout.generalPadding,
                             }}
                             textStyle={{
-                                fontFamily: 'Asap-SemiBold',
+                                fontFamily: 'SemiBold',
                                 color:
                                     Color.importantTextOnTertiaryColorBackground,
                             }}

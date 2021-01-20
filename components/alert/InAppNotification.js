@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SUCCESS } from '../../constants/Actions';
 
 import Color from '../../constants/Color';
+import Layout from '../../constants/Layout';
 import { setInAppNotificationVisible } from '../../store/actions/ui';
 import Line from '../common/Line';
 import Header from '../text/Header';
@@ -36,9 +37,9 @@ const InAppNotification = props => {
             modalVisible={data.inAppNotificationVisible}
             hasBackdrop={false}
             cardStyle={{
-                height: 70,
                 width: '100%',
                 backgroundColor: data.style === SUCCESS ? Color.primaryBrandColor : Color.error,
+                padding: Layout.screenHorizontalPadding
             }}
         >
             <Line
@@ -65,7 +66,7 @@ const InAppNotification = props => {
                 <SmallContent
                     style={{
                         color: Color.importantTextOnTertiaryColorBackground,
-                        fontFamily: 'Asap-Regular',
+                        fontFamily: 'Regular',
                     }}
                 >
                     {data.message}

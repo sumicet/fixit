@@ -12,7 +12,7 @@ const HeaderWithEllipsis = (props) => {
 
 const styles = StyleSheet.create({
     header: {
-        fontFamily: 'Asap-SemiBold',
+        fontFamily: 'SemiBold',
         fontSize: Layout.headerSize,
         color: Color.textColor,
         textAlign: 'left'

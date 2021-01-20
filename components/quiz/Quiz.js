@@ -22,9 +22,10 @@ import { addJob, editJob } from '../../store/actions/job';
 import Alert from '../../components/alert/Alert';
 import ScrollableContainer from '../containers/ScrollableContainer';
 import LineDescription from '../common/LineDescription';
-import { WARNING } from '../../constants/Actions';
+import { SUCCESS, WARNING } from '../../constants/Actions';
 import Touchable from '../common/Touchable';
 import ImageSelector from '../images/ImageSelector';
+import { setInAppNotification } from '../../store/actions/ui';
 
 const Quiz = props => {
     const { title, editModeOn, id, navigation, route } = props;
@@ -259,37 +260,55 @@ const Quiz = props => {
             //     jobAddressInput.place_id,
             //     startTimeId
             // );
-            editModeOn
-                ? dispatch(
-                      editJob(
-                          id,
-                          occupationId,
-                          workTypeId,
-                          jobDescriptionInput,
-                          customerTypeId,
-                          propertyTypeId,
-                          jobAddressInput,
-                          startTimeId,
-                          images
-                      )
-                  )
-                : dispatch(
-                      addJob(
-                          userId,
-                          occupationId,
-                          workTypeId,
-                          jobDescriptionInput,
-                          customerTypeId,
-                          propertyTypeId,
-                          jobAddressInput,
-                          startTimeId,
-                          images
-                      )
-                  );
-            navigation.navigate('MyJobs', {
-                screen: 'MyJobs',
+            if (editModeOn) {
+                dispatch(
+                    editJob(
+                        id,
+                        occupationId,
+                        workTypeId,
+                        jobDescriptionInput,
+                        customerTypeId,
+                        propertyTypeId,
+                        jobAddressInput,
+                        startTimeId,
+                        images
+                    )
+                ).then(() => {
+                    dispatch(
+                        setInAppNotification(
+                            'Edited',
+                            'Your job has been successfully edited.',
+                            SUCCESS
+                        )
+                    );
+                });
+            } else {
+                dispatch(
+                    addJob(
+                        userId,
+                        occupationId,
+                        workTypeId,
+                        jobDescriptionInput,
+                        customerTypeId,
+                        propertyTypeId,
+                        jobAddressInput,
+                        startTimeId,
+                        images
+                    )
+                ).then(() => {
+                    dispatch(
+                        setInAppNotification(
+                            'Added',
+                            'Your job has been successfully added.',
+                            SUCCESS
+                        )
+                    );
+                });
+            }
+            navigation.navigate('MyJobsStack', {
+                screen: 'MyJobsStackWithCustomHeader',
                 params: {
-                    isInAppNotificationVisible: true,
+                    screen: 'MyJobs',
                 },
             });
         }

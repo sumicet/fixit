@@ -51,7 +51,7 @@ const HomeScreen = props => {
                     style={{
                         flexDirection: 'row',
                         backgroundColor: Color.textField,
-                        padding: Layout.generalPadding,
+                        padding: Layout.screenHorizontalPadding,
                         borderRadius: Layout.borderRadius,
                         flex: 1,
                         marginLeft: Layout.generalPadding,
@@ -103,6 +103,20 @@ const HomeScreen = props => {
             style={{ paddingHorizontal: 0, paddingTop: 0, marginTop: 0 }}
         >
             {userType === 'tradesperson' ? (
+                <JobList
+                    title="Recommended jobs"
+                    list={allJobs}
+                    navigation={props.navigation}
+                    onCardPress={(id) => {
+                        props.navigation.navigate('HomeStackWithoutSearchBar', {
+                            screen: 'JobDetails',
+                            params: {
+                                id,
+                            },
+                        });
+                    }}
+                />
+            ) : (
                 <FlatList
                     data={allTradespeople.filter(tp => tp.occupationsIds)}
                     style={{ flex: 1 }}
@@ -155,8 +169,6 @@ const HomeScreen = props => {
                         </View>
                     )}
                 />
-            ) : (
-                <JobList list={allJobs} navigation={props.navigation} />
             )}
         </Container>
     );

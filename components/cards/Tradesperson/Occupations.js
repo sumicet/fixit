@@ -36,7 +36,7 @@ const Occupations = props => {
                 <Header
                     style={{
                         color: Color.textOnTertiaryColorBackground,
-                        fontFamily: 'Asap-Regular',
+                        fontFamily: 'Regular',
                     }}
                 >
                     {occList.map((elem, index) => {

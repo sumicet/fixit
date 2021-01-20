@@ -266,7 +266,7 @@ const EditTradespersonProfile = props => {
                     }}
                     textInputStyle={{
                         color: Color.textColor,
-                        fontFamily: 'Asap-Regular',
+                        fontFamily: 'Regular',
                     }}
                     renderDropdownImage={
                         <Icon
@@ -277,7 +277,7 @@ const EditTradespersonProfile = props => {
                     }
                     codeTextStyle={{
                         color: Color.textColor,
-                        fontFamily: 'Asap-Regular',
+                        fontFamily: 'Regular',
                         marginRight: Layout.generalPadding,
                     }}
                     flagButtonStyle={{

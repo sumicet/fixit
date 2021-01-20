@@ -62,7 +62,7 @@ const Alert = props => {
                 <Header
                     style={{
                         color: Color.importantTextOnTertiaryColorBackground,
-                        fontFamily: 'Asap-Regular',
+                        fontFamily: 'Regular',
                     }}
                 >
                     {message}
@@ -93,7 +93,7 @@ const Alert = props => {
                             : props.style === SUCCESS
                             ? Color.success
                             : Color.error,
-                            //fontFamily: 'Asap-Regular',
+                            //fontFamily: 'Regular',
                         }}
                     >
                         {leftButtonText ? leftButtonText : 'Go back'}
@@ -114,7 +114,7 @@ const Alert = props => {
                             style={{
                                 color:
                                     Color.importantTextOnTertiaryColorBackground,
-                                //fontFamily: 'Asap-Regular',
+                                //fontFamily: 'Regular',
                             }}
                         >
                             {text ? text : 'Yes'}

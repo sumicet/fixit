@@ -19,6 +19,8 @@ const MyJobsScreen = props => {
     const userCompletedJobs = useSelector(state => state.job.userCompletedJobs);
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
+    const userType = useSelector(state => state.auth.userType);
+    const requests = useSelector(state => state.job.requests);
 
     useEffect(() => {
         if (
@@ -39,28 +41,68 @@ const MyJobsScreen = props => {
         }
     }, [props, isFocused]);
 
+    const Screen = props => {
+        const { mainArray, secondaryArray } = props;
+
+        return (
+            <View style={{ flex: 1, backgroundColor: Color.primaryColor }}>
+                {mainArray && mainArray.length > 0 ? (
+                    <Container
+                        backgroundColor={Color.primaryColor}
+                        style={{
+                            flex: 1,
+                            paddingTop: 0,
+                            marginTop: 0,
+                            paddingHorizontal: 0,
+                        }}
+                    >
+                        <JobList
+                            list={mainArray
+                                .sort(
+                                    (job1, job2) =>
+                                        new Date(job2.date) -
+                                        new Date(job1.date)
+                                )
+                                .concat(
+                                    secondaryArray.sort(
+                                        (job1, job2) =>
+                                            new Date(job2.date) -
+                                            new Date(job1.date)
+                                    )
+                                )} // sorts by newest first
+                            navigation={props.navigation}
+                            showSecondTitleAtElementWithIndex={
+                                mainArray ? mainArray.length : 0
+                            }
+                            onCardPress={id => {
+                                props.navigation.navigate(
+                                    'MyJobsStackWithoutCustomHeader',
+                                    {
+                                        screen: 'JobDetails',
+                                        params: {
+                                            id,
+                                        },
+                                    }
+                                );
+                            }}
+                        />
+                    </Container>
+                ) : (
+                    <Empty />
+                )}
+            </View>
+        );
+    };
+
     return (
-        <View style={{ flex: 1, backgroundColor: Color.primaryColor }}>
-            {userPendingJobs && userPendingJobs.length > 0 ? (
-                <Container
-                    backgroundColor={Color.primaryColor}
-                    style={{
-                        flex: 1,
-                        paddingTop: 0,
-                        marginTop: 0,
-                        paddingHorizontal: 0,
-                    }}
-                >
-                    <JobList
-                        list={userPendingJobs.concat(userCompletedJobs)} //TODO change this to completed jobs
-                        navigation={props.navigation}
-                        showSecondTitleAtElementWithIndex={
-                            userPendingJobs ? userPendingJobs.length : 0
-                        }
-                    />
-                </Container>
+        <View style={{ flex: 1 }}>
+            {userType === 'tradesperson' ? (
+                <Screen mainArray={requests} />
             ) : (
-                <Empty />
+                <Screen
+                    mainArray={userPendingJobs}
+                    secondaryArray={userCompletedJobs}
+                />
             )}
         </View>
     );

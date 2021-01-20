@@ -286,7 +286,7 @@ const TradespersonProfileScreen = props => {
                             >
                                 <SmallContent
                                     style={{
-                                        fontFamily: 'Asap-SemiBold',
+                                        fontFamily: 'SemiBold',
                                         color:
                                             Color.importantTextOnTertiaryColorBackground,
                                     }}

@@ -37,7 +37,7 @@ const LocationSearchField = props => {
                     padding: Layout.generalPadding
                 },
                 textInput: {
-                    fontFamily: 'Asap-Regular',
+                    fontFamily: 'Regular',
                     color: Color.textColor,
                     fontSize: Layout.smallContentSize
                 },

@@ -11,7 +11,7 @@ const Confirm = props => {
         <Container style={{ marginTop: 0 }}>
             <LineDescription
                 text={props.text}
-                textStyle={{ fontFamily: 'Asap-Regular' }}
+                textStyle={{ fontFamily: 'Regular' }}
             />
             {props.children}
             <Line

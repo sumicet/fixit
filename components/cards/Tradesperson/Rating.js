@@ -138,7 +138,7 @@ const Rating = props => {
                     <Content
                         style={{
                             color: props.color ? props.color : Color.starColor,
-                            fontFamily: 'Asap-SemiBold',
+                            fontFamily: 'SemiBold',
                         }}
                     >
                         {rating !== 0 ? rating : 'N/A'}

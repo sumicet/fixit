@@ -13,18 +13,12 @@ const JobList = props => {
         return (
             <View>
                 {props.showSecondTitleAtElementWithIndex === index && (
-                    <LineDescription
-                        text="Closed jobs"
-                    />
+                    <LineDescription text="Closed jobs" />
                 )}
                 <Touchable
                     isCard={true}
                     style={{ flex: 0 }}
-                    onPress={() => {
-                        props.navigation.navigate('JobDetails', {
-                            id: item.id,
-                        });
-                    }}
+                    onPress={() => props.onCardPress(item.id)}
                 >
                     <JobCard
                         userId={item.userId}
@@ -47,11 +41,15 @@ const JobList = props => {
             keyExtractor={(item, i) => `key-${i}`}
             data={props.list}
             renderItem={renderItem}
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             contentContainerStyle={{
                 paddingHorizontal: Layout.screenHorizontalPadding,
             }}
-            ListHeaderComponent={() => <LineDescription text="Opened jobs" />}
+            ListHeaderComponent={() => (
+                <LineDescription
+                    text={props.title ? props.title : 'Opened jobs'}
+                />
+            )}
             ListFooterComponent={() => <EndOfPageSpace />}
         />
     );

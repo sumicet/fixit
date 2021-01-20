@@ -82,9 +82,9 @@ const AppContainer = () => {
 
     const fetchFonts = () => {
         return Font.loadAsync({
-            'Asap-Bold': require('./assets/fonts/whitneybold.ttf'),
-            'Asap-SemiBold': require('./assets/fonts/whitneysemibold.ttf'),
-            'Asap-Regular': require('./assets/fonts/whitneymedium.ttf'),
+            'Bold': require('./assets/fonts/whitneybold.ttf'),
+            'SemiBold': require('./assets/fonts/whitneysemibold.ttf'),
+            'Regular': require('./assets/fonts/whitneymedium.ttf'),
         });
     };
 

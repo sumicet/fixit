@@ -5,13 +5,12 @@ import {
     CardStyleInterpolators,
 } from '@react-navigation/stack';
 
-import { headerOptions } from './options/HeaderOptions';
-import CurrentLocationScreen from '../screens/Home/CurrentLocationScreen';
 import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
+import { headerOptions } from './options/HeaderOptions';
 
 const Stack = createStackNavigator();
 
-const HomeStackWithoutSearchBar = () => {
+const MyJobsStackWithoutCustomHeader = () => {
     return (
         <Stack.Navigator
             headerMode="screen"
@@ -20,14 +19,6 @@ const HomeStackWithoutSearchBar = () => {
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
         >
-            <Stack.Screen
-                name="CurrentLocation"
-                component={CurrentLocationScreen}
-                options={{
-                    headerTitle: 'Change location',
-                    ...headerOptions,
-                }}
-            />
             <Stack.Screen
                 name="JobDetails"
                 component={JobDetailsScreen}
@@ -40,4 +31,4 @@ const HomeStackWithoutSearchBar = () => {
     );
 };
 
-export default HomeStackWithoutSearchBar;
+export default MyJobsStackWithoutCustomHeader;

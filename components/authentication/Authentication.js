@@ -220,7 +220,7 @@ const Authentication = props => {
                     <Touchable onPress={onTextPress} style={{ flex: 0 }}>
                         <Header
                             style={{
-                                fontFamily: 'Asap-Regular',
+                                fontFamily: 'Regular',
                                 color:
                                     Color.importantTextOnTertiaryColorBackground,
                             }}

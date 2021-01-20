@@ -3,7 +3,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Briefcase from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
@@ -12,11 +13,15 @@ import NewJobScreen from '../screens/Quiz/NewJobScreen';
 import ProfileStack from './ProfileStack';
 import MyJobsStack from './MyJobsStack';
 import HomeStack from './HomeStack';
-import MessagesStack from './MessagesStack';
+import { useSelector } from 'react-redux';
+import { HeaderTitle } from '@react-navigation/stack';
+import MyJobsStackWithoutCustomHeader from './MyJobsStackWithoutCustomHeader';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTab = () => {
+    const userType = useSelector(state => state.auth.userType);
+
     return (
         <Tab.Navigator
             tabBarOptions={{
@@ -33,20 +38,16 @@ const BottomTab = () => {
                 tabBarIcon: ({ focused }) => {
                     let iconName;
                     if (route.name === 'Home') {
-                        iconName = 'home';
+                        iconName = 'view-dashboard';
                     } else {
                         if (route.name === 'MyJobs') {
-                            iconName = 'solution1';
+                            iconName = 'view-dashboard';
                         } else {
-                            if (route.name === 'Messages') {
-                                iconName = 'message1';
+                            if (route.name === 'Profile') {
+                                iconName = 'account';
                             } else {
-                                if (route.name === 'Profile') {
-                                    iconName = 'user';
-                                } else {
-                                    if (route.name === 'FakeNewJob') {
-                                        iconName = 'plus';
-                                    }
+                                if (route.name === 'FakeNewJob') {
+                                    iconName = 'plus';
                                 }
                             }
                         }
@@ -55,23 +56,46 @@ const BottomTab = () => {
                     return (
                         <Touchable
                             onPress={() => {
+                                console.log(route.name);
                                 if (route.name === 'FakeNewJob') {
                                     navigation.navigate('NewJob');
                                 } else {
-                                    navigation.navigate(route.name);
+                                    if (route.name === 'MyJobsStack') {
+                                        navigation.navigate('MyJobsStack', {
+                                            screen:
+                                                'MyJobsStackWithCustomHeader',
+                                            params: {
+                                                screen: 'MyJobs',
+                                            },
+                                        });
+                                    } else {
+                                        navigation.navigate(route.name);
+                                    }
                                 }
                             }}
                             style={styles.touchable}
                         >
-                            <Icon
-                                name={iconName}
-                                color={
-                                    focused
-                                        ? Color.primaryBrandColor
-                                        : Color.secondaryColor
-                                }
-                                size={Layout.menuIconSize}
-                            />
+                            {route.name === 'MyJobsStack' ? (
+                                <Briefcase
+                                    name="briefcase"
+                                    color={
+                                        focused
+                                            ? Color.primaryBrandColor
+                                            : Color.secondaryColor
+                                    }
+                                    size={Layout.menuIconSize}
+                                />
+                            ) : (
+                                <Icon
+                                    name={iconName}
+                                    color={
+                                        focused
+                                            ? Color.primaryBrandColor
+                                            : Color.secondaryColor
+                                    }
+                                    size={Layout.menuIconSize}
+                                />
+                            )}
                         </Touchable>
                     );
                 },
@@ -85,26 +109,21 @@ const BottomTab = () => {
                 })}
             />
             <Tab.Screen
-                name="MyJobs"
+                name="MyJobsStack"
                 component={MyJobsStack}
                 listeners={() => ({
                     tabPress: () => {},
                 })}
             />
-            <Tab.Screen
-                name="FakeNewJob"
-                component={NewJobScreen}
-                listeners={() => ({
-                    tabPress: () => {},
-                })}
-            />
-            <Tab.Screen
-                name="Messages"
-                component={MessagesStack}
-                listeners={() => ({
-                    tabPress: () => {},
-                })}
-            />
+            {userType === 'customer' && (
+                <Tab.Screen
+                    name="FakeNewJob"
+                    component={NewJobScreen}
+                    listeners={() => ({
+                        tabPress: () => {},
+                    })}
+                />
+            )}
             <Tab.Screen
                 name="Profile"
                 component={ProfileStack}

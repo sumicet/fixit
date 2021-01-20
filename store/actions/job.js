@@ -4,9 +4,97 @@ export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
 export const FETCH_ALL_JOBS = 'FETCH_ALL_JOBS';
 export const MARK_AS_COMPLETED = 'MARK_AS_COMPLETED';
+export const ADD_QUOTE = 'ADD_QUOTE';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
+import { addQuotedJob } from './tradesperson';
+
+export const fetchQuotes = () => {
+    return async dispatch => {
+        try {
+            var response = await fetch(
+                'https://fixit-46444.firebaseio.com/allPendingJobs.json'
+            );
+
+            var responseData = await response.json();
+
+            const allJobs = [];
+
+            for (const key in responseData) {
+                const images = [];
+                var i;
+                for (i = 0; i < 10; i++) {
+                    try {
+                        const imageRef = Firebase.storage
+                            .ref()
+                            .child(
+                                `/jobImages/${responseData[key].userId}/${key}/${i}`
+                            );
+                        const image = await imageRef.getDownloadURL();
+                        images.push(image);
+                    } catch (error) {
+                        break;
+                    }
+                }
+
+                allJobs.push(
+                    new Job(
+                        key,
+                        responseData[key].userId,
+                        responseData[key].date,
+                        responseData[key].occupationId,
+                        responseData[key].workTypeId,
+                        responseData[key].jobDescription,
+                        responseData[key].customerType,
+                        responseData[key].propertyType,
+                        responseData[key].jobAddress,
+                        responseData[key].startTimeId,
+                        images
+                    )
+                );
+            }
+
+            dispatch({
+                type: FETCH_ALL_JOBS,
+                allJobs,
+            });
+        } catch (error) {
+            console.log('err');
+        }
+    };
+};
+
+export const addQuote = (jobId, tradespersonId, price, message) => {
+    return async dispatch => {
+        const date = new Date().toString();
+        const ref = await Firebase.database
+            .ref(`allPendingJobs/${jobId}`)
+            .child('quotes');
+
+        const quotes = ref.push();
+
+        quotes.child('jobId').set(jobId);
+        quotes.child('tradespersonId').set(tradespersonId);
+        quotes.child('price').set(price);
+        quotes.child('message').set(message);
+        quotes.child('date').set(date);
+
+        quotes.once('value').then(snap => {
+            dispatch({
+                type: ADD_QUOTE,
+                id: snap.val(),
+                jobId,
+                tradespersonId,
+                price,
+                message,
+                date,
+            });
+        });
+
+        await dispatch(addQuotedJob(jobId, tradespersonId));
+    };
+};
 
 export const markAsCompleted = id => {
     return async dispatch => {

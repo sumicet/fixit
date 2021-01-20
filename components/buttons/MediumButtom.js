@@ -14,7 +14,7 @@ const MediumButton = props => {
         >
             <Header
                 style={{
-                    fontFamily: 'Asap-Regular',
+                    fontFamily: 'Regular',
                     color: props.textColor
                         ? props.textColor
                         : Color.importantTextOnTertiaryColorBackground,

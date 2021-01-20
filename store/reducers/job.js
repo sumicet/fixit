@@ -5,14 +5,19 @@ import {
     SET_MY_JOBS,
     FETCH_ALL_JOBS,
     MARK_AS_COMPLETED,
+    ADD_QUOTE,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
+import Quote from '../../models/Jobs/Quote';
 
 const initialState = {
     allJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
     userCompletedJobs: [],
+
+    quotes: [], // quotes sent by tp OR quotes received by customers
+    requests: [], //jobs (requests) received by tp to give a quote
 };
 
 const editElement = (array, id, elem) => {
@@ -117,6 +122,22 @@ const jobReducer = (state = initialState, action) => {
                 userPendingJobs: newUserPendingJobs,
                 userCompletedJobs: updatedUserCompletedJobs,
             };
+        case ADD_QUOTE:
+            const updatedQuotes = [...state.quotes];
+            updatedQuotes.push(
+                new Quote(
+                    action.id,
+                    action.jobId,
+                    action.tradespersonId,
+                    action.price,
+                    action.message,
+                    action.date
+                )
+            );
+            return {
+                ...state,
+                quotes: updatedQuotes
+            }
         default:
             return state;
     }

@@ -18,6 +18,7 @@ import Header from '../../text/Header';
 import { ClipPath } from 'react-native-svg';
 import SmallContent from '../../text/SmallContent';
 import Quotes from './Quotes';
+import Bubble from '../../common/Bubble';
 
 const JobCard = props => {
     const street = useSelector(state => state.auth.streetAddress);
@@ -31,8 +32,6 @@ const JobCard = props => {
         occupationId,
         workTypeId,
         jobDescription,
-        customerType,
-        propertyType,
         jobAddress,
         startTimeId,
     } = props;
@@ -47,30 +46,7 @@ const JobCard = props => {
             : setDistance('N/A');
     }, []);
 
-    const Bubble = props => {
-        return (
-            <View
-                style={[
-                    {
-                        backgroundColor: Color.primaryBrandColor,
-                        padding: 5,
-                        paddingHorizontal: 10,
-                        borderRadius: Layout.borderRadius,
-                    },
-                    props.style,
-                ]}
-            >
-                <SmallContent
-                    style={{
-                        textAlign: 'left',
-                        color: Color.importantTextOnTertiaryColorBackground,
-                    }}
-                >
-                    {props.text}
-                </SmallContent>
-            </View>
-        );
-    };
+    
 
     return (
         <View style={styles.container}>

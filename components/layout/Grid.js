@@ -80,7 +80,7 @@ const Grid = props => {
                             colors[props.index] === Color.tertiaryBrandColor
                                 ? Color.importantTextOnTertiaryColorBackground
                                 : Color.textColor,
-                        fontFamily: 'Asap-SemiBold',
+                        fontFamily: 'SemiBold',
                         textAlign: 'center',
                     }}
                 >

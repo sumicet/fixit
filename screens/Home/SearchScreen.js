@@ -181,7 +181,7 @@ const SearchScreen = props => {
                     }}
                     textStyle={{
                         color: Color.textOnTertiaryColorBackground,
-                        fontFamily: 'Asap-SemiBold',
+                        fontFamily: 'SemiBold',
                         fontSize: Layout.smallContentSize,
                     }}
                     checkedColor={Color.primaryBrandColor}

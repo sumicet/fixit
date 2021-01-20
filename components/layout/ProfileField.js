@@ -36,7 +36,7 @@ const ProfileField = props => {
                     >
                         <Header
                             style={{
-                                fontFamily: 'Asap-Regular',
+                                fontFamily: 'Regular',
                                 textAlign: 'left',
                             }}
                         >

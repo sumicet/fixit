@@ -130,7 +130,7 @@ const VerifyEmailScreen = props => {
         <Container style={{ marginTop: 0 }}>
             <LineDescription
                 text="We have sent an email to:"
-                textStyle={{ fontFamily: 'Asap-Regular', textAlign: 'left' }}
+                textStyle={{ fontFamily: 'Regular', textAlign: 'left' }}
             />
             <Line style={{ flex: 0 }}>
                 <View
@@ -152,13 +152,13 @@ const VerifyEmailScreen = props => {
             </Line>
             <LineDescription
                 text="Please verify your email address in order to proceed."
-                textStyle={{ fontFamily: 'Asap-Regular', textAlign: 'left' }}
+                textStyle={{ fontFamily: 'Regular', textAlign: 'left' }}
             />
             {message && (
                 <LineDescription
                     text={message}
                     textStyle={{
-                        fontFamily: 'Asap-Regular',
+                        fontFamily: 'Regular',
                         textAlign: 'left',
                         color: Color.warning,
                     }}

@@ -40,7 +40,7 @@ const Dropdown = props => {
                 textStyle={{
                     color: color === Color.primaryBrandColor ? Color.importantTextOnTertiaryColorBackground : Color.textColor,
                     fontSize: Layout.smallContentSize,
-                    fontFamily: color === Color.primaryBrandColor ? 'Asap-SemiBold' : 'Asap-Regular',
+                    fontFamily: color === Color.primaryBrandColor ? 'SemiBold' : 'Regular',
                 }}
                 dropdownStyle={{
                     padding: Layout.generalPadding / 2,
@@ -55,12 +55,12 @@ const Dropdown = props => {
                 dropdownTextStyle={{
                     color: Color.secondaryColor,
                     fontSize: Layout.smallContentSize,
-                    fontFamily: 'Asap-Regular',
+                    fontFamily: 'Regular',
                     backgroundColor: Color.textField,
                 }}
                 dropdownTextHighlightStyle={{
                     color: Color.textColor,
-                    fontFamily: 'Asap-SemiBold',
+                    fontFamily: 'SemiBold',
                 }}
                 renderSeparator={() => <View></View>}
                 adjustFrame={({ width, height, top, left, right }) => {

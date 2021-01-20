@@ -15,7 +15,8 @@ export const coloredHeaderOptions = {
     },
     headerTitleStyle: {
         color: Color.importantTextOnTertiaryColorBackground,
-        fontFamily: 'Asap-SemiBold',
+        fontFamily: 'SemiBold',
+        fontSize: 20
     },
     headerTitleAlign: 'center',
     headerBackImage: () => (
@@ -36,7 +37,8 @@ export const headerOptions = {
     },
     headerTitleStyle: {
         color: Color.importantTextOnTertiaryColorBackground,
-        fontFamily: 'Asap-SemiBold',
+        fontFamily: 'SemiBold',
+        fontSize: 20
     },
     headerTitleAlign: 'center',
     headerBackImage: () => (

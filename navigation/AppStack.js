@@ -16,6 +16,9 @@ import EditTradespersonProfileScreen from '../screens/Profile/EditTradespersonPr
 import LogInScreen from '../screens/Authentication/LogInScreen';
 import SignUpScreen from '../screens/Authentication/SignUpScreen';
 import InitialLoadingScreen from '../screens/Loading/InitialLoadingScreen';
+import MyJobsStackWithCustomHeader from './MyJobsStackWithCustomHeader';
+import MyJobsStackWithoutCustomHeader from './MyJobsStackWithoutCustomHeader';
+import NewQuoteScreen from '../screens/Quotes/NewQuoteScreen';
 
 const Stack = createStackNavigator();
 
@@ -42,7 +45,7 @@ const AppStack = () => {
                 name="NewJob"
                 component={NewJobScreen}
                 options={{
-                    headerTitle: 'New',
+                    headerTitle: 'New job',
                     ...headerOptions,
                 }}
             />
@@ -50,7 +53,15 @@ const AppStack = () => {
                 name="EditJob"
                 component={EditJobScreen}
                 options={{
-                    headerTitle: 'Edit',
+                    headerTitle: 'Edit job',
+                    ...headerOptions,
+                }}
+            />
+            <Stack.Screen
+                name="NewQuote"
+                component={NewQuoteScreen}
+                options={{
+                    headerTitle: 'New quote',
                     ...headerOptions,
                 }}
             />
@@ -104,7 +115,6 @@ const AppStack = () => {
                     headerTitle: 'Sign Up',
                 }}
             />
-            
         </Stack.Navigator>
     );
 };

@@ -31,7 +31,7 @@ const StartTime = props => {
                             : props.startTimeId === 3 || props.startTimeId === 4
                             ? Color.warning
                             : Color.textField,
-                    fontFamily: 'Asap-Regular',
+                    fontFamily: 'Regular',
                 }}
             >
                 {' '}
