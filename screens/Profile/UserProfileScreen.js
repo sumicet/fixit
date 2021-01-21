@@ -30,6 +30,7 @@ import { setInAppNotification } from '../../store/actions/ui';
 import { ERROR, SUCCESS } from '../../constants/Actions';
 import { isLoading } from 'expo-font';
 import Loading from '../../components/loading/Loading';
+import { coloredHeaderOptions, headerOptions } from '../../navigation/options/HeaderOptions';
 
 const UserProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(true);
@@ -47,6 +48,7 @@ const UserProfileScreen = props => {
         setIsLoading(true);
         props.navigation.setOptions({
             headerTitle: name,
+            ...headerOptions
         });
         setIsLoading(false);
     }, [name]);

@@ -4,23 +4,38 @@ export const UPDATE_JOB = 'UPDATE_JOB';
 export const DELETE_JOB = 'DELETE_JOB';
 export const SET_TRADESPERSON_INFO = 'SET_TRADESPERSON_INFO';
 export const ADD_QUOTED_JOB = 'ADD_QUOTED_JOB';
+export const FETCH_TRADESPERSON_INFO = 'FETCH_TRADESPERSON_INFO';
 
-import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 
-export const addQuotedJob = (jobId, tradespersonId) => {
-    return async (dispatch, getState) => {
-        await Firebase.database
-            .ref(`tradesperson/${tradespersonId}`)
-            .child('jobsQuoted')
-            .set(jobId);
+// export const addQuotedJob = (jobId, tradespersonId) => {
+//     return async (dispatch, getState) => {
+//         const snap = await Firebase.database
+//             .ref(`tradesperson/${tradespersonId}`)
+//             .child('jobsQuoted')
+//             .once('value');
 
-        dispatch({
-            type: ADD_QUOTED_JOB,
-            jobId
-        });
-    };
-};
+//         const oldJobsQuoted = snap.val();
+
+//         if (oldJobsQuoted) {
+//             oldJobsQuoted.push(jobId);
+//             await Firebase.database
+//                 .ref(`tradesperson/${tradespersonId}`)
+//                 .child('jobsQuoted')
+//                 .set(oldJobsQuoted);
+//         } else {
+//             await Firebase.database
+//                 .ref(`tradesperson/${tradespersonId}`)
+//                 .child('jobsQuoted')
+//                 .set([jobId]);
+//         }
+
+//         dispatch({
+//             type: ADD_QUOTED_JOB,
+//             jobId,
+//         });
+//     };
+// };
 
 export const fetchTradespersonInfo = userId => {
     return async dispatch => {
@@ -42,7 +57,7 @@ export const fetchTradespersonInfo = userId => {
         }
 
         dispatch({
-            type: SET_TRADESPERSON_INFO,
+            type: FETCH_TRADESPERSON_INFO,
             occupationsIds: responseData.occupationsIds,
             streetAddress: responseData.streetAddress,
             experienceId: responseData.experienceId,
@@ -55,7 +70,6 @@ export const fetchTradespersonInfo = userId => {
             ratingVotesAmount: responseData.ratingVotesAmount,
             contactsIds: responseData.contactsIds,
             email: responseData.email,
-            quotedJobs: responseData.quotedJobs
         });
     };
 };
@@ -188,43 +202,3 @@ export const deleteJob = id => {
         });
     };
 };
-
-// export const fetchMyJobs = (userId) => {
-//     return async dispatch => {
-//         try {
-//             const response = await fetch(
-//                 'https://fixit-46444.firebaseio.com/allPendingJobs.json'
-//             );
-
-//             const responseData = await response.json();
-
-//             const userPendingJobs = [];
-
-//             for (const key in responseData) {
-//                 if (responseData[key].userId === userId) {
-//                     userPendingJobs.push(
-//                         new Job(
-//                             key,
-//                             responseData[key].userId,
-//                             responseData[key].date,
-//                             responseData[key].occupationId,
-//                             responseData[key].workTypeId,
-//                             responseData[key].jobDescription,
-//                             responseData[key].customerType,
-//                             responseData[key].propertyType,
-//                             responseData[key].jobAddress,
-//                             responseData[key].startTimeId
-//                         )
-//                     );
-//                 }
-//             }
-
-//             dispatch({
-//                 type: SET_MY_JOBS,
-//                 userPendingJobs,
-//             });
-//         } catch (error) {
-//             console.log('err');
-//         }
-//     };
-// };

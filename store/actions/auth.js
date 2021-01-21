@@ -28,12 +28,12 @@ export const changeName = (userId, name, userType) => {
             name,
         });
 
-        if(userType === 'tradesperson') {
+        if (userType === 'tradesperson') {
             dispatch({
                 type: CHANGE_TRADESPERSON_NAME,
                 userId,
-                name
-            })
+                name,
+            });
         }
     };
 };
@@ -336,14 +336,21 @@ export const autoLogIn = () => {
         const token = userData && JSON.parse(userData).token;
 
         if (userId && token) {
-            var ref, userType, name;
-            try {
-                ref = Firebase.database.ref('tradesperson').child(userId);
+            var userType, name;
+
+            const snap2 = await Firebase.database
+                .ref('tradesperson')
+                .child(userId)
+                .once('value');
+
+            if (snap2.val()) {
                 userType = 'tradesperson';
-            } catch (error) {
-                ref = Firebase.database.ref('customer').child(userId);
+            } else {
                 userType = 'customer';
             }
+
+            const ref = Firebase.database.ref(userType).child(userId);
+
             ref.child('name')
                 .once('value')
                 .then(res => (name = res.val()));

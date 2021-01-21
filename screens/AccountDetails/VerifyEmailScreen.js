@@ -34,6 +34,7 @@ const VerifyEmailScreen = props => {
     );
 
     const checkIfEmailHasBeenVerified = async () => {
+        console.log('checking email verif');
         await user.reload();
         if (user.emailVerified) {
             dispatch(changeHasVerifiedEmail(true));

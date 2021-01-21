@@ -10,7 +10,6 @@ import Touchable from '../../common/Touchable';
 import SuperSmallContent from '../../text/SuperSmallContent';
 
 const Contact = props => {
-
     const { phoneNumber } = props;
 
     const handleCallPress = () => {
@@ -42,7 +41,12 @@ const Contact = props => {
                     )}
                 </View>
             </Touchable>
-            <Touchable onPress={() => {}} style={{ flex: 0 }}>
+            <Touchable
+                onPress={() => {
+                    props.onRequestQuote(props.tradespersonId);
+                }}
+                style={{ flex: 0 }}
+            >
                 <View style={styles.message}>
                     <Icon
                         name="briefcase-plus"
@@ -60,7 +64,7 @@ const Contact = props => {
                                     Color.importantTextOnTertiaryColorBackground,
                             }}
                         >
-                            Message
+                            Request quote
                         </SuperSmallContent>
                     )}
                 </View>

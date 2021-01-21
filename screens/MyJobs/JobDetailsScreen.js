@@ -43,7 +43,15 @@ const JobDetailsScreen = props => {
     const job2 = useSelector(state => state.job.userCompletedJobs).find(
         elem => elem.id === props.route.params.id
     );
-    const job = job1 ? job1 : job2; // TODO only works for customer
+
+    const job =
+        userType === 'customer'
+            ? job1
+                ? job1
+                : job2
+            : useSelector(state => state.job.allJobs).find(
+                  elem => elem.id === props.route.params.id
+              );
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState({
@@ -52,6 +60,12 @@ const JobDetailsScreen = props => {
         onPress: null,
         style: null,
     });
+
+    const quote =
+        userType === 'tradesperson' &&
+        useSelector(state => state.job.quotes).find(
+            quote => quote.jobId === job.id
+        );
 
     useEffect(() => {
         props.navigation.setOptions({ headerRight: headerRight });
@@ -93,56 +107,6 @@ const JobDetailsScreen = props => {
     };
 
     const dispatch = useDispatch();
-
-    if (!job) {
-        return <Loading />;
-    }
-
-    const MidComponent = () => {
-        return (
-            <View>
-                <Line>
-                    <SmallBoldContent
-                        style={{ color: Color.primaryBrandColor }}
-                    >
-                        3 people have applied for this job.
-                    </SmallBoldContent>
-                </Line>
-            </View>
-        );
-    };
-
-    const BottomComponent = () => {
-        return (
-            <View
-                style={{
-                    paddingBottom: Layout.screenHorizontalPadding,
-                }}
-            >
-                <View>
-                    <Header style={{ textAlign: 'left' }}>Quotes:</Header>
-                </View>
-                <TradespersonCard
-                    navigation={props.navigation}
-                    hasQuote={true}
-                    quote="200£"
-                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
-                />
-                <TradespersonCard
-                    navigation={props.navigation}
-                    hasQuote={true}
-                    quote="320£"
-                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
-                />
-                <TradespersonCard
-                    navigation={props.navigation}
-                    hasQuote={true}
-                    quote="190£"
-                    tradespersonId="1p6PpA2vNhe6jZ4mfg4GZSLGhYz2"
-                />
-            </View>
-        );
-    };
 
     const headerRight = () => {
         return (
@@ -237,14 +201,21 @@ const JobDetailsScreen = props => {
                             padding: Layout.screenHorizontalPadding / 2,
                         }}
                         onPress={() => {
-                            props.navigation.navigate('NewQuote', {
-                                jobId: job.id,
-                            });
+                            quote
+                                ? props.navigation.navigate('NewQuote', {
+                                      jobId: job.id,
+                                      quote,
+                                  })
+                                : props.navigation.navigate('NewQuote', {
+                                      jobId: job.id,
+                                  });
                         }}
                     >
                         <View style={styles.iconContainer}>
                             <Briefcase
-                                name="briefcase-plus"
+                                name={
+                                    quote ? 'briefcase-edit' : 'briefcase-plus'
+                                }
                                 color={
                                     Color.importantTextOnTertiaryColorBackground
                                 }
@@ -279,6 +250,10 @@ const JobDetailsScreen = props => {
     useEffect(() => {
         initialRegionSettings(job.jobAddress.place_id);
     }, []);
+
+    if (!job) {
+        return <Loading />;
+    }
 
     const Bubble = props => {
         return (

@@ -33,11 +33,11 @@ const TradespersonCard = props => {
     const [distance, setDistance] = useState();
 
     useEffect(() => {
-        if(user_place_id && streetAddress) {
+        if (user_place_id && streetAddress) {
             getText(user_place_id, streetAddress.place_id).then(result => {
                 setDistance(result);
                 setIsLoading(false);
-            })
+            });
         } else {
             setDistance('N/A');
             setIsLoading(false);
@@ -107,8 +107,8 @@ const TradespersonCard = props => {
         setUpdatedRating(updatedRating);
     };
 
-    if(isLoading) {
-        return <Loading />
+    if (isLoading) {
+        return <Loading />;
     }
 
     return (
@@ -166,7 +166,8 @@ const TradespersonCard = props => {
                                     alignItems: 'center',
                                     //backgroundColor: Color.secondaryBrandColor,
                                     paddingTop: Layout.screenHorizontalPadding,
-                                    paddingHorizontal: Layout.screenHorizontalPadding,
+                                    paddingHorizontal:
+                                        Layout.screenHorizontalPadding,
                                     paddingBottom: 10,
                                     borderRadius: Layout.borderRadius,
                                 }}
@@ -202,7 +203,11 @@ const TradespersonCard = props => {
                                     </HeaderWithEllipsis>
                                 </View>
                                 {!props.isRateCard && !props.readOnly && (
-                                    <Contact phoneNumber={phoneNumber} />
+                                    <Contact
+                                        tradespersonId={userId}
+                                        phoneNumber={phoneNumber}
+                                        onRequestQuote={props.onRequestQuote}
+                                    />
                                 )}
                             </View>
                             <View
@@ -212,8 +217,10 @@ const TradespersonCard = props => {
                                         : 'row',
                                     alignItems: 'center',
                                     //backgroundColor: 'yellow',
-                                    paddingHorizontal: Layout.screenHorizontalPadding,
-                                    paddingBottom: Layout.screenHorizontalPadding,
+                                    paddingHorizontal:
+                                        Layout.screenHorizontalPadding,
+                                    paddingBottom:
+                                        Layout.screenHorizontalPadding,
                                     borderRadius: Layout.borderRadius,
                                 }}
                             >
@@ -300,7 +307,8 @@ const TradespersonCard = props => {
                                 </Header>
                             </View>
                         ) : (
-                            recommendedByTradespeople && recommendedByTradespeople.length > 0 && (
+                            recommendedByTradespeople &&
+                            recommendedByTradespeople.length > 0 && (
                                 <View style={styles.bottomContainer}>
                                     <SmallContentWithEllipsis
                                         style={{

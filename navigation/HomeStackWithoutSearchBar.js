@@ -8,6 +8,7 @@ import {
 import { headerOptions } from './options/HeaderOptions';
 import CurrentLocationScreen from '../screens/Home/CurrentLocationScreen';
 import JobDetailsScreen from '../screens/MyJobs/JobDetailsScreen';
+import SelectJobScreen from '../screens/Home/SelectJobScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,14 @@ const HomeStackWithoutSearchBar = () => {
                 options={() => ({
                     ...headerOptions,
                     headerTitle: 'Details',
+                })}
+            />
+            <Stack.Screen
+                name="SelectJob"
+                component={SelectJobScreen}
+                options={() => ({
+                    ...headerOptions,
+                    headerTitle: 'Select job',
                 })}
             />
         </Stack.Navigator>

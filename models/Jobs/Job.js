@@ -10,7 +10,8 @@ class Job {
         propertyType,
         jobAddress,
         startTimeId,
-        images
+        images,
+        quotes
     ) {
         this.id = id;
         this.userId = userId;
@@ -23,6 +24,7 @@ class Job {
         this.jobAddress = jobAddress;
         this.startTimeId = startTimeId;
         this.images = images;
+        this.quotes = quotes;
     }
 }
 

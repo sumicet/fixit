@@ -5,63 +5,35 @@ export const DELETE_JOB = 'DELETE_JOB';
 export const FETCH_ALL_JOBS = 'FETCH_ALL_JOBS';
 export const MARK_AS_COMPLETED = 'MARK_AS_COMPLETED';
 export const ADD_QUOTE = 'ADD_QUOTE';
+export const EDIT_QUOTE = 'EDIT_QUOTE';
+export const DELETE_QUOTE = 'DELETE_QUOTE';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 import { addQuotedJob } from './tradesperson';
+import Quote from '../../models/Jobs/Quote';
 
-export const fetchQuotes = () => {
+export const deleteQuote = (jobId, tradespersonId) => {
     return async dispatch => {
-        try {
-            var response = await fetch(
-                'https://fixit-46444.firebaseio.com/allPendingJobs.json'
-            );
+        const ref = await Firebase.database
+            .ref(`allPendingJobs/${jobId}`)
+            .child('quotes');
 
-            var responseData = await response.json();
+        const snap = await ref.once('value');
 
-            const allJobs = [];
+        const quotes = snap.val() ? snap.val() : [];
 
-            for (const key in responseData) {
-                const images = [];
-                var i;
-                for (i = 0; i < 10; i++) {
-                    try {
-                        const imageRef = Firebase.storage
-                            .ref()
-                            .child(
-                                `/jobImages/${responseData[key].userId}/${key}/${i}`
-                            );
-                        const image = await imageRef.getDownloadURL();
-                        images.push(image);
-                    } catch (error) {
-                        break;
-                    }
-                }
+        const updatedQuotes = quotes.filter(
+            quote => quote.tradespersonId !== tradespersonId
+        );
 
-                allJobs.push(
-                    new Job(
-                        key,
-                        responseData[key].userId,
-                        responseData[key].date,
-                        responseData[key].occupationId,
-                        responseData[key].workTypeId,
-                        responseData[key].jobDescription,
-                        responseData[key].customerType,
-                        responseData[key].propertyType,
-                        responseData[key].jobAddress,
-                        responseData[key].startTimeId,
-                        images
-                    )
-                );
-            }
+        ref.set(updatedQuotes);
 
-            dispatch({
-                type: FETCH_ALL_JOBS,
-                allJobs,
-            });
-        } catch (error) {
-            console.log('err');
-        }
+        dispatch({
+            type: DELETE_QUOTE,
+            jobId,
+            tradespersonId,
+        });
     };
 };
 
@@ -72,27 +44,39 @@ export const addQuote = (jobId, tradespersonId, price, message) => {
             .ref(`allPendingJobs/${jobId}`)
             .child('quotes');
 
-        const quotes = ref.push();
+        const snap = await ref.once('value');
 
-        quotes.child('jobId').set(jobId);
-        quotes.child('tradespersonId').set(tradespersonId);
-        quotes.child('price').set(price);
-        quotes.child('message').set(message);
-        quotes.child('date').set(date);
+        const quotes = snap.val() ? snap.val() : [];
 
-        quotes.once('value').then(snap => {
+        const index = quotes.findIndex(
+            quote => quote.tradespersonId === tradespersonId
+        );
+
+        if (index >= 0) {
+            quotes[index].price = price;
+            quotes[index].message = message;
+            ref.set(quotes);
+
+            dispatch({
+                type: EDIT_QUOTE,
+                jobId,
+                tradespersonId,
+                price,
+                message,
+            });
+        } else {
+            quotes.push(new Quote(jobId, tradespersonId, price, message, date));
+            ref.set(quotes);
+
             dispatch({
                 type: ADD_QUOTE,
-                id: snap.val(),
                 jobId,
                 tradespersonId,
                 price,
                 message,
                 date,
             });
-        });
-
-        await dispatch(addQuotedJob(jobId, tradespersonId));
+        }
     };
 };
 
@@ -128,6 +112,7 @@ export const markAsCompleted = id => {
                     propertyType: responseData.propertyType,
                     jobAddress: responseData.jobAddress,
                     startTimeId: responseData.startTimeId,
+                    quotes: responseData.quotes,
                 }),
             }
         );
@@ -305,7 +290,7 @@ export const deleteJob = id => {
     };
 };
 
-export const fetchMyJobs = userId => {
+export const fetchMyJobs = (userId, userType) => {
     return async dispatch => {
         console.log(userId, 'in fetch my jobs');
         try {
@@ -316,6 +301,7 @@ export const fetchMyJobs = userId => {
             const responseData = await response.json();
 
             const userPendingJobs = [];
+            const userQuotes = [];
 
             for (const key in responseData) {
                 if (responseData[key].userId === userId) {
@@ -331,6 +317,19 @@ export const fetchMyJobs = userId => {
                         } catch (error) {
                             break;
                         }
+                    }
+
+                    const quotes = responseData[key].quotes;
+
+                    if (quotes) {
+                        quotes.forEach(quote => {
+                            if (
+                                userType === 'tradesperson' &&
+                                quote.tradespersonId === userId // TODO add for customer
+                            ) {
+                                userQuotes.push(quote);
+                            }
+                        });
                     }
 
                     userPendingJobs.push(
@@ -375,6 +374,19 @@ export const fetchMyJobs = userId => {
                         }
                     }
 
+                    const quotes2 = responseData2[key2].quotes;
+
+                    if (quotes2) {
+                        quotes2.forEach(quote => {
+                            if (
+                                userType === 'tradesperson' &&
+                                quote.tradespersonId === userId // TODO add for customer
+                            ) {
+                                userQuotes.push(quote);
+                            }
+                        });
+                    }
+
                     userCompletedJobs.push(
                         new Job(
                             key2,
@@ -397,6 +409,7 @@ export const fetchMyJobs = userId => {
                 type: SET_MY_JOBS,
                 userPendingJobs,
                 userCompletedJobs,
+                quotes: userQuotes,
             });
         } catch (error) {
             console.log('err');
@@ -404,7 +417,7 @@ export const fetchMyJobs = userId => {
     };
 };
 
-export const fetchAllJobs = () => {
+export const fetchAllJobs = (userId, userType) => {
     return async dispatch => {
         try {
             var response = await fetch(
@@ -414,6 +427,7 @@ export const fetchAllJobs = () => {
             var responseData = await response.json();
 
             const allJobs = [];
+            const userQuotes = [];
 
             for (const key in responseData) {
                 const images = [];
@@ -430,6 +444,19 @@ export const fetchAllJobs = () => {
                     } catch (error) {
                         break;
                     }
+                }
+
+                const quotes = responseData[key].quotes;
+
+                if (quotes) {
+                    quotes.forEach(quote => {
+                        if (
+                            userType === 'tradesperson' &&
+                            quote.tradespersonId === userId // TODO add for customer
+                        ) {
+                            userQuotes.push(quote);
+                        }
+                    });
                 }
 
                 allJobs.push(
@@ -449,9 +476,12 @@ export const fetchAllJobs = () => {
                 );
             }
 
+            console.log('userquotes', userQuotes);
+
             dispatch({
                 type: FETCH_ALL_JOBS,
                 allJobs,
+                quotes: userQuotes,
             });
         } catch (error) {
             console.log('err');

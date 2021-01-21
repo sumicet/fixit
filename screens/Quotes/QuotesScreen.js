@@ -1,16 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FlatList } from 'react-native';
 import { View, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import Alert from '../../components/alert/Alert';
 import MediumButton from '../../components/buttons/MediumButtom';
 import Line from '../../components/common/Line';
 import Container from '../../components/containers/Container';
 import Empty from '../../components/empty/Empty';
+import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
 import QuoteCard from '../../components/quotes/QuoteCard';
+import { ERROR } from '../../constants/Actions';
 import Color from '../../constants/Color';
+import Layout from '../../constants/Layout';
+import { deleteQuote } from '../../store/actions/job';
 
 const QuotesScreen = props => {
+    const quotes = useSelector(state => state.job.quotes);
+    const userId = useSelector(state => state.auth.userId);
+    const userType = useSelector(state => state.auth.userType);
+
+    const handleQuotePress = quote => {
+        userType === 'tradesperson'
+            ? props.navigation.navigate('MyJobsStackWithoutCustomHeader', {
+                  screen: 'JobDetails',
+                  params: {
+                      id: quote.jobId,
+                  },
+              })
+            : props.navigation.navigate('TradespersonProfile', {
+                  screen: 'TradespersonProfile',
+                  params: { id: quote.tradespersonId },
+              });
+    };
+
+    const handleQuoteEdit = quote => {
+        props.navigation.navigate('NewQuote', {
+            quote,
+        });
+    };
+
+    const handleQuoteDelete = quote => {
+        setModalVisible({
+            visible: true,
+            quote: quote,
+        });
+    };
+
+    const dispatch = useDispatch();
+
+    const handleDeletePress = quote => {
+        setModalVisible({
+            visible: false,
+            quote: null,
+        });
+        dispatch(deleteQuote(quote.jobId, quote.tradespersonId));
+    };
+
+    const [modalVisible, setModalVisible] = useState({
+        visible: false,
+        quote: null,
+    });
+
+    const renderItem = ({ item }) => {
+        return (
+            <View
+                style={{
+                    paddingBottom: Layout.screenHorizontalPadding,
+                    paddingHorizontal: Layout.screenHorizontalPadding,
+                }}
+            >
+                <QuoteCard
+                    quote={item}
+                    userType={userType}
+                    onQuoteEdit={handleQuoteEdit}
+                    onQuoteDelete={handleQuoteDelete}
+                    onQuotePress={handleQuotePress}
+                />
+            </View>
+        );
+    };
+
     return (
-        <Container style={{paddingTop: 0, marginTop: 0}}>
-            <QuoteCard />
+        <Container
+            style={{ paddingTop: 0, marginTop: 0, paddingHorizontal: 0 }}
+        >
+            <Alert
+                modalVisible={modalVisible.visible}
+                onPress={() => handleDeletePress(modalVisible.quote)}
+                hide={() => {
+                    setModalVisible({
+                        visible: false,
+                        quote: null,
+                    });
+                }}
+                title="Delete"
+                titleColor={Color.urgent}
+                message="Are you sure you want to delete this quote?"
+                style={ERROR}
+            />
+            {quotes && quotes.length > 0 ? (
+                <FlatList
+                    keyExtractor={(item, i) => `key-${i}`}
+                    data={quotes}
+                    renderItem={renderItem}
+                    style={{ flex: 1 }}
+                    ListFooterComponent={() => <EndOfPageSpace />}
+                />
+            ) : (
+                <Empty />
+            )}
         </Container>
     );
 };

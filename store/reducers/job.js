@@ -6,6 +6,8 @@ import {
     FETCH_ALL_JOBS,
     MARK_AS_COMPLETED,
     ADD_QUOTE,
+    EDIT_QUOTE,
+    DELETE_QUOTE,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
@@ -98,11 +100,13 @@ const jobReducer = (state = initialState, action) => {
                 ...state,
                 userPendingJobs: action.userPendingJobs,
                 userCompletedJobs: action.userCompletedJobs,
+                quotes: action.quotes,
             };
         case FETCH_ALL_JOBS:
             return {
                 ...state,
                 allJobs: action.allJobs,
+                quotes: action.quotes,
             };
         case MARK_AS_COMPLETED:
             const newUserPendingJobs = [...state.userPendingJobs].filter(
@@ -124,9 +128,9 @@ const jobReducer = (state = initialState, action) => {
             };
         case ADD_QUOTE:
             const updatedQuotes = [...state.quotes];
+
             updatedQuotes.push(
                 new Quote(
-                    action.id,
                     action.jobId,
                     action.tradespersonId,
                     action.price,
@@ -134,10 +138,32 @@ const jobReducer = (state = initialState, action) => {
                     action.date
                 )
             );
+
             return {
                 ...state,
-                quotes: updatedQuotes
-            }
+                quotes: updatedQuotes,
+            };
+        case DELETE_QUOTE:
+            return {
+                ...state,
+                quotes: [...state.quotes].filter(
+                    q => q.tradespersonId !== action.tradespersonId
+                ),
+            };
+        case EDIT_QUOTE:
+            const updatedQuotesEdit = [...state.quotes];
+
+            const quoteIndex = updatedQuotesEdit.findIndex(
+                quote => quote.jobId === action.jobId
+            );
+
+            updatedQuotesEdit[quoteIndex].price = action.price;
+            updatedQuotesEdit[quoteIndex].message = action.message;
+
+            return {
+                ...state,
+                quotes: updatedQuotesEdit,
+            };
         default:
             return state;
     }

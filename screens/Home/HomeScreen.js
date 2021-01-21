@@ -33,6 +33,15 @@ const HomeScreen = props => {
         }
     }, [props, isFocused]);
 
+    const handleRequestQuote = (tradespersonId) => {
+        props.navigation.navigate('HomeStackWithoutSearchBar', {
+            screen: 'SelectJob',
+            params: {
+                tradespersonId
+            }
+        })
+    }
+
     const CurrentLocation = () => {
         return (
             <Line
@@ -107,7 +116,7 @@ const HomeScreen = props => {
                     title="Recommended jobs"
                     list={allJobs}
                     navigation={props.navigation}
-                    onCardPress={(id) => {
+                    onCardPress={id => {
                         props.navigation.navigate('HomeStackWithoutSearchBar', {
                             screen: 'JobDetails',
                             params: {
@@ -126,7 +135,7 @@ const HomeScreen = props => {
                             style={{
                                 height: Layout.screenHorizontalPadding,
                             }}
-                        ></View>
+                        />
                     )}
                     ListHeaderComponent={() => (
                         <View>
@@ -149,6 +158,7 @@ const HomeScreen = props => {
                             }}
                         >
                             <TradespersonCard
+                                onRequestQuote={handleRequestQuote}
                                 navigation={props.navigation}
                                 userId={itemData.item.userId}
                                 name={itemData.item.name}

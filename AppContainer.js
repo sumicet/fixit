@@ -19,6 +19,7 @@ import {
 } from './store/actions/auth';
 import { fetchReviews } from './store/actions/reviews';
 import * as ui from './store/actions/ui';
+import { Alert } from 'react-native';
 
 const AppContainer = () => {
     const inAppNotification = {
@@ -31,6 +32,7 @@ const AppContainer = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const userId = useSelector(state => state.auth.userId);
+    const userType = useSelector(state => state.auth.userType);
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const uiIsLoading = useSelector(state => state.ui.isLoading);
 
@@ -92,10 +94,10 @@ const AppContainer = () => {
         console.log('done initial shit');
         Promise.all([
             fetchFonts(),
-            dispatch(fetchTradespersonInfo(userId)),
-            dispatch(fetchMyJobs(userId)),
+            userType === 'tradesperson' && dispatch(fetchTradespersonInfo(userId)),
+            dispatch(fetchMyJobs(userId, userType)),
             dispatch(fetchAll()),
-            dispatch(fetchAllJobs()),
+            dispatch(fetchAllJobs(userId, userType)),
             dispatch(fetchReviews()),
             navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude;

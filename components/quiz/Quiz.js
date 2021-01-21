@@ -305,12 +305,13 @@ const Quiz = props => {
                     );
                 });
             }
-            navigation.navigate('MyJobsStack', {
-                screen: 'MyJobsStackWithCustomHeader',
-                params: {
-                    screen: 'MyJobs',
-                },
-            });
+            // navigation.navigate('MyJobsStack', {
+            //     screen: 'MyJobsStackWithCustomHeader',
+            //     params: {
+            //         screen: 'MyJobs',
+            //     },
+            // });
+            navigation.goBack();
         }
     };
 

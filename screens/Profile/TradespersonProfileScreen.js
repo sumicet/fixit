@@ -63,6 +63,15 @@ const TradespersonProfileScreen = props => {
         });
     }, []);
 
+    const handleRequestQuote = (tradespersonId) => {
+        props.navigation.navigate('HomeStackWithoutSearchBar', {
+            screen: 'SelectJob',
+            params: {
+                tradespersonId
+            }
+        })
+    }
+
     const headerRight = () => {
         return (
             <View
@@ -116,6 +125,8 @@ const TradespersonProfileScreen = props => {
                         showLabels={true}
                         containerStyle={styles.contactContainer}
                         phoneNumber={tradesperson.phoneNumber}
+                        onRequestQuote={handleRequestQuote}
+                        tradespersonId={userId}
                     />
                 </Line>
             </View>

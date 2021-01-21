@@ -1,6 +1,5 @@
 class Quote {
-    constructor(id, jobId, tradespersonId, price, message, date) {
-        this.id = id;
+    constructor(jobId, tradespersonId, price, message, date) {
         this.jobId = jobId;
         this.tradespersonId = tradespersonId;
         this.price = price;

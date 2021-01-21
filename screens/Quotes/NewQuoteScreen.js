@@ -18,12 +18,19 @@ import { addQuote } from '../../store/actions/job';
 import { setInAppNotification } from '../../store/actions/ui';
 
 const NewQuoteScreen = props => {
-    const jobId = props.route.params && props.route.params.jobId;
-    const tradespersonId = useSelector(state => state.auth.userId);
-    const [message, setMessage] = useState();
+    const quoteToEdit = props.route.params && props.route.params.quote;
+    const jobId = quoteToEdit
+        ? quoteToEdit.jobId
+        : props.route.params && props.route.params.jobId;
+    const tradespersonId = quoteToEdit
+        ? quoteToEdit.tradespersonId
+        : useSelector(state => state.auth.userId);
+    const [message, setMessage] = useState(
+        quoteToEdit ? quoteToEdit.message : null
+    );
     const [price, setPrice] = useState({
-        value: null,
-        currency: null,
+        value: quoteToEdit ? quoteToEdit.price.value : null,
+        currency: quoteToEdit ? quoteToEdit.price.currency : null,
     });
 
     const job = useSelector(state => state.job.allJobs).find(
@@ -48,7 +55,9 @@ const NewQuoteScreen = props => {
                         padding: Layout.screenHorizontalPadding / 2,
                     }}
                     onPress={() => {
+                        console.log('pressy');
                         if (price.value === null) {
+                            console.log('hah1');
                             dispatch(
                                 setInAppNotification(
                                     'Price missing',
@@ -58,13 +67,17 @@ const NewQuoteScreen = props => {
                             );
                         } else {
                             if (price.currency === null) {
-                                setInAppNotification(
-                                    'Currency missing',
-                                    'The currency cannot be missing when sending a quote.',
-                                    ERROR
+                                console.log('hah2');
+                                dispatch(
+                                    setInAppNotification(
+                                        'Currency missing',
+                                        'The currency cannot be missing when sending a quote.',
+                                        ERROR
+                                    )
                                 );
                             } else {
                                 if (isNaN(price.value)) {
+                                    console.log('hah');
                                     dispatch(
                                         setInAppNotification(
                                             'Price not a number',
@@ -98,8 +111,10 @@ const NewQuoteScreen = props => {
         dispatch(addQuote(jobId, tradespersonId, price, message)).then(() => {
             dispatch(
                 setInAppNotification(
-                    'Sent',
-                    'The quote has been successully sent.',
+                    quoteToEdit ? 'Edit' : 'Sent',
+                    quoteToEdit
+                        ? 'The quote has been successully updated.'
+                        : 'The quote has been successully sent.',
                     SUCCESS
                 )
             );
@@ -115,9 +130,13 @@ const NewQuoteScreen = props => {
                 hide={() => {
                     setModalVisible(false);
                 }}
-                title="Send"
+                title={quoteToEdit ? 'Edit' : 'Send'}
                 titleColor={Color.urgent}
-                message="Are you sure you want to sent this quote?"
+                message={
+                    quoteToEdit
+                        ? 'Are you sure you want to edit this quote?'
+                        : 'Are you sure you want to sent this quote?'
+                }
                 style={SUCCESS}
             />
             <JobCard

@@ -1,4 +1,4 @@
-import { ADD_QUOTED_JOB, SET_TRADESPERSON_INFO } from '../actions/tradesperson';
+import { ADD_QUOTED_JOB, FETCH_TRADESPERSON_INFO, SET_TRADESPERSON_INFO } from '../actions/tradesperson';
 
 const initialState = {
     occupationsIds: [],
@@ -11,13 +11,13 @@ const initialState = {
     propertyTypesIds: [],
     profilePicture: null,
     phoneNumber: null,
-    quotedJobs: null,
 };
 
 const tradespersonReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_TRADESPERSON_INFO:
             return {
+                ...state,
                 occupationsIds: action.occupationsIds,
                 streetAddress: action.streetAddress,
                 experienceId: action.experienceId,
@@ -29,14 +29,22 @@ const tradespersonReducer = (state = initialState, action) => {
                 rating: action.rating,
                 ratingVotesAmount: action.ratingVotesAmount,
                 contactsIds: action.contactsIds,
-                quotedJobs: action.quotedJobs,
             };
-        case ADD_QUOTED_JOB:
-            const updatedQuotedJobs = [...state.quotedJobs];
-            updatedQuotedJobs.push(action.jobId);
+        case FETCH_TRADESPERSON_INFO:
             return {
-                quotedJobs: updatedQuotedJobs
-            }
+                ...state,
+                occupationsIds: action.occupationsIds,
+                streetAddress: action.streetAddress,
+                experienceId: action.experienceId,
+                insurance: action.insurance,
+                propertyTypesIds: action.propertyTypesIds,
+                profilePicture: action.profilePicture,
+                phoneNumber: action.phoneNumber,
+                recommendedByIds: action.recommendedByIds,
+                rating: action.rating,
+                ratingVotesAmount: action.ratingVotesAmount,
+                contactsIds: action.contactsIds,
+            };
         default:
             return state;
     }

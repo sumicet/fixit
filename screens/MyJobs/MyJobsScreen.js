@@ -28,7 +28,7 @@ const MyJobsScreen = props => {
             props.route.params &&
             props.route.params.action === 'delete'
         ) {
-            dispatch(Job.fetchMyJobs(currentUserId)).then(() => {
+            dispatch(Job.fetchMyJobs(currentUserId, userType)).then(() => {
                 dispatch(
                     setInAppNotification(
                         'Deleted',
