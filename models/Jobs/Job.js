@@ -11,7 +11,6 @@ class Job {
         jobAddress,
         startTimeId,
         images,
-        quotes
     ) {
         this.id = id;
         this.userId = userId;
@@ -24,7 +23,6 @@ class Job {
         this.jobAddress = jobAddress;
         this.startTimeId = startTimeId;
         this.images = images;
-        this.quotes = quotes;
     }
 }
 

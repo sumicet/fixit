@@ -46,13 +46,11 @@ const JobCard = props => {
             : setDistance('N/A');
     }, []);
 
-    
-
     return (
         <View style={styles.container}>
             <View>
                 <View style={{ paddingBottom: 10 }}>
-                    <PostedBy userId={userId} date={date} />
+                    <PostedBy userId={userId} date={date} userType={userType} />
                 </View>
                 <View
                     style={{ paddingBottom: 10, flex: 0, flexDirection: 'row' }}
@@ -91,7 +89,9 @@ const JobCard = props => {
                         width: '100%',
                     }}
                 >
-                    {currentUserId === userId ? <Quotes quotes={5} /> : (
+                    {userType === 'customer' ? (
+                        <Quotes quotes={5} />
+                    ) : (
                         <Location distance={distance} />
                     )}
                     <View style={{ paddingLeft: Layout.generalPadding }}>

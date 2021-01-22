@@ -30,7 +30,10 @@ import { setInAppNotification } from '../../store/actions/ui';
 import { ERROR, SUCCESS } from '../../constants/Actions';
 import { isLoading } from 'expo-font';
 import Loading from '../../components/loading/Loading';
-import { coloredHeaderOptions, headerOptions } from '../../navigation/options/HeaderOptions';
+import {
+    coloredHeaderOptions,
+    headerOptions,
+} from '../../navigation/options/HeaderOptions';
 
 const UserProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(true);
@@ -47,8 +50,15 @@ const UserProfileScreen = props => {
     useEffect(() => {
         setIsLoading(true);
         props.navigation.setOptions({
+            ...coloredHeaderOptions,
             headerTitle: name,
-            ...headerOptions
+            headerStyle: {
+                ...coloredHeaderOptions.headerStyle,
+                backgroundColor:
+                    userType === 'tradesperson'
+                        ? Color.secondaryBrandColor
+                        : Color.primaryColor,
+            },
         });
         setIsLoading(false);
     }, [name]);
@@ -201,7 +211,7 @@ const UserProfileScreen = props => {
                         }}
                     />
                 </View>
-                <Line
+                {/* <Line
                     style={{
                         flex: 0,
                         justifyContent: 'flex-end',
@@ -286,7 +296,7 @@ const UserProfileScreen = props => {
                         style={{ backgroundColor: Color.textField }}
                         textColor={Color.secondaryColor}
                     />
-                </Line>
+                </Line> */}
             </View>
         </Container>
     );

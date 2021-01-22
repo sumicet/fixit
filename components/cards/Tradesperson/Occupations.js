@@ -24,6 +24,7 @@ const Occupations = props => {
                     style={props.textColor && { color: props.textColor }}
                 >
                     {occList &&
+                        occList.length > 0 &&
                         occList.map((elem, index) => {
                             if (index !== occList.length - 1) {
                                 return elem.name + ' • ';
@@ -39,25 +40,29 @@ const Occupations = props => {
                         fontFamily: 'Regular',
                     }}
                 >
-                    {occList.map((elem, index) => {
-                        if (index !== occList.length - 1) {
-                            return elem.name + ' • ';
-                        } else {
-                            return elem.name;
-                        }
-                    })}
+                    {occList &&
+                        occList.length > 0 &&
+                        occList.map((elem, index) => {
+                            if (index !== occList.length - 1) {
+                                return elem.name + ' • ';
+                            } else {
+                                return elem.name;
+                            }
+                        })}
                 </Header>
             ) : (
                 <SmallContentWithEllipsis
                     style={props.textColor && { color: props.textColor }}
                 >
-                    {occList.map((elem, index) => {
-                        if (index !== occList.length - 1) {
-                            return elem.name + ' • ';
-                        } else {
-                            return elem.name;
-                        }
-                    })}
+                    {occList &&
+                        occList.length > 0 &&
+                        occList.map((elem, index) => {
+                            if (index !== occList.length - 1) {
+                                return elem.name + ' • ';
+                            } else {
+                                return elem.name;
+                            }
+                        })}
                 </SmallContentWithEllipsis>
             )}
         </View>

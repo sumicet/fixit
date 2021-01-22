@@ -16,6 +16,7 @@ import _ from 'lodash';
 import tradespeopleReducer from './store/reducers/tradespeople';
 import AppContainer from './AppContainer';
 import reviewsReducer from './store/reducers/reviews';
+import customersReducer from './store/reducers/customers';
 
 LogBox.ignoreLogs(['Setting a timer']);
 const _console = _.clone(console);
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     tradesperson: tradespersonReducer,
     tradespeople: tradespeopleReducer,
     reviews: reviewsReducer,
+    customers: customersReducer
 });
 
 const store = createStore(

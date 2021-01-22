@@ -20,6 +20,7 @@ import {
 import { fetchReviews } from './store/actions/reviews';
 import * as ui from './store/actions/ui';
 import { Alert } from 'react-native';
+import { fetchCustomers } from './store/actions/customers';
 
 const AppContainer = () => {
     const inAppNotification = {
@@ -96,7 +97,8 @@ const AppContainer = () => {
             fetchFonts(),
             userType === 'tradesperson' && dispatch(fetchTradespersonInfo(userId)),
             dispatch(fetchMyJobs(userId, userType)),
-            dispatch(fetchAll()),
+            userType === 'customer' && dispatch(fetchAll()),
+            userType === 'tradesperson' && dispatch(fetchCustomers()),
             dispatch(fetchAllJobs(userId, userType)),
             dispatch(fetchReviews()),
             navigator.geolocation.getCurrentPosition(async position => {

@@ -8,7 +8,7 @@ import { START_TIMES } from '../../../data/Jobs/StartTimes';
 
 const StartTime = props => {
     const startTime = START_TIMES.find(elem => elem.id === props.startTimeId)
-        ?.name;
+        .name;
 
     return (
         <View style={styles.container}>
@@ -20,7 +20,7 @@ const StartTime = props => {
                         ? Color.error
                         : props.startTimeId === 3 || props.startTimeId === 4
                         ? Color.warning
-                        : Color.textField
+                        : Color.secondaryColor
                 }
             />
             <SmallContent
@@ -30,7 +30,7 @@ const StartTime = props => {
                             ? Color.error
                             : props.startTimeId === 3 || props.startTimeId === 4
                             ? Color.warning
-                            : Color.textField,
+                            : Color.secondaryColor,
                     fontFamily: 'Regular',
                 }}
             >

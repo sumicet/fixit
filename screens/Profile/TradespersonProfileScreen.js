@@ -26,6 +26,7 @@ import { getText } from '../../actions/distance';
 import LineDescription from '../../components/common/LineDescription';
 import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
 import Empty from '../../components/empty/Empty';
+import { coloredHeaderOptions } from '../../navigation/options/HeaderOptions';
 
 const TradespersonProfileScreen = props => {
     const userId = props.route.params && props.route.params.userId;
@@ -52,25 +53,34 @@ const TradespersonProfileScreen = props => {
         review => review.userId === currentUserId
     );
 
-    const tradesperson = useSelector(state => state.tradespeople.all).find(
+    const tradespeople = useSelector(state => state.tradespeople.all).find(
         elem => elem.userId === userId
     );
 
+    const tradesperson = tradespeople
+        ? tradespeople
+        : useSelector(state => state.tradesperson);
+
+    const name = useSelector(state => state.auth.name);
+    const userType = useSelector(state => state.auth.userType);
+
     useEffect(() => {
         props.navigation.setOptions({
-            headerTitle: tradesperson.name,
-            headerRight: currentUserId === tradesperson.userId && headerRight,
+            ...coloredHeaderOptions,
+            headerTitle:
+                tradesperson && tradesperson.name ? tradesperson.name : name,
+            headerRight: userType === 'tradesperson' && headerRight,
         });
     }, []);
 
-    const handleRequestQuote = (tradespersonId) => {
+    const handleRequestQuote = tradespersonId => {
         props.navigation.navigate('HomeStackWithoutSearchBar', {
             screen: 'SelectJob',
             params: {
-                tradespersonId
-            }
-        })
-    }
+                tradespersonId,
+            },
+        });
+    };
 
     const headerRight = () => {
         return (
@@ -278,8 +288,14 @@ const TradespersonProfileScreen = props => {
                         Rating:{' '}
                     </Header>
                     <Rating
-                        rating={tradesperson.rating}
-                        ratingVotesAmount={tradesperson.ratingVotesAmount}
+                        rating={
+                            tradesperson.rating ? tradesperson.rating : null
+                        }
+                        ratingVotesAmount={
+                            tradesperson.ratingVotesAmount
+                                ? tradesperson.ratingVotesAmount
+                                : null
+                        }
                         color={Color.textOnTertiaryColorBackground}
                         readOnly={true}
                         size="medium"

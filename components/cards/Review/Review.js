@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 const Review = props => {
     const name = useSelector(state => state.tradespeople.all).find(
         elem => elem.userId === props.review.userId
-    ).name;
+    )?.name;
 
     const date = new Date(props.review.date)
 

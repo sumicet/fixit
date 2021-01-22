@@ -8,10 +8,26 @@ import SmallContent from '../../text/SmallContent';
 import SuperSmallContent from '../../text/SuperSmallContent';
 
 const PostedBy = props => {
-    const name = props.userId && useSelector(state => state.tradespeople.all).find(
-        tp => tp.userId === props.userId
-    ).name; // TODO make it work for customers as well
-console.log(props.date, name)
+    const postedByCurrentUser1 = useSelector(
+        state => state.job.userPendingJobs
+    ).find(job => job.userId === props.userId);
+    const postedByCurrentUser2 = useSelector(
+        state => state.job.userCompletedJobs
+    ).find(job => job.userId === props.userId);
+
+    const name =
+        props.userType === 'tradesperson'
+            ? props.userId &&
+              useSelector(state => state.customers.all).find(
+                  customer => customer.userId === props.userId
+              )?.name
+            : postedByCurrentUser1 || postedByCurrentUser2
+            ? 'me'
+            : props.userId &&
+              useSelector(state => state.tradespeople.all).find(
+                  tp => tp.userId === props.userId
+              )?.name;
+    console.log(props.date, name);
     return (
         <View style={{ paddingBottom: 2, flexDirection: 'row' }}>
             {props.size === 'medium' ? (

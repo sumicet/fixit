@@ -10,18 +10,20 @@ import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 const PropertyType = props => {
     return (
         <View style={styles.container}>
-            <Icon name="home-city" size={18} color={props.color ? props.color : Color.secondaryColor} />
+            <Icon
+                name="home-city"
+                size={18}
+                color={props.color ? props.color : Color.secondaryColor}
+            />
             <SmallContent
                 style={{
-                    color: props.color
-                        ? props.color
-                        : Color.secondaryColor,
+                    color: props.color ? props.color : Color.secondaryColor,
                 }}
             >
                 {' '}
                 {
                     PROPERTY_TYPES.find(elem => elem.id === props.propertyType)
-                        .name
+                        ?.name
                 }
             </SmallContent>
         </View>

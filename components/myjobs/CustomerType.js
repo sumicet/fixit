@@ -27,7 +27,7 @@ const CustomerType = props => {
                 {' '}
                 {
                     CUSTOMER_TYPES.find(elem => elem.id === props.customerType)
-                        .name
+                        ?.name
                 }
             </SmallContent>
         </View>

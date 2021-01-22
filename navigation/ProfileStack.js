@@ -16,6 +16,7 @@ const Stack = createStackNavigator();
 
 const ProfileStack = () => {
     const userType = useSelector(state => state.auth.userType);
+    console.log(userType)
 
     return (
         <Stack.Navigator
@@ -42,8 +43,8 @@ const ProfileStack = () => {
                     ...coloredHeaderOptions,
                     headerStyle: {
                         backgroundColor:
-                            userType === 'tradesperson'
-                                ? Color.tertiaryBrandColor
+                            userType === "tradesperson"
+                                ? Color.secondaryBrandColor
                                 : Color.primaryColor,
                     },
                 }}
