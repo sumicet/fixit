@@ -15,8 +15,8 @@ import Color from '../constants/Color';
 const Stack = createStackNavigator();
 
 const ProfileStack = () => {
+
     const userType = useSelector(state => state.auth.userType);
-    console.log(userType)
 
     return (
         <Stack.Navigator
@@ -67,7 +67,6 @@ const ProfileStack = () => {
                     headerTitle: 'Change name',
                 }}
             />
-            {/* <Stack.Screen name="Service" component={ServiceStack} /> */}
         </Stack.Navigator>
     );
 };

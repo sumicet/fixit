@@ -13,6 +13,7 @@ import Touchable from '../components/common/Touchable';
 import Layout from '../constants/Layout';
 import MyJobsStackWithoutCustomHeader from './MyJobsStackWithoutCustomHeader';
 import MyJobsStackWithCustomHeader from './MyJobsStackWithCustomHeader';
+import TradespersonProfileStack from './TradespersonProfileStack';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,10 @@ const MyJobsStack = () => {
             <Stack.Screen
                 name="MyJobsStackWithoutCustomHeader"
                 component={MyJobsStackWithoutCustomHeader}
+            />
+            <Stack.Screen
+                name="TradespersonProfile"
+                component={TradespersonProfileStack}
             />
         </Stack.Navigator>
     );

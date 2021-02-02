@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Trash from 'react-native-vector-icons/Foundation';
+import Pending from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Color from '../../constants/Color';
 import Layout from '../../constants/Layout';
@@ -15,17 +16,36 @@ import Header from '../text/Header';
 import HeaderWithEllipsis from '../text/HeaderWithEllipsis';
 import SmallContent from '../text/SmallContent';
 import SmallContentWithEllipsis from '../text/SmallContentWithEllipsis';
+import RequestPending from '../../assets/icons/Card/RequestPending';
+import Rating from '../cards/Tradesperson/Rating';
+import RelativeTime from '../common/RelativeTime';
 
 const QuoteCard = props => {
     const userType = props.userType;
 
-    const quote = props.quote;
+    const { quote, isRequest } = props;
 
-    const job = useSelector(state => state.job.allJobs).find(
-        job => job.id === quote.jobId
-    );
+    const job =
+        userType === 'tradesperson'
+            ? useSelector(state => state.job.allJobs).find(
+                  job => job.id === quote.jobId
+              )
+            : useSelector(state => state.job.userPendingJobs).find(
+                  job => job.id === quote.jobId
+              );
 
-    const name = useSelector(state => state.auth.name);
+    console.log(job?.id, quote.jobId, 'MY JOB QUOTE');
+
+    const tradesperson =
+        userType === 'customer' &&
+        useSelector(state => state.tradespeople.all).find(
+            tp => tp.userId === quote.tradespersonId
+        );
+
+    const name =
+        userType === 'tradesperson'
+            ? useSelector(state => state.auth.name)
+            : tradesperson?.name;
 
     return (
         <Touchable
@@ -49,16 +69,19 @@ const QuoteCard = props => {
                     style={{
                         flex: 1,
                         flexDirection: 'row',
-                        paddingBottom: 10,
                         alignItems: 'center',
                         paddingTop: Layout.screenHorizontalPadding,
+                        paddingBottom: isRequest
+                            ? Layout.screenHorizontalPadding
+                            : 10,
                     }}
                 >
                     <View
                         style={{
                             flex: 1,
                             paddingHorizontal: Layout.screenHorizontalPadding,
-                            
+                            flexDirection: 'row',
+                            alignItems: 'center',
                         }}
                     >
                         <View
@@ -75,6 +98,13 @@ const QuoteCard = props => {
                             >
                                 {name}
                             </HeaderWithEllipsis>
+                        </View>
+                        <View style={{ flex: 0 }}>
+                            <RelativeTime
+                                date={new Date(quote.date)}
+                                size="medium"
+                                textColor={Color.textOnTertiaryColorBackground}
+                            />
                         </View>
                     </View>
                     {userType === 'tradesperson' && (
@@ -130,43 +160,85 @@ const QuoteCard = props => {
                         </View>
                     )}
                 </View>
+
                 <View
                     style={{
-                        alignItems: 'center',
                         borderRadius: Layout.borderRadius,
-                        flexDirection: 'row',
                         paddingHorizontal: Layout.screenHorizontalPadding,
-                        paddingBottom: Layout.screenHorizontalPadding,
                     }}
                 >
-                    <View style={{ flex: 1 }}>
-                        <SmallContent
-                            style={{
-                                color: Color.textOnTertiaryColorBackground,
-                            }}
-                        >
-                            {quote.message}
-                        </SmallContent>
-                    </View>
                     <View
                         style={{
-                            flex: 0,
+                            flexDirection: 'row',
+                            paddingBottom: Layout.screenHorizontalPadding,
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            paddingLeft: Layout.screenHorizontalPadding,
                         }}
                     >
-                        <Header
+                        <Rating
+                            rating={tradesperson.rating}
+                            ratingVotesAmount={tradesperson.ratingVotesAmount}
+                            readOnly={true}
+                            color={Color.textOnTertiaryColorBackground}
+                        />
+
+                        {!isRequest ? (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center',
+                                    paddingLeft: Layout.screenHorizontalPadding,
+                                }}
+                            >
+                                <Header
+                                    style={{
+                                        textAlign: 'left',
+                                        color:
+                                            Color.importantTextOnTertiaryColorBackground,
+                                    }}
+                                >
+                                    {quote.price.value}
+                                    {quote.price.currency}
+                                </Header>
+                            </View>
+                        ) : (
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    justifyContent: 'flex-end',
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        paddingRight: Layout.generalPadding,
+                                        color:
+                                            Color.textOnTertiaryColorBackground,
+                                    }}
+                                >
+                                    <SmallContent>Pending</SmallContent>
+                                </View>
+                                <RequestPending />
+                            </View>
+                        )}
+                    </View>
+                    {!isRequest && (
+                        <View
                             style={{
-                                textAlign: 'left',
-                                color:
-                                    Color.importantTextOnTertiaryColorBackground,
+                                flex: 1,
+                                paddingBottom: Layout.screenHorizontalPadding,
                             }}
                         >
-                            {quote.price.value}
-                            {quote.price.currency}
-                        </Header>
-                    </View>
+                            <SmallContent
+                                style={{
+                                    color: Color.textOnTertiaryColorBackground,
+                                }}
+                            >
+                                {quote.message}
+                            </SmallContent>
+                        </View>
+                    )}
                 </View>
             </View>
 

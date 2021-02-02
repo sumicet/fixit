@@ -37,11 +37,12 @@ const longitudeDelta = 0.005;
 
 const JobDetailsScreen = props => {
     const userType = useSelector(state => state.auth.userType);
+    const jobId = props.route.params && props.route.params.id;
     const job1 = useSelector(state => state.job.userPendingJobs).find(
-        elem => elem.id === props.route.params.id
+        elem => elem.id === jobId
     );
     const job2 = useSelector(state => state.job.userCompletedJobs).find(
-        elem => elem.id === props.route.params.id
+        elem => elem.id === jobId
     );
 
     const job =
@@ -50,7 +51,7 @@ const JobDetailsScreen = props => {
                 ? job1
                 : job2
             : useSelector(state => state.job.allJobs).find(
-                  elem => elem.id === props.route.params.id
+                  elem => elem.id === jobId
               );
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -236,7 +237,7 @@ const JobDetailsScreen = props => {
     });
 
     const initialRegionSettings = async id => {
-        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
+        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBeeX2gm6j5BatZmCTnb1gKHqMWzavhCTI&place_id=${id}`;
         const selectedResult = await fetch(apiUrlSelected);
         const jsonSelected = await selectedResult.json();
         setRegion({

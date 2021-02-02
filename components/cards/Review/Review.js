@@ -10,11 +10,11 @@ import Line from '../../common/Line';
 import { useSelector } from 'react-redux';
 
 const Review = props => {
-    const name = useSelector(state => state.tradespeople.all).find(
+    const name = useSelector(state => state.customers.all).find(
         elem => elem.userId === props.review.userId
     )?.name;
 
-    const date = new Date(props.review.date)
+    const date = new Date(props.review.date);
 
     return (
         <View style={styles.container}>
@@ -36,8 +36,7 @@ const Review = props => {
                         {date.toLocaleString('default', {
                             month: 'short',
                         })}{' '}
-                        {date.getDate()},{' '}
-                        {date.getFullYear()}
+                        {date.getDate()}, {date.getFullYear()}
                     </SmallContent>
                 </View>
             </View>
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
         flex: 0,
         backgroundColor: Color.textField,
         borderRadius: Layout.borderRadius,
-        padding: Layout.generalPadding,
+        padding: Layout.screenHorizontalPadding,
         marginBottom: Layout.cardMargin,
     },
     line: {

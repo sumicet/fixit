@@ -30,7 +30,7 @@ const JobAddress = props => {
     }, []);
 
     const onChangeDestination = async destination => {
-        const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0
+        const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBeeX2gm6j5BatZmCTnb1gKHqMWzavhCTI
           &input=${destination}&location=${0.05}, 
           ${0.05}&radius=2000`;
         const result = await fetch(apiUrl);
@@ -41,7 +41,7 @@ const JobAddress = props => {
         }
     };
     const handlePredictionPress = async id => {
-        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
+        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBeeX2gm6j5BatZmCTnb1gKHqMWzavhCTI&place_id=${id}`;
         const selectedResult = await fetch(apiUrlSelected);
         const jsonSelected = await selectedResult.json();
         props.onStreetAddressChange(jsonSelected.result.formatted_address, id);
@@ -54,7 +54,7 @@ const JobAddress = props => {
     };
 
     const initialRegionSettings = async id => {
-        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0&place_id=${id}`;
+        const apiUrlSelected = `https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBeeX2gm6j5BatZmCTnb1gKHqMWzavhCTI&place_id=${id}`;
         const selectedResult = await fetch(apiUrlSelected);
         const jsonSelected = await selectedResult.json();
         props.onStreetAddressChange(jsonSelected.result.formatted_address, id);

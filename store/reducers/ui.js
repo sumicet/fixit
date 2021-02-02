@@ -3,7 +3,8 @@ import {
     SET_IN_APP_NOTIFICATION,
     SET_IN_APP_NOTIFICATION_VISIBLE,
     SET_IS_LOADING,
-    HIDE_GLOBAL_ALERT
+    HIDE_GLOBAL_ALERT,
+    RESET_UI
 } from '../actions/ui';
 
 const initialState = {
@@ -63,6 +64,8 @@ const uiReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: action.value,
             };
+        case RESET_UI:
+            return initialState;
         default:
             return state;
     }

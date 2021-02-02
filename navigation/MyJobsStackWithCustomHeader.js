@@ -133,11 +133,7 @@ const MyJobsStackWithCustomHeader = () => {
                                 active={route.name === 'MyJobs' ? true : false}
                             />
                             <HeaderColumn
-                                text={
-                                    userType === 'tradesperson'
-                                        ? 'Quotes sent'
-                                        : 'Quotes received'
-                                }
+                                text={'Quotes'}
                                 iconName="shopping-bag"
                                 onPress={() => {
                                     navigation.navigate('Quotes');

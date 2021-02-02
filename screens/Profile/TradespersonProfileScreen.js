@@ -29,7 +29,7 @@ import Empty from '../../components/empty/Empty';
 import { coloredHeaderOptions } from '../../navigation/options/HeaderOptions';
 
 const TradespersonProfileScreen = props => {
-    const userId = props.route.params && props.route.params.userId;
+    const userId = props.route.params && props.route.params.tradespersonId;
     const reviews = useSelector(state => state.reviews.all).filter(
         review => review.tradespersonId === userId
     );

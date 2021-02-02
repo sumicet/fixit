@@ -84,7 +84,7 @@ export const setTradespersonInfo = (
     profilePicture,
     phoneNumber
 ) => {
-    return async (dispatch, getState) => {
+    return async dispatch => {
         try {
             const userId = Firebase.auth.currentUser.uid;
 

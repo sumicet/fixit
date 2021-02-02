@@ -10,7 +10,7 @@ class Job {
         propertyType,
         jobAddress,
         startTimeId,
-        images,
+        images
     ) {
         this.id = id;
         this.userId = userId;

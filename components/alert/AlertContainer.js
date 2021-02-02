@@ -9,13 +9,8 @@ const AlertContainer = props => {
         <Modal
             {...props}
             isVisible={props.modalVisible}
-            style={{
-                justifyContent: 'flex-start',
-                flex: 1,
-                padding: Layout.screenHorizontalPadding,
-            }}
+            style={styles.modal}
             coverScreen={false}
-            //coverScreen={true}
             hideModalContentWhileAnimating={true}
             backdropOpacity={0}
             useNativeDriver={true}
@@ -39,6 +34,11 @@ const styles = StyleSheet.create({
         elevation: 5,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    modal: {
+        justifyContent: 'flex-start',
+        flex: 1,
+        padding: Layout.screenHorizontalPadding,
     },
 });
 

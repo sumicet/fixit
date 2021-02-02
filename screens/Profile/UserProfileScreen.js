@@ -107,7 +107,7 @@ const UserProfileScreen = props => {
                                 props.navigation.navigate(
                                     'TradespersonProfile',
                                     {
-                                        userId,
+                                        tradespersonId: userId,
                                     }
                                 );
                             }}

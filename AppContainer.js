@@ -97,15 +97,15 @@ const AppContainer = () => {
             fetchFonts(),
             userType === 'tradesperson' && dispatch(fetchTradespersonInfo(userId)),
             dispatch(fetchMyJobs(userId, userType)),
-            userType === 'customer' && dispatch(fetchAll()),
-            userType === 'tradesperson' && dispatch(fetchCustomers()),
+            userType === 'customer' && dispatch(fetchAll(userId)),
+            dispatch(fetchCustomers()),
             dispatch(fetchAllJobs(userId, userType)),
             dispatch(fetchReviews()),
             navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
                 const result = await fetch(
-                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0`
+                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBeeX2gm6j5BatZmCTnb1gKHqMWzavhCTI`
                 );
                 const resultData = await result.json();
 

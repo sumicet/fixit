@@ -20,7 +20,7 @@ const MyJobsScreen = props => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const userType = useSelector(state => state.auth.userType);
-    const requests = useSelector(state => state.job.requests);
+    const requests = userCompletedJobs.filter(job => job.requests);
 
     useEffect(() => {
         if (
@@ -97,11 +97,12 @@ const MyJobsScreen = props => {
     return (
         <View style={{ flex: 1 }}>
             {userType === 'tradesperson' ? (
-                <Screen mainArray={requests} />
+                <Screen mainArray={requests} navigation={props.navigation} />
             ) : (
                 <Screen
                     mainArray={userPendingJobs}
                     secondaryArray={userCompletedJobs}
+                    navigation={props.navigation}
                 />
             )}
         </View>

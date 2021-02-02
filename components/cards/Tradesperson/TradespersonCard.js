@@ -79,7 +79,7 @@ const TradespersonCard = props => {
         } else {
             props.navigation.navigate('TradespersonProfile', {
                 screen: 'TradespersonProfile',
-                params: { userId },
+                params: { tradespersonId: userId },
             });
         }
     };

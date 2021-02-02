@@ -8,18 +8,20 @@ import {
     ADD_QUOTE,
     EDIT_QUOTE,
     DELETE_QUOTE,
+    ADD_REQUEST,
+    SET_REQUESTS,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
 import Quote from '../../models/Jobs/Quote';
+import Request from '../../models/Jobs/Request';
 
 const initialState = {
     allJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
     userCompletedJobs: [],
-
     quotes: [], // quotes sent by tp OR quotes received by customers
-    requests: [], //jobs (requests) received by tp to give a quote
+    requests: [],
 };
 
 const editElement = (array, id, elem) => {
@@ -163,6 +165,26 @@ const jobReducer = (state = initialState, action) => {
             return {
                 ...state,
                 quotes: updatedQuotesEdit,
+            };
+        case ADD_REQUEST:
+            const updatedRequests = [...state.requests];
+            updatedRequests.push(
+                new Request(
+                    action.jobId,
+                    action.userId,
+                    action.tradespersonId,
+                    action.date
+                )
+            );
+
+            return {
+                ...state,
+                requests: updatedRequests,
+            };
+        case SET_REQUESTS:
+            return {
+                ...state,
+                requests: action.requests,
             };
         default:
             return state;

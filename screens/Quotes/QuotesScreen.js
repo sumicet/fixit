@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 import { View, StyleSheet } from 'react-native';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../../components/alert/Alert';
 import MediumButton from '../../components/buttons/MediumButtom';
 import Line from '../../components/common/Line';
+import LineDescription from '../../components/common/LineDescription';
 import Container from '../../components/containers/Container';
 import Empty from '../../components/empty/Empty';
 import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
@@ -16,7 +18,7 @@ import { deleteQuote } from '../../store/actions/job';
 
 const QuotesScreen = props => {
     const quotes = useSelector(state => state.job.quotes);
-    const userId = useSelector(state => state.auth.userId);
+    const requests = useSelector(state => state.job.requests);
     const userType = useSelector(state => state.auth.userType);
 
     const handleQuotePress = quote => {
@@ -29,7 +31,7 @@ const QuotesScreen = props => {
               })
             : props.navigation.navigate('TradespersonProfile', {
                   screen: 'TradespersonProfile',
-                  params: { id: quote.tradespersonId },
+                  params: { tradespersonId: quote.tradespersonId },
               });
     };
 
@@ -61,7 +63,7 @@ const QuotesScreen = props => {
         quote: null,
     });
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item, index }) => {
         return (
             <View
                 style={{
@@ -69,13 +71,47 @@ const QuotesScreen = props => {
                     paddingHorizontal: Layout.screenHorizontalPadding,
                 }}
             >
-                <QuoteCard
-                    quote={item}
-                    userType={userType}
-                    onQuoteEdit={handleQuoteEdit}
-                    onQuoteDelete={handleQuoteDelete}
-                    onQuotePress={handleQuotePress}
-                />
+                {index === 0 && <LineDescription text="Received" />}
+
+                {quotes.length === 0 && (
+                    <Line style={{ flex: 0 }}>
+                        <Empty size="small" />
+                    </Line>
+                )}
+
+                {index === quotes.length && (
+                    <LineDescription text="Sent" />
+                )}
+
+                {index < quotes.length ? (
+                    <QuoteCard
+                        quote={item}
+                        userType={userType}
+                        onQuoteEdit={handleQuoteEdit}
+                        onQuoteDelete={handleQuoteDelete}
+                        onQuotePress={handleQuotePress}
+                    />
+                ) : (
+                    <QuoteCard
+                        isRequest={true}
+                        quote={item}
+                        userType={userType}
+                        // onQuoteEdit={handleQuoteEdit}
+                        // onQuoteDelete={handleQuoteDelete}
+                        onQuotePress={handleQuotePress}
+                    />
+                )}
+                {index === quotes.length - 1 && requests.length === 0 && (
+                    <LineDescription
+                        style={{ paddingTop: Layout.screenHorizontalPadding }}
+                        text="Sent"
+                    />
+                )}
+                {index === quotes.length - 1 && requests.length === 0 && (
+                    <Line style={{ flex: 0 }}>
+                        <Empty size="small" />
+                    </Line>
+                )}
             </View>
         );
     };
@@ -98,16 +134,29 @@ const QuotesScreen = props => {
                 message="Are you sure you want to delete this quote?"
                 style={ERROR}
             />
-            {quotes && quotes.length > 0 ? (
+            {quotes.length + requests.length > 0 ? (
                 <FlatList
                     keyExtractor={(item, i) => `key-${i}`}
-                    data={quotes}
+                    data={quotes.concat(requests)}
                     renderItem={renderItem}
                     style={{ flex: 1 }}
                     ListFooterComponent={() => <EndOfPageSpace />}
                 />
             ) : (
-                <Empty />
+                <View
+                    style={{
+                        paddingHorizontal: Layout.screenHorizontalPadding,
+                    }}
+                >
+                    <LineDescription text="Received" />
+                    <Line style={{ flex: 0 }}>
+                        <Empty size="small" />
+                    </Line>
+                    <LineDescription text="Sent" />
+                    <Line style={{ flex: 0 }}>
+                        <Empty size="small" />
+                    </Line>
+                </View>
             )}
         </Container>
     );

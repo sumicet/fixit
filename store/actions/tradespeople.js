@@ -4,6 +4,8 @@ export const SET_RATING = 'SET_RATING';
 export const CHANGE_TRADESPERSON_NAME = 'CHANGE_TRADESPERSON_NAME';
 
 import * as Firebase from '../../config/Firebase';
+import Request from '../../models/Jobs/Request';
+import { setRequests } from './job';
 
 export const setRating = (userId, rating, ratingVotesAmount) => {
     return async dispatch => {
@@ -16,7 +18,7 @@ export const setRating = (userId, rating, ratingVotesAmount) => {
     };
 };
 
-export const fetchAll = () => {
+export const fetchAll = currentUserId => {
     return async dispatch => {
         const response = await fetch(
             `https://fixit-46444.firebaseio.com/tradesperson.json`
@@ -26,9 +28,22 @@ export const fetchAll = () => {
 
         const profilePictureList = [];
         const tradespeopleData = [];
+        const requests = [];
 
         for (const key in responseData) {
             tradespeopleData.push(responseData[key]);
+            responseData[key].requests?.forEach(req => {
+                if (req.userId === currentUserId) {
+                    requests.push(
+                        new Request(
+                            req.jobId,
+                            req.userId,
+                            req.tradespersonId,
+                            req.date
+                        )
+                    );
+                }
+            });
         }
 
         try {
@@ -56,6 +71,8 @@ export const fetchAll = () => {
             tradespeopleData,
             profilePictureList,
         });
+
+        dispatch(setRequests(requests));
     };
 };
 

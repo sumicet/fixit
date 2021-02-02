@@ -7,11 +7,46 @@ export const MARK_AS_COMPLETED = 'MARK_AS_COMPLETED';
 export const ADD_QUOTE = 'ADD_QUOTE';
 export const EDIT_QUOTE = 'EDIT_QUOTE';
 export const DELETE_QUOTE = 'DELETE_QUOTE';
+export const ADD_REQUEST = 'ADD_REQUEST';
+export const SET_REQUESTS = 'SET_REQUESTS';
+export const DELETE_REQUEST = 'DELETE_REQUEST';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
-import { addQuotedJob } from './tradesperson';
-import Quote from '../../models/Jobs/Quote';
+import Request from '../../models/Jobs/Request';
+
+export const setRequests = requests => {
+    return async dispatch => {
+        dispatch({
+            type: SET_REQUESTS,
+            requests,
+        });
+    };
+};
+
+export const sendRequest = (jobId, userId, tradespersonId) => {
+    return async dispatch => {
+        const date = new Date().toString();
+        const ref = await Firebase.database
+            .ref(`tradesperson/${tradespersonId}`)
+            .child('requests');
+
+        const snap = await ref.once('value');
+
+        const requests = snap.val() ? snap.val() : [];
+
+        requests.push(new Request(jobId, userId, tradespersonId, date));
+        ref.set(requests);
+
+        dispatch({
+            type: ADD_REQUEST,
+            jobId,
+            userId,
+            tradespersonId,
+            date,
+        });
+    };
+};
 
 export const deleteQuote = (jobId, tradespersonId) => {
     return async dispatch => {
@@ -320,12 +355,15 @@ export const fetchMyJobs = (userId, userType) => {
                     }
 
                     const quotes = responseData[key].quotes;
+                    console.log(quotes);
 
                     if (quotes) {
                         quotes.forEach(quote => {
                             if (
-                                userType === 'tradesperson' &&
-                                quote.tradespersonId === userId // TODO add for customer
+                                (userType === 'tradesperson' &&
+                                    quote.tradespersonId === userId) || // TODO add for customer
+                                (userType === 'customer' &&
+                                    responseData[key].userId === userId)
                             ) {
                                 userQuotes.push(quote);
                             }
@@ -475,8 +513,6 @@ export const fetchAllJobs = (userId, userType) => {
                     )
                 );
             }
-
-            console.log('userquotes', userQuotes);
 
             dispatch({
                 type: FETCH_ALL_JOBS,

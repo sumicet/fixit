@@ -48,6 +48,7 @@ const JobList = props => {
             ListHeaderComponent={() => (
                 <LineDescription
                     text={props.title ? props.title : 'Opened jobs'}
+                    textStyle={{ textAlign: 'left' }}
                 />
             )}
             ListFooterComponent={() => <EndOfPageSpace />}

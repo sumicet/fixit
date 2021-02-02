@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Firebase from '../../config/Firebase';
 import * as firebase from 'firebase';
-import { setInAppNotification } from './ui';
+import { resetUi, setInAppNotification } from './ui';
 import { ERROR } from '../../constants/Actions';
 import { CHANGE_TRADESPERSON_NAME } from './tradespeople';
 
@@ -148,7 +148,9 @@ export const signUp = (email, name, password, userType) => {
             );
             const userId = userData.user.uid;
             const token = await Firebase.auth.currentUser.getIdToken();
+
             saveUserDataToStorage(userId, token);
+
             const ref = Firebase.database.ref(userType).child(userId);
             ref.child('userId').set(userId);
             ref.child('email').set(email);
@@ -217,71 +219,7 @@ export const logIn = (email, password) => {
                 });
             }
         } catch (error) {
-            switch (error.code) {
-                case 'auth/argument-error':
-                    dispatch(
-                        setInAppNotification(
-                            'Empty fields',
-                            'Please fill all the required fields.',
-                            ERROR
-                        )
-                    );
-                    return;
-                case 'auth/too-many-requests':
-                    dispatch(
-                        setInAppNotification(
-                            'Too many requests!',
-                            'We have blocked all requests from this device due to unusual activity. Try again later.',
-                            ERROR
-                        )
-                    );
-                    return;
-                case 'auth/invalid-email':
-                    dispatch(
-                        setInAppNotification(
-                            'Invalid email',
-                            'Please enter your email address in the following format: yourname@example.com',
-                            ERROR
-                        )
-                    );
-                    return;
-                case 'auth/user-disabled':
-                    dispatch(
-                        setInAppNotification(
-                            'User disabled',
-                            'This user has been disabled.',
-                            ERROR
-                        )
-                    );
-                    return;
-                case 'auth/user-not-found':
-                    dispatch(
-                        setInAppNotification(
-                            'User not found',
-                            "We couldn't find an account associated with this email address.",
-                            ERROR
-                        )
-                    );
-                    return;
-                case 'auth/wrong-password':
-                    dispatch(
-                        setInAppNotification(
-                            'Wrong password',
-                            'It looks like the password does not match with the selected email address.',
-                            ERROR
-                        )
-                    );
-                    return;
-                default:
-                    dispatch(
-                        setInAppNotification(
-                            'Error!',
-                            'A problem occured.',
-                            ERROR
-                        )
-                    );
-                    return;
-            }
+            throw(error);
         }
         // Firebase.auth
         //     .signInWithEmailAndPassword(email, password)
@@ -377,6 +315,7 @@ export const signOut = () => {
             dispatch({
                 type: SIGN_OUT,
             });
+            dispatch(resetUi());
         });
     };
 };

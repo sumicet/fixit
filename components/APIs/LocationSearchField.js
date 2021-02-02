@@ -22,7 +22,7 @@ const LocationSearchField = props => {
             listViewDisplayed={false}
             styles={fieldStyle}
             query={{
-                key: 'AIzaSyBM6YK35TEtbw_k76cKUnwOMsEjiFmBRm0',
+                key: 'AIzaSyBeeX2gm6j5BatZmCTnb1gKHqMWzavhCTI',
                 language: 'en',
             }}
             textInputProps={{

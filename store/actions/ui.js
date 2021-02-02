@@ -4,6 +4,13 @@ export const SET_IN_APP_NOTIFICATION_VISIBLE =
     'SET_IN_APP_NOTIFICATION_VISIBLE';
 export const SET_GLOBAL_ALERT = 'SET_GLOBAL_ALERT';
 export const HIDE_GLOBAL_ALERT = 'HIDE_GLOBAL_ALERT';
+export const RESET_UI = 'RESET_UI';
+
+export const resetUi = () => {
+    return {
+        type: RESET_UI,
+    };
+};
 
 export const hideGlobalAlert = () => {
     return {

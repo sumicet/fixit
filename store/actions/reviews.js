@@ -20,10 +20,8 @@ export const addReview = (userId, tradespersonId, rating, comment) => {
                     review.tradespersonId === tradespersonId &&
                     review.userId === userId
             );
-            console.log('old review', oldReview);
             var ratingVotesAmount, newRating;
             if (oldReview) {
-                console.log('yeah, old');
                 ratingVotesAmount = snap2.val();
                 newRating =
                     (oldRating * ratingVotesAmount -
@@ -31,18 +29,11 @@ export const addReview = (userId, tradespersonId, rating, comment) => {
                         rating) /
                     ratingVotesAmount;
             } else {
-                console.log('no, old');
                 ratingVotesAmount = snap2.val() + 1;
                 newRating =
                     (oldRating * (ratingVotesAmount - 1) + rating) /
                     ratingVotesAmount;
             }
-
-            console.log(
-                'the new rating & count are',
-                newRating,
-                ratingVotesAmount
-            );
 
             ref2.child('rating').set(newRating);
             ref2.child('ratingVotesAmount').set(ratingVotesAmount);

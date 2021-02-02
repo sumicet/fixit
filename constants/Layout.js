@@ -9,7 +9,6 @@ export default {
     cardMargin: 10,
     generalMargin: 20,
     generalPadding: 10,
-    menuHeight: 55,
     endOfPageSpace: '20%',
 
     // **************** ICON SIZES ****************
