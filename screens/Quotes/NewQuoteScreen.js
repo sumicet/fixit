@@ -57,7 +57,6 @@ const NewQuoteScreen = props => {
                     onPress={() => {
                         console.log('pressy');
                         if (price.value === null) {
-                            console.log('hah1');
                             dispatch(
                                 setInAppNotification(
                                     'Price missing',
@@ -67,7 +66,6 @@ const NewQuoteScreen = props => {
                             );
                         } else {
                             if (price.currency === null) {
-                                console.log('hah2');
                                 dispatch(
                                     setInAppNotification(
                                         'Currency missing',
@@ -77,7 +75,6 @@ const NewQuoteScreen = props => {
                                 );
                             } else {
                                 if (isNaN(price.value)) {
-                                    console.log('hah');
                                     dispatch(
                                         setInAppNotification(
                                             'Price not a number',
@@ -147,6 +144,8 @@ const NewQuoteScreen = props => {
                 jobAddress={job.jobAddress}
                 startTimeId={job.startTimeId}
                 date={job.date}
+                quotes={job.quotes}
+                distance={job.distance}
             />
             <LineDescription text="Your quote" />
             <LineDescription text="Price" />

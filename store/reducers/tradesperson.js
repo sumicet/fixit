@@ -1,4 +1,9 @@
-import { ADD_QUOTED_JOB, FETCH_TRADESPERSON_INFO, SET_TRADESPERSON_INFO } from '../actions/tradesperson';
+import {
+    ADD_QUOTED_JOB,
+    FETCH_TRADESPERSON_INFO,
+    SET_TRADESPERSON_INFO,
+    SET_TRADESPERSON_REQUESTS,
+} from '../actions/tradesperson';
 
 const initialState = {
     occupationsIds: [],
@@ -11,6 +16,7 @@ const initialState = {
     propertyTypesIds: [],
     profilePicture: null,
     phoneNumber: null,
+    requests: [],
 };
 
 const tradespersonReducer = (state = initialState, action) => {
@@ -44,6 +50,7 @@ const tradespersonReducer = (state = initialState, action) => {
                 rating: action.rating,
                 ratingVotesAmount: action.ratingVotesAmount,
                 contactsIds: action.contactsIds,
+                requests: action.requests,
             };
         default:
             return state;

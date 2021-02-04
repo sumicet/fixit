@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { CheckBox, Slider } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import ScrollableContainer from '../../components/containers/ScrollableContainer';
 import Layout from '../../constants/Layout';
@@ -9,186 +10,146 @@ import Line from '../../components/common/Line';
 import SmallContent from '../../components/text/SmallContent';
 import Touchable from '../../components/common/Touchable';
 import { OCCUPATIONS } from '../../data/Jobs/Occupations';
+import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import Header from '../../components/text/Header';
 import Dropdown from '../../components/dropdown/Dropdown';
-import { addFullStars } from '../../components/cards/Tradesperson/Rating';
+import Rating, {
+    addFullStars,
+} from '../../components/cards/Tradesperson/Rating';
+import MediumButton from '../../components/buttons/MediumButtom';
+import Grid from '../../components/layout/Grid';
+import LineDescription from '../../components/common/LineDescription';
+import AlertWithContent from '../../components/alert/AlertWithContent';
+import { DISTANCE } from '../../data/Jobs/Distance';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    resetFiltersForCustomer,
+    setFiltersForCustomer,
+} from '../../store/actions/tradespeople';
 
 const SearchScreen = props => {
-    const [colors, setColors] = useState([
-        Color.textField,
-        Color.textField,
-        Color.textField,
-        Color.textField,
-        Color.textField,
-        Color.textField,
-    ]);
+    const filters = useSelector(state => state.tradespeople.filters);
 
-    const stars = ['2.0', '2.5', '3.0', '3.5', '4.0', '4.5'];
+    const [tradespersonFilters, setTradespersonFilters] = useState({
+        occupationId: filters.occupationId,
+        distance: filters.distance,
+        rating: filters.rating,
+    });
 
-    const colorItemAt = (index, color) => {
-        const updatedColors = [...colors];
-        updatedColors[index] = color;
-        if (color === Color.primaryBrandColor) {
-            var i;
-            for (i = 0; i < updatedColors.length; i++) {
-                if (i !== index) {
-                    updatedColors[i] = Color.textField;
-                }
-            }
-        }
-        setColors(updatedColors);
-    };
-
-    const [expanded, setExpanded] = useState(false);
-    const [checked, setChecked] = useState(false);
-    const [value, setValue] = useState(5);
+    const dispatch = useDispatch();
+    const userType = useSelector(state => state.auth.userType);
 
     return (
         <ScrollableContainer>
-            <Line
-                style={{
-                    flex: 0,
-                    alignItems: 'flex-start',
-                }}
-            >
-                <Header
-                    style={{
-                        color: Color.importantTextOnTertiaryColorBackground,
-                    }}
-                >
-                    Search filters
-                </Header>
-            </Line>
-            <Line
-                style={{
-                    flex: 0,
-                    alignItems: 'flex-start',
-                }}
-            >
-                <Dropdown
-                    options={OCCUPATIONS.map(item => item.name)}
-                    label="Tradesperson"
-                    defaultValue="Show all"
-                />
-            </Line>
-            <Line
-                style={{
-                    flex: 0,
-                    alignItems: 'flex-start',
-                }}
-            >
-                <Dropdown
-                    options={[
-                        'less than 10km',
-                        'less than 15km',
-                        'less than 20km',
-                        'less than 30km',
-                        'less than 50km',
-                        'more than 50km',
-                    ]}
-                    label="Distance"
-                    defaultValue="less than 30km"
-                />
-            </Line>
-            <Line
-                style={{
-                    flex: 0,
-                    width: '100%',
-                    alignItems: 'flex-start',
-                    paddingBottom:
-                        Layout.screenHorizontalPadding - Layout.generalPadding,
-                }}
-            >
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
-                    }}
-                >
-                    <View
-                        style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: Layout.generalPadding,
-                        }}
-                    >
-                        <SmallContent
-                            style={{
-                                color: Color.textOnTertiaryColorBackground,
-                            }}
-                        >
-                            Rating:
-                        </SmallContent>
-                    </View>
-                    {stars.map((value, index) => (
+            {userType === 'customer' ? (
+                <View>
+                    <Line style={{ flex: 0, flexDirection: 'row' }}>
                         <Touchable
-                            onPress={() => {
-                                colorItemAt(
-                                    index,
-                                    colors[index] === Color.primaryBrandColor
-                                        ? Color.textField
-                                        : Color.primaryBrandColor
-                                );
-                            }}
                             style={{
                                 flex: 0,
-                                flexDirection: 'row',
-                                borderRadius: Layout.borderRadius,
-                                backgroundColor: colors[index],
-                                padding: Layout.generalPadding,
-                                paddingVertical: 2,
-                                alignItems: 'center',
-                                marginRight: Layout.generalPadding,
-                                marginBottom: Layout.generalPadding,
                             }}
-                            isCard={true}
+                            onPress={() => {
+                                dispatch(resetFiltersForCustomer());
+                                props.navigation.goBack();
+                            }}
                         >
-                            <View style={{ paddingRight: 2 }}>
-                                <SmallContent
-                                    style={{
-                                        color:
-                                            colors[index] ===
-                                            Color.primaryBrandColor
-                                                ? Color.importantTextOnTertiaryColorBackground
-                                                : Color.textOnTertiaryColorBackground,
-                                    }}
-                                >
-                                    {value} +
-                                </SmallContent>
-                            </View>
-                            {addFullStars(1)}
+                            <Icon
+                                name="reload1"
+                                size={Layout.menuIconSize}
+                                color={
+                                    Color.importantTextOnTertiaryColorBackground
+                                }
+                            />
                         </Touchable>
-                    ))}
+                        <View style={{ flex: 1 }}>
+                            <Header
+                                style={{
+                                    color:
+                                        Color.importantTextOnTertiaryColorBackground,
+                                }}
+                            >
+                                Filters
+                            </Header>
+                        </View>
+                        <Touchable
+                            style={{
+                                flex: 0,
+                            }}
+                            onPress={() => {
+                                dispatch(
+                                    setFiltersForCustomer(
+                                        tradespersonFilters.occupationId,
+                                        tradespersonFilters.distance,
+                                        tradespersonFilters.rating
+                                    )
+                                );
+                                props.navigation.goBack();
+                            }}
+                        >
+                            <Icon
+                                name="check"
+                                size={Layout.mediumButtonIconSize}
+                                color={
+                                    Color.importantTextOnTertiaryColorBackground
+                                }
+                            />
+                        </Touchable>
+                    </Line>
+                    <LineDescription text="Occupation" />
+                    <Line style={{ flex: 0 }}>
+                        <Grid
+                            data={OCCUPATIONS}
+                            onPress={index => {
+                                setTradespersonFilters({
+                                    occupationId: index + 1,
+                                    distance: tradespersonFilters.distance,
+                                    rating: tradespersonFilters.rating,
+                                });
+                            }}
+                            initialSelectedIndexes={[
+                                tradespersonFilters.occupationId,
+                            ]}
+                        />
+                    </Line>
+                    <LineDescription text="Distance" />
+                    <Line style={{ flex: 0 }}>
+                        <Grid
+                            data={DISTANCE}
+                            onPress={index => {
+                                setTradespersonFilters({
+                                    occupationId:
+                                        tradespersonFilters.occupationId,
+                                    distance: index,
+                                    rating: tradespersonFilters.rating,
+                                });
+                            }}
+                            initialSelectedIndexes={[
+                                tradespersonFilters.distance,
+                            ]}
+                        />
+                    </Line>
+                    <LineDescription text="Minimum rating" />
+                    <Line
+                        style={{
+                            flex: 0,
+                            width: '100%',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Rating
+                            isRateCard={true}
+                            rating={tradespersonFilters.rating}
+                            onStarPress={index => {
+                                setTradespersonFilters({
+                                    ...tradespersonFilters,
+                                    rating: index,
+                                });
+                            }}
+                            spread={true}
+                        />
+                    </Line>
                 </View>
-            </Line>
-            <Line
-                style={{
-                    flex: 0,
-                    alignItems: 'flex-start',
-                }}
-            >
-                <CheckBox
-                    title="Click Here"
-                    checked={checked}
-                    onPress={() => {
-                        setChecked(!checked);
-                    }}
-                    containerStyle={{
-                        backgroundColor: Color.primaryColor,
-                        borderWidth: 0,
-                        padding: 0,
-                    }}
-                    textStyle={{
-                        color: Color.textOnTertiaryColorBackground,
-                        fontFamily: 'SemiBold',
-                        fontSize: Layout.smallContentSize,
-                    }}
-                    checkedColor={Color.primaryBrandColor}
-                    uncheckedColor={Color.textOnTertiaryColorBackground}
-                    title="Security liability insurance"
-                />
-            </Line>
+            ) : null}
         </ScrollableContainer>
     );
 };

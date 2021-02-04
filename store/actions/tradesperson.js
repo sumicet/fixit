@@ -5,6 +5,7 @@ export const DELETE_JOB = 'DELETE_JOB';
 export const SET_TRADESPERSON_INFO = 'SET_TRADESPERSON_INFO';
 export const ADD_QUOTED_JOB = 'ADD_QUOTED_JOB';
 export const FETCH_TRADESPERSON_INFO = 'FETCH_TRADESPERSON_INFO';
+export const SET_TRADESPERSON_REQUESTS = 'SET_TRADESPERSON_REQUESTS';
 
 import * as Firebase from '../../config/Firebase';
 
@@ -70,6 +71,7 @@ export const fetchTradespersonInfo = userId => {
             ratingVotesAmount: responseData.ratingVotesAmount,
             contactsIds: responseData.contactsIds,
             email: responseData.email,
+            requests: responseData.requests,
         });
     };
 };

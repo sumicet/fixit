@@ -34,17 +34,21 @@ const QuoteCard = props => {
                   job => job.id === quote.jobId
               );
 
-    console.log(job?.id, quote.jobId, 'MY JOB QUOTE');
-
     const tradesperson =
         userType === 'customer' &&
         useSelector(state => state.tradespeople.all).find(
             tp => tp.userId === quote.tradespersonId
         );
 
+    const customerId = useSelector(state => state.job.allJobs).find(
+        job => job.id === quote.jobId
+    ).userId;
+
     const name =
         userType === 'tradesperson'
-            ? useSelector(state => state.auth.name)
+            ? useSelector(state => state.customers.all).find(
+                  customer => customer.userId === customerId
+              ).name
             : tradesperson?.name;
 
     return (
@@ -71,7 +75,7 @@ const QuoteCard = props => {
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingTop: Layout.screenHorizontalPadding,
-                        paddingBottom: isRequest
+                        paddingBottom: isRequest //HERE
                             ? Layout.screenHorizontalPadding
                             : 10,
                     }}
@@ -96,16 +100,21 @@ const QuoteCard = props => {
                                         Color.importantTextOnTertiaryColorBackground,
                                 }}
                             >
+                                {userType === 'tradesperson' && 'To: '}
                                 {name}
                             </HeaderWithEllipsis>
                         </View>
-                        <View style={{ flex: 0 }}>
-                            <RelativeTime
-                                date={new Date(quote.date)}
-                                size="medium"
-                                textColor={Color.textOnTertiaryColorBackground}
-                            />
-                        </View>
+                        {userType === 'customer' && (
+                            <View style={{ flex: 0 }}>
+                                <RelativeTime
+                                    date={new Date(quote.date)}
+                                    size="medium"
+                                    textColor={
+                                        Color.textOnTertiaryColorBackground
+                                    }
+                                />
+                            </View>
+                        )}
                     </View>
                     {userType === 'tradesperson' && (
                         <View
@@ -170,16 +179,38 @@ const QuoteCard = props => {
                     <View
                         style={{
                             flexDirection: 'row',
-                            paddingBottom: Layout.screenHorizontalPadding,
+                            paddingBottom: 10, //HERE
                             alignItems: 'center',
                         }}
                     >
-                        <Rating
-                            rating={tradesperson.rating}
-                            ratingVotesAmount={tradesperson.ratingVotesAmount}
-                            readOnly={true}
-                            color={Color.textOnTertiaryColorBackground}
-                        />
+                        {userType === 'customer' ? (
+                            <Rating
+                                rating={tradesperson.rating}
+                                ratingVotesAmount={
+                                    tradesperson.ratingVotesAmount
+                                }
+                                readOnly={true}
+                                color={Color.textOnTertiaryColorBackground}
+                            />
+                        ) : (
+                            <View style={{ flex: 0, flexDirection: 'row' }}>
+                                <SmallContent
+                                    style={{
+                                        color:
+                                            Color.textOnTertiaryColorBackground,
+                                    }}
+                                >
+                                    Sent{' '}
+                                </SmallContent>
+                                <RelativeTime
+                                    date={new Date(quote.date)}
+                                    size="medium"
+                                    textColor={
+                                        Color.textOnTertiaryColorBackground
+                                    }
+                                />
+                            </View>
+                        )}
 
                         {!isRequest ? (
                             <View

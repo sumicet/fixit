@@ -36,7 +36,6 @@ const ImageSelector = props => {
             {props.images &&
                 props.images.length > 0 &&
                 props.images.map((uri, index) => {
-                    console.log(index % 2);
                     return (
                         <View
                             style={{

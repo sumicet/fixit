@@ -21,6 +21,7 @@ const JobList = props => {
                     onPress={() => props.onCardPress(item.id)}
                 >
                     <JobCard
+                        id={item.id}
                         userId={item.userId}
                         date={item.date}
                         occupationId={item.occupationId}
@@ -30,6 +31,9 @@ const JobList = props => {
                         propertyType={item.propertyType}
                         jobAddress={item.jobAddress}
                         startTimeId={item.startTimeId}
+                        quotes={item.quotes}
+                        showRequestInfo={props.showRequestInfo}
+                        distance={item.distance}
                     />
                 </Touchable>
             </View>
@@ -45,12 +49,14 @@ const JobList = props => {
             contentContainerStyle={{
                 paddingHorizontal: Layout.screenHorizontalPadding,
             }}
-            ListHeaderComponent={() => (
-                <LineDescription
-                    text={props.title ? props.title : 'Opened jobs'}
-                    textStyle={{ textAlign: 'left' }}
-                />
-            )}
+            ListHeaderComponent={() =>
+                props.showTitle ? (
+                    <LineDescription
+                        text={props.title ? props.title : 'Opened jobs'}
+                        textStyle={{ textAlign: 'left' }}
+                    />
+                ) : null
+            }
             ListFooterComponent={() => <EndOfPageSpace />}
         />
     );

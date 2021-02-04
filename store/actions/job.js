@@ -14,6 +14,8 @@ export const DELETE_REQUEST = 'DELETE_REQUEST';
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 import Request from '../../models/Jobs/Request';
+import { setTradespersonRequests } from './tradesperson';
+import { getDistance } from '../../actions/distance';
 
 export const setRequests = requests => {
     return async dispatch => {
@@ -355,7 +357,6 @@ export const fetchMyJobs = (userId, userType) => {
                     }
 
                     const quotes = responseData[key].quotes;
-                    console.log(quotes);
 
                     if (quotes) {
                         quotes.forEach(quote => {
@@ -382,7 +383,8 @@ export const fetchMyJobs = (userId, userType) => {
                             responseData[key].propertyType,
                             responseData[key].jobAddress,
                             responseData[key].startTimeId,
-                            images
+                            images,
+                            responseData[key].quotes
                         )
                     );
                 }
@@ -437,7 +439,8 @@ export const fetchMyJobs = (userId, userType) => {
                             responseData2[key2].propertyType,
                             responseData2[key2].jobAddress,
                             responseData2[key2].startTimeId,
-                            images2
+                            images2,
+                            responseData2[key2].quotes,
                         )
                     );
                 }
@@ -455,8 +458,9 @@ export const fetchMyJobs = (userId, userType) => {
     };
 };
 
-export const fetchAllJobs = (userId, userType) => {
+export const fetchAllJobs = (userId, userType, user_place_id) => {
     return async dispatch => {
+        console.log(userId, userType, user_place_id)
         try {
             var response = await fetch(
                 'https://fixit-46444.firebaseio.com/allPendingJobs.json'
@@ -490,12 +494,19 @@ export const fetchAllJobs = (userId, userType) => {
                     quotes.forEach(quote => {
                         if (
                             userType === 'tradesperson' &&
-                            quote.tradespersonId === userId // TODO add for customer
+                            quote.tradespersonId === userId
                         ) {
                             userQuotes.push(quote);
                         }
                     });
                 }
+
+                const { meters } = await getDistance(
+                    user_place_id,
+                    responseData[key].jobAddress.place_id
+                );
+
+                console.log(meters)
 
                 allJobs.push(
                     new Job(
@@ -509,7 +520,9 @@ export const fetchAllJobs = (userId, userType) => {
                         responseData[key].propertyType,
                         responseData[key].jobAddress,
                         responseData[key].startTimeId,
-                        images
+                        images,
+                        null,
+                        meters
                     )
                 );
             }
@@ -519,8 +532,10 @@ export const fetchAllJobs = (userId, userType) => {
                 allJobs,
                 quotes: userQuotes,
             });
+
+            //dispatch(setTradespersonRequests(tradespersonRequests));
         } catch (error) {
-            console.log('err');
+            console.log('err while fetching all jobs', error);
         }
     };
 };

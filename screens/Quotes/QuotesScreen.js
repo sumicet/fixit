@@ -63,25 +63,35 @@ const QuotesScreen = props => {
         quote: null,
     });
 
-    const renderItem = ({ item, index }) => {
+    const RenderItemForTradesperson = props => {
+        const { item, index } = props;
         return (
-            <View
-                style={{
-                    paddingBottom: Layout.screenHorizontalPadding,
-                    paddingHorizontal: Layout.screenHorizontalPadding,
-                }}
-            >
+            <View>
+                <QuoteCard
+                    quote={item}
+                    userType={userType}
+                    onQuoteEdit={handleQuoteEdit}
+                    onQuoteDelete={handleQuoteDelete}
+                    onQuotePress={handleQuotePress}
+                />
+            </View>
+        );
+    };
+
+    const RenderItemForCustomer = props => {
+        const { item, index } = props;
+        return (
+            <View>
                 {index === 0 && <LineDescription text="Received" />}
 
-                {quotes.length === 0 && (
-                    <Line style={{ flex: 0 }}>
-                        <Empty size="small" />
-                    </Line>
-                )}
+                {!quotes ||
+                    (quotes.length === 0 && (
+                        <Line style={{ flex: 0 }}>
+                            <Empty size="small" />
+                        </Line>
+                    ))}
 
-                {index === quotes.length && (
-                    <LineDescription text="Sent" />
-                )}
+                {index === quotes.length && <LineDescription text="Sent" />}
 
                 {index < quotes.length ? (
                     <QuoteCard
@@ -101,16 +111,37 @@ const QuotesScreen = props => {
                         onQuotePress={handleQuotePress}
                     />
                 )}
-                {index === quotes.length - 1 && requests.length === 0 && (
-                    <LineDescription
-                        style={{ paddingTop: Layout.screenHorizontalPadding }}
-                        text="Sent"
-                    />
-                )}
-                {index === quotes.length - 1 && requests.length === 0 && (
-                    <Line style={{ flex: 0 }}>
-                        <Empty size="small" />
-                    </Line>
+                {index === quotes.length - 1 &&
+                    (!requests || requests.length === 0) && (
+                        <LineDescription
+                            style={{
+                                paddingTop: Layout.screenHorizontalPadding,
+                            }}
+                            text="Sent"
+                        />
+                    )}
+                {index === quotes.length - 1 &&
+                    (!requests || requests.length === 0) && (
+                        <Line style={{ flex: 0 }}>
+                            <Empty size="small" />
+                        </Line>
+                    )}
+            </View>
+        );
+    };
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <View
+                style={{
+                    paddingBottom: Layout.screenHorizontalPadding,
+                    paddingHorizontal: Layout.screenHorizontalPadding,
+                }}
+            >
+                {userType === 'customer' ? (
+                    <RenderItemForCustomer item={item} index={index} />
+                ) : (
+                    <RenderItemForTradesperson item={item} index={index} />
                 )}
             </View>
         );

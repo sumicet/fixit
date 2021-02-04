@@ -23,26 +23,14 @@ import Loading from '../../loading/Loading';
 import { getText } from '../../../actions/distance';
 
 const TradespersonCard = props => {
-    const [isLoading, setIsLoading] = useState(true);
+    //const [isLoading, setIsLoading] = useState(true);
 
     const allTradespeople = useSelector(state => state.tradespeople.all);
 
     const street = useSelector(state => state.auth.streetAddress);
 
     const user_place_id = street && street.place_id;
-    const [distance, setDistance] = useState();
-
-    useEffect(() => {
-        if (user_place_id && streetAddress) {
-            getText(user_place_id, streetAddress.place_id).then(result => {
-                setDistance(result);
-                setIsLoading(false);
-            });
-        } else {
-            setDistance('N/A');
-            setIsLoading(false);
-        }
-    }, []);
+    //const [distance, setDistance] = useState();
 
     const {
         userId,
@@ -56,7 +44,26 @@ const TradespersonCard = props => {
         recommendedByIds,
         profilePicture,
         phoneNumber,
+        distance
     } = props;
+
+    const dist = getText(distance);
+
+    // useEffect(() => {
+    //     // if (user_place_id && streetAddress) {
+    //     //     // getText(user_place_id, streetAddress.place_id).then(result => {
+    //     //     //     setDistance(result);
+    //     //     //     setIsLoading(false);
+    //     //     // });
+            
+    //     // } else {
+    //     //     setDistance('N/A');
+    //     //     setIsLoading(false);
+    //     // }
+        
+    // }, []);
+
+    
 
     const recommendedByTradespeople = recommendedByIds
         ? allTradespeople.filter(tp =>
@@ -107,9 +114,9 @@ const TradespersonCard = props => {
         setUpdatedRating(updatedRating);
     };
 
-    if (isLoading) {
-        return <Loading />;
-    }
+    // if (isLoading) {
+    //     return <Loading />;
+    // }
 
     return (
         <View>
@@ -254,7 +261,7 @@ const TradespersonCard = props => {
                                                 //paddingBottom: 10,
                                             }}
                                         >
-                                            <Location distance={distance} />
+                                            <Location distance={dist} />
                                             <Experience
                                                 experienceId={experienceId}
                                             />

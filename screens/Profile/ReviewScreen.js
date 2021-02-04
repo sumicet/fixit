@@ -76,6 +76,7 @@ const ReviewScreen = props => {
                 recommendedByIds={tradesperson.recommendedByIds}
                 profilePicture={tradesperson.profilePicture}
                 phoneNumber={tradesperson.phoneNumber}
+                distance={tradesperson.distance}
                 readOnly={true}
             />
             <LineDescription

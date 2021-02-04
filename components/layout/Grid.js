@@ -17,7 +17,10 @@ const Grid = props => {
             const initialColors = [];
             var i;
             for (i = 0; i < props.data.length; i++) {
-                if (props.initialSelectedIndexes && props.initialSelectedIndexes.includes(i)) {
+                if (
+                    props.initialSelectedIndexes &&
+                    props.initialSelectedIndexes.includes(i)
+                ) {
                     initialColors.push(Color.tertiaryBrandColor);
                 } else {
                     initialColors.push(Color.textField);
@@ -54,11 +57,12 @@ const Grid = props => {
         return (
             <ItemContainer
                 onPress={() => {
-                    if(props.multipleOptions) {
+                    if (props.multipleOptions) {
                         handleMultipleOptionsItemPress(props.index);
                     } else {
                         handleItemPress(props.index);
                     }
+
                     props.onPress(props.index);
                 }}
                 isCard={true}

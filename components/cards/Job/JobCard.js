@@ -4,47 +4,55 @@ import { View, Text, StyleSheet } from 'react-native';
 import Layout from '../../../constants/Layout';
 import Color from '../../../constants/Color';
 import SmallContentWithEllipsis from '../../text/SmallContentWithEllipsis';
-import Occupations from '../Tradesperson/Occupations';
 import Location from '../Tradesperson/Location';
 import StartTime from './StartTime';
 import PostedBy from './PostedBy';
 import { WORK_TYPES } from '../../../data/Jobs/WorkTypes';
-import { getText } from '../../../actions/distance';
 import { useSelector } from 'react-redux';
-import SmallBubble from '../../common/SmallBubble';
 import { OCCUPATIONS } from '../../../data/Jobs/Occupations';
-import SmallBoldContent from '../../text/SmallBoldContent';
-import Header from '../../text/Header';
-import { ClipPath } from 'react-native-svg';
 import SmallContent from '../../text/SmallContent';
 import Quotes from './Quotes';
 import Bubble from '../../common/Bubble';
+import RelativeTime from '../../common/RelativeTime';
+import { getText } from '../../../actions/distance';
 
 const JobCard = props => {
     const street = useSelector(state => state.auth.streetAddress);
     const user_place_id = street && street.place_id;
-    const [distance, setDistance] = useState();
+    //const [distance, setDistance] = useState();
     const userType = useSelector(state => state.auth.userType);
     const currentUserId = useSelector(state => state.auth.userId);
 
     const {
+        id,
         userId,
         occupationId,
         workTypeId,
         jobDescription,
         jobAddress,
         startTimeId,
+        quotes,
+        distance,
     } = props;
     const date = new Date(props.date);
 
-    useEffect(() => {
-        user_place_id && jobAddress
-            ? getText(user_place_id, jobAddress.place_id).then(result => {
-                  //TODO make sure u get props.stree.. from the other comp
-                  setDistance(result);
-              })
-            : setDistance('N/A');
-    }, []);
+    // useEffect(() => {
+    //     user_place_id && jobAddress
+    //         ? getText(user_place_id, jobAddress.place_id).then(result => {
+    //               //TODO make sure u get props.stree.. from the other comp
+    //               setDistance(result);
+    //           })
+    //         : setDistance('N/A');
+    // }, []);
+
+    const request =
+        props.showRequestInfo &&
+        userType === 'tradesperson' &&
+        useSelector(state => state.tradesperson.requests).find(
+            req => req.jobId === id
+        );
+
+    const dist = getText(distance);
 
     return (
         <View style={styles.container}>
@@ -89,14 +97,30 @@ const JobCard = props => {
                         width: '100%',
                     }}
                 >
-                    {userType === 'customer' ? (
-                        <Quotes quotes={5} />
-                    ) : (
-                        <Location distance={distance} />
-                    )}
-                    <View style={{ paddingLeft: Layout.generalPadding }}>
-                        <StartTime startTimeId={startTimeId} />
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        {userType === 'customer' ? (
+                            <Quotes quotes={quotes ? quotes.length + 1 : 0} />
+                        ) : (
+                            <Location distance={dist} />
+                        )}
+                        <View style={{ paddingLeft: Layout.generalPadding }}>
+                            <StartTime startTimeId={startTimeId} />
+                        </View>
                     </View>
+                    {request && (
+                        <View style={{ flex: 0, flexDirection: 'row' }}>
+                            <SmallContent
+                                style={{ color: Color.secondaryColor }}
+                            >
+                                Received{' '}
+                            </SmallContent>
+                            <RelativeTime
+                                date={new Date(request.date)}
+                                size="medium"
+                                textColor={Color.secondaryColor}
+                            />
+                        </View>
+                    )}
                 </View>
             </View>
         </View>

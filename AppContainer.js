@@ -79,28 +79,26 @@ const AppContainer = () => {
             setIsLoading(true);
             initialFetches().then(() => {
                 setIsLoading(false);
-            })
+            });
         }
     }, [isLoggedIn]);
 
     const fetchFonts = () => {
         return Font.loadAsync({
-            'Bold': require('./assets/fonts/whitneybold.ttf'),
-            'SemiBold': require('./assets/fonts/whitneysemibold.ttf'),
-            'Regular': require('./assets/fonts/whitneymedium.ttf'),
+            Bold: require('./assets/fonts/whitneybold.ttf'),
+            SemiBold: require('./assets/fonts/whitneysemibold.ttf'),
+            Regular: require('./assets/fonts/whitneymedium.ttf'),
         });
     };
 
     const initialFetches = async () => {
         console.log('done initial shit');
+
         Promise.all([
             fetchFonts(),
-            userType === 'tradesperson' && dispatch(fetchTradespersonInfo(userId)),
+            userType === 'tradesperson' &&
+                dispatch(fetchTradespersonInfo(userId)),
             dispatch(fetchMyJobs(userId, userType)),
-            userType === 'customer' && dispatch(fetchAll(userId)),
-            dispatch(fetchCustomers()),
-            dispatch(fetchAllJobs(userId, userType)),
-            dispatch(fetchReviews()),
             navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
@@ -114,17 +112,22 @@ const AppContainer = () => {
                         line1: resultData.results[0].formatted_address,
                         place_id: resultData.results[0].place_id,
                     })
-                )
-                // .then(() => {
-                //     dispatch(setDistances(resultData.results[0].place_id));
-                // });
-            }),
-        ]).then(() => {
-            dispatch(ui.setIsLoading(false)).then(() => {
-                console.log(
-                    'LOADEDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
                 );
-            });
+                userType === 'customer' &&
+                    dispatch(fetchAll(userId, resultData.results[0].place_id));
+                userType === 'tradesperson' &&
+                    dispatch(
+                        fetchAllJobs(
+                            userId,
+                            userType,
+                            resultData.results[0].place_id
+                        )
+                    );
+            }),
+            dispatch(fetchCustomers()),
+            dispatch(fetchReviews()),
+        ]).then(() => {
+            dispatch(ui.setIsLoading(false));
         });
     };
 

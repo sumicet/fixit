@@ -36,17 +36,17 @@ const TradespersonProfileScreen = props => {
 
     const street = useSelector(state => state.auth.streetAddress);
     const user_place_id = street.place_id;
-    const [distance, setDistance] = useState();
+    //const [distance, setDistance] = useState();
 
-    useEffect(() => {
-        user_place_id && tradesperson.streetAddress
-            ? getText(user_place_id, tradesperson.streetAddress.place_id).then(
-                  result => {
-                      setDistance(result);
-                  }
-              )
-            : setDistance('N/A');
-    }, []);
+    // useEffect(() => {
+    //     user_place_id && tradesperson.streetAddress
+    //         ? getText(user_place_id, tradesperson.streetAddress.place_id).then(
+    //               result => {
+    //                   setDistance(result);
+    //               }
+    //           )
+    //         : setDistance('N/A');
+    // }, []);
 
     const currentUserId = useSelector(state => state.auth.userId);
     const currentUserReview = reviews.find(
@@ -81,6 +81,8 @@ const TradespersonProfileScreen = props => {
             },
         });
     };
+
+    const dist = getText(tradesperson.distance);
 
     const headerRight = () => {
         return (
@@ -187,7 +189,7 @@ const TradespersonProfileScreen = props => {
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.column}>
                         <View style={styles.details}>
-                            <Location distance={distance} />
+                            <Location distance={dist} />
                             <SmallContent
                                 style={{ color: Color.secondaryColor }}
                             >

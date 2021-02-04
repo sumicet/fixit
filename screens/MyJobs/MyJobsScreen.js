@@ -20,7 +20,15 @@ const MyJobsScreen = props => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const userType = useSelector(state => state.auth.userType);
-    const requests = userCompletedJobs.filter(job => job.requests);
+    const requests =
+        userType === 'customer'
+            ? userCompletedJobs.filter(job => job.requests)
+            : useSelector(state => state.tradesperson.requests);
+
+    const requestsJobIds = requests.map(req => req.jobId);
+    const tradespersonJobRequests = useSelector(
+        state => state.job.allJobs
+    ).filter(job => requestsJobIds.includes(job.id));
 
     useEffect(() => {
         if (
@@ -44,6 +52,24 @@ const MyJobsScreen = props => {
     const Screen = props => {
         const { mainArray, secondaryArray } = props;
 
+        const array =
+            secondaryArray && secondaryArray.length > 0
+                ? mainArray
+                      .sort(
+                          (job1, job2) =>
+                              new Date(job2.date) - new Date(job1.date)
+                      )
+                      .concat(
+                          secondaryArray &&
+                              secondaryArray.sort(
+                                  (job1, job2) =>
+                                      new Date(job2.date) - new Date(job1.date)
+                              )
+                      )
+                : mainArray.sort(
+                      (job1, job2) => new Date(job2.date) - new Date(job1.date)
+                  );
+
         return (
             <View style={{ flex: 1, backgroundColor: Color.primaryColor }}>
                 {mainArray && mainArray.length > 0 ? (
@@ -57,19 +83,7 @@ const MyJobsScreen = props => {
                         }}
                     >
                         <JobList
-                            list={mainArray
-                                .sort(
-                                    (job1, job2) =>
-                                        new Date(job2.date) -
-                                        new Date(job1.date)
-                                )
-                                .concat(
-                                    secondaryArray.sort(
-                                        (job1, job2) =>
-                                            new Date(job2.date) -
-                                            new Date(job1.date)
-                                    )
-                                )} // sorts by newest first
+                            list={array} // sorts by newest first
                             navigation={props.navigation}
                             showSecondTitleAtElementWithIndex={
                                 mainArray ? mainArray.length : 0
@@ -85,6 +99,8 @@ const MyJobsScreen = props => {
                                     }
                                 );
                             }}
+                            showTitle={props.showTitle}
+                            showRequestInfo={true}
                         />
                     </Container>
                 ) : (
@@ -97,7 +113,11 @@ const MyJobsScreen = props => {
     return (
         <View style={{ flex: 1 }}>
             {userType === 'tradesperson' ? (
-                <Screen mainArray={requests} navigation={props.navigation} />
+                <Screen
+                    mainArray={tradespersonJobRequests}
+                    navigation={props.navigation}
+                    showTitle={false}
+                />
             ) : (
                 <Screen
                     mainArray={userPendingJobs}
