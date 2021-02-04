@@ -31,6 +31,7 @@ import ImageSelector from '../../components/images/ImageSelector';
 import { ERROR, SUCCESS } from '../../constants/Actions';
 import { setInAppNotification } from '../../store/actions/ui';
 import SmallBubble from '../../components/common/SmallBubble';
+import { getStartTime } from '../../actions/startTime';
 
 const latitudeDelta = 0.005;
 const longitudeDelta = 0.005;
@@ -71,6 +72,8 @@ const JobDetailsScreen = props => {
     useEffect(() => {
         props.navigation.setOptions({ headerRight: headerRight });
     });
+
+    const { startTime, color } = getStartTime(new Date(job.date), job.startTimeId);
 
     const showAlert = (title, message, onPress, style) => {
         setModalData({
@@ -336,14 +339,7 @@ const JobDetailsScreen = props => {
                         <SmallBubble
                             style={{
                                 flex: 0,
-                                backgroundColor:
-                                    job.startTimeId === 1 ||
-                                    job.startTimeId === 2
-                                        ? Color.error
-                                        : job.startTimeId === 3 ||
-                                          job.startTimeId === 4
-                                        ? Color.warning
-                                        : Color.textField,
+                                backgroundColor: color,
                                 marginLeft: Layout.generalPadding,
                             }}
                             textStyle={{
@@ -351,11 +347,7 @@ const JobDetailsScreen = props => {
                                 color:
                                     Color.importantTextOnTertiaryColorBackground,
                             }}
-                            text={
-                                START_TIMES.find(
-                                    time => time.id === job.startTimeId
-                                )?.name
-                            }
+                            text={startTime}
                         />
                     </LineDescription>
                     <LineDescription text="Description" />

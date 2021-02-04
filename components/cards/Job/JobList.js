@@ -7,11 +7,12 @@ import Layout from '../../../constants/Layout';
 import LineDescription from '../../common/LineDescription';
 import { View } from 'react-native';
 import EndOfPageSpace from '../../layout/EndOfPageSpace';
+import CurrentLocation from '../../headers/CurrentLocation';
 
 const JobList = props => {
     const renderItem = ({ item, index }) => {
         return (
-            <View>
+            <View style={{ paddingHorizontal: Layout.screenHorizontalPadding }}>
                 {props.showSecondTitleAtElementWithIndex === index && (
                     <LineDescription text="Closed jobs" />
                 )}
@@ -46,17 +47,21 @@ const JobList = props => {
             data={props.list}
             renderItem={renderItem}
             style={{ flex: 1 }}
-            contentContainerStyle={{
-                paddingHorizontal: Layout.screenHorizontalPadding,
+            ListHeaderComponent={() => {
+                return (
+                    <View>
+                        {props.showTitle && (
+                            <LineDescription
+                                text={props.title ? props.title : 'Opened jobs'}
+                                textStyle={{ textAlign: 'left' }}
+                            />
+                        )}
+                        {props.displayCurrentLocation && (
+                            <CurrentLocation navigation={props.navigation} />
+                        )}
+                    </View>
+                );
             }}
-            ListHeaderComponent={() =>
-                props.showTitle ? (
-                    <LineDescription
-                        text={props.title ? props.title : 'Opened jobs'}
-                        textStyle={{ textAlign: 'left' }}
-                    />
-                ) : null
-            }
             ListFooterComponent={() => <EndOfPageSpace />}
         />
     );

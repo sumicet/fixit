@@ -11,7 +11,7 @@ import Touchable from '../common/Touchable';
 import Header from '../text/Header';
 import HeaderWithEllipsis from '../text/HeaderWithEllipsis';
 
-const CurrentLocation = () => {
+const CurrentLocation = (props) => {
 
     const streetAddress = useSelector(state => state.auth.streetAddress);
 

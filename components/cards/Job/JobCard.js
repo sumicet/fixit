@@ -34,16 +34,8 @@ const JobCard = props => {
         quotes,
         distance,
     } = props;
-    const date = new Date(props.date);
 
-    // useEffect(() => {
-    //     user_place_id && jobAddress
-    //         ? getText(user_place_id, jobAddress.place_id).then(result => {
-    //               //TODO make sure u get props.stree.. from the other comp
-    //               setDistance(result);
-    //           })
-    //         : setDistance('N/A');
-    // }, []);
+    const date = new Date(props.date);
 
     const request =
         props.showRequestInfo &&
@@ -104,7 +96,7 @@ const JobCard = props => {
                             <Location distance={dist} />
                         )}
                         <View style={{ paddingLeft: Layout.generalPadding }}>
-                            <StartTime startTimeId={startTimeId} />
+                            <StartTime startTimeId={startTimeId} date={date} />
                         </View>
                     </View>
                     {request && (

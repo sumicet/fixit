@@ -10,11 +10,12 @@ export const DELETE_QUOTE = 'DELETE_QUOTE';
 export const ADD_REQUEST = 'ADD_REQUEST';
 export const SET_REQUESTS = 'SET_REQUESTS';
 export const DELETE_REQUEST = 'DELETE_REQUEST';
+export const SET_FILTERS_FOR_TRADESPERSON = 'SET_FILTERS_FOR_TRADESPERSON';
+export const RESET_FILTERS_FOR_TRADESPERSON = 'RESET_FILTERS_FOR_TRADESPERSON';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 import Request from '../../models/Jobs/Request';
-import { setTradespersonRequests } from './tradesperson';
 import { getDistance } from '../../actions/distance';
 
 export const setRequests = requests => {
@@ -440,7 +441,7 @@ export const fetchMyJobs = (userId, userType) => {
                             responseData2[key2].jobAddress,
                             responseData2[key2].startTimeId,
                             images2,
-                            responseData2[key2].quotes,
+                            responseData2[key2].quotes
                         )
                     );
                 }
@@ -460,7 +461,7 @@ export const fetchMyJobs = (userId, userType) => {
 
 export const fetchAllJobs = (userId, userType, user_place_id) => {
     return async dispatch => {
-        console.log(userId, userType, user_place_id)
+        console.log(userId, userType, user_place_id);
         try {
             var response = await fetch(
                 'https://fixit-46444.firebaseio.com/allPendingJobs.json'
@@ -506,7 +507,7 @@ export const fetchAllJobs = (userId, userType, user_place_id) => {
                     responseData[key].jobAddress.place_id
                 );
 
-                console.log(meters)
+                console.log(meters);
 
                 allJobs.push(
                     new Job(
@@ -537,5 +538,23 @@ export const fetchAllJobs = (userId, userType, user_place_id) => {
         } catch (error) {
             console.log('err while fetching all jobs', error);
         }
+    };
+};
+
+export const setFiltersForTradesperson = (occupationId, distance) => {
+    return async dispatch => {
+        dispatch({
+            type: SET_FILTERS_FOR_TRADESPERSON,
+            occupationId,
+            distance,
+        });
+    };
+};
+
+export const resetFiltersForTradesperson = () => {
+    return async dispatch => {
+        dispatch({
+            type: RESET_FILTERS_FOR_TRADESPERSON,
+        });
     };
 };

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-
 import TradespersonCard from '../../components/cards/Tradesperson/TradespersonCard';
 import Layout from '../../constants/Layout';
 import { FlatList } from 'react-native';
@@ -18,7 +17,6 @@ const HomeScreen = props => {
     const userType = useSelector(state => state.auth.userType);
     const allTradespeople = useSelector(state => state.tradespeople.all);
     const allJobs = useSelector(state => state.job.allJobs);
-    
 
     useEffect(() => {
         if (isFocused) {
@@ -26,14 +24,14 @@ const HomeScreen = props => {
         }
     }, [props, isFocused]);
 
-    const handleRequestQuote = (tradespersonId) => {
+    const handleRequestQuote = tradespersonId => {
         props.navigation.navigate('HomeStackWithoutSearchBar', {
             screen: 'SelectJob',
             params: {
-                tradespersonId
-            }
-        })
-    }
+                tradespersonId,
+            },
+        });
+    };
 
     return (
         <Container
@@ -52,6 +50,8 @@ const HomeScreen = props => {
                             },
                         });
                     }}
+                    displayCurrentLocation={true}
+                    navigation={props.navigation}
                 />
             ) : (
                 <FlatList
@@ -67,7 +67,7 @@ const HomeScreen = props => {
                     )}
                     ListHeaderComponent={() => (
                         <View>
-                            <CurrentLocation />
+                            <CurrentLocation navigation={props.navigation} />
                             <LineDescription
                                 style={{
                                     paddingHorizontal:

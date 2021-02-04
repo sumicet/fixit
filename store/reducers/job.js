@@ -10,6 +10,8 @@ import {
     DELETE_QUOTE,
     ADD_REQUEST,
     SET_REQUESTS,
+    RESET_FILTERS_FOR_TRADESPERSON,
+    SET_FILTERS_FOR_TRADESPERSON,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
@@ -17,11 +19,16 @@ import Quote from '../../models/Jobs/Quote';
 import Request from '../../models/Jobs/Request';
 
 const initialState = {
+    unfiltered: [],
     allJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
     userCompletedJobs: [],
     quotes: [], // quotes sent by tp OR quotes received by customers
     requests: [],
+    filters: {
+        occupationId: null,
+        distance: 2,
+    },
 };
 
 const editElement = (array, id, elem) => {
@@ -89,7 +96,8 @@ const jobReducer = (state = initialState, action) => {
         case DELETE_JOB:
             return {
                 ...state,
-                allJobs: [...state.allJobs].filter(job => job.id !== action.id),
+                // unfiltered: [...state.unfiltered].filter(job => job.id !== action.id),
+                // allJobs: [...state.allJobs].filter(job => job.id !== action.id),
                 userPendingJobs: [...state.userPendingJobs].filter(
                     job => job.id !== action.id
                 ),
@@ -107,16 +115,17 @@ const jobReducer = (state = initialState, action) => {
         case FETCH_ALL_JOBS:
             return {
                 ...state,
-                allJobs: action.allJobs,
+                unfiltered: action.allJobs,
+                allJobs: action.allJobs.filter(job => job.distance <= 30000),
                 quotes: action.quotes,
             };
         case MARK_AS_COMPLETED:
             const newUserPendingJobs = [...state.userPendingJobs].filter(
                 job => job.id !== action.id
             );
-            const updatedAllJobs = [...state.allJobs].filter(
-                job => job.id !== action.id
-            );
+            // const updatedAllJobs = [...state.allJobs].filter(
+            //     job => job.id !== action.id
+            // );
             const completedJob = state.userPendingJobs.find(
                 job => job.id === action.id
             );
@@ -124,7 +133,7 @@ const jobReducer = (state = initialState, action) => {
             updatedUserCompletedJobs.push(completedJob);
             return {
                 ...state,
-                allJobs: updatedAllJobs,
+                //allJobs: updatedAllJobs,
                 userPendingJobs: newUserPendingJobs,
                 userCompletedJobs: updatedUserCompletedJobs,
             };
@@ -185,6 +194,53 @@ const jobReducer = (state = initialState, action) => {
             return {
                 ...state,
                 requests: action.requests,
+            };
+        case RESET_FILTERS_FOR_TRADESPERSON:
+            return {
+                ...state,
+                allJobs: [...state.unfiltered].filter(job => job.distance < 30000),
+                filters: {
+                    occupationId: null,
+                    distance: 2,
+                },
+            };
+        case SET_FILTERS_FOR_TRADESPERSON:
+            var tradespersonFilteredAll = [...state.unfiltered];
+
+            if (action.occupationId) {
+                tradespersonFilteredAll = tradespersonFilteredAll.filter(job =>
+                    job.occupationId === action.occupationId
+                );
+            }
+
+            switch (action.distance) {
+                case 0:
+                    tradespersonFilteredAll = tradespersonFilteredAll.filter(
+                        tp => tp.distance < 10000
+                    );
+                    break;
+                case 1:
+                    tradespersonFilteredAll = tradespersonFilteredAll.filter(
+                        tp => tp.distance < 20000
+                    );
+                    break;
+                case 3:
+                    tradespersonFilteredAll = [...state.unfiltered];
+                    break;
+                default:
+                    tradespersonFilteredAll = tradespersonFilteredAll.filter(
+                        tp => tp.distance < 30000
+                    );
+                    break;
+            }
+
+            return {
+                ...state,
+                allJobs: tradespersonFilteredAll,
+                filters: {
+                    occupationId: action.occupationId,
+                    distance: action.distance,
+                },
             };
         default:
             return state;

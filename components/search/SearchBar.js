@@ -4,11 +4,14 @@ import TextField from '../text/TextField';
 import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 const SearchBar = props => {
     const [input, setInput] = useState();
 
     const onChangeText = input => {};
+
+    const userType = useSelector(state => state.auth.userType);
 
     return (
         <TouchableWithoutFeedback
@@ -32,7 +35,11 @@ const SearchBar = props => {
                 onChangeText={input => {
                     onChangeText(input);
                 }}
-                placeholder="Plumber, John Doe etc."
+                placeholder={
+                    userType === 'customer'
+                        ? 'Plumber, John Doe, etc.'
+                        : 'Builder, Chimney work, etc.'
+                }
                 multiline={false}
                 textAlignVertical="center"
             />
