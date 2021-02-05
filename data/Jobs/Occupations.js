@@ -5,7 +5,7 @@ export const OCCUPATIONS = [
     new Occupation(1, Job.BUILDER),
     new Occupation(2, Job.CARPENTER),
     new Occupation(3, Job.ELECTRICIAN),
-    new Occupation(4, Job.HANDYMAN),
+    new Occupation(4, Job.HANDYPERSON),
     new Occupation(5, Job.HEATINGENG),
     new Occupation(6, Job.PAINTER),
     new Occupation(7, Job.PLASTERER),

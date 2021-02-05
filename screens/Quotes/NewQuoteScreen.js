@@ -33,7 +33,7 @@ const NewQuoteScreen = props => {
         currency: quoteToEdit ? quoteToEdit.price.currency : null,
     });
 
-    const job = useSelector(state => state.job.allJobs).find(
+    const job = useSelector(state => state.job.unfiltered).find(
         job => job.id === jobId
     );
 

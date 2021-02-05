@@ -18,7 +18,7 @@ import AppContainer from './AppContainer';
 import reviewsReducer from './store/reducers/reviews';
 import customersReducer from './store/reducers/customers';
 
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(['Setting a timer', 'Each child in a list should have a unique']);
 const _console = _.clone(console);
 console.warn = message => {
     if (message.indexOf('Setting a timer') <= -1) {
@@ -47,7 +47,7 @@ export default function App() {
             <Provider store={store}>
                 <AppContainer />
             </Provider>
-            <StatusBar style='light' StatusBarAnimation="fade" />
+            <StatusBar style='light' StatusBarAnimation="fade" translucent={true} />
         </View>
     );
 }

@@ -12,14 +12,18 @@ import {
     SET_REQUESTS,
     RESET_FILTERS_FOR_TRADESPERSON,
     SET_FILTERS_FOR_TRADESPERSON,
+    SEARCH_ALL_JOBS,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
 import Quote from '../../models/Jobs/Quote';
 import Request from '../../models/Jobs/Request';
+import { OCCUPATIONS } from '../../data/Jobs/Occupations';
+import { WORK_TYPES } from '../../data/Jobs/WorkTypes';
 
 const initialState = {
     unfiltered: [],
+    filtered: [],
     allJobs: [], // all pending jobs from all customers :)
     userPendingJobs: [], // customer: looking for TP, TP: offered a quote, waiting for customer approval
     userCompletedJobs: [],
@@ -29,6 +33,7 @@ const initialState = {
         occupationId: null,
         distance: 2,
     },
+    
 };
 
 const editElement = (array, id, elem) => {
@@ -91,7 +96,7 @@ const jobReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allPendingJobs: updatedAllPendingJobs,
-                userPendingJobs: updatedUserPendingJobs, // TODO this only works for customers
+                userPendingJobs: updatedUserPendingJobs,
             };
         case DELETE_JOB:
             return {
@@ -117,6 +122,7 @@ const jobReducer = (state = initialState, action) => {
                 ...state,
                 unfiltered: action.allJobs,
                 allJobs: action.allJobs.filter(job => job.distance <= 30000),
+                filtered: action.allJobs.filter(job => job.distance <= 30000),
                 quotes: action.quotes,
             };
         case MARK_AS_COMPLETED:
@@ -198,7 +204,12 @@ const jobReducer = (state = initialState, action) => {
         case RESET_FILTERS_FOR_TRADESPERSON:
             return {
                 ...state,
-                allJobs: [...state.unfiltered].filter(job => job.distance < 30000),
+                filtered: [...state.unfiltered].filter(
+                    job => job.distance < 30000
+                ),
+                allJobs: [...state.unfiltered].filter(
+                    job => job.distance < 30000
+                ),
                 filters: {
                     occupationId: null,
                     distance: 2,
@@ -208,8 +219,8 @@ const jobReducer = (state = initialState, action) => {
             var tradespersonFilteredAll = [...state.unfiltered];
 
             if (action.occupationId) {
-                tradespersonFilteredAll = tradespersonFilteredAll.filter(job =>
-                    job.occupationId === action.occupationId
+                tradespersonFilteredAll = tradespersonFilteredAll.filter(
+                    job => job.occupationId === action.occupationId
                 );
             }
 
@@ -236,11 +247,29 @@ const jobReducer = (state = initialState, action) => {
 
             return {
                 ...state,
+                filtered: tradespersonFilteredAll,
                 allJobs: tradespersonFilteredAll,
                 filters: {
                     occupationId: action.occupationId,
                     distance: action.distance,
                 },
+            };
+        case SEARCH_ALL_JOBS:
+            const updatedSearchAllJobs = [...state.filtered].filter(
+                job =>
+                    job.jobDescription
+                        .toUpperCase()
+                        .includes(action.input.toUpperCase()) ||
+                    OCCUPATIONS.find(occ => occ.id === job.occupationId)
+                        ?.name.toUpperCase()
+                        .includes(action.input.toUpperCase()) ||
+                    WORK_TYPES.find(wt => wt.id === job.workTypeId)
+                        ?.name.toUpperCase()
+                        .includes(action.input.toUpperCase())
+            );
+            return {
+                ...state,
+                allJobs: updatedSearchAllJobs,
             };
         default:
             return state;

@@ -185,10 +185,10 @@ export const logIn = (email, password) => {
             const userId = userData.user.uid;
             saveUserDataToStorage(userId, token);
             var ref, userType, name;
-            try {
-                ref = Firebase.database.ref('tradesperson').child(userId);
+            ref = Firebase.database.ref('tradesperson').child(userId);
+            if (ref) {
                 userType = 'tradesperson';
-            } catch (error) {
+            } else {
                 ref = Firebase.database.ref('customer').child(userId);
                 userType = 'customer';
             }
@@ -219,7 +219,7 @@ export const logIn = (email, password) => {
                 });
             }
         } catch (error) {
-            throw(error);
+            throw error;
         }
         // Firebase.auth
         //     .signInWithEmailAndPassword(email, password)

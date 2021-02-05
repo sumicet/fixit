@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Color from '../../constants/Color';
+import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
 
 const HeaderRight = props => {
@@ -13,7 +14,7 @@ const HeaderRight = props => {
         >
             <Icon
                 name={props.iconName}
-                size={28}
+                size={Layout.menuIconSize}
                 color={Color.importantTextOnTertiaryColorBackground}
             />
         </Touchable>

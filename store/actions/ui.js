@@ -5,6 +5,14 @@ export const SET_IN_APP_NOTIFICATION_VISIBLE =
 export const SET_GLOBAL_ALERT = 'SET_GLOBAL_ALERT';
 export const HIDE_GLOBAL_ALERT = 'HIDE_GLOBAL_ALERT';
 export const RESET_UI = 'RESET_UI';
+export const SET_SEARCH_BAR_TEXT = 'SET_SEARCH_BAR_TEXT';
+
+export const setSearchBarText = (searchBarText) => {
+    return {
+        type: SET_SEARCH_BAR_TEXT,
+        searchBarText
+    };
+};
 
 export const resetUi = () => {
     return {

@@ -11,8 +11,7 @@ import Touchable from '../common/Touchable';
 import Header from '../text/Header';
 import HeaderWithEllipsis from '../text/HeaderWithEllipsis';
 
-const CurrentLocation = (props) => {
-
+const CurrentLocation = props => {
     const streetAddress = useSelector(state => state.auth.streetAddress);
 
     return (
@@ -24,10 +23,6 @@ const CurrentLocation = (props) => {
                 paddingHorizontal: Layout.generalPadding,
             }}
         >
-            <View>
-                {/* <LocationIcon size={Layout.menuIconSize} /> */}
-                <GoogleLocationIcon />
-            </View>
             <Touchable
                 style={{
                     flexDirection: 'row',
@@ -35,7 +30,7 @@ const CurrentLocation = (props) => {
                     padding: Layout.screenHorizontalPadding,
                     borderRadius: Layout.borderRadius,
                     flex: 1,
-                    marginLeft: Layout.generalPadding,
+                    //marginLeft: Layout.generalPadding,
                 }}
                 onPress={() => {
                     props.navigation.navigate('HomeStackWithoutSearchBar', {
@@ -43,6 +38,15 @@ const CurrentLocation = (props) => {
                     });
                 }}
             >
+                <View
+                    style={{
+                        justifyContent: 'center',
+                        paddingRight: Layout.generalPadding,
+                    }}
+                >
+                    {/* <LocationIcon size={Layout.menuIconSize} /> */}
+                    <GoogleLocationIcon />
+                </View>
                 <View style={{ flex: 1 }}>
                     <Header
                         style={{

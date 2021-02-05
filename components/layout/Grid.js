@@ -12,6 +12,19 @@ const Grid = props => {
 
     const isFocused = useIsFocused();
 
+    const activeBackgroundColor = props.activeBackgroundColor
+        ? props.activeBackgroundColor
+        : Color.tertiaryBrandColor;
+
+    const backgroundColor = props.backgroundColor
+        ? props.backgroundColor
+        : Color.textField;
+
+    const textColor = props.textColor ? props.textColor : Color.textColor;
+    const activeTextColor = props.activeTextColor
+        ? props.activeTextColor
+        : Color.importantTextOnTertiaryColorBackground;
+
     useEffect(() => {
         if (isFocused) {
             const initialColors = [];
@@ -21,9 +34,9 @@ const Grid = props => {
                     props.initialSelectedIndexes &&
                     props.initialSelectedIndexes.includes(i)
                 ) {
-                    initialColors.push(Color.tertiaryBrandColor);
+                    initialColors.push(activeBackgroundColor);
                 } else {
-                    initialColors.push(Color.textField);
+                    initialColors.push(backgroundColor);
                 }
             }
             setColors(initialColors);
@@ -32,11 +45,11 @@ const Grid = props => {
 
     const handleItemPress = index => {
         const updatedColors = [...colors];
-        updatedColors[index] = Color.tertiaryBrandColor;
+        updatedColors[index] = activeBackgroundColor;
         var i;
         for (i = 0; i < props.data.length; i++) {
             if (i !== index) {
-                updatedColors[i] = Color.textField;
+                updatedColors[i] = backgroundColor;
             }
         }
         setColors(updatedColors);
@@ -45,9 +58,9 @@ const Grid = props => {
     const handleMultipleOptionsItemPress = index => {
         const updatedColors = [...colors];
         updatedColors[index] =
-            updatedColors[index] === Color.tertiaryBrandColor
-                ? Color.textField
-                : Color.tertiaryBrandColor;
+            updatedColors[index] === activeBackgroundColor
+                ? backgroundColor
+                : activeBackgroundColor;
         setColors(updatedColors);
     };
 
@@ -81,9 +94,9 @@ const Grid = props => {
                 <SmallContent
                     style={{
                         color:
-                            colors[props.index] === Color.tertiaryBrandColor
-                                ? Color.importantTextOnTertiaryColorBackground
-                                : Color.textColor,
+                            colors[props.index] === activeBackgroundColor
+                                ? activeTextColor
+                                : textColor,
                         fontFamily: 'SemiBold',
                         textAlign: 'center',
                     }}

@@ -28,5 +28,6 @@ export default {
     disabled: '#b9b9bd',
     premiumFixit: "#ec42ff",
     bump: '#42cdff',
-    warning: '#ffae42'
+    warning: '#ffae42',
+    warningHighlight: '#ffd091'
 };

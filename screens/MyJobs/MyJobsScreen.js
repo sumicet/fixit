@@ -27,7 +27,7 @@ const MyJobsScreen = props => {
 
     const requestsJobIds = requests.map(req => req.jobId);
     const tradespersonJobRequests = useSelector(
-        state => state.job.allJobs
+        state => state.job.unfiltered
     ).filter(job => requestsJobIds.includes(job.id));
 
     useEffect(() => {

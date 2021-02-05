@@ -27,7 +27,7 @@ const QuoteCard = props => {
 
     const job =
         userType === 'tradesperson'
-            ? useSelector(state => state.job.allJobs).find(
+            ? useSelector(state => state.job.unfiltered).find(
                   job => job.id === quote.jobId
               )
             : useSelector(state => state.job.userPendingJobs).find(
@@ -36,13 +36,15 @@ const QuoteCard = props => {
 
     const tradesperson =
         userType === 'customer' &&
-        useSelector(state => state.tradespeople.all).find(
+        useSelector(state => state.tradespeople.unfiltered).find(
             tp => tp.userId === quote.tradespersonId
         );
 
-    const customerId = useSelector(state => state.job.allJobs).find(
-        job => job.id === quote.jobId
-    ).userId;
+    const customerId =
+        userType === 'tradesperson' &&
+        useSelector(state => state.job.unfiltered).find(
+            job => job.id === quote.jobId
+        ).userId;
 
     const name =
         userType === 'tradesperson'

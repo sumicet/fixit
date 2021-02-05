@@ -4,7 +4,8 @@ import {
     SET_IN_APP_NOTIFICATION_VISIBLE,
     SET_IS_LOADING,
     HIDE_GLOBAL_ALERT,
-    RESET_UI
+    RESET_UI,
+    SET_SEARCH_BAR_TEXT
 } from '../actions/ui';
 
 const initialState = {
@@ -20,10 +21,16 @@ const initialState = {
         style: null,
         globalAlertVisible: false
     },
+    searchBarText: ''
 };
 
 const uiReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SET_SEARCH_BAR_TEXT:
+            return {
+                ...state,
+                searchBarText: action.searchBarText
+            }
         case HIDE_GLOBAL_ALERT:
             return {
                 ...state,

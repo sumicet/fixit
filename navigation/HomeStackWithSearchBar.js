@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from '../screens/Home/HomeScreen';
 import Color from '../constants/Color';
 import Layout from '../constants/Layout';
-import SearchScreen from '../screens/Home/SearchScreen';
 import Logo from '../assets/icons/Logo/Logo';
 import SearchBar from '../components/search/SearchBar';
 import Touchable from '../components/common/Touchable';
@@ -19,7 +18,6 @@ import Touchable from '../components/common/Touchable';
 const Stack = createStackNavigator();
 
 const HomeStackWithSearchBar = () => {
-
     const HeaderComponent = props => (
         <View
             style={{
@@ -65,41 +63,44 @@ const HomeStackWithSearchBar = () => {
         <Stack.Navigator
             //animation
             headerMode="float"
-            screenOptions={({ route, navigation }) => ({
+            screenOptions={{
                 headerStyleInterpolator:
                     HeaderStyleInterpolators.forNoAnimation,
-                cardStyleInterpolator:
-                    CardStyleInterpolators.forHorizontalIOS,
-                header: props => (
-                    <HeaderComponent navigation={navigation} route={route}>
-                        {route.name === 'Home' ? (
-                            <View
-                                style={{
-                                    padding: Layout.generalPadding,
-                                }}
-                            >
-                                <Logo />
-                            </View>
-                        ) : (
-                            <HeaderArrowBack navigation={navigation} />
-                        )}
-                    </HeaderComponent>
-                ),
-                headerStyle: {
-                    shadowColor: 'transparent',
-                    borderBottomWidth: 0, //for ios?
-                    elevation: 0,
-                    backgroundColor: Color.primaryColor,
-                },
-                headerTitleContainerStyle: {
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                },
-            })}
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            }}
         >
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Search" component={SearchScreen} />
+            <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={({ route, navigation }) => ({
+                    header: props => (
+                        <HeaderComponent navigation={navigation} route={route}>
+                            {route.name === 'Home' ? (
+                                <View
+                                    style={{
+                                        padding: Layout.generalPadding,
+                                    }}
+                                >
+                                    <Logo />
+                                </View>
+                            ) : (
+                                <HeaderArrowBack navigation={navigation} />
+                            )}
+                        </HeaderComponent>
+                    ),
+                    headerStyle: {
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0, //for ios?
+                        elevation: 0,
+                        backgroundColor: Color.primaryColor,
+                    },
+                    headerTitleContainerStyle: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                    },
+                })}
+            />
         </Stack.Navigator>
     );
 };

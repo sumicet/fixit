@@ -24,10 +24,9 @@ const PostedBy = props => {
             : postedByCurrentUser1 || postedByCurrentUser2
             ? 'me'
             : props.userId &&
-              useSelector(state => state.tradespeople.all).find(
+              useSelector(state => state.tradespeople.unfiltered).find(
                   tp => tp.userId === props.userId
               )?.name;
-    console.log(props.date, name);
     return (
         <View style={{ paddingBottom: 2, flexDirection: 'row' }}>
             {props.size === 'medium' ? (

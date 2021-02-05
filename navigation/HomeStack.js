@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     createStackNavigator,
     CardStyleInterpolators,
@@ -7,14 +7,11 @@ import {
 } from '@react-navigation/stack';
 import HomeStackWithSearchBar from './HomeStackWithSearchBar';
 import TradespersonProfileStack from './TradespersonProfileStack';
-import { useSelector } from 'react-redux';
-import { navigationRef } from './AppNavigator';
 import HomeStackWithoutSearchBar from './HomeStackWithoutSearchBar';
 
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
-
     return (
         <Stack.Navigator
             //animation
@@ -22,8 +19,7 @@ const HomeStack = () => {
             screenOptions={() => ({
                 headerStyleInterpolator:
                     HeaderStyleInterpolators.forNoAnimation,
-                cardStyleInterpolator:
-                    CardStyleInterpolators.forHorizontalIOS,
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             })}
         >
             <Stack.Screen
@@ -38,6 +34,7 @@ const HomeStack = () => {
                 name="HomeStackWithoutSearchBar"
                 component={HomeStackWithoutSearchBar}
             />
+            
         </Stack.Navigator>
     );
 };

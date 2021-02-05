@@ -17,7 +17,7 @@ const TextField = props => {
     const [wasAlreadyFocusedOnce, setWasAlreadyFocusedOnce] = useState(false);
 
     useEffect(() => {
-        if (props.route === 'Search' && isFocused && !wasAlreadyFocusedOnce) {
+        if (props.route === 'Filters' && isFocused && !wasAlreadyFocusedOnce) {
             inputRef.focus();
             setWasAlreadyFocusedOnce(true);
         }
@@ -43,7 +43,6 @@ const TextField = props => {
                 ref={input => {
                     inputRef = input;
                 }}
-                //autoFocus={props.route === 'Search' ? true : false}
                 {...props}
                 onContentSizeChange={e => {
                     const newHeight = e.nativeEvent.contentSize.height;
@@ -86,6 +85,8 @@ const TextField = props => {
                         paddingRight: Layout.screenHorizontalPadding,
                         justifyContent: 'center',
                         alignItems: 'center',
+                        borderTopRightRadius: Layout.borderRadius,
+                        borderBottomRightRadius: Layout.borderRadius,
                     }}
                 >
                     <Touchable onPress={props.onPress}>
@@ -100,17 +101,14 @@ const TextField = props => {
             {props.showSearchIcon && (
                 <View
                     style={{
-                        backgroundColor: Color.textField,
-                        borderTopRightRadius: Layout.borderRadius,
-                        borderBottomRightRadius: Layout.borderRadius,
                         padding: Layout.generalPadding,
-                        paddingLeft: 0,
-                        paddingRight: Layout.screenHorizontalPadding,
+                        paddingLeft: Layout.generalPadding,
+                        paddingRight: 0,
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
-                    <Touchable onPress={props.onPress}>
+                    <Touchable onPress={props.onFiltersPress}>
                         <Icon2
                             name="filter"
                             color={
@@ -118,7 +116,7 @@ const TextField = props => {
                                 filters.distance !== 2 ||
                                 (userType === 'customer' && filters.rating)
                                     ? Color.primaryBrandColor
-                                    : Color.secondaryColor
+                                    : Color.textOnTertiaryColorBackground
                             }
                             size={Layout.menuIconSize}
                         />

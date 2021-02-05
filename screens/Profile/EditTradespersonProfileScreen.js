@@ -22,6 +22,8 @@ import Touchable from '../../components/common/Touchable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTradespersonInfo } from '../../store/actions/tradesperson';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
+import { setInAppNotification } from '../../store/actions/ui';
+import { SUCCESS } from '../../constants/Actions';
 
 const EditTradespersonProfile = props => {
     const tradesperson = useSelector(state => state.tradesperson);
@@ -43,7 +45,7 @@ const EditTradespersonProfile = props => {
     const handleStreetAddressChange = (streetAddress, place_id) => {
         setJobAddressInput({
             line1: streetAddress,
-            place_id: place_id, // TODO add place_id
+            place_id: place_id,
         });
     };
 
@@ -182,6 +184,13 @@ const EditTradespersonProfile = props => {
         );
 
         if (action === 'signup') {
+            dispatch(
+                setInAppNotification(
+                    'Account created.',
+                    'You have successfully created an account.',
+                    SUCCESS
+                )
+            );
             props.navigation.navigate('BottomTab', {
                 screen: 'Home',
             });

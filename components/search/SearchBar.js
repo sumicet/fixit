@@ -4,34 +4,45 @@ import TextField from '../text/TextField';
 import Layout from '../../constants/Layout';
 import Touchable from '../common/Touchable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { OCCUPATIONS } from '../../data/Jobs/Occupations';
+import { WORK_TYPES } from '../../data/Jobs/WorkTypes';
+import { searchAllJobs } from '../../store/actions/job';
+import { searchAllTradespeople } from '../../store/actions/tradespeople';
+import { setSearchBarText } from '../../store/actions/ui';
 
 const SearchBar = props => {
-    const [input, setInput] = useState();
+    const input = useSelector(state => state.ui.searchBarText);
 
-    const onChangeText = input => {};
+    const dispatch = useDispatch();
+
+    const onChangeText = updatedInput => {
+        dispatch(setSearchBarText(updatedInput));
+    };
 
     const userType = useSelector(state => state.auth.userType);
 
     return (
-        <TouchableWithoutFeedback
-            onPress={() => {
-                props.navigation.navigate('Search');
-            }}
+        <View
             style={{
                 justifyContent: 'center',
             }}
         >
             <TextField
                 route={props.route.name}
-                onTouchStart={() => {
-                    if (props.route.name === 'Home') {
-                        props.navigation.navigate('Search');
-                    }
-                }}
                 showSearchIcon={true}
-                onPress={() => {}}
-                value={props.input}
+                onPress={() => {
+                    Keyboard.dismiss();
+                    userType === 'tradesperson'
+                        ? dispatch(searchAllJobs(input.trim()))
+                        : dispatch(searchAllTradespeople(input.trim()));
+                }}
+                onFiltersPress={() => {
+                    props.navigation.navigate('HomeStackWithoutSearchBar', {
+                        screen: 'Filters',
+                    });
+                }}
+                value={input}
                 onChangeText={input => {
                     onChangeText(input);
                 }}
@@ -43,7 +54,7 @@ const SearchBar = props => {
                 multiline={false}
                 textAlignVertical="center"
             />
-        </TouchableWithoutFeedback>
+        </View>
     );
 };
 

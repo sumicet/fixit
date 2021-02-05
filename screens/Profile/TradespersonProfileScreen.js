@@ -53,7 +53,7 @@ const TradespersonProfileScreen = props => {
         review => review.userId === currentUserId
     );
 
-    const tradespeople = useSelector(state => state.tradespeople.all).find(
+    const tradespeople = useSelector(state => state.tradespeople.unfiltered).find(
         elem => elem.userId === userId
     );
 
@@ -158,7 +158,7 @@ const TradespersonProfileScreen = props => {
     const MakeTwoColumns = props => {
         return (
             <View style={{ flexDirection: 'row' }}>
-                {[0, 1].map(i => {
+                {[0, 1].map((i, index) => {
                     return (
                         <View style={styles.column}>
                             {props.array.map((elem, index) => {
@@ -198,7 +198,7 @@ const TradespersonProfileScreen = props => {
                             </SmallContent>
                         </View>
 
-                        {/* TODO change this */}
+                        {/* TODO change this // why? */}
                         {tradesperson.insurance && (
                             <View style={styles.details}>
                                 <Insurance style={{ paddingLeft: 0 }} />
@@ -206,10 +206,6 @@ const TradespersonProfileScreen = props => {
                         )}
                     </View>
                     <View style={styles.column}>
-                        {/* TODO completed jobs
-                        <View style={styles.details}>
-                            <CompletedJobs />
-                        </View> */}
                         <View style={styles.details}>
                             <Experience
                                 style={{ paddingLeft: 0 }}

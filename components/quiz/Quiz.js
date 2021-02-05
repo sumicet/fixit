@@ -171,14 +171,14 @@ const Quiz = props => {
     const [jobAddressInput, setJobAddressInput] = useState({
         line1: jobToUpdate ? jobToUpdate.jobAddress.line1 : null,
         line2: jobToUpdate ? jobToUpdate.jobAddress.line2 : null,
-        place_id: null, // TODO add place_id
+        place_id: jobToUpdate ? jobToUpdate.jobAddress.place_id : null, // CHECK add place_id
     });
 
     const handleJobAddressChange = line2 => {
         setJobAddressInput({
             line1: jobAddressInput.line1,
             line2: line2,
-            place_id: jobAddressInput.place_id, // TODO add place_id
+            place_id: jobAddressInput.place_id,
         });
     };
 
@@ -186,7 +186,7 @@ const Quiz = props => {
         setJobAddressInput({
             line1: streetAddress,
             line2: jobAddressInput.line2,
-            place_id: place_id, // TODO add place_id
+            place_id: place_id,
         });
     };
 

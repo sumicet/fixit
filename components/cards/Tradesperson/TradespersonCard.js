@@ -17,15 +17,13 @@ import Header from '../../text/Header';
 import Contact from './Contact';
 import ProfilePicture from './ProfilePicture';
 import Touchable from '../../common/Touchable';
-import RateTradespersonModal from '../../modals/RateTradespersonModal';
 import { useSelector } from 'react-redux';
-import Loading from '../../loading/Loading';
 import { getText } from '../../../actions/distance';
 
 const TradespersonCard = props => {
     //const [isLoading, setIsLoading] = useState(true);
 
-    const allTradespeople = useSelector(state => state.tradespeople.all);
+    const allTradespeople = useSelector(state => state.tradespeople.unfiltered);
 
     const street = useSelector(state => state.auth.streetAddress);
 
@@ -47,23 +45,7 @@ const TradespersonCard = props => {
         distance
     } = props;
 
-    const dist = getText(distance);
-
-    // useEffect(() => {
-    //     // if (user_place_id && streetAddress) {
-    //     //     // getText(user_place_id, streetAddress.place_id).then(result => {
-    //     //     //     setDistance(result);
-    //     //     //     setIsLoading(false);
-    //     //     // });
-            
-    //     // } else {
-    //     //     setDistance('N/A');
-    //     //     setIsLoading(false);
-    //     // }
-        
-    // }, []);
-
-    
+    const dist = getText(distance);    
 
     const recommendedByTradespeople = recommendedByIds
         ? allTradespeople.filter(tp =>
@@ -120,12 +102,6 @@ const TradespersonCard = props => {
 
     return (
         <View>
-            <RateTradespersonModal
-                modalVisible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-                updatedRating={updatedRating}
-                setUpdatedRating={setUpdatedRating}
-            />
             <LocalContainer
                 isBeingRated={props.isBeingRated}
                 readOnly={props.readOnly}

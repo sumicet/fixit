@@ -106,8 +106,6 @@ const QuotesScreen = props => {
                         isRequest={true}
                         quote={item}
                         userType={userType}
-                        // onQuoteEdit={handleQuoteEdit}
-                        // onQuoteDelete={handleQuoteDelete}
                         onQuotePress={handleQuotePress}
                     />
                 )}

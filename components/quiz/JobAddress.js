@@ -87,7 +87,7 @@ const JobAddress = props => {
                     }}
                 >
                     <View style={styles.locationSearchFieldContainer}>
-                        {predictions.map(item => (
+                        {predictions.map((item, index) => (
                             <Touchable
                                 isCard={true}
                                 style={{

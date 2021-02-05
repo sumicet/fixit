@@ -51,7 +51,7 @@ const JobDetailsScreen = props => {
             ? job1
                 ? job1
                 : job2
-            : useSelector(state => state.job.allJobs).find(
+            : useSelector(state => state.job.unfiltered).find(
                   elem => elem.id === jobId
               );
 

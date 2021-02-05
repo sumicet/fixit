@@ -18,12 +18,6 @@ const HomeScreen = props => {
     const allTradespeople = useSelector(state => state.tradespeople.all);
     const allJobs = useSelector(state => state.job.allJobs);
 
-    useEffect(() => {
-        if (isFocused) {
-            // TODO add notification
-        }
-    }, [props, isFocused]);
-
     const handleRequestQuote = tradespersonId => {
         props.navigation.navigate('HomeStackWithoutSearchBar', {
             screen: 'SelectJob',
@@ -68,13 +62,13 @@ const HomeScreen = props => {
                     ListHeaderComponent={() => (
                         <View>
                             <CurrentLocation navigation={props.navigation} />
-                            <LineDescription
+                            {/* <LineDescription
                                 style={{
                                     paddingHorizontal:
                                         Layout.screenHorizontalPadding,
                                 }}
                                 text="Recommended tradespeople"
-                            />
+                            /> */}
                         </View>
                     )}
                     ListFooterComponent={() => <EndOfPageSpace />}

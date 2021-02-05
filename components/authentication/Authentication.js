@@ -18,6 +18,10 @@ import LineDescription from '../common/LineDescription';
 import Grid from '../layout/Grid';
 import CustomRadioButton from '../common/CustomRadioButton';
 import { View } from 'react-native';
+import Waves from '../../assets/icons/Background/Waves';
+import { Keyboard } from 'react-native';
+import { Dimensions } from 'react-native';
+import { StatusBar } from 'react-native';
 
 const Authentication = props => {
     const {
@@ -80,6 +84,23 @@ const Authentication = props => {
         setChecked(updatedChecked);
     };
 
+    const [showWaves, setShowWaves] = useState(true);
+
+    useEffect(() => {
+        const event1 = Keyboard.addListener('keyboardDidShow', () => {
+            setShowWaves(false);
+        });
+
+        const event2 = Keyboard.addListener('keyboardDidHide', () => {
+            setShowWaves(true);
+        });
+
+        return () => {
+            event1.remove();
+            event2.remove();
+        };
+    }, []);
+
     return (
         <Container
             style={{
@@ -89,6 +110,16 @@ const Authentication = props => {
                 paddingHorizontal: 0,
             }}
         >
+            <View
+                style={{
+                    position: 'absolute',
+                    top: Dimensions.get('window').height - 300 - StatusBar.currentHeight,
+                    height: 300,
+                }}
+            >
+                <Waves />
+            </View>
+
             <ScrollView
                 keyboardDismissMode="none"
                 keyboardShouldPersistTaps="always"
@@ -230,7 +261,6 @@ const Authentication = props => {
                     </Touchable>
                 </Line>
             </ScrollView>
-            {/* </KeyboardAvoidingView> */}
         </Container>
     );
 };

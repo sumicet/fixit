@@ -12,6 +12,7 @@ export const SET_REQUESTS = 'SET_REQUESTS';
 export const DELETE_REQUEST = 'DELETE_REQUEST';
 export const SET_FILTERS_FOR_TRADESPERSON = 'SET_FILTERS_FOR_TRADESPERSON';
 export const RESET_FILTERS_FOR_TRADESPERSON = 'RESET_FILTERS_FOR_TRADESPERSON';
+export const SEARCH_ALL_JOBS = 'SEARCH_ALL_JOBS';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
@@ -114,6 +115,20 @@ export const addQuote = (jobId, tradespersonId, price, message) => {
                 message,
                 date,
             });
+
+            // Delete all requests for this job when sending a quote
+
+            const snap = await Firebase.database
+                .ref(`tradesperson/${tradespersonId}/requests`)
+                .once('value');
+
+            const requests = snap.val().filter(req => req.jobId !== jobId);
+
+            await Firebase.database
+                .ref(`tradesperson/${tradespersonId}/requests`)
+                .set(requests);
+
+            dispatch(setRequests(requests));
         }
     };
 };
@@ -363,7 +378,7 @@ export const fetchMyJobs = (userId, userType) => {
                         quotes.forEach(quote => {
                             if (
                                 (userType === 'tradesperson' &&
-                                    quote.tradespersonId === userId) || // TODO add for customer
+                                    quote.tradespersonId === userId) ||
                                 (userType === 'customer' &&
                                     responseData[key].userId === userId)
                             ) {
@@ -415,18 +430,18 @@ export const fetchMyJobs = (userId, userType) => {
                         }
                     }
 
-                    const quotes2 = responseData2[key2].quotes;
+                    // const quotes2 = responseData2[key2].quotes;
 
-                    if (quotes2) {
-                        quotes2.forEach(quote => {
-                            if (
-                                userType === 'tradesperson' &&
-                                quote.tradespersonId === userId // TODO add for customer
-                            ) {
-                                userQuotes.push(quote);
-                            }
-                        });
-                    }
+                    // if (quotes2) {
+                    //     quotes2.forEach(quote => {
+                    //         if (
+                    //             userType === 'tradesperson' &&
+                    //             quote.tradespersonId === userId // TODO add for customer
+                    //         ) {
+                    //             userQuotes.push(quote);
+                    //         }
+                    //     });
+                    // }
 
                     userCompletedJobs.push(
                         new Job(
@@ -441,7 +456,6 @@ export const fetchMyJobs = (userId, userType) => {
                             responseData2[key2].jobAddress,
                             responseData2[key2].startTimeId,
                             images2,
-                            responseData2[key2].quotes
                         )
                     );
                 }
@@ -555,6 +569,15 @@ export const resetFiltersForTradesperson = () => {
     return async dispatch => {
         dispatch({
             type: RESET_FILTERS_FOR_TRADESPERSON,
+        });
+    };
+};
+
+export const searchAllJobs = input => {
+    return async dispatch => {
+        dispatch({
+            type: SEARCH_ALL_JOBS,
+            input,
         });
     };
 };

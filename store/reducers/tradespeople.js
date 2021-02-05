@@ -1,13 +1,16 @@
+import { OCCUPATIONS } from '../../data/Jobs/Occupations';
 import {
     FETCH_TRADESPEOPLE,
     SET_RATING,
     SET_FILTERS_FOR_CUSTOMER,
     RESET_FILTERS_FOR_CUSTOMER,
+    SEARCH_ALL_TRADESPEOPLE,
 } from '../actions/tradespeople';
 
 const initialState = {
     unfiltered: [],
-    all: [], //filtered
+    filtered: [],
+    all: [],
     filters: {
         occupationId: null,
         distance: 2,
@@ -21,6 +24,9 @@ const tradespeopleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 all: [...state.unfiltered].filter(tp => tp.distance < 30000),
+                filtered: [...state.unfiltered].filter(
+                    tp => tp.distance < 30000
+                ),
                 filters: {
                     occupationId: null,
                     distance: 2,
@@ -66,6 +72,7 @@ const tradespeopleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 all: customerFilteredAll,
+                filtered: customerFilteredAll,
                 filters: {
                     occupationId: action.occupationId,
                     distance: action.distance,
@@ -90,6 +97,7 @@ const tradespeopleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 all: all.filter(tp => tp.distance < 30000),
+                filtered: all.filter(tp => tp.distance < 30000),
                 unfiltered: all,
             };
         case SET_RATING:
@@ -111,7 +119,26 @@ const tradespeopleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 all: updatedAll,
+                filtered: updatedAll,
                 unfiltered: updatedUnfiltered,
+            };
+        case SEARCH_ALL_TRADESPEOPLE:
+            const updatedSearchAll = [...state.filtered].filter(
+                tp =>
+                    tp.name
+                        .toUpperCase()
+                        .includes(action.input.toUpperCase()) ||
+                    OCCUPATIONS.map(occ => {
+                        if (tp.occupationsIds.includes(occ.id)) {
+                            console.log(occ.name.toUpperCase())
+                            return occ.name.toUpperCase();
+                        }
+                    }).includes(action.input.toUpperCase())
+            );
+            console.log(updatedSearchAll)
+            return {
+                ...state,
+                all: updatedSearchAll,
             };
         // case CHANGE_TRADESPERSON_NAME: TODO check if it's ok when changing names
         //     const updatedAllName = [...state.all];
