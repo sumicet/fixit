@@ -4,6 +4,7 @@ export const CHANGE_TRADESPERSON_NAME = 'CHANGE_TRADESPERSON_NAME';
 export const SET_FILTERS_FOR_CUSTOMER = 'SET_FILTERS_FOR_CUSTOMER';
 export const RESET_FILTERS_FOR_CUSTOMER = 'RESET_FILTERS_FOR_CUSTOMER';
 export const SEARCH_ALL_TRADESPEOPLE = 'SEARCH_ALL_TRADESPEOPLE';
+export const RESET_TRADESPEOPLE = 'RESET_TRADESPEOPLE';
 
 import { getDistance } from '../../actions/distance';
 import * as Firebase from '../../config/Firebase';
@@ -110,6 +111,14 @@ export const searchAllTradespeople = input => {
         dispatch({
             type: SEARCH_ALL_TRADESPEOPLE,
             input,
+        });
+    };
+};
+
+export const resetTradespeople = () => {
+    return async dispatch => {
+        dispatch({
+            type: RESET_TRADESPEOPLE,
         });
     };
 };

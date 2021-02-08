@@ -1,4 +1,4 @@
-import { ADD_REVIEW, FETCH_REVIEWS } from '../actions/reviews';
+import { ADD_REVIEW, FETCH_REVIEWS, RESET_REVIEWS } from '../actions/reviews';
 
 const initialState = {
     all: [],
@@ -39,6 +39,8 @@ const reviewsReducer = (state = initialState, action) => {
                 ...state,
                 all: action.all,
             };
+        case RESET_REVIEWS:
+            return initialState;
         default:
             return state;
     }

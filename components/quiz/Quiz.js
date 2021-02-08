@@ -226,17 +226,6 @@ const Quiz = props => {
             typeof jobAddressInput.place_id === 'undefined' ||
             typeof startTimeId === 'undefined'
         ) {
-            // console.log(
-            //     occupationId,
-            //     workTypeId,
-            //     jobDescriptionInput,
-            //     customerTypeId,
-            //     propertyTypeId,
-            //     jobAddressInput.line1,
-            //     jobAddressInput.line2,
-            //     jobAddressInput.place_id,
-            //     startTimeId
-            // );
             setAlert({
                 title: 'A problem occured',
                 message: 'Make sure all fields are filled.',
@@ -249,18 +238,16 @@ const Quiz = props => {
             });
             setModalVisible(true);
         } else {
-            // console.log(
-            //     occupationId,
-            //     workTypeId,
-            //     jobDescriptionInput,
-            //     customerTypeId,
-            //     propertyTypeId,
-            //     jobAddressInput.line1,
-            //     jobAddressInput.line2,
-            //     jobAddressInput.place_id,
-            //     startTimeId
-            // );
             if (editModeOn) {
+                console.log(id,
+                    occupationId,
+                    workTypeId,
+                    jobDescriptionInput,
+                    customerTypeId,
+                    propertyTypeId,
+                    jobAddressInput,
+                    startTimeId,
+                    images)
                 dispatch(
                     editJob(
                         id,
@@ -305,12 +292,6 @@ const Quiz = props => {
                     );
                 });
             }
-            // navigation.navigate('MyJobsStack', {
-            //     screen: 'MyJobsStackWithCustomHeader',
-            //     params: {
-            //         screen: 'MyJobs',
-            //     },
-            // });
             navigation.goBack();
         }
     };

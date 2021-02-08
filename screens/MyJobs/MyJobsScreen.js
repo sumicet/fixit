@@ -123,6 +123,7 @@ const MyJobsScreen = props => {
                     mainArray={userPendingJobs}
                     secondaryArray={userCompletedJobs}
                     navigation={props.navigation}
+                    showTitle={userCompletedJobs ? true : false}
                 />
             )}
         </View>

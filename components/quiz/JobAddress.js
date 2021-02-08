@@ -72,7 +72,9 @@ const JobAddress = props => {
                 <TextField
                     value={props.streetAddress}
                     onChangeText={input => {
-                        onChangeDestination(input);
+                        if (input) {
+                            onChangeDestination(input);
+                        }
                         props.onStreetAddressChange(input, null);
                     }}
                     placeholder="Street Address"

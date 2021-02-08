@@ -56,7 +56,6 @@ const BottomTab = () => {
                     return (
                         <Touchable
                             onPress={() => {
-                                console.log(route.name);
                                 if (route.name === 'FakeNewJob') {
                                     navigation.navigate('NewJob');
                                 } else {

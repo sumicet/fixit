@@ -1,4 +1,5 @@
 export const FETCH_CUSTOMERS = 'FETCH_CUSTOMERS';
+export const RESET_CUSTOMERS = 'RESET_CUSTOMERS';
 
 export const fetchCustomers = () => {
     return async dispatch => {
@@ -23,3 +24,12 @@ export const fetchCustomers = () => {
         });
     };
 };
+
+export const resetCustomers = () => {
+    return async dispatch => {
+        dispatch({
+            type: RESET_CUSTOMERS,
+        });
+    };
+};
+

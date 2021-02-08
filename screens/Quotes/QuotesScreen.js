@@ -138,7 +138,7 @@ const QuotesScreen = props => {
             >
                 {userType === 'customer' ? (
                     <RenderItemForCustomer item={item} index={index} />
-                ) : (
+                ) : userType === 'tradesperson' && (
                     <RenderItemForTradesperson item={item} index={index} />
                 )}
             </View>
@@ -166,7 +166,11 @@ const QuotesScreen = props => {
             {quotes.length + requests.length > 0 ? (
                 <FlatList
                     keyExtractor={(item, i) => `key-${i}`}
-                    data={quotes.concat(requests)}
+                    data={
+                        userType === 'tradesperson'
+                            ? quotes
+                            : quotes.concat(requests)
+                    }
                     renderItem={renderItem}
                     style={{ flex: 1 }}
                     ListFooterComponent={() => <EndOfPageSpace />}

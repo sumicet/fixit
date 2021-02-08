@@ -13,11 +13,13 @@ export const DELETE_REQUEST = 'DELETE_REQUEST';
 export const SET_FILTERS_FOR_TRADESPERSON = 'SET_FILTERS_FOR_TRADESPERSON';
 export const RESET_FILTERS_FOR_TRADESPERSON = 'RESET_FILTERS_FOR_TRADESPERSON';
 export const SEARCH_ALL_JOBS = 'SEARCH_ALL_JOBS';
+export const RESET_JOBS = 'RESET_JOBS';
 
 import Job from '../../models/Jobs/Job';
 import * as Firebase from '../../config/Firebase';
 import Request from '../../models/Jobs/Request';
 import { getDistance } from '../../actions/distance';
+import Quote from '../../models/Jobs/Quote';
 
 export const setRequests = requests => {
     return async dispatch => {
@@ -213,15 +215,27 @@ export const addJob = (
 
         const responseData = await response.json();
 
+        const blobs = [];
+
         images.forEach((image, index) => {
             fetch(image)
                 .then(res => res.blob())
                 .then(blob => {
+                    console.log(blob);
                     Firebase.storage
                         .ref(
                             `/jobImages/${userId}/${responseData.name}/${index}`
                         )
-                        .put(blob);
+                        .put(blob)
+                        .then(async () => {
+                            const imageRef = Firebase.storage
+                                .ref()
+                                .child(
+                                    `/jobImages/${userId}/${responseData.name}/${index}`
+                                );
+                            const image = await imageRef.getDownloadURL();
+                            blobs.push(image);
+                        });
                 });
         });
 
@@ -237,9 +251,18 @@ export const addJob = (
             propertyType,
             jobAddress,
             startTimeId,
-            images,
+            images: blobs,
         });
     };
+};
+
+const imageExists = image_url => {
+    var http = new XMLHttpRequest();
+
+    http.open('HEAD', image_url, false);
+    http.send();
+
+    return http.status != 404;
 };
 
 export const editJob = (
@@ -254,69 +277,95 @@ export const editJob = (
     images
 ) => {
     return async dispatch => {
-        const responseGet = await fetch(
-            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
-        );
+        try {
+            const responseGet = await fetch(
+                `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
+            );
 
-        const responseGetData = await responseGet.json();
+            const responseGetData = await responseGet.json();
 
-        const responsePatch = await fetch(
-            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
-            {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: responseGetData.userId,
-                    date: responseGetData.date,
-                    occupationId,
-                    workTypeId,
-                    jobDescription,
-                    customerType,
-                    propertyType,
-                    jobAddress,
-                    startTimeId,
-                }),
-            }
-        );
+            const responsePatch = await fetch(
+                `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: responseGetData.userId,
+                        date: responseGetData.date,
+                        occupationId,
+                        workTypeId,
+                        jobDescription,
+                        customerType,
+                        propertyType,
+                        jobAddress,
+                        startTimeId,
+                        quotes: responseGetData.quotes,
+                        requests: responseGetData.requests,
+                    }),
+                }
+            );
 
-        const responsePatchData = await responsePatch.json();
+            const responsePatchData = await responsePatch.json();
 
-        Firebase.storage
-            .ref(
-                `/jobImages/${responseGetData.userId}/${responsePatchData.name}`
-            )
-            .delete();
+            // TODO can't edit images
+            // when adding an image you store it as a blob
+            // fetch it as a blob
+            // then when u edit you try to do this..
 
-        images.forEach((image, index) => {
-            fetch(image)
-                .then(res => res.blob())
-                .then(blob => {
-                    Firebase.storage
-                        .ref(
-                            `/jobImages/${responseGetData.userId}/${responsePatchData.name}/${index}`
-                        )
-                        .put(blob);
-                });
-        });
+            // const blobs = [];
 
-        dispatch({
-            type: UPDATE_JOB,
-            id,
-            userId: responseGetData.userId,
-            date: responseGetData.date,
-            occupationId,
-            workTypeId,
-            jobDescription,
-            customerType,
-            propertyType,
-            jobAddress,
-            startTimeId,
-            images,
-        });
+            // await images.forEach(async (image, index) => {
+            //     fetch(image)
+            //         .then(res => res.blob())
+            //         .then(blob => {
+            //             // Firebase.storage
+            //             //     .ref(
+            //             //         `/jobImages/${responseGetData.userId}/${id}/${index}`
+            //             //     )
+            //             //     .put(blob);
+            //             blobs.push(blob);
+            //         })
+            //         .catch(error => {
+            //             console.log('err while editing job - image', error);
+            //         });
+            // });
 
-        dispatch(resetJobData());
+            // try {
+            //     const imgRef = await Firebase.storage.ref(
+            //         `/jobImages/${responseGetData.userId}/${id}`
+            //     );
+            //     imgRef.delete();
+            // } catch (error) {
+            //     console.log('No images found at this ref', error);
+            // }
+
+            // blobs.forEach((blob, index) => {
+            //     Firebase.storage
+            //         .ref(`/jobImages/${responseGetData.userId}/${id}/${index}`)
+            //         .put(blob);
+            // });
+
+            dispatch({
+                type: UPDATE_JOB,
+                id,
+                userId: responseGetData.userId,
+                date: responseGetData.date,
+                occupationId,
+                workTypeId,
+                jobDescription,
+                customerType,
+                propertyType,
+                jobAddress,
+                startTimeId,
+                images,
+            });
+        } catch (error) {
+            console.log('error while editing a job', error);
+        }
+
+        //TODO there was a dispatch(resetJobData()) here idk
     };
 };
 
@@ -456,6 +505,7 @@ export const fetchMyJobs = (userId, userType) => {
                             responseData2[key2].jobAddress,
                             responseData2[key2].startTimeId,
                             images2,
+                            null
                         )
                     );
                 }
@@ -475,7 +525,6 @@ export const fetchMyJobs = (userId, userType) => {
 
 export const fetchAllJobs = (userId, userType, user_place_id) => {
     return async dispatch => {
-        console.log(userId, userType, user_place_id);
         try {
             var response = await fetch(
                 'https://fixit-46444.firebaseio.com/allPendingJobs.json'
@@ -578,6 +627,14 @@ export const searchAllJobs = input => {
         dispatch({
             type: SEARCH_ALL_JOBS,
             input,
+        });
+    };
+};
+
+export const resetJobs = () => {
+    return async dispatch => {
+        dispatch({
+            type: RESET_JOBS,
         });
     };
 };

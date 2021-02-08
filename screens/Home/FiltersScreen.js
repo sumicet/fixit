@@ -82,7 +82,6 @@ const FiltersScreen = props => {
                                         jobFilters.distance
                                     )
                                 );
-                                console.log(jobFilters);
                                 props.navigation.goBack();
                             }
                         }}

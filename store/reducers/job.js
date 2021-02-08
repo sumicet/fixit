@@ -13,6 +13,7 @@ import {
     RESET_FILTERS_FOR_TRADESPERSON,
     SET_FILTERS_FOR_TRADESPERSON,
     SEARCH_ALL_JOBS,
+    RESET_JOBS,
 } from '../actions/job';
 
 import Job from '../../models/Jobs/Job';
@@ -33,11 +34,10 @@ const initialState = {
         occupationId: null,
         distance: 2,
     },
-    
 };
 
 const editElement = (array, id, elem) => {
-    const arrayCopy = array;
+    const arrayCopy = [...array];
     const index = arrayCopy.findIndex(elem => elem.id === id);
     if (index) {
         arrayCopy[index] = elem;
@@ -59,15 +59,17 @@ const jobReducer = (state = initialState, action) => {
                 action.propertyType,
                 action.jobAddress,
                 action.startTimeId,
-                action.images
+                action.images,
+                null,
+                null
             );
 
             return {
                 ...state,
-                allPendingJobs: [...state.allPendingJobs].concat(newJob),
                 userPendingJobs: [...state.userPendingJobs].concat(newJob), // TODO this only works for customers
             };
         case UPDATE_JOB:
+            console.log('HEEEEEEEEEEEEEEEEEEEEEEY', action.jobDescription)
             const updatedJob = new Job(
                 action.id,
                 action.userId,
@@ -79,23 +81,15 @@ const jobReducer = (state = initialState, action) => {
                 action.propertyType,
                 action.jobAddress,
                 action.startTimeId,
-                action.images
+                action.images,
             );
 
-            const updatedAllPendingJobs = editElement(
-                [...state.allPendingJobs],
-                action.id,
-                updatedJob
-            );
-            const updatedUserPendingJobs = editElement(
-                [...state.userPendingJobs],
-                action.id,
-                updatedJob
-            );
+            const updatedUserPendingJobs = [...state.userPendingJobs];
+            const updatedIndex = updatedUserPendingJobs.findIndex(job => job.id === action.id);
+            updatedUserPendingJobs[updatedIndex] = updatedJob;
 
             return {
                 ...state,
-                allPendingJobs: updatedAllPendingJobs,
                 userPendingJobs: updatedUserPendingJobs,
             };
         case DELETE_JOB:
@@ -164,7 +158,9 @@ const jobReducer = (state = initialState, action) => {
             return {
                 ...state,
                 quotes: [...state.quotes].filter(
-                    q => q.tradespersonId !== action.tradespersonId
+                    q =>
+                        q.tradespersonId !== action.tradespersonId &&
+                        q.jobId !== action.jobId
                 ),
             };
         case EDIT_QUOTE:
@@ -271,6 +267,8 @@ const jobReducer = (state = initialState, action) => {
                 ...state,
                 allJobs: updatedSearchAllJobs,
             };
+        case RESET_JOBS:
+            return initialState;
         default:
             return state;
     }

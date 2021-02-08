@@ -73,7 +73,10 @@ const JobDetailsScreen = props => {
         props.navigation.setOptions({ headerRight: headerRight });
     });
 
-    const { startTime, color } = getStartTime(new Date(job.date), job.startTimeId);
+    const { startTime, color } = getStartTime(
+        new Date(job.date),
+        job.startTimeId
+    );
 
     const showAlert = (title, message, onPress, style) => {
         setModalData({
@@ -104,10 +107,10 @@ const JobDetailsScreen = props => {
 
     const onDeleteConfirm = () => {
         handleHideAlert();
-        dispatch(deleteJob(job.id));
         props.navigation.navigate('MyJobs', {
             action: 'delete',
         });
+        dispatch(deleteJob(job.id));
     };
 
     const dispatch = useDispatch();

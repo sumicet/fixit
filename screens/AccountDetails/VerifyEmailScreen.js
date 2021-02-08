@@ -39,6 +39,23 @@ const VerifyEmailScreen = props => {
         if (user.emailVerified) {
             dispatch(changeHasVerifiedEmail(true));
             if (action === 'change_email' || action === 'change_password') {
+                if (action === 'change_email') {
+                    dispatch(
+                        setInAppNotification(
+                            'Email address changed.',
+                            `Your email address has been successfully updated.`,
+                            SUCCESS
+                        )
+                    );
+                } else {
+                    dispatch(
+                        setInAppNotification(
+                            'Password changed.',
+                            `Your password has been successfully updated.`,
+                            SUCCESS
+                        )
+                    );
+                }
                 props.navigation.dispatch(
                     CommonActions.reset({
                         index: 1,
@@ -116,9 +133,14 @@ const VerifyEmailScreen = props => {
 
             dispatch(setResendEmailTimer(Date.now()));
         } else {
-            console.log(
-                'You can do that again in',
-                60 - Math.round(timeDiff / 1000)
+            dispatch(
+                setInAppNotification(
+                    'Hold on.',
+                    `You can do that again in ${
+                        60 - Math.round(timeDiff / 1000)
+                    }`,
+                    ERROR
+                )
             );
         }
     };

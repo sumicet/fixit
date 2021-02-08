@@ -1,4 +1,4 @@
-import { FETCH_CUSTOMERS } from '../actions/customers';
+import { FETCH_CUSTOMERS, RESET_CUSTOMERS } from '../actions/customers';
 
 const initialState = {
     all: []
@@ -11,6 +11,8 @@ const customersReducer = (state = initialState, action) => {
                 ...state,
                 all: action.customers
             }
+        case RESET_CUSTOMERS:
+            return initialState;
         default:
             return state;
     }

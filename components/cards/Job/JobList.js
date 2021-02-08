@@ -52,6 +52,10 @@ const JobList = props => {
                     <View>
                         {props.showTitle && (
                             <LineDescription
+                                style={{
+                                    paddingHorizontal:
+                                        Layout.screenHorizontalPadding,
+                                }}
                                 text={props.title ? props.title : 'Opened jobs'}
                                 textStyle={{ textAlign: 'left' }}
                             />

@@ -1,5 +1,6 @@
 export const ADD_REVIEW = 'ADD_REVIEW';
 export const FETCH_REVIEWS = 'FETCH_REVIEWS';
+export const RESET_REVIEWS = 'RESET_REVIEWS';
 
 import * as Firebase from '../../config/Firebase';
 import { setRating } from './tradespeople';
@@ -11,9 +12,9 @@ export const addReview = (userId, tradespersonId, rating, comment) => {
             .child(tradespersonId);
 
         const snap = await ref2.child('rating').once('value');
+        const snap2 = await ref2.child('ratingVotesAmount').once('value');
         const oldRating = snap.val();
-        if (oldRating) {
-            const snap2 = await ref2.child('ratingVotesAmount').once('value');
+        if (snap2.val() > 0) {
             const reviews = getState().reviews.all;
             const oldReview = reviews.find(
                 review =>
@@ -72,19 +73,28 @@ export const fetchReviews = () => {
 
         for (const key in responseData) {
             for (const key2 in responseData[key]) {
-                reviews.push({
-                    tradespersonId: key,
-                    userId: key2,
-                    rating: responseData[key][key2].rating,
-                    comment: responseData[key][key2].comment,
-                    date: responseData[key][key2].date,
-                });
+                if (responseData[key][key2])
+                    reviews.push({
+                        tradespersonId: key,
+                        userId: key2,
+                        rating: responseData[key][key2].rating,
+                        comment: responseData[key][key2].comment,
+                        date: responseData[key][key2].date,
+                    });
             }
         }
 
         dispatch({
             type: FETCH_REVIEWS,
             all: reviews,
+        });
+    };
+};
+
+export const resetReviews = () => {
+    return async dispatch => {
+        dispatch({
+            type: RESET_REVIEWS,
         });
     };
 };

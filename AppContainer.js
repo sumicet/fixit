@@ -92,7 +92,7 @@ const AppContainer = () => {
     };
 
     const initialFetches = async () => {
-        console.log('done initial shit');
+        console.log('done initial fetches');
 
         Promise.all([
             fetchFonts(),

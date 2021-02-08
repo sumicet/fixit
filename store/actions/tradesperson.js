@@ -6,6 +6,7 @@ export const SET_TRADESPERSON_INFO = 'SET_TRADESPERSON_INFO';
 export const ADD_QUOTED_JOB = 'ADD_QUOTED_JOB';
 export const FETCH_TRADESPERSON_INFO = 'FETCH_TRADESPERSON_INFO';
 export const SET_TRADESPERSON_REQUESTS = 'SET_TRADESPERSON_REQUESTS';
+export const RESET_TRADESPERSON = 'RESET_TRADESPERSON';
 
 import * as Firebase from '../../config/Firebase';
 
@@ -129,78 +130,86 @@ export const setTradespersonInfo = (
     };
 };
 
-export const editJob = (
-    id,
-    occupationId,
-    workTypeId,
-    jobDescription,
-    customerType,
-    propertyType,
-    jobAddress,
-    startTimeId
-) => {
+// export const editJob = (
+//     id,
+//     occupationId,
+//     workTypeId,
+//     jobDescription,
+//     customerType,
+//     propertyType,
+//     jobAddress,
+//     startTimeId
+// ) => {
+//     return async dispatch => {
+//         const responseGet = await fetch(
+//             `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
+//         );
+
+//         const responseGetData = await responseGet.json();
+
+//         const responsePatch = await fetch(
+//             `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
+//             {
+//                 method: 'PATCH',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify({
+//                     userId: responseGetData.userId,
+//                     date: responseGetData.date,
+//                     occupationId,
+//                     workTypeId,
+//                     jobDescription,
+//                     customerType,
+//                     propertyType,
+//                     jobAddress,
+//                     startTimeId,
+//                 }),
+//             }
+//         );
+
+//         const responsePatchData = await responsePatch.json();
+
+//         dispatch({
+//             type: UPDATE_JOB,
+//             id,
+//             userId: responseGetData.userId,
+//             date: responseGetData.date,
+//             occupationId,
+//             workTypeId,
+//             jobDescription,
+//             customerType,
+//             propertyType,
+//             jobAddress,
+//             startTimeId,
+//         });
+
+//         dispatch(resetJobData());
+//     };
+// };
+
+// export const deleteJob = id => {
+//     return async dispatch => {
+//         const response = await fetch(
+//             `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
+//             {
+//                 method: 'DELETE',
+//             }
+//         );
+
+//         const responseData = await response.json();
+
+//         dispatch({
+//             type: DELETE_JOB,
+//             id,
+//         });
+//     };
+// };
+
+export const resetTradesperson = () => {
     return async dispatch => {
-        const responseGet = await fetch(
-            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
-        );
-
-        const responseGetData = await responseGet.json();
-
-        const responsePatch = await fetch(
-            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
-            {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: responseGetData.userId,
-                    date: responseGetData.date,
-                    occupationId,
-                    workTypeId,
-                    jobDescription,
-                    customerType,
-                    propertyType,
-                    jobAddress,
-                    startTimeId,
-                }),
-            }
-        );
-
-        const responsePatchData = await responsePatch.json();
-
         dispatch({
-            type: UPDATE_JOB,
-            id,
-            userId: responseGetData.userId,
-            date: responseGetData.date,
-            occupationId,
-            workTypeId,
-            jobDescription,
-            customerType,
-            propertyType,
-            jobAddress,
-            startTimeId,
-        });
-
-        dispatch(resetJobData());
-    };
-};
-
-export const deleteJob = id => {
-    return async dispatch => {
-        const response = await fetch(
-            `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
-            {
-                method: 'DELETE',
-            }
-        );
-
-        const responseData = await response.json();
-
-        dispatch({
-            type: DELETE_JOB,
-            id,
+            type: RESET_TRADESPERSON,
         });
     };
 };

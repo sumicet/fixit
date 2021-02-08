@@ -25,6 +25,8 @@ const QuoteCard = props => {
 
     const { quote, isRequest } = props;
 
+    console.log(quote, isRequest, 'here');
+
     const job =
         userType === 'tradesperson'
             ? useSelector(state => state.job.unfiltered).find(
@@ -52,6 +54,8 @@ const QuoteCard = props => {
                   customer => customer.userId === customerId
               ).name
             : tradesperson?.name;
+
+    console.log(quote, isRequest);
 
     return (
         <Touchable

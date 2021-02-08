@@ -1,6 +1,7 @@
 import {
     ADD_QUOTED_JOB,
     FETCH_TRADESPERSON_INFO,
+    RESET_TRADESPERSON,
     SET_TRADESPERSON_INFO,
     SET_TRADESPERSON_REQUESTS,
 } from '../actions/tradesperson';
@@ -52,6 +53,8 @@ const tradespersonReducer = (state = initialState, action) => {
                 contactsIds: action.contactsIds,
                 requests: action.requests,
             };
+        case RESET_TRADESPERSON:
+            return initialState;
         default:
             return state;
     }

@@ -15,8 +15,14 @@ import CurrentLocation from '../../components/headers/CurrentLocation';
 const HomeScreen = props => {
     const isFocused = useIsFocused();
     const userType = useSelector(state => state.auth.userType);
-    const allTradespeople = useSelector(state => state.tradespeople.all);
-    const allJobs = useSelector(state => state.job.allJobs);
+    const allTradespeople = useSelector(
+        state => state.tradespeople.all
+    ).sort((a, b) =>
+        a.distance > b.distance ? 1 : a.distance < b.distance ? -1 : 0
+    );
+    const allJobs = useSelector(state => state.job.allJobs).sort((a, b) =>
+        a.distance > b.distance ? 1 : a.distance < b.distance ? -1 : 0
+    );
 
     const handleRequestQuote = tradespersonId => {
         props.navigation.navigate('HomeStackWithoutSearchBar', {

@@ -18,7 +18,7 @@ import Touchable from '../../components/common/Touchable';
 import LineDescription from '../../components/common/LineDescription';
 import SmallContent from '../../components/text/SmallContent';
 import { setInAppNotification } from '../../store/actions/ui';
-import { ERROR } from '../../constants/Actions';
+import { ERROR, SUCCESS } from '../../constants/Actions';
 import { addReview } from '../../store/actions/reviews';
 
 const ReviewScreen = props => {
@@ -41,6 +41,13 @@ const ReviewScreen = props => {
             );
         } else {
             dispatch(addReview(userId, tradesperson.userId, rating, text));
+            dispatch(
+                setInAppNotification(
+                    'Success!',
+                    'Thank you for submitting a review.',
+                    SUCCESS
+                )
+            );
             props.navigation.goBack();
         }
     };

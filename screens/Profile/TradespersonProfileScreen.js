@@ -53,9 +53,9 @@ const TradespersonProfileScreen = props => {
         review => review.userId === currentUserId
     );
 
-    const tradespeople = useSelector(state => state.tradespeople.unfiltered).find(
-        elem => elem.userId === userId
-    );
+    const tradespeople = useSelector(
+        state => state.tradespeople.unfiltered
+    ).find(elem => elem.userId === userId);
 
     const tradesperson = tradespeople
         ? tradespeople
@@ -131,16 +131,20 @@ const TradespersonProfileScreen = props => {
                         isOnProfileScreen={true}
                     />
                 </Line>
-                <Line>
-                    <Contact
-                        iconColor={Color.importantTextOnTertiaryColorBackground}
-                        showLabels={true}
-                        containerStyle={styles.contactContainer}
-                        phoneNumber={tradesperson.phoneNumber}
-                        onRequestQuote={handleRequestQuote}
-                        tradespersonId={userId}
-                    />
-                </Line>
+                {userType === 'customer' && (
+                    <Line>
+                        <Contact
+                            iconColor={
+                                Color.importantTextOnTertiaryColorBackground
+                            }
+                            showLabels={true}
+                            containerStyle={styles.contactContainer}
+                            phoneNumber={tradesperson.phoneNumber}
+                            onRequestQuote={handleRequestQuote}
+                            tradespersonId={userId}
+                        />
+                    </Line>
+                )}
             </View>
         );
     };
