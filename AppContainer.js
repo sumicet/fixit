@@ -21,6 +21,7 @@ import { fetchReviews } from './store/actions/reviews';
 import * as ui from './store/actions/ui';
 import { Alert } from 'react-native';
 import { fetchCustomers } from './store/actions/customers';
+import { useFonts } from 'expo-font';
 
 const AppContainer = () => {
     const inAppNotification = {
@@ -34,8 +35,10 @@ const AppContainer = () => {
     const [isLoading, setIsLoading] = useState(true);
     const userId = useSelector(state => state.auth.userId);
     const userType = useSelector(state => state.auth.userType);
+    const place_id = useSelector(state => state.auth.streetAddress.place_id);
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const uiIsLoading = useSelector(state => state.ui.isLoading);
+    const hasVerifiedEmail = useSelector(state => state.auth.hasVerifiedEmail);
 
     const dispatch = useDispatch();
 
@@ -46,13 +49,16 @@ const AppContainer = () => {
                     dispatch(
                         updateToken(Firebase.auth.currentUser.uid, token)
                     ).then(() => {
-                        dispatch(autoLogIn()).then(async () => {
-                            console.log(
-                                'token expired / logged in',
-                                Firebase.auth.currentUser.uid
-                            );
-                            setIsLoading(false);
-                        });
+                        hasVerifiedEmail &&
+                            dispatch(autoLogIn()).then(() => {
+                                console.log(
+                                    'token expired / logged in',
+                                    Firebase.auth.currentUser.uid
+                                );
+                                fetchFonts().then(() => {
+                                    setIsLoading(false);
+                                });
+                            });
                     });
                 });
             } else {
@@ -60,7 +66,10 @@ const AppContainer = () => {
                     dispatch(signOut()).then(() => {
                         console.log('logged out');
                         dispatch(ui.setIsLoading(false));
-                        !isLoggedIn && setIsLoading(false);
+                        !isLoggedIn &&
+                            fetchFonts().then(() => {
+                                setIsLoading(false);
+                            });
                     });
                 });
             }
@@ -75,30 +84,9 @@ const AppContainer = () => {
     }, [userId]);
 
     useEffect(() => {
+        dispatch(ui.setIsLoading(true));
         if (isLoggedIn) {
             setIsLoading(true);
-            initialFetches().then(() => {
-                setIsLoading(false);
-            });
-        }
-    }, [isLoggedIn]);
-
-    const fetchFonts = () => {
-        return Font.loadAsync({
-            Bold: require('./assets/fonts/whitneybold.ttf'),
-            SemiBold: require('./assets/fonts/whitneysemibold.ttf'),
-            Regular: require('./assets/fonts/whitneymedium.ttf'),
-        });
-    };
-
-    const initialFetches = async () => {
-        console.log('done initial fetches');
-
-        Promise.all([
-            fetchFonts(),
-            userType === 'tradesperson' &&
-                dispatch(fetchTradespersonInfo(userId)),
-            dispatch(fetchMyJobs(userId, userType)),
             navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
@@ -112,22 +100,39 @@ const AppContainer = () => {
                         line1: resultData.results[0].formatted_address,
                         place_id: resultData.results[0].place_id,
                     })
-                );
-                userType === 'customer' &&
-                    dispatch(fetchAll(userId, resultData.results[0].place_id));
-                userType === 'tradesperson' &&
-                    dispatch(
-                        fetchAllJobs(
-                            userId,
-                            userType,
-                            resultData.results[0].place_id
-                        )
-                    );
-            }),
+                ).then(() => {
+                    initialFetches(resultData.results[0].place_id).then(() => {
+                        setIsLoading(false);
+                    });
+                });
+            });
+        }
+    }, [isLoggedIn, place_id]);
+
+    const fetchFonts = async () => {
+        await Font.loadAsync({
+            Bold: require('./assets/fonts/whitneybold.ttf'),
+            SemiBold: require('./assets/fonts/whitneysemibold.ttf'),
+            Regular: require('./assets/fonts/whitneymedium.ttf'),
+        });
+    };
+
+    const initialFetches = async (place_id) => {
+        Promise.all([
+            fetchFonts(),
+            userType === 'tradesperson' &&
+                dispatch(fetchTradespersonInfo(userId)),
+            dispatch(fetchMyJobs(userId, userType)),
             dispatch(fetchCustomers()),
             dispatch(fetchReviews()),
         ]).then(() => {
-            dispatch(ui.setIsLoading(false));
+            Promise.all([
+                userType === 'customer' && dispatch(fetchAll(userId, place_id)),
+                userType === 'tradesperson' &&
+                    dispatch(fetchAllJobs(userId, userType, place_id)),
+            ]).then(() => {
+                dispatch(ui.setIsLoading(false));
+            });
         });
     };
 

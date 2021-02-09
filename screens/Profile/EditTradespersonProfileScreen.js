@@ -23,7 +23,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setTradespersonInfo } from '../../store/actions/tradesperson';
 import ProfilePicture from '../../components/cards/Tradesperson/ProfilePicture';
 import { setInAppNotification } from '../../store/actions/ui';
-import { SUCCESS } from '../../constants/Actions';
+import { ERROR, SUCCESS } from '../../constants/Actions';
+import { setIsLoggedIn } from '../../store/actions/auth';
 
 const EditTradespersonProfile = props => {
     const tradesperson = useSelector(state => state.tradesperson);
@@ -170,32 +171,51 @@ const EditTradespersonProfile = props => {
         };
         const insurance = insuranceChecked;
 
-        dispatch(
-            setTradespersonInfo(
-                name,
-                occupationsIds,
-                streetAddress,
-                experienceId,
-                insurance,
-                propertyTypesIds,
-                profilePicture,
-                phoneNumber
-            )
-        );
-
-        if (action === 'signup') {
+        if (
+            name === null ||
+            occupationsIds === null ||
+            streetAddress === null ||
+            experienceId === null ||
+            insurance === null ||
+            propertyTypesIds === null ||
+            phoneNumber === null
+        ) {
             dispatch(
                 setInAppNotification(
-                    'Account created.',
-                    'You have successfully created an account.',
-                    SUCCESS
+                    'Empty fields not allowed.',
+                    'It looks like you left some fields empty. Please answer all questions.',
+                    ERROR
                 )
             );
-            props.navigation.navigate('BottomTab', {
-                screen: 'Home',
-            });
         } else {
-            props.navigation.goBack();
+            dispatch(
+                setTradespersonInfo(
+                    name,
+                    occupationsIds,
+                    streetAddress,
+                    experienceId,
+                    insurance,
+                    propertyTypesIds,
+                    profilePicture,
+                    phoneNumber
+                )
+            );
+
+            if (action === 'signup') {
+                dispatch(setIsLoggedIn(true));
+                dispatch(
+                    setInAppNotification(
+                        'Account created.',
+                        'You have successfully created an account.',
+                        SUCCESS
+                    )
+                );
+                props.navigation.navigate('BottomTab', {
+                    screen: 'Home',
+                });
+            } else {
+                props.navigation.goBack();
+            }
         }
     };
 

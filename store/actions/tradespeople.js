@@ -34,15 +34,41 @@ export const fetchAll = (currentUserId, user_place_id) => {
         const tradespeopleData = [];
         const requests = [];
 
+        // responseData.forEach(async elem => {
+        //     const updatedData = elem;
+        //     const { meters } = await getDistance(
+        //         user_place_id,
+        //         elem.streetAddress.place_id
+        //     );
+        //     updatedData.distance = meters;
+        //     tradespeopleData.push(updatedData);
+
+        //     console.log(meters, 'here');
+
+        //     elem.requests?.forEach(req => {
+        //         if (req.userId === currentUserId) {
+        //             requests.push(
+        //                 new Request(
+        //                     req.jobId,
+        //                     req.userId,
+        //                     req.tradespersonId,
+        //                     req.date
+        //                 )
+        //             );
+        //         }
+        //     });
+        // });
+
         for (const key in responseData) {
             const updatedData = responseData[key];
-            const { meters } = await getDistance(
+            getDistance(
                 user_place_id,
                 responseData[key].streetAddress.place_id
-            );
-            updatedData.distance = meters;
-
-            tradespeopleData.push(updatedData);
+            ).then(({ meters }) => {
+                console.log(meters, 'here');
+                updatedData.distance = meters;
+                tradespeopleData.push(updatedData);
+            });
             responseData[key].requests?.forEach(req => {
                 if (req.userId === currentUserId) {
                     requests.push(

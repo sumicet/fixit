@@ -257,9 +257,9 @@ export const signUp = (email, name, password, userType) => {
                 ref.child('ratingVotesAmount').set(0);
             }
 
-            userData.user.sendEmailVerification().catch(error => {
-                throw error;
-            });
+            // userData.user.sendEmailVerification().catch(error => {
+            //     throw error;
+            // });
 
             dispatch({
                 type: SIGN_UP,
@@ -377,42 +377,45 @@ export const logIn = (email, password) => {
 };
 
 export const autoLogIn = () => {
-    return async dispatch => {
-        const userData = await AsyncStorage.getItem('userData');
-        const userId = userData && JSON.parse(userData).userId;
-        const token = userData && JSON.parse(userData).token;
+    return async (dispatch, getState) => {
+        const hasVerifiedEmail = await getState().auth.hasVerifiedEmail;
+        if (hasVerifiedEmail) {
+            const userData = await AsyncStorage.getItem('userData');
+            const userId = userData && JSON.parse(userData).userId;
+            const token = userData && JSON.parse(userData).token;
 
-        if (userId && token) {
-            var userType, name;
+            if (userId && token) {
+                var userType, name;
 
-            const snap2 = await Firebase.database
-                .ref('tradesperson')
-                .child(userId)
-                .once('value');
+                const snap2 = await Firebase.database
+                    .ref('tradesperson')
+                    .child(userId)
+                    .once('value');
 
-            if (snap2.val()) {
-                userType = 'tradesperson';
-            } else {
-                userType = 'customer';
+                if (snap2.val()) {
+                    userType = 'tradesperson';
+                } else {
+                    userType = 'customer';
+                }
+
+                const ref = Firebase.database.ref(userType).child(userId);
+
+                ref.child('name')
+                    .once('value')
+                    .then(res => (name = res.val()));
+
+                const snap = await ref.child('email').once('value');
+                const email = snap.val();
+
+                dispatch({
+                    type: AUTO_LOG_IN,
+                    userId,
+                    token,
+                    email,
+                    userType,
+                    name,
+                });
             }
-
-            const ref = Firebase.database.ref(userType).child(userId);
-
-            ref.child('name')
-                .once('value')
-                .then(res => (name = res.val()));
-
-            const snap = await ref.child('email').once('value');
-            const email = snap.val();
-
-            dispatch({
-                type: AUTO_LOG_IN,
-                userId,
-                token,
-                email,
-                userType,
-                name,
-            });
         }
     };
 };

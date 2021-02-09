@@ -36,15 +36,6 @@ const initialState = {
     },
 };
 
-const editElement = (array, id, elem) => {
-    const arrayCopy = [...array];
-    const index = arrayCopy.findIndex(elem => elem.id === id);
-    if (index) {
-        arrayCopy[index] = elem;
-    }
-    return arrayCopy;
-};
-
 const jobReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_JOB:
@@ -69,7 +60,7 @@ const jobReducer = (state = initialState, action) => {
                 userPendingJobs: [...state.userPendingJobs].concat(newJob), // TODO this only works for customers
             };
         case UPDATE_JOB:
-            console.log('HEEEEEEEEEEEEEEEEEEEEEEY', action.jobDescription)
+            console.log('HEEEEEEEEEEEEEEEEEEEEEEY', action.jobDescription);
             const updatedJob = new Job(
                 action.id,
                 action.userId,
@@ -81,11 +72,13 @@ const jobReducer = (state = initialState, action) => {
                 action.propertyType,
                 action.jobAddress,
                 action.startTimeId,
-                action.images,
+                action.images
             );
 
             const updatedUserPendingJobs = [...state.userPendingJobs];
-            const updatedIndex = updatedUserPendingJobs.findIndex(job => job.id === action.id);
+            const updatedIndex = updatedUserPendingJobs.findIndex(
+                job => job.id === action.id
+            );
             updatedUserPendingJobs[updatedIndex] = updatedJob;
 
             return {
@@ -103,6 +96,8 @@ const jobReducer = (state = initialState, action) => {
                 userCompletedJobs: [...state.userCompletedJobs].filter(
                     job => job.id !== action.id
                 ),
+                quotes: action.quotes,
+                requests: action.requests,
             };
         case SET_MY_JOBS:
             return {
@@ -136,6 +131,8 @@ const jobReducer = (state = initialState, action) => {
                 //allJobs: updatedAllJobs,
                 userPendingJobs: newUserPendingJobs,
                 userCompletedJobs: updatedUserCompletedJobs,
+                quotes: action.quotes,
+                requests: action.requests,
             };
         case ADD_QUOTE:
             const updatedQuotes = [...state.quotes];

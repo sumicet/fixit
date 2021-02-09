@@ -136,7 +136,7 @@ export const addQuote = (jobId, tradespersonId, price, message) => {
 };
 
 export const markAsCompleted = id => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         const response = await fetch(
             `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`
         );
@@ -167,14 +167,52 @@ export const markAsCompleted = id => {
                     propertyType: responseData.propertyType,
                     jobAddress: responseData.jobAddress,
                     startTimeId: responseData.startTimeId,
-                    quotes: responseData.quotes,
                 }),
             }
         );
 
+        const requests = getState().job.requests.filter(
+            req => req.jobId !== id
+        );
+        const requestsToBeDeleted = await getState().job.requests.filter(
+            req => req.jobId === id
+        );
+        const quotes = getState().job.quotes.filter(
+            quote => quote.jobId !== id
+        );
+
+        requestsToBeDeleted.forEach(async delReq => {
+            await Firebase.database
+                .ref(`tradesperson/${delReq.tradespersonId}`)
+                .child('requests')
+                .once('value')
+                .then(snap => {
+                    const requests = snap.val();
+                    const updatedRequests = [];
+                    requests.forEach(
+                        req =>
+                            req.jobId !== delReq.jobId &&
+                            updatedRequests.push(req)
+                    );
+                    if (updatedRequests.length > 0) {
+                        Firebase.database
+                            .ref(`tradesperson/${delReq.tradespersonId}`)
+                            .child('requests')
+                            .set(updatedRequests);
+                    } else {
+                        Firebase.database
+                            .ref(`tradesperson/${delReq.tradespersonId}`)
+                            .child('requests')
+                            .remove();
+                    }
+                });
+        });
+
         dispatch({
             type: MARK_AS_COMPLETED,
             id,
+            requests,
+            quotes,
         });
     };
 };
@@ -370,7 +408,7 @@ export const editJob = (
 };
 
 export const deleteJob = id => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         await fetch(
             `https://fixit-46444.firebaseio.com/allPendingJobs/${id}.json`,
             {
@@ -385,9 +423,48 @@ export const deleteJob = id => {
             }
         );
 
+        const requests = getState().job.requests.filter(
+            req => req.jobId !== id
+        );
+        const requestsToBeDeleted = await getState().job.requests.filter(
+            req => req.jobId === id
+        );
+        const quotes = getState().job.quotes.filter(
+            quote => quote.jobId !== id
+        );
+
+        requestsToBeDeleted.forEach(async delReq => {
+            await Firebase.database
+                .ref(`tradesperson/${delReq.tradespersonId}`)
+                .child('requests')
+                .once('value')
+                .then(snap => {
+                    const requests = snap.val();
+                    const updatedRequests = [];
+                    requests.forEach(
+                        req =>
+                            req.jobId !== delReq.jobId &&
+                            updatedRequests.push(req)
+                    );
+                    if (updatedRequests.length > 0) {
+                        Firebase.database
+                            .ref(`tradesperson/${delReq.tradespersonId}`)
+                            .child('requests')
+                            .set(updatedRequests);
+                    } else {
+                        Firebase.database
+                            .ref(`tradesperson/${delReq.tradespersonId}`)
+                            .child('requests')
+                            .remove();
+                    }
+                });
+        });
+
         dispatch({
             type: DELETE_JOB,
             id,
+            requests,
+            quotes,
         });
     };
 };
@@ -548,6 +625,7 @@ export const fetchAllJobs = (userId, userType, user_place_id) => {
                         const image = await imageRef.getDownloadURL();
                         images.push(image);
                     } catch (error) {
+                        console.log('catchyyyyyyyyyyyy')
                         break;
                     }
                 }
@@ -565,30 +643,29 @@ export const fetchAllJobs = (userId, userType, user_place_id) => {
                     });
                 }
 
-                const { meters } = await getDistance(
+                getDistance(
                     user_place_id,
                     responseData[key].jobAddress.place_id
-                );
-
-                console.log(meters);
-
-                allJobs.push(
-                    new Job(
-                        key,
-                        responseData[key].userId,
-                        responseData[key].date,
-                        responseData[key].occupationId,
-                        responseData[key].workTypeId,
-                        responseData[key].jobDescription,
-                        responseData[key].customerType,
-                        responseData[key].propertyType,
-                        responseData[key].jobAddress,
-                        responseData[key].startTimeId,
-                        images,
-                        null,
-                        meters
-                    )
-                );
+                ).then(({ meters }) => {
+                    console.log(meters);
+                    allJobs.push(
+                        new Job(
+                            key,
+                            responseData[key].userId,
+                            responseData[key].date,
+                            responseData[key].occupationId,
+                            responseData[key].workTypeId,
+                            responseData[key].jobDescription,
+                            responseData[key].customerType,
+                            responseData[key].propertyType,
+                            responseData[key].jobAddress,
+                            responseData[key].startTimeId,
+                            images,
+                            null,
+                            meters
+                        )
+                    );
+                });
             }
 
             dispatch({
@@ -596,8 +673,6 @@ export const fetchAllJobs = (userId, userType, user_place_id) => {
                 allJobs,
                 quotes: userQuotes,
             });
-
-            //dispatch(setTradespersonRequests(tradespersonRequests));
         } catch (error) {
             console.log('err while fetching all jobs', error);
         }

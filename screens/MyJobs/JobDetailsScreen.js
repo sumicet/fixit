@@ -28,7 +28,7 @@ import { CUSTOMER_TYPES } from '../../data/Jobs/CustomerTypes';
 import { PROPERTY_TYPES } from '../../data/Jobs/PropertyTypes';
 import EndOfPageSpace from '../../components/layout/EndOfPageSpace';
 import ImageSelector from '../../components/images/ImageSelector';
-import { ERROR, SUCCESS } from '../../constants/Actions';
+import { ERROR, SUCCESS, WARNING } from '../../constants/Actions';
 import { setInAppNotification } from '../../store/actions/ui';
 import SmallBubble from '../../components/common/SmallBubble';
 import { getStartTime } from '../../actions/startTime';
@@ -132,9 +132,9 @@ const JobDetailsScreen = props => {
                         onPress={() => {
                             showAlert(
                                 'Completed',
-                                'Are you sure you want to mark this job completed?',
+                                'Are you sure you want to mark this job completed? This action will DELETE all quotes and requests.',
                                 handleMarkAsCompleted,
-                                SUCCESS
+                                WARNING
                             );
                         }}
                     >

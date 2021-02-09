@@ -47,24 +47,30 @@ const MyJobsScreen = props => {
             });
             props.navigation.setParams({ action: 'none' });
         }
-    }, [props, isFocused]);
+    }, [props.route.params, isFocused]);
 
     const Screen = props => {
         const { mainArray, secondaryArray } = props;
 
+        console.log(mainArray.length, secondaryArray.length, 'here')
+
         const array =
             secondaryArray && secondaryArray.length > 0
-                ? mainArray
-                      .sort(
-                          (job1, job2) =>
-                              new Date(job2.date) - new Date(job1.date)
-                      )
-                      .concat(
-                          secondaryArray &&
+                ? mainArray && mainArray.length > 0
+                    ? mainArray
+                          .sort(
+                              (job1, job2) =>
+                                  new Date(job2.date) - new Date(job1.date)
+                          )
+                          .concat(
                               secondaryArray.sort(
                                   (job1, job2) =>
                                       new Date(job2.date) - new Date(job1.date)
                               )
+                          )
+                    : secondaryArray.sort(
+                          (job1, job2) =>
+                              new Date(job2.date) - new Date(job1.date)
                       )
                 : mainArray.sort(
                       (job1, job2) => new Date(job2.date) - new Date(job1.date)
@@ -72,7 +78,7 @@ const MyJobsScreen = props => {
 
         return (
             <View style={{ flex: 1, backgroundColor: Color.primaryColor }}>
-                {mainArray && mainArray.length > 0 ? (
+                {mainArray && mainArray.length > 0 || secondaryArray && secondaryArray.length > 0 ? (
                     <Container
                         backgroundColor={Color.primaryColor}
                         style={{
@@ -99,7 +105,7 @@ const MyJobsScreen = props => {
                                     }
                                 );
                             }}
-                            showTitle={props.showTitle}
+                            showTitle={mainArray ? false : props.showTitle}
                             showRequestInfo={true}
                         />
                     </Container>

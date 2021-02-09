@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import Authentication from '../../components/authentication/Authentication';
 import { useDispatch } from 'react-redux';
-import { signUp } from '../../store/actions/auth';
+import { changeHasVerifiedEmail, signUp } from '../../store/actions/auth';
 import { ERROR } from '../../constants/Actions';
 import { setInAppNotification } from '../../store/actions/ui';
 import { CommonActions } from '@react-navigation/native';
@@ -34,6 +34,7 @@ const SignUpScreen = props => {
                     accountTypeChecked[0] === true
                         ? 'customer'
                         : 'tradesperson';
+                dispatch(changeHasVerifiedEmail(false));
                 dispatch(signUp(email, name, password, userType))
                     .then(() => {
                         props.navigation.dispatch(

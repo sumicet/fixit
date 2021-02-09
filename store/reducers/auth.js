@@ -22,6 +22,10 @@ const initialState = {
     email: null,
     resendEmailTimer: null,
     name: null,
+    streetAddress: {
+        line1: null,
+        place_id: null,
+    },
 };
 
 const authReducer = (state = initialState, action) => {
@@ -39,7 +43,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 email: action.email,
                 userType: action.userType,
-                name: action.name
+                name: action.name,
             };
         case LOG_IN:
             return {
@@ -48,7 +52,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 email: action.email,
                 userType: action.userType,
-                name: action.name
+                name: action.name,
             };
         case SIGN_UP:
             return {
@@ -94,8 +98,8 @@ const authReducer = (state = initialState, action) => {
         case CHANGE_NAME:
             return {
                 ...state,
-                name: action.name
-            }
+                name: action.name,
+            };
         default:
             return state;
     }
