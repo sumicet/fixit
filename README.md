@@ -1,5 +1,9 @@
 The purpose of this application is to ease the selection process for jobs/tradespeople. As a customer, you will be able to browse through a detailed list of tradespeople to chose one that perfectly fits your requirements. As a tradesperson, you can view all job requests and offer quotes rather than wait for customers to contact you.
 
+| Home  | Request Quote | Search Filters |
+| ------------- | ------------- | ------------- |
+| ![Screenshot](https://i.imgur.com/AxPYOkl.jpg)  | ![Screenshot](https://i.imgur.com/45SLElJ.jpg)  | ![Screenshot](https://i.imgur.com/qftBiHT.jpg)  |
+
 ### Customers can:
 + add/edit/delete job requests
 + request quotes from tradespeople
